@@ -1,0 +1,3 @@
+Time      0.00000
+Total      135000
+mass in 1e10,  x, y, z, in kpc and vx, vy, vz in km/s
