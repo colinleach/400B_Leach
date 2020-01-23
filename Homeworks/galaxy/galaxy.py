@@ -31,6 +31,7 @@ class Galaxy():
         # We can probably make some assumptions about the filename:
         self.filename = f"{name}_{snap:03}.txt"
         self.filepath = self.get_filepath(datadir)
+        self.read_file()
 
     def get_filepath(self, datadir):
         """
