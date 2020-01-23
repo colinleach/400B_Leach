@@ -14,9 +14,8 @@ import pandas as pd
 class Galaxy():
     """
     A class to find, read and manipulate files for a single galaxy
-    
     Needs to be initialized with a name, eg 'MW', 'M31'
-    
+
     Snap number is optional, defaults to zero
 
     Path to the data file is optional, it will search several plausible defaults
@@ -84,7 +83,7 @@ class Galaxy():
         
         # get header data
         with open(fullname) as file:
-            label, value = file.readline().split()
+            _, value = file.readline().split()
             self.time = float(value) * 10.0 * u.Myr
             label, value = file.readline().split()
             self.particle_count = int(value)
@@ -199,3 +198,5 @@ class Galaxy():
             t[col] *= (u.km/u.s)
         
         return t
+
+        
