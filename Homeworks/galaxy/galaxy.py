@@ -127,11 +127,11 @@ class Galaxy():
         m = particle['m'] * 1e10 * u.Msun
         
         # Euclidean distance from galactic CoM:
-        pos_xyz = np.array([particle['x'], particle['y'], particle['y']])
+        pos_xyz = np.array([particle['x'], particle['y'], particle['z']])
         pos_mag = norm(pos_xyz) * u.kpc
         
         # velocity:
-        v_xyz = np.array([particle['vx'], particle['vy'], particle['vy']])
+        v_xyz = np.array([particle['vx'], particle['vy'], particle['vz']])
         v_mag = norm(v_xyz) * u.km/ u.s
         
         return np.around(pos_mag, 3), np.around(v_mag, 3), m
@@ -152,11 +152,11 @@ class Galaxy():
         m = dataset['m'] * 1e10 * u.Msun
         
         # Pythagorean distance from galactic CoM:
-        pos_xyz = np.array([dataset['x'], dataset['y'], dataset['y']])
+        pos_xyz = np.array([dataset['x'], dataset['y'], dataset['z']])
         pos_mag = norm(pos_xyz, axis=0) * u.kpc
         
         # velocity:
-        v_xyz = np.array([dataset['vx'], dataset['vy'], dataset['vy']])
+        v_xyz = np.array([dataset['vx'], dataset['vy'], dataset['vz']])
         v_mag = norm(v_xyz, axis=0) * u.km/ u.s
         
         # construct and return a QTable with units
