@@ -118,6 +118,8 @@ class Galaxy():
                         particle mass (M_sun)
         """
         
+        # The next bit will throw IndexError if particle_num invalid
+        # Be ready to catch this
         if type is None: # all types accepted
             particle = self.data[particle_num]
         else:
