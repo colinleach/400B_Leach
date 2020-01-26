@@ -1,0 +1,301 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>galaxy &#8212; ASTR400B Leach  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for galaxy</h1><div class="highlight"><pre>
+<span></span><span class="c1"># standard Python imports</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="c1"># scientific package imports</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">norm</span>
+
+<span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
+<span class="kn">from</span> <span class="nn">astropy.table</span> <span class="kn">import</span> <span class="n">QTable</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+
+<div class="viewcode-block" id="Galaxy"><a class="viewcode-back" href="../index.html#galaxy.Galaxy">[docs]</a><span class="k">class</span> <span class="nc">Galaxy</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to find, read and manipulate files for a single galaxy</span>
+<span class="sd">    Needs to be initialized with a name, eg &#39;MW&#39;, &#39;M31&#39;</span>
+
+<span class="sd">    Snap number is optional, defaults to zero</span>
+
+<span class="sd">    Path to the data file is optional, it searches several plausible defaults</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">snap</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">datadir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="s2">&quot;Initial setup&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">snap</span> <span class="o">=</span> <span class="n">snap</span>
+
+        <span class="c1"># We can probably make some assumptions about the filename:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{name}</span><span class="s2">_</span><span class="si">{snap:03}</span><span class="s2">.txt&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filepath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_filepath</span><span class="p">(</span><span class="n">datadir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">read_file</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Galaxy.get_filepath"><a class="viewcode-back" href="../index.html#galaxy.Galaxy.get_filepath">[docs]</a>    <span class="k">def</span> <span class="nf">get_filepath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datadir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Search for the required file and return a valid pathlib.Path object.</span>
+
+<span class="sd">        Pretty boring housekeeping code, but may make things more resilient.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># helper function, returns (file found at this location?) True/False</span>
+        <span class="k">def</span> <span class="nf">has_file</span><span class="p">(</span><span class="n">dirname</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">dirname</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> \
+                    <span class="n">Path</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> \
+                    <span class="n">Path</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">has_file</span><span class="p">(</span><span class="n">datadir</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">datadir</span><span class="p">)</span>  <span class="c1"># whoever called this knew the layout</span>
+
+        <span class="c1"># Now we aren&#39;t sure where the file is so may need to search for it</span>
+        <span class="c1"># it may be different on different systems, e.g. nimoy vs laptop</span>
+        <span class="c1"># try the search path:</span>
+        <span class="c1">#   [datadir, &#39;.&#39;, &#39;..&#39;, &#39;../..&#39;, &#39;~&#39;, &#39;~/galaxydata&#39;]</span>
+        <span class="n">pwd</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
+        <span class="n">home</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span>
+        <span class="n">searchpath</span> <span class="o">=</span> <span class="p">[</span><span class="n">pwd</span><span class="p">,</span> <span class="p">]</span>
+        <span class="n">searchpath</span> <span class="o">+=</span> <span class="p">[</span><span class="n">pwd</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span>
+        <span class="n">searchpath</span> <span class="o">+=</span> <span class="p">[</span><span class="n">home</span><span class="p">,</span> <span class="n">home</span> <span class="o">/</span> <span class="s1">&#39;galaxydata&#39;</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">searchpath</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">has_file</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">p</span>  <span class="c1"># happy result, we got a valid path</span>
+
+        <span class="c1"># Raise an error if not found</span>
+        <span class="n">pathstrings</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{datadir}</span><span class="s1">, &#39;</span> <span class="k">if</span> <span class="n">datadir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">pathstrings</span> <span class="o">+=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">sp</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span> <span class="k">for</span> <span class="n">sp</span> <span class="ow">in</span> <span class="n">searchpath</span><span class="p">])</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{self.filename}</span><span class="s1">: Not found in </span><span class="si">{pathstrings}</span><span class="s1">&#39;</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Galaxy.read_file"><a class="viewcode-back" href="../index.html#galaxy.Galaxy.read_file">[docs]</a>    <span class="k">def</span> <span class="nf">read_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read in a datafile in np.ndarray format, store in `self.data`</span>
+
+<span class="sd">        Assumes path and filename are already set as instance parameters</span>
+
+<span class="sd">        Returns: nothing</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">fullname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepath</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span>
+
+        <span class="c1"># get header data</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fullname</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="mf">10.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">Myr</span>
+            <span class="n">label</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">particle_count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="c1"># get the big array of values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span>
+            <span class="n">fullname</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Galaxy.filter_by_type"><a class="viewcode-back" href="../index.html#galaxy.Galaxy.filter_by_type">[docs]</a>    <span class="k">def</span> <span class="nf">filter_by_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Input:  particle type as integer, 1=DM, 2=disk, 3=bulge</span>
+<span class="sd">                optionally, a starting dataset other than self.data</span>
+
+<span class="sd">        Returns: subset data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">dataset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+
+        <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="nb">type</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dataset</span><span class="p">[</span><span class="n">index</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Galaxy.single_particle_properties"><a class="viewcode-back" href="../index.html#galaxy.Galaxy.single_particle_properties">[docs]</a>    <span class="k">def</span> <span class="nf">single_particle_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">particle_num</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">            particle_num: zero-based index to an array of particles</span>
+<span class="sd">            type: optionally, use a subset of the data filtered by</span>
+<span class="sd">                    1=DM, 2=disk, 3=bulge</span>
+
+<span class="sd">            returns: 3-tuple of</span>
+<span class="sd">                        Euclidean distance from CoM (kpc),</span>
+<span class="sd">                        Euclidean velocity magnitude (km/s),</span>
+<span class="sd">                        particle mass (M_sun)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># The next bit will throw IndexError if particle_num invalid</span>
+        <span class="c1"># Be ready to catch this</span>
+        <span class="k">if</span> <span class="nb">type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># all types accepted</span>
+            <span class="n">particle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">particle_num</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">particle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_by_type</span><span class="p">(</span><span class="nb">type</span><span class="p">)[</span><span class="n">particle_num</span><span class="p">]</span>
+
+        <span class="c1"># mass:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">particle</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1e10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">Msun</span>
+
+        <span class="c1"># Euclidean distance from galactic CoM:</span>
+        <span class="n">pos_xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">particle</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">particle</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">particle</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]])</span>
+        <span class="n">pos_mag</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">pos_xyz</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">kpc</span>
+
+        <span class="c1"># velocity:</span>
+        <span class="n">v_xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">particle</span><span class="p">[</span><span class="s1">&#39;vx&#39;</span><span class="p">],</span> <span class="n">particle</span><span class="p">[</span><span class="s1">&#39;vy&#39;</span><span class="p">],</span> <span class="n">particle</span><span class="p">[</span><span class="s1">&#39;vz&#39;</span><span class="p">]])</span>
+        <span class="n">v_mag</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">v_xyz</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">km</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">pos_mag</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">v_mag</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">m</span></div>
+
+<div class="viewcode-block" id="Galaxy.all_particle_properties"><a class="viewcode-back" href="../index.html#galaxy.Galaxy.all_particle_properties">[docs]</a>    <span class="k">def</span> <span class="nf">all_particle_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Similar to single_particle_properties,</span>
+<span class="sd">        except returns the full list</span>
+<span class="sd">        optionally filtered by type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># all types accepted</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_by_type</span><span class="p">(</span><span class="nb">type</span><span class="p">)</span>
+
+        <span class="c1"># mass:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1e10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">Msun</span>
+
+        <span class="c1"># Pythagorean distance from galactic CoM:</span>
+        <span class="n">pos_xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]])</span>
+        <span class="n">pos_mag</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">pos_xyz</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">kpc</span>
+
+        <span class="c1"># velocity:</span>
+        <span class="n">v_xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;vx&#39;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;vy&#39;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;vz&#39;</span><span class="p">]])</span>
+        <span class="n">v_mag</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">v_xyz</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">km</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span>
+
+        <span class="c1"># construct and return a QTable with units</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">QTable</span><span class="p">()</span>
+        <span class="n">t</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+        <span class="n">t</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+        <span class="n">t</span><span class="p">[</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">pos_mag</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">t</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">v_mag</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">t</span></div>
+
+    <span class="c1"># ________________________________________________________________</span>
+    <span class="c1">#</span>
+    <span class="c1"># define some getters which may turn out to be useful, perhaps</span>
+
+<div class="viewcode-block" id="Galaxy.get_array"><a class="viewcode-back" href="../index.html#galaxy.Galaxy.get_array">[docs]</a>    <span class="k">def</span> <span class="nf">get_array</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns np.ndarray format</span>
+
+<span class="sd">        Pretty superfluous in Python (which has no private class members)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span></div>
+
+<div class="viewcode-block" id="Galaxy.get_df"><a class="viewcode-back" href="../index.html#galaxy.Galaxy.get_df">[docs]</a>    <span class="k">def</span> <span class="nf">get_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s2">&quot;Returns pandas dataframe&quot;</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Galaxy.get_qtable"><a class="viewcode-back" href="../index.html#galaxy.Galaxy.get_qtable">[docs]</a>    <span class="k">def</span> <span class="nf">get_qtable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s2">&quot;returns astropy QTable with units&quot;</span>
+
+        <span class="n">t</span> <span class="o">=</span> <span class="n">QTable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="c1"># add appropriate units</span>
+        <span class="n">t</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1e10</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">Msun</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">):</span>
+            <span class="n">t</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">*=</span> <span class="n">u</span><span class="o">.</span><span class="n">kpc</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;vx&#39;</span><span class="p">,</span> <span class="s1">&#39;vy&#39;</span><span class="p">,</span> <span class="s1">&#39;vz&#39;</span><span class="p">):</span>
+            <span class="n">t</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">*=</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">km</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">t</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">ASTR400B Leach</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Colin Leach.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,1 +1,1 @@
-../galaxy/galaxy.py
+../../source/galaxy/galaxy.py
