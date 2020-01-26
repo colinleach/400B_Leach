@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Welcome to ASTR400B_Leach’s documentation! &#8212; ASTR400B Leach  documentation</title>
+    <title>Welcome to ASTR400B Leach’s documentation! &#8212; ASTR400B Leach  documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -14,6 +14,7 @@
     <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Galaxy class" href="galaxy.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -31,95 +32,18 @@
           <div class="body" role="main">
             
   <div class="section" id="welcome-to-astr400b-leach-s-documentation">
-<h1>Welcome to ASTR400B_Leach’s documentation!<a class="headerlink" href="#welcome-to-astr400b-leach-s-documentation" title="Permalink to this headline">¶</a></h1>
+<h1>Welcome to ASTR400B Leach’s documentation!<a class="headerlink" href="#welcome-to-astr400b-leach-s-documentation" title="Permalink to this headline">¶</a></h1>
 <p>This is documentation for code written during course ASTR 400B,
 Theoretical Astrophysics, running at the University of Arizona’s
 Steward Observatory, Spring 2020.</p>
-<p><strong>Instructor:</strong> Prof Gurtina Besla</p>
-<p><strong>TA:</strong> Rixin Li</p>
+<p><strong>Instructor:</strong> Prof. Gurtina Besla,  <strong>TA:</strong> Rixin Li</p>
+<p><strong>GitHub:</strong> <a class="reference external" href="https://github.com/colinleach/400B_Leach">https://github.com/colinleach/400B_Leach</a></p>
 <div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="galaxy.html">Galaxy class</a></li>
+</ul>
 </div>
-</div>
-<div class="section" id="module-galaxy.galaxy">
-<span id="galaxy-galaxy-class"></span><h1>galaxy.Galaxy class<a class="headerlink" href="#module-galaxy.galaxy" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="galaxy.galaxy.Galaxy">
-<em class="property">class </em><code class="sig-prename descclassname">galaxy.galaxy.</code><code class="sig-name descname">Galaxy</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">snap=0</em>, <em class="sig-param">datadir=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy" title="Permalink to this definition">¶</a></dt>
-<dd><p>A class to find, read and manipulate files for a single galaxy.</p>
-<p>Needs to be initialized with a name, eg ‘MW’, ‘M31’.</p>
-<p>Snap number is optional, defaults to zero.</p>
-<p>Path to the data file is optional, it searches several plausible defaults.</p>
-<dl class="method">
-<dt id="galaxy.galaxy.Galaxy.all_particle_properties">
-<code class="sig-name descname">all_particle_properties</code><span class="sig-paren">(</span><em class="sig-param">type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.all_particle_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.all_particle_properties" title="Permalink to this definition">¶</a></dt>
-<dd><p>Similar to single_particle_properties, except returns the full list
-optionally filtered by type.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="galaxy.galaxy.Galaxy.filter_by_type">
-<code class="sig-name descname">filter_by_type</code><span class="sig-paren">(</span><em class="sig-param">type</em>, <em class="sig-param">dataset=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.filter_by_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.filter_by_type" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Input:  particle type as integer, 1=DM, 2=disk, 3=bulge</dt><dd><p>optionally, a starting dataset other than self.data</p>
-</dd>
-</dl>
-<p>Returns: subset data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="galaxy.galaxy.Galaxy.get_array">
-<code class="sig-name descname">get_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.get_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.get_array" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns data in <cite>np.ndarray</cite> format</p>
-<p>Pretty superfluous in Python (which has no private class members)</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="galaxy.galaxy.Galaxy.get_df">
-<code class="sig-name descname">get_df</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.get_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.get_df" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns data as pandas dataframe</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="galaxy.galaxy.Galaxy.get_filepath">
-<code class="sig-name descname">get_filepath</code><span class="sig-paren">(</span><em class="sig-param">datadir</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.get_filepath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.get_filepath" title="Permalink to this definition">¶</a></dt>
-<dd><p>Search for the required file and return a valid pathlib.Path object.</p>
-<p>Pretty boring housekeeping code, but may make things more resilient.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="galaxy.galaxy.Galaxy.get_qtable">
-<code class="sig-name descname">get_qtable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.get_qtable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.get_qtable" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns data as astropy QTable with units</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="galaxy.galaxy.Galaxy.read_file">
-<code class="sig-name descname">read_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.read_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.read_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read in a datafile in np.ndarray format, store in <cite>self.data</cite>.</p>
-<p>Assumes path and filename are already set as instance parameters.</p>
-<p>Returns: nothing</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="galaxy.galaxy.Galaxy.single_particle_properties">
-<code class="sig-name descname">single_particle_properties</code><span class="sig-paren">(</span><em class="sig-param">type=None</em>, <em class="sig-param">particle_num=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.single_particle_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.single_particle_properties" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parameters:
-particle_num: zero-based index to an array of particles
-type: optionally, use a subset of the data filtered by</p>
-<blockquote>
-<div><p>1=DM, 2=disk, 3=bulge</p>
-</div></blockquote>
-<p>returns: 
-3-tuple of</p>
-<blockquote>
-<div><p>Euclidean distance from CoM (kpc),
-Euclidean velocity magnitude (km/s),
-particle mass (M_sun)</p>
-</div></blockquote>
-</dd></dl>
-
-</dd></dl>
-
 </div>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
@@ -147,11 +71,16 @@ particle mass (M_sun)</p>
 
 
 <h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="galaxy.html">Galaxy class</a></li>
+</ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="galaxy.html" title="next chapter">Galaxy class</a></li>
   </ul></li>
 </ul>
 </div>

@@ -1,0 +1,238 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Galaxy class &#8212; ASTR400B Leach  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to ASTR400B Leach’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-galaxy.galaxy"></span><div class="section" id="galaxy-class">
+<h1>Galaxy class<a class="headerlink" href="#galaxy-class" title="Permalink to this headline">¶</a></h1>
+<p>This will read in a data file for a given galaxy and snap, returning the
+data in a variety of formats.</p>
+<dl class="class">
+<dt id="galaxy.galaxy.Galaxy">
+<em class="property">class </em><code class="sig-prename descclassname">galaxy.galaxy.</code><code class="sig-name descname">Galaxy</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">snap=0</em>, <em class="sig-param">datadir=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Args: </dt><dd><dl class="simple">
+<dt>name (str): </dt><dd><p>short name used in filename of type ‘name_000.txt’, eg ‘MW’, ‘M31’.</p>
+</dd>
+</dl>
+</dd>
+<dt>Kwargs:</dt><dd><dl class="simple">
+<dt>snap (int): </dt><dd><p>Snap number, equivalent to time elapsed. Zero is starting conditions.</p>
+</dd>
+<dt>datadir (str):</dt><dd><p>Directory to search first for the required file. Optional, and a 
+default list of locations will be searched.</p>
+</dd>
+</dl>
+</dd>
+<dt>Class attributes:</dt><dd><dl class="simple">
+<dt>path (<cite>pathlib.Path</cite> object): </dt><dd><p>directory containing the data file</p>
+</dd>
+<dt>filename (str):</dt><dd><p>in <cite>name_snap.txt</cite> format, something like ‘MW_000.txt’</p>
+</dd>
+<dt>data (np.ndarray):</dt><dd><p>type, mass, position_xyz, velocity_xyz for each particle</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>A class to find, read and manipulate files for a single galaxy.</p>
+<dl class="method">
+<dt id="galaxy.galaxy.Galaxy.get_filepath">
+<code class="sig-name descname">get_filepath</code><span class="sig-paren">(</span><em class="sig-param">datadir</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.get_filepath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.get_filepath" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Args:</dt><dd><p>datadir (str): path to search first for the required file</p>
+</dd>
+<dt>Returns:   </dt><dd><p><cite>pathlib.Path</cite> object. A directory containing the file.</p>
+</dd>
+<dt>Raises:</dt><dd><p>FileNotFoundError</p>
+</dd>
+</dl>
+<p>Pretty boring housekeeping code, but may make things more resilient.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.galaxy.Galaxy.read_file">
+<code class="sig-name descname">read_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.read_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.read_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read in a datafile in np.ndarray format, store in <cite>self.data</cite>.</p>
+<dl class="simple">
+<dt>Requires:</dt><dd><p><cite>self.path</cite> and <cite>self.filename</cite> are already set.</p>
+</dd>
+<dt>Returns: </dt><dd><p>nothing</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.galaxy.Galaxy.filter_by_type">
+<code class="sig-name descname">filter_by_type</code><span class="sig-paren">(</span><em class="sig-param">type</em>, <em class="sig-param">dataset=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.filter_by_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.filter_by_type" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Args:</dt><dd><p>type (int): for particles, 1=DM, 2=disk, 3=bulge</p>
+</dd>
+<dt>Kwargs:</dt><dd><p>dataset (np.ndarray): a starting dataset other than self.data</p>
+</dd>
+<dt>Returns: </dt><dd><p>np.ndarray: subset data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.galaxy.Galaxy.single_particle_properties">
+<code class="sig-name descname">single_particle_properties</code><span class="sig-paren">(</span><em class="sig-param">type=None</em>, <em class="sig-param">particle_num=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.single_particle_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.single_particle_properties" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Kwargs:</dt><dd><dl class="simple">
+<dt>type (int): </dt><dd><p>a subset of the data filtered by 1=DM, 2=disk, 3=bulge</p>
+</dd>
+<dt>particle_num (int): </dt><dd><p>zero-based index to an array of particles</p>
+</dd>
+</dl>
+</dd>
+<dt>returns: </dt><dd><dl class="simple">
+<dt>3-tuple of</dt><dd><p>Euclidean distance from CoM (kpc),
+Euclidean velocity magnitude (km/s),
+particle mass (M_sun)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.galaxy.Galaxy.all_particle_properties">
+<code class="sig-name descname">all_particle_properties</code><span class="sig-paren">(</span><em class="sig-param">type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.all_particle_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.all_particle_properties" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Kwargs:</dt><dd><dl class="simple">
+<dt>type (int): </dt><dd><p>a subset of the data filtered by 1=DM, 2=disk, 3=bulge</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>QTable: The full list with units, optionally filtered by type.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.galaxy.Galaxy.get_array">
+<code class="sig-name descname">get_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.get_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.get_array" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Returns: </dt><dd><p>data in <cite>np.ndarray</cite> format</p>
+</dd>
+</dl>
+<p>Pretty superfluous in Python (which has no private class members)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.galaxy.Galaxy.get_df">
+<code class="sig-name descname">get_df</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.get_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.get_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns:
+data as pandas dataframe</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.galaxy.Galaxy.get_qtable">
+<code class="sig-name descname">get_qtable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.get_qtable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.get_qtable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns:
+data as astropy QTable, with units</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ASTR400B Leach</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Galaxy class</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to ASTR400B Leach’s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Colin Leach.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/galaxy.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -3,26 +3,22 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to ASTR400B_Leach's documentation!
+Welcome to ASTR400B Leach's documentation!
 ==========================================
 
 This is documentation for code written during course ASTR 400B,
 Theoretical Astrophysics, running at the University of Arizona's
 Steward Observatory, Spring 2020.
 
-**Instructor:** Prof Gurtina Besla
+**Instructor:** Prof. Gurtina Besla,  **TA:** Rixin Li
 
-**TA:** Rixin Li
+**GitHub:** https://github.com/colinleach/400B_Leach
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+    :maxdepth: 2
+    :caption: Contents:
 
-galaxy.Galaxy class
-===================
-.. automodule:: galaxy.galaxy
-   :members:
-
+    galaxy
 
 Indices and tables
 ==================

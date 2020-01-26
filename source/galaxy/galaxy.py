@@ -13,17 +13,30 @@ import pandas as pd
 
 class Galaxy():
     """
+    Args: 
+        name (str): 
+            short name used in filename of type 'name_000.txt', eg 'MW', 'M31'.
+
+    Kwargs:
+        snap (int): 
+            Snap number, equivalent to time elapsed. Zero is starting conditions.
+        datadir (str):
+            Directory to search first for the required file. Optional, and a 
+            default list of locations will be searched.
+
+    Class attributes:
+        path (`pathlib.Path` object): 
+            directory containing the data file
+        filename (str):
+            in `name_snap.txt` format, something like 'MW_000.txt'
+        data (np.ndarray):
+            type, mass, position_xyz, velocity_xyz for each particle
+
     A class to find, read and manipulate files for a single galaxy.
-
-    Needs to be initialized with a name, eg 'MW', 'M31'.
-
-    Snap number is optional, defaults to zero.
-
-    Path to the data file is optional, it searches several plausible defaults.
     """
 
     def __init__(self, name, snap=0, datadir=None):
-        "Initial setup"
+        "Initial setup. Currently it calls read_file(), but this may change."
 
         self.name = name
         self.snap = snap
@@ -35,7 +48,14 @@ class Galaxy():
 
     def get_filepath(self, datadir):
         """
-        Search for the required file and return a valid pathlib.Path object.
+        Args:
+            datadir (str): path to search first for the required file
+
+        Returns:   
+            `pathlib.Path` object. A directory containing the file.
+
+        Raises:
+            FileNotFoundError
 
         Pretty boring housekeeping code, but may make things more resilient.
         """
@@ -76,9 +96,11 @@ class Galaxy():
         """
         Read in a datafile in np.ndarray format, store in `self.data`.
 
-        Assumes path and filename are already set as instance parameters.
+        Requires:
+            `self.path` and `self.filename` are already set.
 
-        Returns: nothing
+        Returns: 
+            nothing
         """
 
         fullname = self.filepath / self.filename
@@ -96,10 +118,14 @@ class Galaxy():
 
     def filter_by_type(self, type, dataset=None):
         """
-        Input:  particle type as integer, 1=DM, 2=disk, 3=bulge
-                optionally, a starting dataset other than self.data
+        Args:
+            type (int): for particles, 1=DM, 2=disk, 3=bulge 
+    
+        Kwargs:
+            dataset (np.ndarray): a starting dataset other than self.data
 
-        Returns: subset data
+        Returns: 
+            np.ndarray: subset data
         """
 
         if dataset is None:
@@ -110,13 +136,14 @@ class Galaxy():
 
     def single_particle_properties(self, type=None, particle_num=0):
         """
-        Parameters:
-        particle_num: zero-based index to an array of particles
-        type: optionally, use a subset of the data filtered by
-                1=DM, 2=disk, 3=bulge
+        Kwargs:
+            type (int): 
+                a subset of the data filtered by 1=DM, 2=disk, 3=bulge
+            particle_num (int): 
+                zero-based index to an array of particles
 
         returns: 
-        3-tuple of
+            3-tuple of
                 Euclidean distance from CoM (kpc),
                 Euclidean velocity magnitude (km/s),
                 particle mass (M_sun)
@@ -144,8 +171,12 @@ class Galaxy():
 
     def all_particle_properties(self, type=None):
         """
-        Similar to single_particle_properties, except returns the full list
-        optionally filtered by type.
+        Kwargs:
+            type (int): 
+                a subset of the data filtered by 1=DM, 2=disk, 3=bulge
+
+        Returns:
+            QTable: The full list with units, optionally filtered by type.
         """
 
         if type is None:  # all types accepted
@@ -178,7 +209,8 @@ class Galaxy():
 
     def get_array(self):
         """
-        Returns data in `np.ndarray` format
+        Returns: 
+            data in `np.ndarray` format
 
         Pretty superfluous in Python (which has no private class members)
         """
@@ -186,12 +218,16 @@ class Galaxy():
         return self.data
 
     def get_df(self):
-        "Returns data as pandas dataframe"
+        """Returns:
+            data as pandas dataframe
+        """
 
         return pd.DataFrame(self.data)
 
     def get_qtable(self):
-        "returns data as astropy QTable with units"
+        """Returns:
+            data as astropy QTable, with units
+        """
 
         t = QTable(self.data)
 
