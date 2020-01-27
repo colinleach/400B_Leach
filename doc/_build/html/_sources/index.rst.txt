@@ -14,6 +14,10 @@ Steward Observatory, Spring 2020.
 
 **GitHub:** https://github.com/colinleach/400B_Leach
 
+:Warning:
+    This is a student project. I will try to make it as professional as
+    possible, but let's be realistic in our expectations.
+
 .. toctree::
     :maxdepth: 2
     :caption: Contents:
