@@ -21,6 +21,8 @@ project = 'ASTR400B Leach'
 copyright = '2020, Colin Leach'
 author = 'Colin Leach'
 
+master_doc = 'index'
+
 
 # -- General configuration ---------------------------------------------------
 

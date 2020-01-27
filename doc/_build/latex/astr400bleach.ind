@@ -1,0 +1,32 @@
+\begin{sphinxtheindex}
+\let\bigletter\sphinxstyleindexlettergroup
+\let\spxpagem \sphinxstyleindexpagemain
+\let\spxentry \sphinxstyleindexentry
+\let\spxextra \sphinxstyleindexextra
+
+  \bigletter A
+  \item \spxentry{all\_particle\_properties()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{4}
+
+  \indexspace
+  \bigletter F
+  \item \spxentry{filter\_by\_type()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{3}
+
+  \indexspace
+  \bigletter G
+  \item \spxentry{Galaxy}\spxextra{class in galaxy.galaxy}, \hyperpage{3}
+  \item \spxentry{galaxy.galaxy}\spxextra{module}, \hyperpage{1}
+  \item \spxentry{get\_array()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{4}
+  \item \spxentry{get\_df()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{4}
+  \item \spxentry{get\_filepath()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{3}
+  \item \spxentry{get\_qtable()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{4}
+
+  \indexspace
+  \bigletter R
+  \item \spxentry{read\_file()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{3}
+
+  \indexspace
+  \bigletter S
+  \item \spxentry{single\_particle\_properties()}\spxextra{galaxy.galaxy.Galaxy method}, 
+		\hyperpage{3}
+
+\end{sphinxtheindex}

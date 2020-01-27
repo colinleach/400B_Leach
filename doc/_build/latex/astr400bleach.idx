@@ -1,0 +1,10 @@
+\indexentry{galaxy.galaxy (module)@\spxentry{galaxy.galaxy}\spxextra{module}|hyperpage}{1}
+\indexentry{Galaxy (class in galaxy.galaxy)@\spxentry{Galaxy}\spxextra{class in galaxy.galaxy}|hyperpage}{3}
+\indexentry{get\_filepath() (galaxy.galaxy.Galaxy method)@\spxentry{get\_filepath()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{3}
+\indexentry{read\_file() (galaxy.galaxy.Galaxy method)@\spxentry{read\_file()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{3}
+\indexentry{filter\_by\_type() (galaxy.galaxy.Galaxy method)@\spxentry{filter\_by\_type()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{3}
+\indexentry{single\_particle\_properties() (galaxy.galaxy.Galaxy method)@\spxentry{single\_particle\_properties()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{3}
+\indexentry{all\_particle\_properties() (galaxy.galaxy.Galaxy method)@\spxentry{all\_particle\_properties()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{4}
+\indexentry{get\_array() (galaxy.galaxy.Galaxy method)@\spxentry{get\_array()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{4}
+\indexentry{get\_df() (galaxy.galaxy.Galaxy method)@\spxentry{get\_df()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{4}
+\indexentry{get\_qtable() (galaxy.galaxy.Galaxy method)@\spxentry{get\_qtable()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{4}
