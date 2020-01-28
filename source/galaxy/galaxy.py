@@ -99,6 +99,9 @@ class Galaxy():
         Requires:
             `self.path` and `self.filename` are already set.
 
+        Changes:
+            `self.time`, `self.particle_count` and `self.data` are set.
+
         Returns: 
             nothing
         """
@@ -108,7 +111,7 @@ class Galaxy():
         # get header data
         with open(fullname) as file:
             _, value = file.readline().split()
-            self.time = float(value) * 10.0 * u.Myr
+            self.time = float(value) * u.Myr # corrected previous unit error
             label, value = file.readline().split()
             self.particle_count = int(value)
 
