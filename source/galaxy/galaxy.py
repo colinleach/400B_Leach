@@ -25,7 +25,7 @@ class Galaxy():
             default list of locations will be searched.
 
     Class attributes:
-        path (`pathlib.Path` object): 
+        filepath (`pathlib.Path` object): 
             directory containing the data file
         filename (str):
             in `name_snap.txt` format, something like 'MW_000.txt'
@@ -102,8 +102,7 @@ class Galaxy():
         Changes:
             `self.time`, `self.particle_count` and `self.data` are set.
 
-        Returns: 
-            nothing
+        Returns: nothing
         """
 
         fullname = self.filepath / self.filename
@@ -157,8 +156,7 @@ class Galaxy():
         Kwargs:
             dataset (np.ndarray): a starting dataset other than self.data
 
-        Returns: 
-            np.ndarray: subset data
+        Returns: np.ndarray: subset data
         """
 
         if dataset is None:
@@ -209,8 +207,7 @@ class Galaxy():
 
     def all_particle_properties(self, particle_type=None):
         """
-        Kwargs:
-            particle_type (int): 
+        Kwargs: particle_type (int): 
                 a subset of the data filtered by 1=DM, 2=disk, 3=bulge
 
         Returns:
@@ -243,12 +240,10 @@ class Galaxy():
 
     def component_count(self, particle_type=None):
         """
-        Kwargs:
-            particle_type (int): 
+        Kwargs: particle_type (int): 
                 a subset of the data filtered by 1=DM, 2=disk, 3=bulge
 
-        Returns:
-            Quantity: 
+        Returns: Quantity: 
                 The number of particles in the galaxy of this type
         """
 
@@ -261,29 +256,28 @@ class Galaxy():
 
     def all_component_counts(self):
         """
-        Returns:
-            Dictionary: 
+        Returns: list: 
                 The aggregate masses of particles of each type in the galaxy
+                Ordered as [halo, disk, bulge]
         """
 
-        results = {}
-        sum = 0
-        for particle_type in (1, 2, 3):
-            comp_count = self.component_count(particle_type)
-            sum += comp_count
-            results[str(particle_type)] = comp_count
-        results['all'] = sum
+        return [self.component_count(ptype) for ptype in (1, 2, 3)]
+        # results = {}
+        # sum = 0
+        # for particle_type in (1, 2, 3):
+        #     comp_count = self.component_count(particle_type)
+        #     sum += comp_count
+        #     results[str(particle_type)] = comp_count
+        # results['all'] = sum
 
-        return results
+        # return results
 
     def component_mass(self, particle_type=None):
         """
-        Kwargs:
-            particle_type (int): 
+        Kwargs: particle_type (int): 
                 a subset of the data filtered by 1=DM, 2=disk, 3=bulge
 
-        Returns:
-            Quantity: 
+        Returns: Quantity: 
                 The aggregate mass of all particles in the galaxy of this type
         """
 
@@ -296,20 +290,11 @@ class Galaxy():
 
     def all_component_masses(self):
         """
-        Returns:
-            Dictionary: 
+        Returns: list: 
                 The aggregate masses of particles of each type in the galaxy
         """
 
-        results = {}
-        sum = 0
-        for particle_type in (1, 2, 3):
-            comp_mass = self.component_mass(particle_type)
-            sum += comp_mass
-            results[str(particle_type)] = comp_mass
-        results['all'] = sum
-
-        return results
+        return [self.component_mass(ptype) for ptype in (1, 2, 3)]
 
     #--------------------------------------------------------------------
     # Define some getters which may turn out to be useful, perhaps
@@ -317,8 +302,7 @@ class Galaxy():
     
     def get_array(self):
         """
-        Returns: 
-            all particle data in `np.ndarray` format
+        Returns: all particle data in `np.ndarray` format
 
         Pretty superfluous in Python (which has no private class members)
         """
@@ -326,15 +310,13 @@ class Galaxy():
         return self.data
 
     def get_df(self):
-        """Returns:
-            data as pandas dataframe
+        """Returns: data as pandas dataframe
         """
 
         return pd.DataFrame(self.data)
 
     def get_qtable(self):
-        """Returns:
-            data as astropy QTable, with units
+        """Returns: data as astropy QTable, with units
         """
 
         t = QTable(self.data)
