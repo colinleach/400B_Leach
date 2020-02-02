@@ -17,3 +17,4 @@ python:
   version: 3.7
   install:
     - requirements: doc/requirements.txt
+  python.system_packages: true
