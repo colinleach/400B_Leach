@@ -1,0 +1,4 @@
+astropy==4.0
+numpy==1.17.3
+pandas==0.25.3
+scipy==1.4.1

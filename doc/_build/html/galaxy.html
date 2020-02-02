@@ -86,16 +86,32 @@ default list of locations will be searched.</p>
 <dl class="simple">
 <dt>Requires:</dt><dd><p><cite>self.path</cite> and <cite>self.filename</cite> are already set.</p>
 </dd>
+<dt>Changes:</dt><dd><p><cite>self.time</cite>, <cite>self.particle_count</cite> and <cite>self.data</cite> are set.</p>
+</dd>
 <dt>Returns: </dt><dd><p>nothing</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
+<dt id="galaxy.galaxy.Galaxy.type2name">
+<code class="sig-name descname">type2name</code><span class="sig-paren">(</span><em class="sig-param">particle_type</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.type2name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.type2name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Args: particle_type (int): valid values are 1, 2, or 3</p>
+<p>Returns: typename (str): ‘DM’, ‘disk’ or ‘bulge’</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.galaxy.Galaxy.name2type">
+<code class="sig-name descname">name2type</code><span class="sig-paren">(</span><em class="sig-param">typename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.name2type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.name2type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Args: typename (str): valid values are ‘DM’, ‘disk’ or ‘bulge’</p>
+<p>Returns: particle_type (int): 1, 2, or 3 (as used in data files)</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="galaxy.galaxy.Galaxy.filter_by_type">
-<code class="sig-name descname">filter_by_type</code><span class="sig-paren">(</span><em class="sig-param">type</em>, <em class="sig-param">dataset=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.filter_by_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.filter_by_type" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">filter_by_type</code><span class="sig-paren">(</span><em class="sig-param">particle_type</em>, <em class="sig-param">dataset=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.filter_by_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.filter_by_type" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
-<dt>Args:</dt><dd><p>type (int): for particles, 1=DM, 2=disk, 3=bulge</p>
+<dt>Args:</dt><dd><p>particle_type (int): for particles, 1=DM, 2=disk, 3=bulge</p>
 </dd>
 <dt>Kwargs:</dt><dd><p>dataset (np.ndarray): a starting dataset other than self.data</p>
 </dd>
@@ -106,10 +122,10 @@ default list of locations will be searched.</p>
 
 <dl class="method">
 <dt id="galaxy.galaxy.Galaxy.single_particle_properties">
-<code class="sig-name descname">single_particle_properties</code><span class="sig-paren">(</span><em class="sig-param">type=None</em>, <em class="sig-param">particle_num=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.single_particle_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.single_particle_properties" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">single_particle_properties</code><span class="sig-paren">(</span><em class="sig-param">particle_type=None</em>, <em class="sig-param">particle_num=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.single_particle_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.single_particle_properties" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Kwargs:</dt><dd><dl class="simple">
-<dt>type (int): </dt><dd><p>a subset of the data filtered by 1=DM, 2=disk, 3=bulge</p>
+<dt>particle_type (int): </dt><dd><p>a subset of the data filtered by 1=DM, 2=disk, 3=bulge</p>
 </dd>
 <dt>particle_num (int): </dt><dd><p>zero-based index to an array of particles</p>
 </dd>
@@ -127,10 +143,10 @@ particle mass (M_sun)</p>
 
 <dl class="method">
 <dt id="galaxy.galaxy.Galaxy.all_particle_properties">
-<code class="sig-name descname">all_particle_properties</code><span class="sig-paren">(</span><em class="sig-param">type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.all_particle_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.all_particle_properties" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">all_particle_properties</code><span class="sig-paren">(</span><em class="sig-param">particle_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.all_particle_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.all_particle_properties" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Kwargs:</dt><dd><dl class="simple">
-<dt>type (int): </dt><dd><p>a subset of the data filtered by 1=DM, 2=disk, 3=bulge</p>
+<dt>particle_type (int): </dt><dd><p>a subset of the data filtered by 1=DM, 2=disk, 3=bulge</p>
 </dd>
 </dl>
 </dd>
@@ -140,10 +156,68 @@ particle mass (M_sun)</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="galaxy.galaxy.Galaxy.component_count">
+<code class="sig-name descname">component_count</code><span class="sig-paren">(</span><em class="sig-param">particle_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.component_count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.component_count" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Kwargs:</dt><dd><dl class="simple">
+<dt>particle_type (int): </dt><dd><p>a subset of the data filtered by 1=DM, 2=disk, 3=bulge</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>Quantity: </dt><dd><p>The number of particles in the galaxy of this type</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.galaxy.Galaxy.all_component_counts">
+<code class="sig-name descname">all_component_counts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.all_component_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.all_component_counts" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>Dictionary: </dt><dd><p>The aggregate masses of particles of each type in the galaxy</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.galaxy.Galaxy.component_mass">
+<code class="sig-name descname">component_mass</code><span class="sig-paren">(</span><em class="sig-param">particle_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.component_mass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.component_mass" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Kwargs:</dt><dd><dl class="simple">
+<dt>particle_type (int): </dt><dd><p>a subset of the data filtered by 1=DM, 2=disk, 3=bulge</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>Quantity: </dt><dd><p>The aggregate mass of all particles in the galaxy of this type</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.galaxy.Galaxy.all_component_masses">
+<code class="sig-name descname">all_component_masses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.all_component_masses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.all_component_masses" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>Dictionary: </dt><dd><p>The aggregate masses of particles of each type in the galaxy</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="galaxy.galaxy.Galaxy.get_array">
 <code class="sig-name descname">get_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.get_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.get_array" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
-<dt>Returns: </dt><dd><p>data in <cite>np.ndarray</cite> format</p>
+<dt>Returns: </dt><dd><p>all particle data in <cite>np.ndarray</cite> format</p>
 </dd>
 </dl>
 <p>Pretty superfluous in Python (which has no private class members)</p>

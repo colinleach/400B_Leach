@@ -132,6 +132,9 @@
 <span class="sd">        Requires:</span>
 <span class="sd">            `self.path` and `self.filename` are already set.</span>
 
+<span class="sd">        Changes:</span>
+<span class="sd">            `self.time`, `self.particle_count` and `self.data` are set.</span>
+
 <span class="sd">        Returns: </span>
 <span class="sd">            nothing</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -141,7 +144,7 @@
         <span class="c1"># get header data</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fullname</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
             <span class="n">_</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="mf">10.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">Myr</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">Myr</span> <span class="c1"># corrected previous unit error</span>
             <span class="n">label</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">particle_count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
@@ -149,10 +152,40 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span>
             <span class="n">fullname</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Galaxy.filter_by_type"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.filter_by_type">[docs]</a>    <span class="k">def</span> <span class="nf">filter_by_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="c1">#--------------------------------------------------------------------</span>
+    <span class="c1"># A couple of small utility functions to interconvert particle type</span>
+    <span class="c1">#--------------------------------------------------------------------</span>
+    
+<div class="viewcode-block" id="Galaxy.type2name"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.type2name">[docs]</a>    <span class="k">def</span> <span class="nf">type2name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">particle_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args: particle_type (int): valid values are 1, 2, or 3</span>
+
+<span class="sd">        Returns: typename (str): &#39;DM&#39;, &#39;disk&#39; or &#39;bulge&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">typenames</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;DM&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;disk&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;bulge&#39;</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">typenames</span><span class="p">[</span><span class="nb">type</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Galaxy.name2type"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.name2type">[docs]</a>    <span class="k">def</span> <span class="nf">name2type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args: typename (str): valid values are &#39;DM&#39;, &#39;disk&#39; or &#39;bulge&#39;</span>
+
+<span class="sd">        Returns: particle_type (int): 1, 2, or 3 (as used in data files)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">types</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;DM&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;disk&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;bulge&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">types</span><span class="p">[</span><span class="n">typename</span><span class="p">]</span></div>
+
+        
+    <span class="c1">#--------------------------------------------------------------------</span>
+    <span class="c1"># Subset the data by type</span>
+    <span class="c1">#--------------------------------------------------------------------</span>
+    
+<div class="viewcode-block" id="Galaxy.filter_by_type"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.filter_by_type">[docs]</a>    <span class="k">def</span> <span class="nf">filter_by_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">particle_type</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
-<span class="sd">            type (int): for particles, 1=DM, 2=disk, 3=bulge </span>
+<span class="sd">            particle_type (int): for particles, 1=DM, 2=disk, 3=bulge </span>
 <span class="sd">    </span>
 <span class="sd">        Kwargs:</span>
 <span class="sd">            dataset (np.ndarray): a starting dataset other than self.data</span>
@@ -164,13 +197,18 @@
         <span class="k">if</span> <span class="n">dataset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
 
-        <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="nb">type</span><span class="p">)</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">particle_type</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">dataset</span><span class="p">[</span><span class="n">index</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Galaxy.single_particle_properties"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.single_particle_properties">[docs]</a>    <span class="k">def</span> <span class="nf">single_particle_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">particle_num</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+
+    <span class="c1">#--------------------------------------------------------------------</span>
+    <span class="c1"># Methods to calculate properties of an existing dataset</span>
+    <span class="c1">#--------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Galaxy.single_particle_properties"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.single_particle_properties">[docs]</a>    <span class="k">def</span> <span class="nf">single_particle_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">particle_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">particle_num</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Kwargs:</span>
-<span class="sd">            type (int): </span>
+<span class="sd">            particle_type (int): </span>
 <span class="sd">                a subset of the data filtered by 1=DM, 2=disk, 3=bulge</span>
 <span class="sd">            particle_num (int): </span>
 <span class="sd">                zero-based index to an array of particles</span>
@@ -184,10 +222,10 @@
 
         <span class="c1"># The next bit will throw IndexError if particle_num invalid</span>
         <span class="c1"># Be ready to catch this</span>
-        <span class="k">if</span> <span class="nb">type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># all types accepted</span>
+        <span class="k">if</span> <span class="n">particle_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># all types accepted</span>
             <span class="n">particle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">particle_num</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">particle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_by_type</span><span class="p">(</span><span class="nb">type</span><span class="p">)[</span><span class="n">particle_num</span><span class="p">]</span>
+            <span class="n">particle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_by_type</span><span class="p">(</span><span class="n">particle_type</span><span class="p">)[</span><span class="n">particle_num</span><span class="p">]</span>
 
         <span class="c1"># mass:</span>
         <span class="n">m</span> <span class="o">=</span> <span class="n">particle</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1e10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">Msun</span>
@@ -202,20 +240,20 @@
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">pos_mag</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">v_mag</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">m</span></div>
 
-<div class="viewcode-block" id="Galaxy.all_particle_properties"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.all_particle_properties">[docs]</a>    <span class="k">def</span> <span class="nf">all_particle_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Galaxy.all_particle_properties"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.all_particle_properties">[docs]</a>    <span class="k">def</span> <span class="nf">all_particle_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">particle_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Kwargs:</span>
-<span class="sd">            type (int): </span>
+<span class="sd">            particle_type (int): </span>
 <span class="sd">                a subset of the data filtered by 1=DM, 2=disk, 3=bulge</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            QTable: The full list with units, optionally filtered by type.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="nb">type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># all types accepted</span>
+        <span class="k">if</span> <span class="n">particle_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># all types accepted</span>
             <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_by_type</span><span class="p">(</span><span class="nb">type</span><span class="p">)</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_by_type</span><span class="p">(</span><span class="n">particle_type</span><span class="p">)</span>
 
         <span class="c1"># mass:</span>
         <span class="n">m</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1e10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">Msun</span>
@@ -236,14 +274,84 @@
         <span class="n">t</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">v_mag</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">t</span></div>
 
-    <span class="c1"># ________________________________________________________________</span>
-    <span class="c1">#</span>
-    <span class="c1"># define some getters which may turn out to be useful, perhaps</span>
+<div class="viewcode-block" id="Galaxy.component_count"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.component_count">[docs]</a>    <span class="k">def</span> <span class="nf">component_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">particle_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Kwargs:</span>
+<span class="sd">            particle_type (int): </span>
+<span class="sd">                a subset of the data filtered by 1=DM, 2=disk, 3=bulge</span>
 
+<span class="sd">        Returns:</span>
+<span class="sd">            Quantity: </span>
+<span class="sd">                The number of particles in the galaxy of this type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">particle_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># all types accepted</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_by_type</span><span class="p">(</span><span class="n">particle_type</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Galaxy.all_component_counts"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.all_component_counts">[docs]</a>    <span class="k">def</span> <span class="nf">all_component_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Dictionary: </span>
+<span class="sd">                The aggregate masses of particles of each type in the galaxy</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">particle_type</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="n">comp_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">component_count</span><span class="p">(</span><span class="n">particle_type</span><span class="p">)</span>
+            <span class="nb">sum</span> <span class="o">+=</span> <span class="n">comp_count</span>
+            <span class="n">results</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">particle_type</span><span class="p">)]</span> <span class="o">=</span> <span class="n">comp_count</span>
+        <span class="n">results</span><span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span>
+
+        <span class="k">return</span> <span class="n">results</span></div>
+
+<div class="viewcode-block" id="Galaxy.component_mass"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.component_mass">[docs]</a>    <span class="k">def</span> <span class="nf">component_mass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">particle_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Kwargs:</span>
+<span class="sd">            particle_type (int): </span>
+<span class="sd">                a subset of the data filtered by 1=DM, 2=disk, 3=bulge</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Quantity: </span>
+<span class="sd">                The aggregate mass of all particles in the galaxy of this type</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">particle_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># all types accepted</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_by_type</span><span class="p">(</span><span class="n">particle_type</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1e10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">Msun</span></div>
+
+<div class="viewcode-block" id="Galaxy.all_component_masses"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.all_component_masses">[docs]</a>    <span class="k">def</span> <span class="nf">all_component_masses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Dictionary: </span>
+<span class="sd">                The aggregate masses of particles of each type in the galaxy</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">particle_type</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="n">comp_mass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">component_mass</span><span class="p">(</span><span class="n">particle_type</span><span class="p">)</span>
+            <span class="nb">sum</span> <span class="o">+=</span> <span class="n">comp_mass</span>
+            <span class="n">results</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">particle_type</span><span class="p">)]</span> <span class="o">=</span> <span class="n">comp_mass</span>
+        <span class="n">results</span><span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span>
+
+        <span class="k">return</span> <span class="n">results</span></div>
+
+    <span class="c1">#--------------------------------------------------------------------</span>
+    <span class="c1"># Define some getters which may turn out to be useful, perhaps</span>
+    <span class="c1">#--------------------------------------------------------------------</span>
+    
 <div class="viewcode-block" id="Galaxy.get_array"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.get_array">[docs]</a>    <span class="k">def</span> <span class="nf">get_array</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns: </span>
-<span class="sd">            data in `np.ndarray` format</span>
+<span class="sd">            all particle data in `np.ndarray` format</span>
 
 <span class="sd">        Pretty superfluous in Python (which has no private class members)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -293,6 +401,7 @@
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../galaxy.html">Galaxy class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../galaxies.html">Galaxies class</a></li>
 </ul>
 
 <div class="relations">

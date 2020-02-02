@@ -6,7 +6,7 @@ import pandas as pd
 import astropy.units as u
 from astropy.table import QTable
 
-drom galaxy import Galaxy
+from galaxy.galaxy import Galaxy
 
 class Galaxies():
     """
@@ -45,7 +45,7 @@ class Galaxies():
     def read_data_files(self):
         """
         Attempts to create a Galaxy object for each name/snap combination
-        set in self.names and sef.snaps
+        set in `self.names` and `self.snaps`
 
         No return value.
         Sets self.galaxies, a dictionary keyed on name_snap

@@ -23,6 +23,7 @@ Steward Observatory, Spring 2020.
     :caption: Contents:
 
     galaxy
+    galaxies
 
 Indices and tables
 ==================

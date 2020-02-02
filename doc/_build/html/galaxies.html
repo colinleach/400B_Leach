@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Galaxies class &#8212; ASTR400B Leach  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Galaxy class" href="galaxy.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-galaxy.galaxies"></span><div class="section" id="galaxies-class">
+<h1>Galaxies class<a class="headerlink" href="#galaxies-class" title="Permalink to this headline">¶</a></h1>
+<p>This will store and manipulate data for multiple galaxies and snaps.</p>
+<dl class="class">
+<dt id="galaxy.galaxies.Galaxies">
+<em class="property">class </em><code class="sig-prename descclassname">galaxy.galaxies.</code><code class="sig-name descname">Galaxies</code><span class="sig-paren">(</span><em class="sig-param">names=('MW'</em>, <em class="sig-param">'M31'</em>, <em class="sig-param">'M33')</em>, <em class="sig-param">snaps=(0</em>, <em class="sig-param">0</em>, <em class="sig-param">0)</em>, <em class="sig-param">datadir=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Kwargs:</dt><dd><dl class="simple">
+<dt>names (iterable of str): </dt><dd><p>short names used in filename of type ‘name_000.txt’, eg ‘MW’, ‘M31’.</p>
+</dd>
+<dt>snaps (iterable of int): </dt><dd><p>Snap number, equivalent to time elapsed. Zero is starting conditions.</p>
+</dd>
+<dt>datadir (str):</dt><dd><p>Directory to search first for the required file. Optional, and a 
+default list of locations will be searched.</p>
+</dd>
+</dl>
+</dd>
+<dt>Class attributes:</dt><dd><dl class="simple">
+<dt>path (<cite>pathlib.Path</cite> object): </dt><dd><p>directory (probably) containing the data files</p>
+</dd>
+<dt>filenames (list of str):</dt><dd><p>in <cite>name_snap</cite> format, something like ‘MW_000’ (no extension)</p>
+</dd>
+<dt>galaxies (dict):</dt><dd><p>key is filename, value is the corresponding Galaxy object</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>A class to manipulate data for multiple galaxies.</p>
+<dl class="method">
+<dt id="galaxy.galaxies.Galaxies.read_data_files">
+<code class="sig-name descname">read_data_files</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies.read_data_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies.read_data_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempts to create a Galaxy object for each name/snap combination
+set in <cite>self.names</cite> and <cite>self.snaps</cite></p>
+<p>No return value.
+Sets self.galaxies, a dictionary keyed on name_snap</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.galaxies.Galaxies.get_counts">
+<code class="sig-name descname">get_counts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies.get_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies.get_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Args: none</p>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.galaxies.Galaxies.get_masses">
+<code class="sig-name descname">get_masses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies.get_masses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies.get_masses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Args: none</p>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.galaxies.Galaxies.get_full_df">
+<code class="sig-name descname">get_full_df</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies.get_full_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies.get_full_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Args: none</p>
+<dl class="simple">
+<dt>Returns: </dt><dd><p>Concatenated pandas dataframe from all galaxies
+Includes ‘name’ and ‘snap’ columns</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ASTR400B Leach</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="galaxy.html">Galaxy class</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Galaxies class</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="galaxy.html" title="previous chapter">Galaxy class</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Colin Leach.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/galaxies.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
