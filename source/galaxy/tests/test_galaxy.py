@@ -40,7 +40,7 @@ def test_single_particle_properties(gal):
         num = 99
         try:
             pos, v, m = galaxies[gal].single_particle_properties(particle_num=num, 
-                                                                    type=ptype)
+                                                                particle_type=ptype)
         except IndexError: # no bulge particles in M33
             continue # skip the rest for this galaxy/ptype combination
 
@@ -63,7 +63,7 @@ def test_single_particle_properties(gal):
                                         ('M33', (14300, 5000, 9300, 0)),])
 def test_all_particle_properties(gal, size):
     for ptype in (None,1,2,3):
-        qtprops = galaxies[gal].all_particle_properties(type=ptype)
+        qtprops = galaxies[gal].all_particle_properties(particle_type=ptype)
         assert qtprops.colnames == ['type', 'm', 'pos', 'v']
         if ptype is None:
             assert len(qtprops) == size[0]

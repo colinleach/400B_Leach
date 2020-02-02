@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# LaTex compilation
+*.log
+*.aux
+*.out
+*.gz

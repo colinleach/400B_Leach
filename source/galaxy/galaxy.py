@@ -119,10 +119,40 @@ class Galaxy():
         self.data = np.genfromtxt(
             fullname, dtype=None, names=True, skip_header=3)
 
-    def filter_by_type(self, type, dataset=None):
+
+    #--------------------------------------------------------------------
+    # A couple of small utility functions to interconvert particle type
+    #--------------------------------------------------------------------
+    
+    def type2name(self, particle_type):
+        """
+        Args: particle_type (int): valid values are 1, 2, or 3
+
+        Returns: typename (str): 'DM', 'disk' or 'bulge'
+        """
+
+        typenames = {1: 'DM', 2: 'disk', 3: 'bulge'}
+        return typenames[type]
+
+    def name2type(self, typename):
+        """
+        Args: typename (str): valid values are 'DM', 'disk' or 'bulge'
+
+        Returns: particle_type (int): 1, 2, or 3 (as used in data files)
+        """
+
+        types = {'DM': 1, 'disk': 2, 'bulge': 3}
+        return types[typename]
+
+        
+    #--------------------------------------------------------------------
+    # Subset the data by type
+    #--------------------------------------------------------------------
+    
+    def filter_by_type(self, particle_type, dataset=None):
         """
         Args:
-            type (int): for particles, 1=DM, 2=disk, 3=bulge 
+            particle_type (int): for particles, 1=DM, 2=disk, 3=bulge 
     
         Kwargs:
             dataset (np.ndarray): a starting dataset other than self.data
@@ -134,13 +164,18 @@ class Galaxy():
         if dataset is None:
             dataset = self.data
 
-        index = np.where(dataset['type'] == type)
+        index = np.where(dataset['type'] == particle_type)
         return dataset[index]
 
-    def single_particle_properties(self, type=None, particle_num=0):
+
+    #--------------------------------------------------------------------
+    # Methods to calculate properties of an existing dataset
+    #--------------------------------------------------------------------
+
+    def single_particle_properties(self, particle_type=None, particle_num=0):
         """
         Kwargs:
-            type (int): 
+            particle_type (int): 
                 a subset of the data filtered by 1=DM, 2=disk, 3=bulge
             particle_num (int): 
                 zero-based index to an array of particles
@@ -154,10 +189,10 @@ class Galaxy():
 
         # The next bit will throw IndexError if particle_num invalid
         # Be ready to catch this
-        if type is None:  # all types accepted
+        if particle_type is None:  # all types accepted
             particle = self.data[particle_num]
         else:
-            particle = self.filter_by_type(type)[particle_num]
+            particle = self.filter_by_type(particle_type)[particle_num]
 
         # mass:
         m = particle['m'] * 1e10 * u.Msun
@@ -172,20 +207,20 @@ class Galaxy():
 
         return np.around(pos_mag, 3), np.around(v_mag, 3), m
 
-    def all_particle_properties(self, type=None):
+    def all_particle_properties(self, particle_type=None):
         """
         Kwargs:
-            type (int): 
+            particle_type (int): 
                 a subset of the data filtered by 1=DM, 2=disk, 3=bulge
 
         Returns:
             QTable: The full list with units, optionally filtered by type.
         """
 
-        if type is None:  # all types accepted
+        if particle_type is None:  # all types accepted
             dataset = self.data
         else:
-            dataset = self.filter_by_type(type)
+            dataset = self.filter_by_type(particle_type)
 
         # mass:
         m = dataset['m'] * 1e10 * u.Msun
@@ -206,14 +241,84 @@ class Galaxy():
         t['v'] = np.around(v_mag, 3)
         return t
 
-    # ________________________________________________________________
-    #
-    # define some getters which may turn out to be useful, perhaps
+    def component_count(self, particle_type=None):
+        """
+        Kwargs:
+            particle_type (int): 
+                a subset of the data filtered by 1=DM, 2=disk, 3=bulge
 
+        Returns:
+            Quantity: 
+                The number of particles in the galaxy of this type
+        """
+
+        if particle_type is None:  # all types accepted
+            dataset = self.data
+        else:
+            dataset = self.filter_by_type(particle_type)
+
+        return len(dataset['m'])
+
+    def all_component_counts(self):
+        """
+        Returns:
+            Dictionary: 
+                The aggregate masses of particles of each type in the galaxy
+        """
+
+        results = {}
+        sum = 0
+        for particle_type in (1, 2, 3):
+            comp_count = self.component_count(particle_type)
+            sum += comp_count
+            results[str(particle_type)] = comp_count
+        results['all'] = sum
+
+        return results
+
+    def component_mass(self, particle_type=None):
+        """
+        Kwargs:
+            particle_type (int): 
+                a subset of the data filtered by 1=DM, 2=disk, 3=bulge
+
+        Returns:
+            Quantity: 
+                The aggregate mass of all particles in the galaxy of this type
+        """
+
+        if particle_type is None:  # all types accepted
+            dataset = self.data
+        else:
+            dataset = self.filter_by_type(particle_type)
+
+        return np.sum(dataset['m']) * 1e10 * u.Msun
+
+    def all_component_masses(self):
+        """
+        Returns:
+            Dictionary: 
+                The aggregate masses of particles of each type in the galaxy
+        """
+
+        results = {}
+        sum = 0
+        for particle_type in (1, 2, 3):
+            comp_mass = self.component_mass(particle_type)
+            sum += comp_mass
+            results[str(particle_type)] = comp_mass
+        results['all'] = sum
+
+        return results
+
+    #--------------------------------------------------------------------
+    # Define some getters which may turn out to be useful, perhaps
+    #--------------------------------------------------------------------
+    
     def get_array(self):
         """
         Returns: 
-            data in `np.ndarray` format
+            all particle data in `np.ndarray` format
 
         Pretty superfluous in Python (which has no private class members)
         """
