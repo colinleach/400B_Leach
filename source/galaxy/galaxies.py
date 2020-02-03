@@ -64,7 +64,7 @@ class Galaxies():
     def get_pivot(self, aggfunc, values='m'):
         """
         Args: 
-            aggfunc (str): 'count', 'sum', etc
+            aggfunc (str): 'count', 'sum', etc as aggregation method
             values (str): column name to aggregate
 
         Returns: pandas dataframe
@@ -86,8 +86,6 @@ class Galaxies():
 
     def get_counts_pivot(self):
         """
-        Args: none
-
         Returns: pandas dataframe
         """
 
@@ -95,17 +93,13 @@ class Galaxies():
 
     def get_masses_pivot(self):
         """
-        Args: none
-
         Returns: pandas dataframe
         """
 
-       return self.get_pivot('sum')
+        return self.get_pivot('sum')
 
     def get_full_df(self):
         """
-        Args: none
-
         Returns: 
             Concatenated pandas dataframe from all galaxies
             Includes 'name' and 'snap' columns
