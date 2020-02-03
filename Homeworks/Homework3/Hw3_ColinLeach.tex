@@ -31,7 +31,7 @@ This is raw output from pandas.DataFrame.to\_latex(), with rows sorted alphabeti
 	\bottomrule
 \end{tabular}\vspace{5mm}
 
-With a bit of manual formatting:\\
+It looks better with a bit of manual formatting:\\
 
 \begin{tabular}{lccccc}
 	\toprule
@@ -60,7 +60,9 @@ Compare that with particle counts:\\
 	\bottomrule
 \end{tabular}\vspace{5mm}
 
-The DM halo contains fewer but more massive particles. This may be easier to see on stacked bar charts showing the distribution:
+The DM halo contains fewer but more massive particles. Presumably this is just a matter of convenience in the sim, as we have little understanding of the underlying physics (to put it charitably).
+
+This may be easier to see on stacked bar charts showing the distributions:
 
 {\centering \includegraphics[scale=0.5]{stackedbar} \par}
 
@@ -70,8 +72,10 @@ The DM halo contains fewer but more massive particles. This may be easier to see
 
 \paragraph{2. Stellar mass:} Disk + bulge mass is about 60\% higher for M31 than the MW. Assuming a roughly similar distribution of star types and ages, M31 is likely to be more luminous.
 
-\paragraph{3. Dark matter mass:} 
+\paragraph{3. Dark matter mass:} This is approximately the same in both the MW and M31, in contrast to the different stellar mass. Halo mass is the bulk of the galaxy, stellar mass is some minor froth on top (\textit{except it's in the middle - analogies have limitations}).
 
-\paragraph{4. Baryon fraction:} 
+\paragraph{4. Baryon fraction:} This is in the $4 - 7\%$ range for each galaxy, well below the cosmological average of 16\%. 
+
+One hypothesis is that this reflects the formation history of galaxies. Dark matter, because it is decoupled from radiation, can undergo gravitational collapse while baryonic matter is still too hot. This creates a gravitational well for baryons to fall into as they cool. Is $f_{bar}$ higher in old galaxies than young ones?
 
 \end{document}

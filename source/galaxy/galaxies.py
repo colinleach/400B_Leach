@@ -6,7 +6,7 @@ import pandas as pd
 import astropy.units as u
 from astropy.table import QTable, Table
 
-from galaxy import Galaxy
+from .galaxy import Galaxy
 
 class Galaxies():
     """
