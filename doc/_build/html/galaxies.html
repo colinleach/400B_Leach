@@ -35,7 +35,7 @@
 </div>
 <span class="target" id="module-galaxy.galaxies"></span><div class="section" id="galaxies-class">
 <h1>Galaxies class<a class="headerlink" href="#galaxies-class" title="Permalink to this headline">¶</a></h1>
-<p>This will store and manipulate data for multiple galaxies and snaps.</p>
+<p>This stores and manipulates data for multiple galaxies and snaps.</p>
 <dl class="class">
 <dt id="galaxy.galaxies.Galaxies">
 <em class="property">class </em><code class="sig-prename descclassname">galaxy.galaxies.</code><code class="sig-name descname">Galaxies</code><span class="sig-paren">(</span><em class="sig-param">names=('MW'</em>, <em class="sig-param">'M31'</em>, <em class="sig-param">'M33')</em>, <em class="sig-param">snaps=(0</em>, <em class="sig-param">0</em>, <em class="sig-param">0)</em>, <em class="sig-param">datadir=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies" title="Permalink to this definition">¶</a></dt>
@@ -71,24 +71,32 @@ Sets self.galaxies, a dictionary keyed on name_snap</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="galaxy.galaxies.Galaxies.get_counts">
-<code class="sig-name descname">get_counts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies.get_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies.get_counts" title="Permalink to this definition">¶</a></dt>
-<dd><p>Args: none</p>
-<p>Returns:</p>
+<dt id="galaxy.galaxies.Galaxies.get_pivot">
+<code class="sig-name descname">get_pivot</code><span class="sig-paren">(</span><em class="sig-param">aggfunc</em>, <em class="sig-param">values='m'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies.get_pivot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies.get_pivot" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Args: </dt><dd><p>aggfunc (str): ‘count’, ‘sum’, etc as aggregation method
+values (str): column name to aggregate</p>
+</dd>
+</dl>
+<p>Returns: pandas dataframe</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="galaxy.galaxies.Galaxies.get_masses">
-<code class="sig-name descname">get_masses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies.get_masses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies.get_masses" title="Permalink to this definition">¶</a></dt>
-<dd><p>Args: none</p>
-<p>Returns:</p>
+<dt id="galaxy.galaxies.Galaxies.get_counts_pivot">
+<code class="sig-name descname">get_counts_pivot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies.get_counts_pivot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies.get_counts_pivot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns: pandas dataframe</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.galaxies.Galaxies.get_masses_pivot">
+<code class="sig-name descname">get_masses_pivot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies.get_masses_pivot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies.get_masses_pivot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns: pandas dataframe</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="galaxy.galaxies.Galaxies.get_full_df">
 <code class="sig-name descname">get_full_df</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies.get_full_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies.get_full_df" title="Permalink to this definition">¶</a></dt>
-<dd><p>Args: none</p>
-<dl class="simple">
+<dd><dl class="simple">
 <dt>Returns: </dt><dd><p>Concatenated pandas dataframe from all galaxies
 Includes ‘name’ and ‘snap’ columns</p>
 </dd>

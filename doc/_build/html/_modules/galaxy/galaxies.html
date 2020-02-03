@@ -37,9 +37,9 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
-<span class="kn">from</span> <span class="nn">astropy.table</span> <span class="kn">import</span> <span class="n">QTable</span>
+<span class="kn">from</span> <span class="nn">astropy.table</span> <span class="kn">import</span> <span class="n">QTable</span><span class="p">,</span> <span class="n">Table</span>
 
-<span class="kn">from</span> <span class="nn">galaxy.galaxy</span> <span class="kn">import</span> <span class="n">Galaxy</span>
+<span class="kn">from</span> <span class="nn">.galaxy</span> <span class="kn">import</span> <span class="n">Galaxy</span>
 
 <div class="viewcode-block" id="Galaxies"><a class="viewcode-back" href="../../galaxies.html#galaxy.galaxies.Galaxies">[docs]</a><span class="k">class</span> <span class="nc">Galaxies</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -67,13 +67,14 @@
                 <span class="n">names</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;MW&#39;</span><span class="p">,</span> <span class="s1">&#39;M31&#39;</span><span class="p">,</span> <span class="s1">&#39;M33&#39;</span><span class="p">),</span>
                 <span class="n">snaps</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> 
                 <span class="n">datadir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="s2">&quot;Initial setup. Currently it calls read_file(), but this may change.&quot;</span>
+        <span class="s2">&quot;Initial setup.&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">names</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">snaps</span> <span class="o">=</span> <span class="n">snaps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">datadir</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">galaxies</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filenames</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">read_data_files</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Galaxies.read_data_files"><a class="viewcode-back" href="../../galaxies.html#galaxy.galaxies.Galaxies.read_data_files">[docs]</a>    <span class="k">def</span> <span class="nf">read_data_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -90,31 +91,48 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">galaxies</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">Galaxy</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">snap</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 
             <span class="c1"># bits of minor housekeeping:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">galaxies</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">path</span> <span class="c1"># may speed up next search</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">galaxies</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">filepath</span> <span class="c1"># may speed up next search</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">filenames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Galaxies.get_counts"><a class="viewcode-back" href="../../galaxies.html#galaxy.galaxies.Galaxies.get_counts">[docs]</a>    <span class="k">def</span> <span class="nf">get_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Galaxies.get_pivot"><a class="viewcode-back" href="../../galaxies.html#galaxy.galaxies.Galaxies.get_pivot">[docs]</a>    <span class="k">def</span> <span class="nf">get_pivot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggfunc</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Args: none</span>
+<span class="sd">        Args: </span>
+<span class="sd">            aggfunc (str): &#39;count&#39;, &#39;sum&#39;, etc as aggregation method</span>
+<span class="sd">            values (str): column name to aggregate</span>
 
-<span class="sd">        Returns: </span>
+<span class="sd">        Returns: pandas dataframe</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">pass</span></div>
+        <span class="c1"># stack all galaxies in a pandas dataframe</span>
+        <span class="n">gals_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_full_df</span><span class="p">()</span>
 
-<div class="viewcode-block" id="Galaxies.get_masses"><a class="viewcode-back" href="../../galaxies.html#galaxy.galaxies.Galaxies.get_masses">[docs]</a>    <span class="k">def</span> <span class="nf">get_masses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># create some better column names</span>
+        <span class="n">types</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;1 Halo&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;2 Disk&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;3 Bulge&#39;</span><span class="p">}</span>
+        <span class="n">gals_df</span><span class="p">[</span><span class="s1">&#39;typename&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gals_df</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">types</span><span class="p">)</span>
+
+        <span class="c1"># get pandas to do most of the work</span>
+        <span class="n">df_piv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">gals_df</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">values</span><span class="p">,</span> 
+                                <span class="n">index</span><span class="o">=</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;typename&#39;</span><span class="p">,</span> 
+                                <span class="n">aggfunc</span><span class="o">=</span><span class="n">aggfunc</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">margins</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            
+        <span class="k">return</span> <span class="n">df_piv</span></div>
+
+<div class="viewcode-block" id="Galaxies.get_counts_pivot"><a class="viewcode-back" href="../../galaxies.html#galaxy.galaxies.Galaxies.get_counts_pivot">[docs]</a>    <span class="k">def</span> <span class="nf">get_counts_pivot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Args: none</span>
-
-<span class="sd">        Returns: </span>
+<span class="sd">        Returns: pandas dataframe</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">pass</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pivot</span><span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Galaxies.get_masses_pivot"><a class="viewcode-back" href="../../galaxies.html#galaxy.galaxies.Galaxies.get_masses_pivot">[docs]</a>    <span class="k">def</span> <span class="nf">get_masses_pivot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns: pandas dataframe</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pivot</span><span class="p">(</span><span class="s1">&#39;sum&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Galaxies.get_full_df"><a class="viewcode-back" href="../../galaxies.html#galaxy.galaxies.Galaxies.get_full_df">[docs]</a>    <span class="k">def</span> <span class="nf">get_full_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Args: none</span>
-
 <span class="sd">        Returns: </span>
 <span class="sd">            Concatenated pandas dataframe from all galaxies</span>
 <span class="sd">            Includes &#39;name&#39; and &#39;snap&#39; columns</span>

@@ -8,7 +8,7 @@
 Galaxies class
 ==============
 
-This will store and manipulate data for multiple galaxies and snaps.
+This stores and manipulates data for multiple galaxies and snaps.
 
 .. autoclass:: Galaxies
    :members:

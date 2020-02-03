@@ -14,6 +14,7 @@
     <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Galaxies class" href="galaxies.html" />
     <link rel="prev" title="Welcome to ASTR400B Leach’s documentation!" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -55,7 +56,7 @@ default list of locations will be searched.</p>
 </dl>
 </dd>
 <dt>Class attributes:</dt><dd><dl class="simple">
-<dt>path (<cite>pathlib.Path</cite> object): </dt><dd><p>directory containing the data file</p>
+<dt>filepath (<cite>pathlib.Path</cite> object): </dt><dd><p>directory containing the data file</p>
 </dd>
 <dt>filename (str):</dt><dd><p>in <cite>name_snap.txt</cite> format, something like ‘MW_000.txt’</p>
 </dd>
@@ -88,9 +89,8 @@ default list of locations will be searched.</p>
 </dd>
 <dt>Changes:</dt><dd><p><cite>self.time</cite>, <cite>self.particle_count</cite> and <cite>self.data</cite> are set.</p>
 </dd>
-<dt>Returns: </dt><dd><p>nothing</p>
-</dd>
 </dl>
+<p>Returns: nothing</p>
 </dd></dl>
 
 <dl class="method">
@@ -115,9 +115,8 @@ default list of locations will be searched.</p>
 </dd>
 <dt>Kwargs:</dt><dd><p>dataset (np.ndarray): a starting dataset other than self.data</p>
 </dd>
-<dt>Returns: </dt><dd><p>np.ndarray: subset data</p>
-</dd>
 </dl>
+<p>Returns: np.ndarray: subset data</p>
 </dd></dl>
 
 <dl class="method">
@@ -145,10 +144,7 @@ particle mass (M_sun)</p>
 <dt id="galaxy.galaxy.Galaxy.all_particle_properties">
 <code class="sig-name descname">all_particle_properties</code><span class="sig-paren">(</span><em class="sig-param">particle_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.all_particle_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.all_particle_properties" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
-<dt>Kwargs:</dt><dd><dl class="simple">
-<dt>particle_type (int): </dt><dd><p>a subset of the data filtered by 1=DM, 2=disk, 3=bulge</p>
-</dd>
-</dl>
+<dt>Kwargs: particle_type (int): </dt><dd><p>a subset of the data filtered by 1=DM, 2=disk, 3=bulge</p>
 </dd>
 <dt>Returns:</dt><dd><p>QTable: The full list with units, optionally filtered by type.</p>
 </dd>
@@ -159,15 +155,9 @@ particle mass (M_sun)</p>
 <dt id="galaxy.galaxy.Galaxy.component_count">
 <code class="sig-name descname">component_count</code><span class="sig-paren">(</span><em class="sig-param">particle_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.component_count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.component_count" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
-<dt>Kwargs:</dt><dd><dl class="simple">
-<dt>particle_type (int): </dt><dd><p>a subset of the data filtered by 1=DM, 2=disk, 3=bulge</p>
+<dt>Kwargs: particle_type (int): </dt><dd><p>a subset of the data filtered by 1=DM, 2=disk, 3=bulge</p>
 </dd>
-</dl>
-</dd>
-<dt>Returns:</dt><dd><dl class="simple">
-<dt>Quantity: </dt><dd><p>The number of particles in the galaxy of this type</p>
-</dd>
-</dl>
+<dt>Returns: Quantity: </dt><dd><p>The number of particles in the galaxy of this type</p>
 </dd>
 </dl>
 </dd></dl>
@@ -176,10 +166,8 @@ particle mass (M_sun)</p>
 <dt id="galaxy.galaxy.Galaxy.all_component_counts">
 <code class="sig-name descname">all_component_counts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.all_component_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.all_component_counts" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
-<dt>Returns:</dt><dd><dl class="simple">
-<dt>Dictionary: </dt><dd><p>The aggregate masses of particles of each type in the galaxy</p>
-</dd>
-</dl>
+<dt>Returns: list: </dt><dd><p>The aggregate masses of particles of each type in the galaxy
+Ordered as [halo, disk, bulge]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -188,15 +176,9 @@ particle mass (M_sun)</p>
 <dt id="galaxy.galaxy.Galaxy.component_mass">
 <code class="sig-name descname">component_mass</code><span class="sig-paren">(</span><em class="sig-param">particle_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.component_mass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.component_mass" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
-<dt>Kwargs:</dt><dd><dl class="simple">
-<dt>particle_type (int): </dt><dd><p>a subset of the data filtered by 1=DM, 2=disk, 3=bulge</p>
+<dt>Kwargs: particle_type (int): </dt><dd><p>a subset of the data filtered by 1=DM, 2=disk, 3=bulge</p>
 </dd>
-</dl>
-</dd>
-<dt>Returns:</dt><dd><dl class="simple">
-<dt>Quantity: </dt><dd><p>The aggregate mass of all particles in the galaxy of this type</p>
-</dd>
-</dl>
+<dt>Returns: Quantity: </dt><dd><p>The aggregate mass of all particles in the galaxy of this type</p>
 </dd>
 </dl>
 </dd></dl>
@@ -205,10 +187,7 @@ particle mass (M_sun)</p>
 <dt id="galaxy.galaxy.Galaxy.all_component_masses">
 <code class="sig-name descname">all_component_masses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.all_component_masses"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.all_component_masses" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
-<dt>Returns:</dt><dd><dl class="simple">
-<dt>Dictionary: </dt><dd><p>The aggregate masses of particles of each type in the galaxy</p>
-</dd>
-</dl>
+<dt>Returns: list: </dt><dd><p>The aggregate masses of particles of each type in the galaxy</p>
 </dd>
 </dl>
 </dd></dl>
@@ -216,25 +195,20 @@ particle mass (M_sun)</p>
 <dl class="method">
 <dt id="galaxy.galaxy.Galaxy.get_array">
 <code class="sig-name descname">get_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.get_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.get_array" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Returns: </dt><dd><p>all particle data in <cite>np.ndarray</cite> format</p>
-</dd>
-</dl>
+<dd><p>Returns: all particle data in <cite>np.ndarray</cite> format</p>
 <p>Pretty superfluous in Python (which has no private class members)</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="galaxy.galaxy.Galaxy.get_df">
 <code class="sig-name descname">get_df</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.get_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.get_df" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns:
-data as pandas dataframe</p>
+<dd><p>Returns: data as pandas dataframe</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="galaxy.galaxy.Galaxy.get_qtable">
 <code class="sig-name descname">get_qtable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.get_qtable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.get_qtable" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns:
-data as astropy QTable, with units</p>
+<dd><p>Returns: data as astropy QTable, with units</p>
 </dd></dl>
 
 </dd></dl>
@@ -261,6 +235,7 @@ data as astropy QTable, with units</p>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Galaxy class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="galaxies.html">Galaxies class</a></li>
 </ul>
 
 <div class="relations">
@@ -268,6 +243,7 @@ data as astropy QTable, with units</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="index.html" title="previous chapter">Welcome to ASTR400B Leach’s documentation!</a></li>
+      <li>Next: <a href="galaxies.html" title="next chapter">Galaxies class</a></li>
   </ul></li>
 </ul>
 </div>
