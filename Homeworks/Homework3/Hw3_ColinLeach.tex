@@ -16,22 +16,44 @@
 	
 \maketitle
 
-\section*{1}
+\section*{2. Mass Breakdown}
 
-\subsection*{1) }
-
+This is raw output from pandas.DataFrame.to\_latex(), with rows sorted alphabetically:\\
 
 \begin{tabular}{lccccc}
 	\toprule
-	\textbf{Galaxy Name} &  \textbf{Halo Mass}  &  \textbf{Disk Mass} &  \textbf{Bulge Mass} &  \textbf{Total} &  \textbf{f\_bar} \\
-	 & ($M_\Sun \times 10^{12}$) & ($M_\Sun \times 10^{12}$) & $M_\Sun \times 10^{12}$) & & \\
+	Galaxy Name &  Halo Mass &  Disk Mass &  Bulge Mass &  Total &  f\_bar \\
+	\midrule
+	M31 &      1.921 &      0.120 &       0.019 &  2.060 &  0.068 \\
+	M33 &      0.187 &      0.009 &       0.000 &  0.196 &  0.047 \\
+	MW &      1.975 &      0.075 &       0.010 &  2.060 &  0.041 \\
+	All &      4.082 &      0.204 &       0.029 &  4.316 &  0.054 \\
+	\bottomrule
+\end{tabular}\vspace{5mm}
+
+With a bit of manual formatting:\\
+
+\begin{tabular}{lccccc}
+	\toprule
+	\textbf{Galaxy Name} &  \textbf{Halo Mass}  &  \textbf{Disk Mass} &  \textbf{Bulge Mass} &  \textbf{Total} &  $\mathbf{f_{bar}}$ \\
+	 & ($M_\Sun \times 10^{12}$) & ($M_\Sun \times 10^{12}$) & ($M_\Sun \times 10^{12}$) & ($M_\Sun \times 10^{12}$) & \\
 	\midrule
 	MW &  1.975 &  0.075 &   0.010 &  2.060 &  0.041 \\
-	M31 &  1.921 &  0.120 &   0.019 &  2.060 &  0.067 \\
-	M33 &  0.187 &  0.009 &   0.000 &  0.196 &  0.046 \\
+	M31 &  1.921 &  0.120 &   0.019 &  2.060 &  0.068 \\
+	M33 &  0.187 &  0.009 &   0.000 &  0.196 &  0.047 \\
 	\midrule
-	Local Group &  4.082 &  0.204 &   0.029 &  4.315 &  0.054 \\
+	Local Group &  4.082 &  0.204 &   0.029 &  4.316 &  0.054 \\
 	\bottomrule
 \end{tabular}
+
+\section*{3. Questions}
+
+\paragraph{1. Total mass:} M31 and the MW have the same total mass in this simulation. Dark matter in the halo dominates in most cases, but especially for the MW.
+
+\paragraph{2. Stellar mass:} Disk + bulge mass is about 60\% higher for M31 than the MW. Assuming a roughly similar distribution of star types and ages, M31 is likely to be more luminous.
+
+\paragraph{3. Dark matter mass:} 
+
+\paragraph{4. Baryon fraction:} 
 
 \end{document}

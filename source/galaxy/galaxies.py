@@ -61,112 +61,46 @@ class Galaxies():
             self.path = self.galaxies[key].filepath # may speed up next search
             self.filenames.append(key)
 
+    def get_pivot(self, aggfunc, values='m'):
+        """
+        Args: 
+            aggfunc (str): 'count', 'sum', etc
+            values (str): column name to aggregate
+
+        Returns: pandas dataframe
+        """
+
+        # stack all galaxies in a pandas dataframe
+        gals_df = self.get_full_df()
+
+        # create some better column names
+        types = {1: '1 Halo', 2: '2 Disk', 3: '3 Bulge'}
+        gals_df['typename'] = gals_df['type'].map(types)
+
+        # get pandas to do most of the work
+        df_piv = pd.pivot_table(gals_df, values=values, 
+                                index='name', columns='typename', 
+                                aggfunc=aggfunc, fill_value=0, margins=True)
+            
+        return df_piv
+
     def get_counts_pivot(self):
         """
         Args: none
 
-        Returns: 
+        Returns: pandas dataframe
         """
 
-        gals_df = self.get_full_df()
-        types = {1: '1 Halo', 2: '2 Disk', 3: '3 Bulge'}
-        gals_df['typename'] = gals_df['type'].map(types)
-        df_piv = pd.pivot_table(gals_df, values='m', index='name', 
-            columns='typename', aggfunc='count', fill_value=0, margins=True)
-            
-        return df_piv
+        return self.get_pivot('count')
 
     def get_masses_pivot(self):
         """
         Args: none
 
-        Returns: 
+        Returns: pandas dataframe
         """
 
-        gals_df = self.get_full_df()
-        types = {1: '1 Halo', 2: '2 Disk', 3: '3 Bulge'}
-        gals_df['typename'] = gals_df['type'].map(types)
-        df_piv = pd.pivot_table(gals_df, values='m', index='name', 
-            columns='typename', aggfunc='sum', fill_value=0, margins=True)
-            
-        return df_piv
-
-    def get_masses(self):
-        """
-        Args: none
-
-        Returns: 
-        """
-
-        t = Table()
-        t['Galaxy Name'] = self.names
-        halo = []
-        disk = []
-        bulge = []
- 
-        for fname in self.filenames:
-            h, d, b = self.galaxies[fname].all_component_masses()
-            halo.append(h)
-            disk.append(d)
-            bulge.append(b)
-
-        t['Halo Mass'] = halo
-        t['Disk Mass'] = disk
-        t['Bulge Mass'] = bulge
-        
-        lg_halo = sum(t['Halo Mass'])
-        lg_disk = sum(t['Disk Mass'])
-        lg_bulge = sum(t['Bulge Mass'])
-        
-        totals = ['Local Group', lg_halo, lg_disk, lg_bulge]
-        t.add_row(totals)
-        t['Total'] = t['Disk Mass'] + t['Bulge Mass'] + t['Halo Mass']
-        t['f_bar'] = (t['Disk Mass'] + t['Bulge Mass']) / t['Total']
-
-        return t
-
-
-    def get_masses_df(self):
-        """
-        Args: none
-
-        Returns: 
-        """
-
-        df = pd.DataFrame()
-        # names = list(self.names) + ['Local Group',]
-        df['Galaxy Name'] = list(self.names) + ['Local Group',]
-        halo = []
-        disk = []
-        bulge = []
- 
-        for fname in self.filenames:
-            h, d, b = self.galaxies[fname].all_component_masses()
-            halo.append(h.value)
-            disk.append(d.value)
-            bulge.append(b.value)
-        halo.append(sum(halo))
-        disk.append(sum(disk))
-        bulge.append(sum(bulge))
-        
-
-        df['Halo Mass (Msun*1e12)'] = np.around(np.array(halo) / 1e12, 3)
-        df['Disk Mass (Msun*1e12)'] = np.around(np.array(disk) / 1e12, 3)
-        df['Bulge Mass (Msun*1e12)'] = np.around(np.array(bulge) / 1e12, 3)
-        
-        lg_halo = sum(df['Halo Mass (Msun*1e12)'])
-        lg_disk = sum(df['Disk Mass (Msun*1e12)'])
-        lg_bulge = sum(df['Bulge Mass (Msun*1e12)'])
-        
-        totals = ['Local Group', lg_halo, lg_disk, lg_bulge]
-        # df.add_row(totals)
-        df['Total'] = df['Disk Mass (Msun*1e12)'] \
-            + df['Bulge Mass (Msun*1e12)']  + df['Halo Mass (Msun*1e12)']
-        df['f_bar'] = np.around((df['Disk Mass (Msun*1e12)'] + \
-            df['Bulge Mass (Msun*1e12)']) / df['Total'], 3)
-
-        return df
-
+       return self.get_pivot('sum')
 
     def get_full_df(self):
         """
