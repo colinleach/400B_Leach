@@ -39,7 +39,12 @@
 <span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
 <span class="kn">from</span> <span class="nn">astropy.table</span> <span class="kn">import</span> <span class="n">QTable</span><span class="p">,</span> <span class="n">Table</span>
 
-<span class="kn">from</span> <span class="nn">.galaxy</span> <span class="kn">import</span> <span class="n">Galaxy</span>
+<span class="c1"># the next bit is a bodge, </span>
+<span class="c1"># it may be better to install the package with setup.py</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">galaxy</span> <span class="kn">import</span> <span class="n">Galaxy</span> <span class="c1"># works locally</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">.galaxy</span> <span class="kn">import</span> <span class="n">Galaxy</span> <span class="c1"># works on RTD</span>
 
 <div class="viewcode-block" id="Galaxies"><a class="viewcode-back" href="../../galaxies.html#galaxy.galaxies.Galaxies">[docs]</a><span class="k">class</span> <span class="nc">Galaxies</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>

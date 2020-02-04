@@ -13,19 +13,19 @@ import pandas as pd
 
 class Galaxy():
     """
-    Args: 
-        name (str): 
+    Args:
+        name (str):
             short name used in filename of type 'name_000.txt', eg 'MW', 'M31'.
 
     Kwargs:
-        snap (int): 
+        snap (int):
             Snap number, equivalent to time elapsed. Zero is starting conditions.
         datadir (str):
-            Directory to search first for the required file. Optional, and a 
+            Directory to search first for the required file. Optional, and a
             default list of locations will be searched.
 
     Class attributes:
-        filepath (`pathlib.Path` object): 
+        filepath (`pathlib.Path` object):
             directory containing the data file
         filename (str):
             in `name_snap.txt` format, something like 'MW_000.txt'
@@ -51,7 +51,7 @@ class Galaxy():
         Args:
             datadir (str): path to search first for the required file
 
-        Returns:   
+        Returns:
             `pathlib.Path` object. A directory containing the file.
 
         Raises:
@@ -110,7 +110,7 @@ class Galaxy():
         # get header data
         with open(fullname) as file:
             _, value = file.readline().split()
-            self.time = float(value) * u.Myr # corrected previous unit error
+            self.time = float(value) * u.Myr  # corrected previous unit error
             label, value = file.readline().split()
             self.particle_count = int(value)
 
@@ -118,11 +118,10 @@ class Galaxy():
         self.data = np.genfromtxt(
             fullname, dtype=None, names=True, skip_header=3)
 
-
-    #--------------------------------------------------------------------
+    # --------------------------------------------------------------------
     # A couple of small utility functions to interconvert particle type
-    #--------------------------------------------------------------------
-    
+    # --------------------------------------------------------------------
+
     def type2name(self, particle_type):
         """
         Args: particle_type (int): valid values are 1, 2, or 3
@@ -143,16 +142,15 @@ class Galaxy():
         types = {'DM': 1, 'disk': 2, 'bulge': 3}
         return types[typename]
 
-        
-    #--------------------------------------------------------------------
+    # --------------------------------------------------------------------
     # Subset the data by type
-    #--------------------------------------------------------------------
-    
+    # --------------------------------------------------------------------
+
     def filter_by_type(self, particle_type, dataset=None):
         """
         Args:
-            particle_type (int): for particles, 1=DM, 2=disk, 3=bulge 
-    
+            particle_type (int): for particles, 1=DM, 2=disk, 3=bulge
+
         Kwargs:
             dataset (np.ndarray): a starting dataset other than self.data
 
@@ -165,20 +163,19 @@ class Galaxy():
         index = np.where(dataset['type'] == particle_type)
         return dataset[index]
 
-
-    #--------------------------------------------------------------------
+    # --------------------------------------------------------------------
     # Methods to calculate properties of an existing dataset
-    #--------------------------------------------------------------------
+    # --------------------------------------------------------------------
 
     def single_particle_properties(self, particle_type=None, particle_num=0):
         """
         Kwargs:
-            particle_type (int): 
+            particle_type (int):
                 a subset of the data filtered by 1=DM, 2=disk, 3=bulge
-            particle_num (int): 
+            particle_num (int):
                 zero-based index to an array of particles
 
-        returns: 
+        returns:
             3-tuple of
                 Euclidean distance from CoM (kpc),
                 Euclidean velocity magnitude (km/s),
@@ -207,7 +204,7 @@ class Galaxy():
 
     def all_particle_properties(self, particle_type=None):
         """
-        Kwargs: particle_type (int): 
+        Kwargs: particle_type (int):
                 a subset of the data filtered by 1=DM, 2=disk, 3=bulge
 
         Returns:
@@ -240,10 +237,10 @@ class Galaxy():
 
     def component_count(self, particle_type=None):
         """
-        Kwargs: particle_type (int): 
+        Kwargs: particle_type (int):
                 a subset of the data filtered by 1=DM, 2=disk, 3=bulge
 
-        Returns: Quantity: 
+        Returns: Quantity:
                 The number of particles in the galaxy of this type
         """
 
@@ -256,7 +253,7 @@ class Galaxy():
 
     def all_component_counts(self):
         """
-        Returns: list: 
+        Returns: list:
                 The aggregate masses of particles of each type in the galaxy
                 Ordered as [halo, disk, bulge]
         """
@@ -265,10 +262,10 @@ class Galaxy():
 
     def component_mass(self, particle_type=None):
         """
-        Kwargs: particle_type (int): 
+        Kwargs: particle_type (int):
                 a subset of the data filtered by 1=DM, 2=disk, 3=bulge
 
-        Returns: Quantity: 
+        Returns: Quantity:
                 The aggregate mass of all particles in the galaxy of this type
         """
 
@@ -281,16 +278,16 @@ class Galaxy():
 
     def all_component_masses(self):
         """
-        Returns: list: 
+        Returns: list:
                 The aggregate masses of particles of each type in the galaxy
         """
 
         return [self.component_mass(ptype) for ptype in (1, 2, 3)]
 
-    #--------------------------------------------------------------------
+    # --------------------------------------------------------------------
     # Define some getters which may turn out to be useful, perhaps
-    #--------------------------------------------------------------------
-    
+    # --------------------------------------------------------------------
+
     def get_array(self):
         """
         Returns: all particle data in `np.ndarray` format
