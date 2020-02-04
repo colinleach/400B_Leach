@@ -8,7 +8,7 @@ from astropy.table import QTable, Table
 
 try:
     from galaxy import Galaxy
-except ModuleNotFoundError:
+except:
     from .galaxy import Galaxy
 
 class Galaxies():
