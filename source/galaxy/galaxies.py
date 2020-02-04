@@ -6,7 +6,10 @@ import pandas as pd
 import astropy.units as u
 from astropy.table import QTable, Table
 
-from .galaxy import Galaxy
+try:
+    from galaxy import Galaxy
+except ModuleNotFoundError:
+    from .galaxy import Galaxy
 
 class Galaxies():
     """

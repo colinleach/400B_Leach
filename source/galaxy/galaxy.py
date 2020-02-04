@@ -262,15 +262,6 @@ class Galaxy():
         """
 
         return [self.component_count(ptype) for ptype in (1, 2, 3)]
-        # results = {}
-        # sum = 0
-        # for particle_type in (1, 2, 3):
-        #     comp_count = self.component_count(particle_type)
-        #     sum += comp_count
-        #     results[str(particle_type)] = comp_count
-        # results['all'] = sum
-
-        # return results
 
     def component_mass(self, particle_type=None):
         """
