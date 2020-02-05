@@ -70,14 +70,9 @@ def test_all_particle_properties(gal, size):
         else:
             assert len(qtprops) == size[ptype]
 
-        # # get the corresponding particle from the full dataset
-        # subset = galaxies[gal].filter_by_type(ptype)
-        # raw_prop = subset[num]
-
-        # # compare 2 methods of calculating
-        # raw_pos = np.sqrt(raw_prop['x']**2 + raw_prop['y']**2 + raw_prop['z']**2)
-        # assert pos.value == np.around(raw_pos, 3)
-        # raw_v = np.sqrt(raw_prop['vx']**2 + raw_prop['vy']**2 + raw_prop['vz']**2)
-        # assert v.value == np.around(raw_v, 3)
-
-        # assert m.value == approx(raw_prop['m'] * 1e10)
+@pytest.mark.parametrize('gal, counts', [('MW', [50000, 75000, 10000]),
+                                        ('M31', [50000, 120000, 19000]),
+                                        ('M33', [5000, 9300, 0]),])
+def test_all_component_counts(gal, counts):
+    assert galaxies[gal].all_component_counts() == counts
+         

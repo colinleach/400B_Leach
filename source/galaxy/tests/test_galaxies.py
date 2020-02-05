@@ -18,4 +18,12 @@ g = galaxies.Galaxies()
 def test_galaxies_data(gal, size):
     assert g.galaxies[gal].data.shape[0] == size
 
+def test_count_pivot():
+    cp = g.get_counts_pivot()
+    assert cp.shape == (4, 4)
+    assert cp['1 Halo']['All'] == 105000
 
+def test_masses_pivot():
+    mp = g.get_masses_pivot()
+    assert mp.shape == (4, 4)
+    assert mp['1 Halo']['All'] == 4082418000000
