@@ -177,7 +177,7 @@ class Galaxy():
 
         returns:
             3-tuple of
-                Euclidean distance from CoM (kpc),
+                Euclidean distance from origin (kpc),
                 Euclidean velocity magnitude (km/s),
                 particle mass (M_sun)
         """
@@ -192,7 +192,7 @@ class Galaxy():
         # mass:
         m = particle['m'] * 1e10 * u.Msun
 
-        # Euclidean distance from galactic CoM:
+        # Euclidean distance from origin:
         pos_xyz = np.array([particle['x'], particle['y'], particle['z']])
         pos_mag = norm(pos_xyz) * u.kpc
 
@@ -202,13 +202,17 @@ class Galaxy():
 
         return np.around(pos_mag, 3), np.around(v_mag, 3), m
 
-    def all_particle_properties(self, particle_type=None):
+    def all_particle_properties(self, particle_type=None, as_table=True):
         """
         Kwargs: particle_type (int):
-                a subset of the data filtered by 1=DM, 2=disk, 3=bulge
+                    A subset of the data filtered by 1=DM, 2=disk, 3=bulge
+                as_table (boolean): Return type. 
+                    If True, an astropy QTable with units. 
+                    If False, np.ndarrays for position and velocity
 
         Returns:
-            QTable: The full list with units, optionally filtered by type.
+            QTable: 
+            The full list, optionally with units, optionally filtered by type.
         """
 
         if particle_type is None:  # all types accepted
@@ -219,7 +223,7 @@ class Galaxy():
         # mass:
         m = dataset['m'] * 1e10 * u.Msun
 
-        # Pythagorean distance from galactic CoM:
+        # Pythagorean distance from origin:
         pos_xyz = np.array([dataset['x'], dataset['y'], dataset['z']])
         pos_mag = norm(pos_xyz, axis=0) * u.kpc
 
@@ -227,13 +231,16 @@ class Galaxy():
         v_xyz = np.array([dataset['vx'], dataset['vy'], dataset['vz']])
         v_mag = norm(v_xyz, axis=0) * u.km / u.s
 
-        # construct and return a QTable with units
-        t = QTable()
-        t['type'] = dataset['type']
-        t['m'] = np.around(m)
-        t['pos'] = np.around(pos_mag, 3)
-        t['v'] = np.around(v_mag, 3)
-        return t
+        if as_table:
+            # construct and return a QTable with units
+            t = QTable()
+            t['type'] = dataset['type']
+            t['m'] = np.around(m)
+            t['pos'] = np.around(pos_mag, 3)
+            t['v'] = np.around(v_mag, 3)
+            return t
+        else:
+            return dataset['type'], dataset['m'], pos_mag, v_mag
 
     def component_count(self, particle_type=None):
         """
