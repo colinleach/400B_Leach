@@ -122,7 +122,7 @@ class Galaxies():
             galaxies.append(g_df)
         return pd.concat(galaxies)
 
-    def get_COMs(self, tolerance=0.1):
+    def get_COMs(self, tolerance=0.1, ptypes=(1,2,3)):
         """
         Args:
             tolerance (float): convergence criterion (kpc)
@@ -136,7 +136,7 @@ class Galaxies():
         vals = []
 
         for name in self.filenames:
-            for ptype in (1,2,3):
+            for ptype in ptypes:
                 g = self.galaxies[name]
                 try:
                     com = CenterOfMass(g, ptype)
