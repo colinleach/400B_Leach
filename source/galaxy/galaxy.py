@@ -130,13 +130,13 @@ class Galaxy():
         """
 
         typenames = {1: 'DM', 2: 'disk', 3: 'bulge'}
-        return typenames[type]
+        return typenames[particle_type]
 
     def name2type(self, typename):
         """
         Args: typename (str): valid values are 'DM', 'disk' or 'bulge'
 
-        Returns: particle_type (int): 1, 2, or 3 (as used in data files)
+        Returns: particle_type (int): 1, 2, or 3 as used in data files
         """
 
         types = {'DM': 1, 'disk': 2, 'bulge': 3}

@@ -1,16 +1,19 @@
 # scientific package imports
 import numpy as np
 import pandas as pd
+from numpy.linalg import norm
 
 import astropy.units as u
-# from astropy.table import QTable, Table
+from astropy.table import QTable #, Table
 
 # the next bit is a bodge,
 # it may be better to install the package with setup.py
 try:
     from galaxy import Galaxy  # works locally
+    from centerofmass import CenterOfMass
 except BaseException:
     from .galaxy import Galaxy  # works on RTD
+    from .centerofmass import CenterOfMass
 
 
 class Galaxies():
@@ -118,3 +121,91 @@ class Galaxies():
             g_df['snap'] = self.snaps[i]
             galaxies.append(g_df)
         return pd.concat(galaxies)
+
+    def get_COMs(self, tolerance=0.1):
+        """
+        Args:
+            tolerance (float): convergence criterion (kpc)
+
+        Returns:
+            QTable with COM positions and velocities
+            colnames: ['name', 'ptype', 'x', 'y', 'z', 'vx', 'vy', 'vz', 'R', 'V']
+        """
+
+        # gather the position/velocity data for all galaxies and particle types
+        vals = []
+
+        for name in self.filenames:
+            for ptype in (1,2,3):
+                g = self.galaxies[name]
+                try:
+                    com = CenterOfMass(g, ptype)
+                except ValueError as err:
+                    xyzCOM = (np.NaN, np.NaN, np.NaN) * u.kpc
+                    vxyzCOM = (np.NaN, np.NaN, np.NaN) * u.km / u.s
+                else:
+                    xyzCOM = com.COM_P(tolerance)
+                    vxyzCOM = com.COM_V(xyzCOM)
+                row = [name, g.type2name(ptype), xyzCOM, vxyzCOM]
+                vals.append(row)
+
+        # The QTable constructor is fussy and tends to surprise
+        # first transpose the list of lists
+        # ref: https://stackoverflow.com/questions/6473679/transpose-list-of-lists
+        vals_transposed = list(map(list, zip(*vals)))
+
+        # We can build a QTable with 3-vector entries
+        names = ('name', 'ptype', 'xyz', 'vxyz')
+        qt = QTable(vals_transposed, names=names)
+
+        # Construct a better QTable, one value per column
+        # I feel there ought to be an easier way than this?
+        qt2 = QTable()
+        qt2['name'] = qt['name']
+        qt2['ptype'] = qt['ptype']
+        qt2['x'] = [x for x, y, z in qt['xyz']]
+        qt2['y'] = [y for x, y, z in qt['xyz']]
+        qt2['z'] = [z for x, y, z in qt['xyz']]
+        qt2['vx'] = [x for x, y, z in qt['vxyz']]
+        qt2['vy'] = [y for x, y, z in qt['vxyz']]
+        qt2['vz'] = [z for x, y, z in qt['vxyz']]
+
+        # Add columns for distance from origin and velocity magnitude
+        # Using `norm` failed with a strange dtype conversion error
+        # so do it the old-school way
+        qt2['R'] = np.round(np.sqrt(qt2['x']**2 + qt2['y']**2 + qt2['z']**2), 2)
+        qt2['V'] = np.round(np.sqrt(qt2['vx']**2 + qt2['vy']**2 + qt2['vz']**2), 2)
+
+        return qt2
+
+    def separations(self, g1, g2):
+        """
+        Position and velocity of galaxy g2 COM relative to g1 COM. 
+        Uses only disk particles for the COM determination.
+
+        Args:
+            g1, g2 (str): galaxies matching entries in self.filenames
+
+        Returns:
+            Dictionary containing relative position, distance, velocities in
+            Cartesian and radial coordinates
+        """
+
+        results = {}
+        com1 = CenterOfMass(self.galaxies[g1], 2)
+        com2 = CenterOfMass(self.galaxies[g2], 2)
+        com1_p = com1.COM_P()
+        com2_p = com2.COM_P()
+        com1_v = com1.COM_V(com1_p)
+        com2_v = com2.COM_V(com2_p)
+        
+        results['pos_xyz'] = com2_p - com1_p
+        results['vel_xyz'] = com2_v - com1_v
+        results['r'] = np.round(norm(results['pos_xyz']), 2)
+        results['r_hat'] = np.round(results['pos_xyz'] / results['r'], 2) # unit vector
+        results['vel_mag'] = np.round(norm(results['vel_xyz']), 2)
+        results['v_radial'] = np.round(np.dot(results['r_hat'], results['vel_xyz']), 2)
+        results['v_tangential'] = np.round(np.cross(results['r_hat'], results['vel_xyz']), 2)
+        results['v_tan_mag'] = np.round(norm(results['v_tangential']), 2)
+
+        return results

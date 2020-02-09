@@ -63,7 +63,7 @@ class CenterOfMass:
         return np.sum(xyz * m, axis=1) / np.sum(m)
     
     
-    def COM_P(self, delta):
+    def COM_P(self, delta=0.1):
     # Function to specifically return the center of mass position and velocity                                         
     # input:                                                                                                           
     #        particle type (1,2,3)                                                                                     
