@@ -18,6 +18,8 @@ except BaseException:
 
 class Galaxies():
     """
+    A class to manipulate data for multiple galaxies.
+
     Kwargs:
         names (iterable of str):
             short names used in filename of type 'name_000.txt', eg 'MW', 'M31'.
@@ -34,8 +36,6 @@ class Galaxies():
             in `name_snap` format, something like 'MW_000' (no extension)
         galaxies (dict):
             key is filename, value is the corresponding Galaxy object
-
-    A class to manipulate data for multiple galaxies.
     """
 
     def __init__(self,
@@ -57,7 +57,7 @@ class Galaxies():
         set in `self.names` and `self.snaps`
 
         No return value.
-        Sets self.galaxies, a dictionary keyed on name_snap
+        Sets `self.galaxies`, a dictionary keyed on `name_snap`
         """
 
         for name, snap in zip(self.names, self.snaps):
@@ -71,6 +71,9 @@ class Galaxies():
 
     def get_pivot(self, aggfunc, values='m'):
         """
+        Generic method to make a pandas pivot table from the 9 combinations of 
+        galaxy and particle type.
+
         Args:
             aggfunc (str): 'count', 'sum', etc as aggregation method
             values (str): column name to aggregate
@@ -94,6 +97,8 @@ class Galaxies():
 
     def get_counts_pivot(self):
         """
+        Pivots on `count('m)`.
+
         Returns: pandas dataframe
         """
 
@@ -101,6 +106,8 @@ class Galaxies():
 
     def get_masses_pivot(self):
         """
+        Pivots on `sum('m)`.
+        
         Returns: pandas dataframe
         """
 
@@ -108,6 +115,8 @@ class Galaxies():
 
     def get_full_df(self):
         """
+        Combined data for all input files.
+
         Returns:
             Concatenated pandas dataframe from all galaxies
             Includes 'name' and 'snap' columns
@@ -116,7 +125,7 @@ class Galaxies():
         galaxies = []
         for i, gal_name in enumerate(self.filenames):
             g_df = self.galaxies[gal_name].all_particle_properties(
-            ).to_pandas()
+                ).to_pandas()
             g_df['name'] = self.names[i]
             g_df['snap'] = self.snaps[i]
             galaxies.append(g_df)
@@ -124,6 +133,9 @@ class Galaxies():
 
     def get_COMs(self, tolerance=0.1, ptypes=(1,2,3)):
         """
+        Center of Mass determination for all galaxies. 
+        Defaults to all particle types, but `ptypes=(2,)` may be more useful.
+        
         Args:
             tolerance (float): convergence criterion (kpc)
 

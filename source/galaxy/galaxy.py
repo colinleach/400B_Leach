@@ -13,6 +13,8 @@ import pandas as pd
 
 class Galaxy():
     """
+    A class to find, read and manipulate files for a single galaxy.
+
     Args:
         name (str):
             short name used in filename of type 'name_000.txt', eg 'MW', 'M31'.
@@ -31,8 +33,6 @@ class Galaxy():
             in `name_snap.txt` format, something like 'MW_000.txt'
         data (np.ndarray):
             type, mass, position_xyz, velocity_xyz for each particle
-
-    A class to find, read and manipulate files for a single galaxy.
     """
 
     def __init__(self, name, snap=0, datadir=None):
@@ -148,11 +148,13 @@ class Galaxy():
 
     def filter_by_type(self, particle_type, dataset=None):
         """
+        Subsets the data to a single particle type.
+
         Args:
             particle_type (int): for particles, 1=DM, 2=disk, 3=bulge
 
         Kwargs:
-            dataset (np.ndarray): a starting dataset other than self.data
+            dataset (np.ndarray): optionally, a starting dataset other than self.data
 
         Returns: np.ndarray: subset data
         """
@@ -169,6 +171,8 @@ class Galaxy():
 
     def single_particle_properties(self, particle_type=None, particle_num=0):
         """
+        Calculates distance from the origin and magnitude of the velocity.
+
         Kwargs:
             particle_type (int):
                 a subset of the data filtered by 1=DM, 2=disk, 3=bulge
@@ -204,6 +208,9 @@ class Galaxy():
 
     def all_particle_properties(self, particle_type=None, as_table=True):
         """
+        Calculates distances from the origin and magnitude of the velocities
+        for all particles (default) or a specied particle type.
+        
         Kwargs: particle_type (int):
                     A subset of the data filtered by 1=DM, 2=disk, 3=bulge
                 as_table (boolean): Return type. 
@@ -305,13 +312,15 @@ class Galaxy():
         return self.data
 
     def get_df(self):
-        """Returns: data as pandas dataframe
+        """
+        Returns: data as pandas dataframe
         """
 
         return pd.DataFrame(self.data)
 
     def get_qtable(self):
-        """Returns: data as astropy QTable, with units
+        """
+        Returns: data as astropy QTable, with units
         """
 
         t = QTable(self.data)

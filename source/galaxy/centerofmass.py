@@ -64,12 +64,14 @@ class CenterOfMass:
     
     
     def COM_P(self, delta=0.1):
-    # Function to specifically return the center of mass position and velocity                                         
-    # input:                                                                                                           
-    #        particle type (1,2,3)                                                                                     
-    #        delta (tolerance)                                                                                         
-    # returns: One vector, with rows indicating:                                                                                                                                                                            
-    #       3D coordinates of the center of mass position (kpc)                                                             
+        """
+        Function to specifically return the center of mass position and velocity    .
+
+        Kwargs:                                                                                                           
+            delta (tolerance)                                                                                         
+        Returns: 
+            One 3-vector, coordinates of the center of mass position (kpc)   
+        """                                                          
 
         # Center of Mass Position                                                                                      
         ###########################                                                                                    
@@ -141,9 +143,13 @@ class CenterOfMass:
         
     
     def COM_V(self, xyzCOM):
-        # Center of Mass velocity
-        # input: X, Y, Z positions of the COM
-        # returns 3D Vector of COM Velocities
+        """
+        Center of Mass velocity
+
+        Args: X, Y, Z positions of the COM
+
+        Returns: 3-Vector of COM velocities
+        """
         
         # the max distance from the center that we will use to determine the center of mass velocity                   
         RVMAX = 15.0*u.kpc

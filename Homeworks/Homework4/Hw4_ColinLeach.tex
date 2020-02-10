@@ -16,6 +16,8 @@
 	
 \maketitle
 
+This document is a summary. Top-level calculations are in Homework4/Homework4.ipynb and the class files which do most of the work are in source/galaxy/*.py.
+
 \section*{1) COM Position and Velocity}
 
 These are the results for the three galaxies, using only disk particles:\\
@@ -40,18 +42,30 @@ Both are small compared with M31 and M33, reflecting the choice of our galaxy as
 
 \section*{2, 3) Relative Position and Velocity}
 
+We can get the relative position vector by subtraction: $\mathbf{r}_{1 \rightarrow 2} = \mathbf{r}_2 - \mathbf{r}_1$ and similarly for velocity. For example, M31 as seen from the Milky Way has relative position vector $\left< -375.59,  608.48, -283.19 \right>$ kpc.
+
+More usefully, the norm of the position vector gives the separation distance: $|\mathbf{r}_{1 \rightarrow 2}| = R_{1,2}$. 
+
+For velocity, we really want to separate the radial and tangential components:
+\[ v_r = \mathbf{\hat{r}} \cdot \mathbf{v} \qquad \text{and} \qquad v_t = | \mathbf{\hat{r}} \times \mathbf{v} |  \qquad \text{where} \qquad \mathbf{\hat{r}} = \frac{\mathbf{r}}{|\mathbf{r}|} \]
+
 {\centering{\renewcommand{\arraystretch}{1.3}
 \begin{tabular}{cccc}
 	\toprule
-	\textbf{pairs} & \textbf{Separation} & \textbf{Radial velocity} & \textbf{Tangential velocity} \\
+	\textbf{pairs} & \textbf{Separation ($R$)} & \textbf{Radial velocity ($v_r$)} & \textbf{Tangential velocity ($v_t$)} \\
 	& $\mathrm{kpc}$ & $\mathrm{km\,s^{-1}}$ & $\mathrm{km\,s^{-1}}$ \\
 	\midrule
-	MW $\rightarrow$ M31 & 769.1 & -115.85 & 21.36 \\
+	MW $\rightarrow$ M31 & 769.10 & -115.85 & 21.36 \\
 	M31 $\rightarrow$ M33 & 201.08 & -150.09 & 132.69 \\
 	\bottomrule
 \end{tabular}} \par}\vspace{5mm}
 
+In these coordinates, radial velocity would be positive for separation increasing with time. The results show that M31 is heading fairly directly towards the MW (blue shifted) and M33 is heading towards M31 (but with a large tangential component).
+
 \section*{4) Why Iterate?}
 
+When galaxies merge (as these will in future homeworks), some stars/gas/dust/whatever are ejected and are no longer gravitationally bound. 
+
+We don't want to include these in the COM determination where their distance would give them a large weight. Iterating over successively smaller radii removes them from this calculation without losing them from the overall simulation.
 
 \end{document}
