@@ -5,10 +5,10 @@
 
 .. module:: galaxy.centerofmass
 
-Galaxies class
-==============
+CenterOfMass class
+==================
 
-This stores and manipulates data for multiple galaxies and snaps.
+Determines position and velocity of the COM for a galaxy/particle type combination.
 
 .. autoclass:: CenterOfMass
    :members:
