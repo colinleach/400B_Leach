@@ -46,7 +46,7 @@ class CenterOfMass:
         self.vxyz = np.array([self.data[col] for col in ('vx', 'vy', 'vz')])
 
 
-    def COMdefine(self, xyz, m):
+    def com_define(self, xyz, m):
         """
         Function to compute the center of mass position or velocity generically
 
@@ -63,7 +63,7 @@ class CenterOfMass:
         return np.sum(xyz * m, axis=1) / np.sum(m)
     
     
-    def COM_P(self, delta=0.1):
+    def com_p(self, delta=0.1):
         """
         Function to specifically return the center of mass position and velocity    .
 
@@ -76,73 +76,73 @@ class CenterOfMass:
         # Center of Mass Position                                                                                      
         ###########################                                                                                    
 
-        # Try a first guess at the COM position by calling COMdefine                                                   
-        xyzCOM = self.COMdefine(self.xyz, self.m)
+        # Try a first guess at the COM position by calling com_define                                                   
+        xyz_com = self.com_define(self.xyz, self.m)
         # compute the magnitude of the COM position vector.
-        RCOM = norm(xyzCOM)
+        RCOM = norm(xyz_com)
 
        # iterative process to determine the center of mass                                                            
 
         # change reference frame to COM frame                                                                          
         # compute the difference between particle coordinates                                                          
         # and the first guess at COM position
-        xyzNew = self.xyz - xyzCOM[:, np.newaxis]
-        RNEW = norm(xyzNew, axis=0)
+        xyz_new = self.xyz - xyz_com[:, np.newaxis]
+        r_new = norm(xyz_new, axis=0)
 
         # find the max 3D distance of all particles from the guessed COM                                               
         # will re-start at half that radius (reduced radius)                                                           
-        RMAX = max(RNEW)/2.0
+        r_max = max(r_new)/2.0
         
         # pick an initial value for the change in COM position                                                      
         # between the first guess above and the new one computed from half that volume
         # it should be larger than the input tolerance (delta) initially
-        CHANGE = 1000.0
+        change = 1000.0
 
         # start iterative process to determine center of mass position                                                 
         # delta is the tolerance for the difference in the old COM and the new one.    
         
-        while (CHANGE > delta):
+        while (change > delta):
             # select all particles within the reduced radius 
             # (starting from original x,y,z, m)
-            index2 = np.nonzero(RNEW < RMAX)[0]
+            index2 = np.nonzero(r_new < r_max)[0]
             xyz2 = self.xyz[:, index2]
             m2 = self.m[index2]
 
             # Refined COM position:                                                                                    
             # compute the center of mass position using                                                                
             # the particles in the reduced radius
-            xyzCOM2 = self.COMdefine(xyz2, m2)
+            xyz_com2 = self.com_define(xyz2, m2)
             # compute the new 3D COM position
-            RCOM2 = norm(xyzCOM2)
+            r_com2 = norm(xyz_com2)
 
             # determine the difference between the previous center of mass position                                    
             # and the new one.                                                                                         
-            CHANGE = np.abs(RCOM - RCOM2)
+            change = np.abs(RCOM - r_com2)
             # uncomment the following line if you wnat to check this                                                                                               
             # print ("CHANGE = ", CHANGE)                                                                                     
 
             # Before loop continues, reset : RMAX, particle separations and COM                                        
 
             # reduce the volume by a factor of 2 again                                                                 
-            RMAX = RMAX/2.0
+            r_max = r_max/2.0
             # check this.                                                                                              
             # print ("RMAX", RMAX)                                                                                      
 
             # Change the frame of reference to the newly computed COM.                                                 
             # subtract the new COM
-            xyzNew = self.xyz - xyzCOM2[:, np.newaxis]
-            RNEW = norm(xyzNew, axis=0)
+            xyz_new = self.xyz - xyz_com2[:, np.newaxis]
+            r_new = norm(xyz_new, axis=0)
 
             # set the center of mass positions to the refined values                                                   
-            xyzCOM = xyzCOM2
-            RCOM = RCOM2
+            xyz_com = xyz_com2
+            RCOM = r_com2
 
         # set the correct units using astropy and round all values
         # and then return the COM position vector
-        return np.round(xyzCOM, 2) * u.kpc
+        return np.round(xyz_com, 2) * u.kpc
         
     
-    def COM_V(self, xyzCOM):
+    def com_v(self, xyz_com):
         """
         Center of Mass velocity
 
@@ -152,21 +152,21 @@ class CenterOfMass:
         """
         
         # the max distance from the center that we will use to determine the center of mass velocity                   
-        RVMAX = 15.0*u.kpc
+        rv_max = 15.0*u.kpc
 
         # determine the position of all particles relative to the center of mass position
-        xyzV = self.xyz * u.kpc - xyzCOM[:, np.newaxis]
-        RV = norm(xyzV, axis=0)
+        xyz_v = self.xyz * u.kpc - xyz_com[:, np.newaxis]
+        r_v = norm(xyz_v, axis=0)
         
         # determine the index for those particles within the max radius
-        indexV = np.where(RV < RVMAX)[0]
+        index_v = np.where(r_v < rv_max)[0]
 
         # determine the velocity and mass of those particles within the max radius
-        vxyznew = self.vxyz[:, indexV]
-        mnew = self.m[indexV]  
+        vxyz_new = self.vxyz[:, index_v]
+        m_new = self.m[index_v]  
         
         # compute the center of mass velocity using those particles
-        vxyzCOM = self.COMdefine(vxyznew, mnew)
+        vxyz_com = self.com_define(vxyz_new, m_new)
 
         # return the COM vector                                                                                        
-        return np.round(vxyzCOM, 2) * u.km / u.s
+        return np.round(vxyz_com, 2) * u.km / u.s

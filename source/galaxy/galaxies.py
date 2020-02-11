@@ -131,11 +131,11 @@ class Galaxies():
             galaxies.append(g_df)
         return pd.concat(galaxies)
 
-    def get_COMs(self, tolerance=0.1, ptypes=(1,2,3)):
+    def get_coms(self, tolerance=0.1, ptypes=(1,2,3)):
         """
         Center of Mass determination for all galaxies. 
         Defaults to all particle types, but `ptypes=(2,)` may be more useful.
-        
+
         Args:
             tolerance (float): convergence criterion (kpc)
 
@@ -153,12 +153,12 @@ class Galaxies():
                 try:
                     com = CenterOfMass(g, ptype)
                 except ValueError as err:
-                    xyzCOM = (np.NaN, np.NaN, np.NaN) * u.kpc
-                    vxyzCOM = (np.NaN, np.NaN, np.NaN) * u.km / u.s
+                    xyz_com= (np.NaN, np.NaN, np.NaN) * u.kpc
+                    vxyz_com= (np.NaN, np.NaN, np.NaN) * u.km / u.s
                 else:
-                    xyzCOM = com.COM_P(tolerance)
-                    vxyzCOM = com.COM_V(xyzCOM)
-                row = [name, g.type2name(ptype), xyzCOM, vxyzCOM]
+                    xyz_com= com.com_p(tolerance)
+                    vxyz_com= com.com_v(xyz_com)
+                row = [name, g.type2name(ptype), xyz_com, vxyz_com]
                 vals.append(row)
 
         # The QTable constructor is fussy and tends to surprise
@@ -206,10 +206,10 @@ class Galaxies():
         results = {}
         com1 = CenterOfMass(self.galaxies[g1], 2)
         com2 = CenterOfMass(self.galaxies[g2], 2)
-        com1_p = com1.COM_P()
-        com2_p = com2.COM_P()
-        com1_v = com1.COM_V(com1_p)
-        com2_v = com2.COM_V(com2_p)
+        com1_p = com1.com_p()
+        com2_p = com2.com_p()
+        com1_v = com1.com_v(com1_p)
+        com2_v = com2.com_v(com2_p)
         
         results['pos_xyz'] = com2_p - com1_p
         results['vel_xyz'] = com2_v - com1_v

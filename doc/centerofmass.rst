@@ -8,7 +8,8 @@
 CenterOfMass class
 ==================
 
-Determines position and velocity of the COM for a galaxy/particle type combination.
+Determines position and velocity of the COM for a galaxy/particle 
+type combination.
 
 .. autoclass:: CenterOfMass
    :members:
