@@ -153,8 +153,8 @@ class Galaxies():
                 try:
                     com = CenterOfMass(g, ptype)
                 except ValueError as err:
-                    xyz_com= (np.NaN, np.NaN, np.NaN) * u.kpc
-                    vxyz_com= (np.NaN, np.NaN, np.NaN) * u.km / u.s
+                    xyz_com = (np.NaN, np.NaN, np.NaN) * u.kpc
+                    vxyz_com = (np.NaN, np.NaN, np.NaN) * u.km / u.s
                 else:
                     xyz_com= com.com_p(tolerance)
                     vxyz_com= com.com_v(xyz_com)
