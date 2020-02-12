@@ -1,2 +1,1 @@
-astropy==4.0
-source.galaxy
+source>=0.0.1
