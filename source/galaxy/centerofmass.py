@@ -1,7 +1,6 @@
 # import modules
 import numpy as np
-from numpy.linalg import norm
-
+v
 import astropy.units as u
 import astropy.table as tbl
 
