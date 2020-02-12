@@ -1,4 +1,2 @@
 astropy==4.0
-numpy==1.17.3
-pandas==0.25.3
-scipy==1.4.1
+git+git@github.com:colinleach/400B_Leach.git@d5a647fc8c007e3da7713e9d27bb37c9e4aed1e4#egg=galaxy&subdirectory=source

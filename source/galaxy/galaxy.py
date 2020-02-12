@@ -211,11 +211,12 @@ class Galaxy():
         Calculates distances from the origin and magnitude of the velocities
         for all particles (default) or a specied particle type.
         
-        Kwargs: particle_type (int):
-                    A subset of the data filtered by 1=DM, 2=disk, 3=bulge
-                as_table (boolean): Return type. 
-                    If True, an astropy QTable with units. 
-                    If False, np.ndarrays for position and velocity
+        Kwargs: 
+            particle_type (int):
+                A subset of the data filtered by 1=DM, 2=disk, 3=bulge
+            as_table (boolean): Return type. 
+                If True, an astropy QTable with units. 
+                If False, np.ndarrays for position and velocity
 
         Returns:
             QTable: 

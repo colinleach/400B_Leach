@@ -33,45 +33,48 @@
   <h1>Source code for galaxy.galaxies</h1><div class="highlight"><pre>
 <span></span><span class="c1"># scientific package imports</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">norm</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">norm</span>
 
 <span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
-<span class="kn">from</span> <span class="nn">astropy.table</span> <span class="kn">import</span> <span class="n">QTable</span><span class="p">,</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">astropy.table</span> <span class="kn">import</span> <span class="n">QTable</span> <span class="c1">#, Table</span>
 
-<span class="c1"># the next bit is a bodge, </span>
+<span class="c1"># the next bit is a bodge,</span>
 <span class="c1"># it may be better to install the package with setup.py</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">galaxy</span> <span class="kn">import</span> <span class="n">Galaxy</span> <span class="c1"># works locally</span>
-<span class="k">except</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">.galaxy</span> <span class="kn">import</span> <span class="n">Galaxy</span> <span class="c1"># works on RTD</span>
+    <span class="kn">from</span> <span class="nn">galaxy</span> <span class="kn">import</span> <span class="n">Galaxy</span>  <span class="c1"># works locally</span>
+    <span class="kn">from</span> <span class="nn">centerofmass</span> <span class="kn">import</span> <span class="n">CenterOfMass</span>
+<span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">.galaxy</span> <span class="kn">import</span> <span class="n">Galaxy</span>  <span class="c1"># works on RTD</span>
+    <span class="kn">from</span> <span class="nn">.centerofmass</span> <span class="kn">import</span> <span class="n">CenterOfMass</span>
+
 
 <div class="viewcode-block" id="Galaxies"><a class="viewcode-back" href="../../galaxies.html#galaxy.galaxies.Galaxies">[docs]</a><span class="k">class</span> <span class="nc">Galaxies</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to manipulate data for multiple galaxies.</span>
+
 <span class="sd">    Kwargs:</span>
-<span class="sd">        names (iterable of str): </span>
+<span class="sd">        names (iterable of str):</span>
 <span class="sd">            short names used in filename of type &#39;name_000.txt&#39;, eg &#39;MW&#39;, &#39;M31&#39;.</span>
-<span class="sd">        snaps (iterable of int): </span>
+<span class="sd">        snaps (iterable of int):</span>
 <span class="sd">            Snap number, equivalent to time elapsed. Zero is starting conditions.</span>
 <span class="sd">        datadir (str):</span>
-<span class="sd">            Directory to search first for the required file. Optional, and a </span>
+<span class="sd">            Directory to search first for the required file. Optional, and a</span>
 <span class="sd">            default list of locations will be searched.</span>
 
 <span class="sd">    Class attributes:</span>
-<span class="sd">        path (`pathlib.Path` object): </span>
+<span class="sd">        path (`pathlib.Path` object):</span>
 <span class="sd">            directory (probably) containing the data files</span>
 <span class="sd">        filenames (list of str):</span>
 <span class="sd">            in `name_snap` format, something like &#39;MW_000&#39; (no extension)</span>
 <span class="sd">        galaxies (dict):</span>
 <span class="sd">            key is filename, value is the corresponding Galaxy object</span>
-
-<span class="sd">    A class to manipulate data for multiple galaxies.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
-                <span class="n">names</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;MW&#39;</span><span class="p">,</span> <span class="s1">&#39;M31&#39;</span><span class="p">,</span> <span class="s1">&#39;M33&#39;</span><span class="p">),</span>
-                <span class="n">snaps</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> 
-                <span class="n">datadir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">names</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;MW&#39;</span><span class="p">,</span> <span class="s1">&#39;M31&#39;</span><span class="p">,</span> <span class="s1">&#39;M33&#39;</span><span class="p">),</span>
+                 <span class="n">snaps</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                 <span class="n">datadir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="s2">&quot;Initial setup.&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">names</span>
@@ -87,21 +90,24 @@
 <span class="sd">        set in `self.names` and `self.snaps`</span>
 
 <span class="sd">        No return value.</span>
-<span class="sd">        Sets self.galaxies, a dictionary keyed on name_snap</span>
+<span class="sd">        Sets `self.galaxies`, a dictionary keyed on `name_snap`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">snap</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">snaps</span><span class="p">):</span>
             <span class="c1"># build the very important dictionary:</span>
-            <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{name}</span><span class="s1">_</span><span class="si">{snap:03}</span><span class="s1">&#39;</span> <span class="c1"># e.g &#39;MW_000&#39;</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{name}</span><span class="s1">_</span><span class="si">{snap:03}</span><span class="s1">&#39;</span>  <span class="c1"># e.g &#39;MW_000&#39;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">galaxies</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">Galaxy</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">snap</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 
             <span class="c1"># bits of minor housekeeping:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">galaxies</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">filepath</span> <span class="c1"># may speed up next search</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">galaxies</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">filepath</span>  <span class="c1"># may speed up next search</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">filenames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Galaxies.get_pivot"><a class="viewcode-back" href="../../galaxies.html#galaxy.galaxies.Galaxies.get_pivot">[docs]</a>    <span class="k">def</span> <span class="nf">get_pivot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggfunc</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Args: </span>
+<span class="sd">        Generic method to make a pandas pivot table from the 9 combinations of </span>
+<span class="sd">        galaxy and particle type.</span>
+
+<span class="sd">        Args:</span>
 <span class="sd">            aggfunc (str): &#39;count&#39;, &#39;sum&#39;, etc as aggregation method</span>
 <span class="sd">            values (str): column name to aggregate</span>
 
@@ -116,14 +122,16 @@
         <span class="n">gals_df</span><span class="p">[</span><span class="s1">&#39;typename&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gals_df</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">types</span><span class="p">)</span>
 
         <span class="c1"># get pandas to do most of the work</span>
-        <span class="n">df_piv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">gals_df</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">values</span><span class="p">,</span> 
-                                <span class="n">index</span><span class="o">=</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;typename&#39;</span><span class="p">,</span> 
+        <span class="n">df_piv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">gals_df</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">values</span><span class="p">,</span>
+                                <span class="n">index</span><span class="o">=</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;typename&#39;</span><span class="p">,</span>
                                 <span class="n">aggfunc</span><span class="o">=</span><span class="n">aggfunc</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">margins</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            
+
         <span class="k">return</span> <span class="n">df_piv</span></div>
 
 <div class="viewcode-block" id="Galaxies.get_counts_pivot"><a class="viewcode-back" href="../../galaxies.html#galaxy.galaxies.Galaxies.get_counts_pivot">[docs]</a>    <span class="k">def</span> <span class="nf">get_counts_pivot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pivots on `count(&#39;m)`.</span>
+
 <span class="sd">        Returns: pandas dataframe</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -131,6 +139,8 @@
 
 <div class="viewcode-block" id="Galaxies.get_masses_pivot"><a class="viewcode-back" href="../../galaxies.html#galaxy.galaxies.Galaxies.get_masses_pivot">[docs]</a>    <span class="k">def</span> <span class="nf">get_masses_pivot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pivots on `sum(&#39;m)`.</span>
+<span class="sd">        </span>
 <span class="sd">        Returns: pandas dataframe</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -138,19 +148,112 @@
 
 <div class="viewcode-block" id="Galaxies.get_full_df"><a class="viewcode-back" href="../../galaxies.html#galaxy.galaxies.Galaxies.get_full_df">[docs]</a>    <span class="k">def</span> <span class="nf">get_full_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns: </span>
+<span class="sd">        Combined data for all input files.</span>
+
+<span class="sd">        Returns:</span>
 <span class="sd">            Concatenated pandas dataframe from all galaxies</span>
 <span class="sd">            Includes &#39;name&#39; and &#39;snap&#39; columns</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">galaxies</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">gal_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filenames</span><span class="p">):</span>
-            <span class="n">g_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">galaxies</span><span class="p">[</span><span class="n">gal_name</span><span class="p">]</span><span class="o">.</span><span class="n">all_particle_properties</span><span class="p">()</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+            <span class="n">g_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">galaxies</span><span class="p">[</span><span class="n">gal_name</span><span class="p">]</span><span class="o">.</span><span class="n">all_particle_properties</span><span class="p">(</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
             <span class="n">g_df</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">g_df</span><span class="p">[</span><span class="s1">&#39;snap&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">snaps</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">galaxies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g_df</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">galaxies</span><span class="p">)</span></div></div>
-       
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">galaxies</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Galaxies.get_coms"><a class="viewcode-back" href="../../galaxies.html#galaxy.galaxies.Galaxies.get_coms">[docs]</a>    <span class="k">def</span> <span class="nf">get_coms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">ptypes</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Center of Mass determination for all galaxies. </span>
+<span class="sd">        Defaults to all particle types, but `ptypes=(2,)` may be more useful.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            tolerance (float): convergence criterion (kpc)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            QTable with COM positions and velocities</span>
+<span class="sd">            colnames: [&#39;name&#39;, &#39;ptype&#39;, &#39;x&#39;, &#39;y&#39;, &#39;z&#39;, &#39;vx&#39;, &#39;vy&#39;, &#39;vz&#39;, &#39;R&#39;, &#39;V&#39;]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># gather the position/velocity data for all galaxies and particle types</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filenames</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">ptype</span> <span class="ow">in</span> <span class="n">ptypes</span><span class="p">:</span>
+                <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">galaxies</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">com</span> <span class="o">=</span> <span class="n">CenterOfMass</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">ptype</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+                    <span class="n">xyz_com</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">kpc</span>
+                    <span class="n">vxyz_com</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">km</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">xyz_com</span><span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="n">com_p</span><span class="p">(</span><span class="n">tolerance</span><span class="p">)</span>
+                    <span class="n">vxyz_com</span><span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="n">com_v</span><span class="p">(</span><span class="n">xyz_com</span><span class="p">)</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">type2name</span><span class="p">(</span><span class="n">ptype</span><span class="p">),</span> <span class="n">xyz_com</span><span class="p">,</span> <span class="n">vxyz_com</span><span class="p">]</span>
+                <span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+        <span class="c1"># The QTable constructor is fussy and tends to surprise</span>
+        <span class="c1"># first transpose the list of lists</span>
+        <span class="c1"># ref: https://stackoverflow.com/questions/6473679/transpose-list-of-lists</span>
+        <span class="n">vals_transposed</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">vals</span><span class="p">)))</span>
+
+        <span class="c1"># We can build a QTable with 3-vector entries</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;ptype&#39;</span><span class="p">,</span> <span class="s1">&#39;xyz&#39;</span><span class="p">,</span> <span class="s1">&#39;vxyz&#39;</span><span class="p">)</span>
+        <span class="n">qt</span> <span class="o">=</span> <span class="n">QTable</span><span class="p">(</span><span class="n">vals_transposed</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span>
+
+        <span class="c1"># Construct a better QTable, one value per column</span>
+        <span class="c1"># I feel there ought to be an easier way than this?</span>
+        <span class="n">qt2</span> <span class="o">=</span> <span class="n">QTable</span><span class="p">()</span>
+        <span class="n">qt2</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">qt</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+        <span class="n">qt2</span><span class="p">[</span><span class="s1">&#39;ptype&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">qt</span><span class="p">[</span><span class="s1">&#39;ptype&#39;</span><span class="p">]</span>
+        <span class="n">qt2</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">qt</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">]]</span>
+        <span class="n">qt2</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">qt</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">]]</span>
+        <span class="n">qt2</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">z</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">qt</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">]]</span>
+        <span class="n">qt2</span><span class="p">[</span><span class="s1">&#39;vx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">qt</span><span class="p">[</span><span class="s1">&#39;vxyz&#39;</span><span class="p">]]</span>
+        <span class="n">qt2</span><span class="p">[</span><span class="s1">&#39;vy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">qt</span><span class="p">[</span><span class="s1">&#39;vxyz&#39;</span><span class="p">]]</span>
+        <span class="n">qt2</span><span class="p">[</span><span class="s1">&#39;vz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">z</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">qt</span><span class="p">[</span><span class="s1">&#39;vxyz&#39;</span><span class="p">]]</span>
+
+        <span class="c1"># Add columns for distance from origin and velocity magnitude</span>
+        <span class="c1"># Using `norm` failed with a strange dtype conversion error</span>
+        <span class="c1"># so do it the old-school way</span>
+        <span class="n">qt2</span><span class="p">[</span><span class="s1">&#39;R&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">qt2</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">qt2</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">qt2</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">qt2</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">qt2</span><span class="p">[</span><span class="s1">&#39;vx&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">qt2</span><span class="p">[</span><span class="s1">&#39;vy&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">qt2</span><span class="p">[</span><span class="s1">&#39;vz&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">qt2</span></div>
+
+<div class="viewcode-block" id="Galaxies.separations"><a class="viewcode-back" href="../../galaxies.html#galaxy.galaxies.Galaxies.separations">[docs]</a>    <span class="k">def</span> <span class="nf">separations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g1</span><span class="p">,</span> <span class="n">g2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Position and velocity of galaxy g2 COM relative to g1 COM. </span>
+<span class="sd">        Uses only disk particles for the COM determination.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            g1, g2 (str): galaxies matching entries in self.filenames</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dictionary containing relative position, distance, velocities in</span>
+<span class="sd">            Cartesian and radial coordinates</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">com1</span> <span class="o">=</span> <span class="n">CenterOfMass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">galaxies</span><span class="p">[</span><span class="n">g1</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">com2</span> <span class="o">=</span> <span class="n">CenterOfMass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">galaxies</span><span class="p">[</span><span class="n">g2</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">com1_p</span> <span class="o">=</span> <span class="n">com1</span><span class="o">.</span><span class="n">com_p</span><span class="p">()</span>
+        <span class="n">com2_p</span> <span class="o">=</span> <span class="n">com2</span><span class="o">.</span><span class="n">com_p</span><span class="p">()</span>
+        <span class="n">com1_v</span> <span class="o">=</span> <span class="n">com1</span><span class="o">.</span><span class="n">com_v</span><span class="p">(</span><span class="n">com1_p</span><span class="p">)</span>
+        <span class="n">com2_v</span> <span class="o">=</span> <span class="n">com2</span><span class="o">.</span><span class="n">com_v</span><span class="p">(</span><span class="n">com2_p</span><span class="p">)</span>
+        
+        <span class="n">results</span><span class="p">[</span><span class="s1">&#39;pos_xyz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">com2_p</span> <span class="o">-</span> <span class="n">com1_p</span>
+        <span class="n">results</span><span class="p">[</span><span class="s1">&#39;vel_xyz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">com2_v</span> <span class="o">-</span> <span class="n">com1_v</span>
+        <span class="n">results</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;pos_xyz&#39;</span><span class="p">]),</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_hat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;pos_xyz&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># unit vector</span>
+        <span class="n">results</span><span class="p">[</span><span class="s1">&#39;vel_mag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;vel_xyz&#39;</span><span class="p">]),</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">results</span><span class="p">[</span><span class="s1">&#39;v_radial&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_hat&#39;</span><span class="p">],</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;vel_xyz&#39;</span><span class="p">]),</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">results</span><span class="p">[</span><span class="s1">&#39;v_tangential&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_hat&#39;</span><span class="p">],</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;vel_xyz&#39;</span><span class="p">]),</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">results</span><span class="p">[</span><span class="s1">&#39;v_tan_mag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;v_tangential&#39;</span><span class="p">]),</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">results</span></div></div>
 </pre></div>
 
           </div>
@@ -173,6 +276,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../galaxy.html">Galaxy class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../galaxies.html">Galaxies class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../centerofmass.html">CenterOfMass class</a></li>
 </ul>
 
 <div class="relations">

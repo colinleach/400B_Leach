@@ -1,0 +1,274 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>galaxy.centerofmass &#8212; ASTR400B Leach  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for galaxy.centerofmass</h1><div class="highlight"><pre>
+<span></span><span class="c1"># import modules</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
+<span class="kn">import</span> <span class="nn">astropy.table</span> <span class="k">as</span> <span class="nn">tbl</span>
+
+<span class="c1"># the next bit is a bodge,</span>
+<span class="c1"># it may be better to install the package with setup.py</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">galaxy</span> <span class="kn">import</span> <span class="n">Galaxy</span>  <span class="c1"># works locally</span>
+<span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">.galaxy</span> <span class="kn">import</span> <span class="n">Galaxy</span>  <span class="c1"># works on RTD</span>
+
+<div class="viewcode-block" id="CenterOfMass"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass">[docs]</a><span class="k">class</span> <span class="nc">CenterOfMass</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to define COM position and velocity properties of a given galaxy </span>
+<span class="sd">    and simulation snapshot</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        gal (Galaxy object):</span>
+<span class="sd">            The desired galaxy/snap to operate on</span>
+<span class="sd">        ptype (int):</span>
+<span class="sd">            for particles, 1=DM/halo, 2=disk, 3=bulge</span>
+
+<span class="sd">    Throws:</span>
+<span class="sd">        ValueError, if there are no particles of this type in this galaxy</span>
+<span class="sd">        (typically, halo particles in M33)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gal</span><span class="p">,</span> <span class="n">ptype</span><span class="p">):</span>
+    <span class="c1"># Initialize the instance of this Class with the following properties:</span>
+    
+        <span class="c1"># subset with our particle type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">gal</span><span class="o">.</span><span class="n">filter_by_type</span><span class="p">(</span><span class="n">ptype</span><span class="p">)</span>     
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;No particles of type </span><span class="si">{ptype}</span><span class="s1"> in </span><span class="si">{gal.filename}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="c1">#create an array to store indexes of particles of desired Ptype                                </span>
+        <span class="c1"># self.index = np.where(self.data[&#39;type&#39;] == ptype)</span>
+
+        <span class="c1"># store the mass, positions, velocities of only the particles of the given type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">)])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vxyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;vx&#39;</span><span class="p">,</span> <span class="s1">&#39;vy&#39;</span><span class="p">,</span> <span class="s1">&#39;vz&#39;</span><span class="p">)])</span>
+
+
+<div class="viewcode-block" id="CenterOfMass.com_define"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.com_define">[docs]</a>    <span class="k">def</span> <span class="nf">com_define</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to compute the center of mass position or velocity generically</span>
+
+<span class="sd">        Args: </span>
+<span class="sd">            xyz (array with shape (3, N)):</span>
+<span class="sd">                (x, y, z) positions or velocities</span>
+<span class="sd">            m (1-D array):</span>
+<span class="sd">                particle masses </span>
+
+<span class="sd">        Returns: </span>
+<span class="sd">            3-element array, the center of mass coordinates</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">xyz</span> <span class="o">*</span> <span class="n">m</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">m</span><span class="p">)</span></div>
+    
+    
+<div class="viewcode-block" id="CenterOfMass.com_p"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.com_p">[docs]</a>    <span class="k">def</span> <span class="nf">com_p</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function to specifically return the center of mass position and velocity    .</span>
+
+<span class="sd">        Kwargs:                                                                                                           </span>
+<span class="sd">            delta (tolerance)                                                                                         </span>
+<span class="sd">        Returns: </span>
+<span class="sd">            One 3-vector, coordinates of the center of mass position (kpc)   </span>
+<span class="sd">        &quot;&quot;&quot;</span>                                                          
+
+        <span class="c1"># Center of Mass Position                                                                                      </span>
+        <span class="c1">###########################                                                                                    </span>
+
+        <span class="c1"># Try a first guess at the COM position by calling com_define                                                   </span>
+        <span class="n">xyz_com</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_define</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+        <span class="c1"># compute the magnitude of the COM position vector.</span>
+        <span class="n">RCOM</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">xyz_com</span><span class="p">)</span>
+
+       <span class="c1"># iterative process to determine the center of mass                                                            </span>
+
+        <span class="c1"># change reference frame to COM frame                                                                          </span>
+        <span class="c1"># compute the difference between particle coordinates                                                          </span>
+        <span class="c1"># and the first guess at COM position</span>
+        <span class="n">xyz_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span> <span class="o">-</span> <span class="n">xyz_com</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+        <span class="n">r_new</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">xyz_new</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># find the max 3D distance of all particles from the guessed COM                                               </span>
+        <span class="c1"># will re-start at half that radius (reduced radius)                                                           </span>
+        <span class="n">r_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">r_new</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span>
+        
+        <span class="c1"># pick an initial value for the change in COM position                                                      </span>
+        <span class="c1"># between the first guess above and the new one computed from half that volume</span>
+        <span class="c1"># it should be larger than the input tolerance (delta) initially</span>
+        <span class="n">change</span> <span class="o">=</span> <span class="mf">1000.0</span>
+
+        <span class="c1"># start iterative process to determine center of mass position                                                 </span>
+        <span class="c1"># delta is the tolerance for the difference in the old COM and the new one.    </span>
+        
+        <span class="k">while</span> <span class="p">(</span><span class="n">change</span> <span class="o">&gt;</span> <span class="n">delta</span><span class="p">):</span>
+            <span class="c1"># select all particles within the reduced radius </span>
+            <span class="c1"># (starting from original x,y,z, m)</span>
+            <span class="n">index2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">r_new</span> <span class="o">&lt;</span> <span class="n">r_max</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">xyz2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">[:,</span> <span class="n">index2</span><span class="p">]</span>
+            <span class="n">m2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="n">index2</span><span class="p">]</span>
+
+            <span class="c1"># Refined COM position:                                                                                    </span>
+            <span class="c1"># compute the center of mass position using                                                                </span>
+            <span class="c1"># the particles in the reduced radius</span>
+            <span class="n">xyz_com2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_define</span><span class="p">(</span><span class="n">xyz2</span><span class="p">,</span> <span class="n">m2</span><span class="p">)</span>
+            <span class="c1"># compute the new 3D COM position</span>
+            <span class="n">r_com2</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">xyz_com2</span><span class="p">)</span>
+
+            <span class="c1"># determine the difference between the previous center of mass position                                    </span>
+            <span class="c1"># and the new one.                                                                                         </span>
+            <span class="n">change</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">RCOM</span> <span class="o">-</span> <span class="n">r_com2</span><span class="p">)</span>
+            <span class="c1"># uncomment the following line if you wnat to check this                                                                                               </span>
+            <span class="c1"># print (&quot;CHANGE = &quot;, CHANGE)                                                                                     </span>
+
+            <span class="c1"># Before loop continues, reset : RMAX, particle separations and COM                                        </span>
+
+            <span class="c1"># reduce the volume by a factor of 2 again                                                                 </span>
+            <span class="n">r_max</span> <span class="o">=</span> <span class="n">r_max</span><span class="o">/</span><span class="mf">2.0</span>
+            <span class="c1"># check this.                                                                                              </span>
+            <span class="c1"># print (&quot;RMAX&quot;, RMAX)                                                                                      </span>
+
+            <span class="c1"># Change the frame of reference to the newly computed COM.                                                 </span>
+            <span class="c1"># subtract the new COM</span>
+            <span class="n">xyz_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span> <span class="o">-</span> <span class="n">xyz_com2</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+            <span class="n">r_new</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">xyz_new</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="c1"># set the center of mass positions to the refined values                                                   </span>
+            <span class="n">xyz_com</span> <span class="o">=</span> <span class="n">xyz_com2</span>
+            <span class="n">RCOM</span> <span class="o">=</span> <span class="n">r_com2</span>
+
+        <span class="c1"># set the correct units using astropy and round all values</span>
+        <span class="c1"># and then return the COM position vector</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">xyz_com</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">kpc</span></div>
+        
+    
+<div class="viewcode-block" id="CenterOfMass.com_v"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.com_v">[docs]</a>    <span class="k">def</span> <span class="nf">com_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz_com</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Center of Mass velocity</span>
+
+<span class="sd">        Args: X, Y, Z positions of the COM</span>
+
+<span class="sd">        Returns: 3-Vector of COM velocities</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="c1"># the max distance from the center that we will use to determine the center of mass velocity                   </span>
+        <span class="n">rv_max</span> <span class="o">=</span> <span class="mf">15.0</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">kpc</span>
+
+        <span class="c1"># determine the position of all particles relative to the center of mass position</span>
+        <span class="n">xyz_v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">kpc</span> <span class="o">-</span> <span class="n">xyz_com</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+        <span class="n">r_v</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">xyz_v</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        
+        <span class="c1"># determine the index for those particles within the max radius</span>
+        <span class="n">index_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">r_v</span> <span class="o">&lt;</span> <span class="n">rv_max</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># determine the velocity and mass of those particles within the max radius</span>
+        <span class="n">vxyz_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vxyz</span><span class="p">[:,</span> <span class="n">index_v</span><span class="p">]</span>
+        <span class="n">m_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="n">index_v</span><span class="p">]</span>  
+        
+        <span class="c1"># compute the center of mass velocity using those particles</span>
+        <span class="n">vxyz_com</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_define</span><span class="p">(</span><span class="n">vxyz_new</span><span class="p">,</span> <span class="n">m_new</span><span class="p">)</span>
+
+        <span class="c1"># return the COM vector                                                                                        </span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">vxyz_com</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">km</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">ASTR400B Leach</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../galaxy.html">Galaxy class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../galaxies.html">Galaxies class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../centerofmass.html">CenterOfMass class</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Colin Leach.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>CenterOfMass class &#8212; ASTR400B Leach  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Galaxies class" href="galaxies.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-galaxy.centerofmass"></span><div class="section" id="centerofmass-class">
+<h1>CenterOfMass class<a class="headerlink" href="#centerofmass-class" title="Permalink to this headline">¶</a></h1>
+<p>Determines position and velocity of the COM for a galaxy/particle
+type combination.</p>
+<dl class="class">
+<dt id="galaxy.centerofmass.CenterOfMass">
+<em class="property">class </em><code class="sig-prename descclassname">galaxy.centerofmass.</code><code class="sig-name descname">CenterOfMass</code><span class="sig-paren">(</span><em class="sig-param">gal</em>, <em class="sig-param">ptype</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/centerofmass.html#CenterOfMass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.centerofmass.CenterOfMass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class to define COM position and velocity properties of a given galaxy 
+and simulation snapshot</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>gal (Galaxy object):</dt><dd><p>The desired galaxy/snap to operate on</p>
+</dd>
+<dt>ptype (int):</dt><dd><p>for particles, 1=DM/halo, 2=disk, 3=bulge</p>
+</dd>
+</dl>
+</dd>
+<dt>Throws:</dt><dd><p>ValueError, if there are no particles of this type in this galaxy
+(typically, halo particles in M33)</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="galaxy.centerofmass.CenterOfMass.com_define">
+<code class="sig-name descname">com_define</code><span class="sig-paren">(</span><em class="sig-param">xyz</em>, <em class="sig-param">m</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/centerofmass.html#CenterOfMass.com_define"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.centerofmass.CenterOfMass.com_define" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to compute the center of mass position or velocity generically</p>
+<dl class="simple">
+<dt>Args: </dt><dd><dl class="simple">
+<dt>xyz (array with shape (3, N)):</dt><dd><p>(x, y, z) positions or velocities</p>
+</dd>
+<dt>m (1-D array):</dt><dd><p>particle masses</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns: </dt><dd><p>3-element array, the center of mass coordinates</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.centerofmass.CenterOfMass.com_p">
+<code class="sig-name descname">com_p</code><span class="sig-paren">(</span><em class="sig-param">delta=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/centerofmass.html#CenterOfMass.com_p"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.centerofmass.CenterOfMass.com_p" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to specifically return the center of mass position and velocity    .</p>
+<dl class="simple">
+<dt>Kwargs:                                                                                                           </dt><dd><p>delta (tolerance)</p>
+</dd>
+<dt>Returns: </dt><dd><p>One 3-vector, coordinates of the center of mass position (kpc)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.centerofmass.CenterOfMass.com_v">
+<code class="sig-name descname">com_v</code><span class="sig-paren">(</span><em class="sig-param">xyz_com</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/centerofmass.html#CenterOfMass.com_v"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.centerofmass.CenterOfMass.com_v" title="Permalink to this definition">¶</a></dt>
+<dd><p>Center of Mass velocity</p>
+<p>Args: X, Y, Z positions of the COM</p>
+<p>Returns: 3-Vector of COM velocities</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ASTR400B Leach</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="galaxy.html">Galaxy class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="galaxies.html">Galaxies class</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CenterOfMass class</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="galaxies.html" title="previous chapter">Galaxies class</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Colin Leach.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/centerofmass.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

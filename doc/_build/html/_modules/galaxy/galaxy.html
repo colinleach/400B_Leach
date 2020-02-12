@@ -46,26 +46,26 @@
 
 <div class="viewcode-block" id="Galaxy"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy">[docs]</a><span class="k">class</span> <span class="nc">Galaxy</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Args: </span>
-<span class="sd">        name (str): </span>
+<span class="sd">    A class to find, read and manipulate files for a single galaxy.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        name (str):</span>
 <span class="sd">            short name used in filename of type &#39;name_000.txt&#39;, eg &#39;MW&#39;, &#39;M31&#39;.</span>
 
 <span class="sd">    Kwargs:</span>
-<span class="sd">        snap (int): </span>
+<span class="sd">        snap (int):</span>
 <span class="sd">            Snap number, equivalent to time elapsed. Zero is starting conditions.</span>
 <span class="sd">        datadir (str):</span>
-<span class="sd">            Directory to search first for the required file. Optional, and a </span>
+<span class="sd">            Directory to search first for the required file. Optional, and a</span>
 <span class="sd">            default list of locations will be searched.</span>
 
 <span class="sd">    Class attributes:</span>
-<span class="sd">        filepath (`pathlib.Path` object): </span>
+<span class="sd">        filepath (`pathlib.Path` object):</span>
 <span class="sd">            directory containing the data file</span>
 <span class="sd">        filename (str):</span>
 <span class="sd">            in `name_snap.txt` format, something like &#39;MW_000.txt&#39;</span>
 <span class="sd">        data (np.ndarray):</span>
 <span class="sd">            type, mass, position_xyz, velocity_xyz for each particle</span>
-
-<span class="sd">    A class to find, read and manipulate files for a single galaxy.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">snap</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">datadir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -84,7 +84,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            datadir (str): path to search first for the required file</span>
 
-<span class="sd">        Returns:   </span>
+<span class="sd">        Returns:</span>
 <span class="sd">            `pathlib.Path` object. A directory containing the file.</span>
 
 <span class="sd">        Raises:</span>
@@ -143,7 +143,7 @@
         <span class="c1"># get header data</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fullname</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
             <span class="n">_</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">Myr</span> <span class="c1"># corrected previous unit error</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">Myr</span>  <span class="c1"># corrected previous unit error</span>
             <span class="n">label</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">particle_count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
@@ -151,11 +151,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span>
             <span class="n">fullname</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span></div>
 
-
-    <span class="c1">#--------------------------------------------------------------------</span>
+    <span class="c1"># --------------------------------------------------------------------</span>
     <span class="c1"># A couple of small utility functions to interconvert particle type</span>
-    <span class="c1">#--------------------------------------------------------------------</span>
-    
+    <span class="c1"># --------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="Galaxy.type2name"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.type2name">[docs]</a>    <span class="k">def</span> <span class="nf">type2name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">particle_type</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args: particle_type (int): valid values are 1, 2, or 3</span>
@@ -164,30 +163,31 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">typenames</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;DM&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;disk&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;bulge&#39;</span><span class="p">}</span>
-        <span class="k">return</span> <span class="n">typenames</span><span class="p">[</span><span class="nb">type</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="n">typenames</span><span class="p">[</span><span class="n">particle_type</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Galaxy.name2type"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.name2type">[docs]</a>    <span class="k">def</span> <span class="nf">name2type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">typename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args: typename (str): valid values are &#39;DM&#39;, &#39;disk&#39; or &#39;bulge&#39;</span>
 
-<span class="sd">        Returns: particle_type (int): 1, 2, or 3 (as used in data files)</span>
+<span class="sd">        Returns: particle_type (int): 1, 2, or 3 as used in data files</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">types</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;DM&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;disk&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;bulge&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
         <span class="k">return</span> <span class="n">types</span><span class="p">[</span><span class="n">typename</span><span class="p">]</span></div>
 
-        
-    <span class="c1">#--------------------------------------------------------------------</span>
+    <span class="c1"># --------------------------------------------------------------------</span>
     <span class="c1"># Subset the data by type</span>
-    <span class="c1">#--------------------------------------------------------------------</span>
-    
+    <span class="c1"># --------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="Galaxy.filter_by_type"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.filter_by_type">[docs]</a>    <span class="k">def</span> <span class="nf">filter_by_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">particle_type</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Subsets the data to a single particle type.</span>
+
 <span class="sd">        Args:</span>
-<span class="sd">            particle_type (int): for particles, 1=DM, 2=disk, 3=bulge </span>
-<span class="sd">    </span>
+<span class="sd">            particle_type (int): for particles, 1=DM, 2=disk, 3=bulge</span>
+
 <span class="sd">        Kwargs:</span>
-<span class="sd">            dataset (np.ndarray): a starting dataset other than self.data</span>
+<span class="sd">            dataset (np.ndarray): optionally, a starting dataset other than self.data</span>
 
 <span class="sd">        Returns: np.ndarray: subset data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -198,22 +198,23 @@
         <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">particle_type</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">dataset</span><span class="p">[</span><span class="n">index</span><span class="p">]</span></div>
 
-
-    <span class="c1">#--------------------------------------------------------------------</span>
+    <span class="c1"># --------------------------------------------------------------------</span>
     <span class="c1"># Methods to calculate properties of an existing dataset</span>
-    <span class="c1">#--------------------------------------------------------------------</span>
+    <span class="c1"># --------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="Galaxy.single_particle_properties"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.single_particle_properties">[docs]</a>    <span class="k">def</span> <span class="nf">single_particle_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">particle_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">particle_num</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates distance from the origin and magnitude of the velocity.</span>
+
 <span class="sd">        Kwargs:</span>
-<span class="sd">            particle_type (int): </span>
+<span class="sd">            particle_type (int):</span>
 <span class="sd">                a subset of the data filtered by 1=DM, 2=disk, 3=bulge</span>
-<span class="sd">            particle_num (int): </span>
+<span class="sd">            particle_num (int):</span>
 <span class="sd">                zero-based index to an array of particles</span>
 
-<span class="sd">        returns: </span>
+<span class="sd">        returns:</span>
 <span class="sd">            3-tuple of</span>
-<span class="sd">                Euclidean distance from CoM (kpc),</span>
+<span class="sd">                Euclidean distance from origin (kpc),</span>
 <span class="sd">                Euclidean velocity magnitude (km/s),</span>
 <span class="sd">                particle mass (M_sun)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -228,7 +229,7 @@
         <span class="c1"># mass:</span>
         <span class="n">m</span> <span class="o">=</span> <span class="n">particle</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1e10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">Msun</span>
 
-        <span class="c1"># Euclidean distance from galactic CoM:</span>
+        <span class="c1"># Euclidean distance from origin:</span>
         <span class="n">pos_xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">particle</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">particle</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">particle</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]])</span>
         <span class="n">pos_mag</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">pos_xyz</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">kpc</span>
 
@@ -238,13 +239,21 @@
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">pos_mag</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">v_mag</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">m</span></div>
 
-<div class="viewcode-block" id="Galaxy.all_particle_properties"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.all_particle_properties">[docs]</a>    <span class="k">def</span> <span class="nf">all_particle_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">particle_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Galaxy.all_particle_properties"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.all_particle_properties">[docs]</a>    <span class="k">def</span> <span class="nf">all_particle_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">particle_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">as_table</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Kwargs: particle_type (int): </span>
-<span class="sd">                a subset of the data filtered by 1=DM, 2=disk, 3=bulge</span>
+<span class="sd">        Calculates distances from the origin and magnitude of the velocities</span>
+<span class="sd">        for all particles (default) or a specied particle type.</span>
+<span class="sd">        </span>
+<span class="sd">        Kwargs: </span>
+<span class="sd">            particle_type (int):</span>
+<span class="sd">                A subset of the data filtered by 1=DM, 2=disk, 3=bulge</span>
+<span class="sd">            as_table (boolean): Return type. </span>
+<span class="sd">                If True, an astropy QTable with units. </span>
+<span class="sd">                If False, np.ndarrays for position and velocity</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            QTable: The full list with units, optionally filtered by type.</span>
+<span class="sd">            QTable: </span>
+<span class="sd">            The full list, optionally with units, optionally filtered by type.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">particle_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># all types accepted</span>
@@ -255,7 +264,7 @@
         <span class="c1"># mass:</span>
         <span class="n">m</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1e10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">Msun</span>
 
-        <span class="c1"># Pythagorean distance from galactic CoM:</span>
+        <span class="c1"># Pythagorean distance from origin:</span>
         <span class="n">pos_xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]])</span>
         <span class="n">pos_mag</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">pos_xyz</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">kpc</span>
 
@@ -263,20 +272,23 @@
         <span class="n">v_xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;vx&#39;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;vy&#39;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;vz&#39;</span><span class="p">]])</span>
         <span class="n">v_mag</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">v_xyz</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">km</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span>
 
-        <span class="c1"># construct and return a QTable with units</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="n">QTable</span><span class="p">()</span>
-        <span class="n">t</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
-        <span class="n">t</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
-        <span class="n">t</span><span class="p">[</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">pos_mag</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-        <span class="n">t</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">v_mag</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">t</span></div>
+        <span class="k">if</span> <span class="n">as_table</span><span class="p">:</span>
+            <span class="c1"># construct and return a QTable with units</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">QTable</span><span class="p">()</span>
+            <span class="n">t</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+            <span class="n">t</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+            <span class="n">t</span><span class="p">[</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">pos_mag</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="n">t</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">v_mag</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">t</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">],</span> <span class="n">pos_mag</span><span class="p">,</span> <span class="n">v_mag</span></div>
 
 <div class="viewcode-block" id="Galaxy.component_count"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.component_count">[docs]</a>    <span class="k">def</span> <span class="nf">component_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">particle_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Kwargs: particle_type (int): </span>
+<span class="sd">        Kwargs: particle_type (int):</span>
 <span class="sd">                a subset of the data filtered by 1=DM, 2=disk, 3=bulge</span>
 
-<span class="sd">        Returns: Quantity: </span>
+<span class="sd">        Returns: Quantity:</span>
 <span class="sd">                The number of particles in the galaxy of this type</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -289,7 +301,7 @@
 
 <div class="viewcode-block" id="Galaxy.all_component_counts"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.all_component_counts">[docs]</a>    <span class="k">def</span> <span class="nf">all_component_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns: list: </span>
+<span class="sd">        Returns: list:</span>
 <span class="sd">                The aggregate masses of particles of each type in the galaxy</span>
 <span class="sd">                Ordered as [halo, disk, bulge]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -298,10 +310,10 @@
 
 <div class="viewcode-block" id="Galaxy.component_mass"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.component_mass">[docs]</a>    <span class="k">def</span> <span class="nf">component_mass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">particle_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Kwargs: particle_type (int): </span>
+<span class="sd">        Kwargs: particle_type (int):</span>
 <span class="sd">                a subset of the data filtered by 1=DM, 2=disk, 3=bulge</span>
 
-<span class="sd">        Returns: Quantity: </span>
+<span class="sd">        Returns: Quantity:</span>
 <span class="sd">                The aggregate mass of all particles in the galaxy of this type</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -314,16 +326,16 @@
 
 <div class="viewcode-block" id="Galaxy.all_component_masses"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.all_component_masses">[docs]</a>    <span class="k">def</span> <span class="nf">all_component_masses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns: list: </span>
+<span class="sd">        Returns: list:</span>
 <span class="sd">                The aggregate masses of particles of each type in the galaxy</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">component_mass</span><span class="p">(</span><span class="n">ptype</span><span class="p">)</span> <span class="k">for</span> <span class="n">ptype</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span></div>
 
-    <span class="c1">#--------------------------------------------------------------------</span>
+    <span class="c1"># --------------------------------------------------------------------</span>
     <span class="c1"># Define some getters which may turn out to be useful, perhaps</span>
-    <span class="c1">#--------------------------------------------------------------------</span>
-    
+    <span class="c1"># --------------------------------------------------------------------</span>
+
 <div class="viewcode-block" id="Galaxy.get_array"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.get_array">[docs]</a>    <span class="k">def</span> <span class="nf">get_array</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns: all particle data in `np.ndarray` format</span>
@@ -334,13 +346,15 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span></div>
 
 <div class="viewcode-block" id="Galaxy.get_df"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.get_df">[docs]</a>    <span class="k">def</span> <span class="nf">get_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns: data as pandas dataframe</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns: data as pandas dataframe</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Galaxy.get_qtable"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.get_qtable">[docs]</a>    <span class="k">def</span> <span class="nf">get_qtable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns: data as astropy QTable, with units</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns: data as astropy QTable, with units</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">t</span> <span class="o">=</span> <span class="n">QTable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
@@ -375,6 +389,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../galaxy.html">Galaxy class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../galaxies.html">Galaxies class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../centerofmass.html">CenterOfMass class</a></li>
 </ul>
 
 <div class="relations">

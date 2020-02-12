@@ -14,6 +14,7 @@
     <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="CenterOfMass class" href="centerofmass.html" />
     <link rel="prev" title="Galaxy class" href="galaxy.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -39,19 +40,20 @@
 <dl class="class">
 <dt id="galaxy.galaxies.Galaxies">
 <em class="property">class </em><code class="sig-prename descclassname">galaxy.galaxies.</code><code class="sig-name descname">Galaxies</code><span class="sig-paren">(</span><em class="sig-param">names=('MW'</em>, <em class="sig-param">'M31'</em>, <em class="sig-param">'M33')</em>, <em class="sig-param">snaps=(0</em>, <em class="sig-param">0</em>, <em class="sig-param">0)</em>, <em class="sig-param">datadir=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
+<dd><p>A class to manipulate data for multiple galaxies.</p>
+<dl class="simple">
 <dt>Kwargs:</dt><dd><dl class="simple">
-<dt>names (iterable of str): </dt><dd><p>short names used in filename of type ‘name_000.txt’, eg ‘MW’, ‘M31’.</p>
+<dt>names (iterable of str):</dt><dd><p>short names used in filename of type ‘name_000.txt’, eg ‘MW’, ‘M31’.</p>
 </dd>
-<dt>snaps (iterable of int): </dt><dd><p>Snap number, equivalent to time elapsed. Zero is starting conditions.</p>
+<dt>snaps (iterable of int):</dt><dd><p>Snap number, equivalent to time elapsed. Zero is starting conditions.</p>
 </dd>
-<dt>datadir (str):</dt><dd><p>Directory to search first for the required file. Optional, and a 
+<dt>datadir (str):</dt><dd><p>Directory to search first for the required file. Optional, and a
 default list of locations will be searched.</p>
 </dd>
 </dl>
 </dd>
 <dt>Class attributes:</dt><dd><dl class="simple">
-<dt>path (<cite>pathlib.Path</cite> object): </dt><dd><p>directory (probably) containing the data files</p>
+<dt>path (<cite>pathlib.Path</cite> object):</dt><dd><p>directory (probably) containing the data files</p>
 </dd>
 <dt>filenames (list of str):</dt><dd><p>in <cite>name_snap</cite> format, something like ‘MW_000’ (no extension)</p>
 </dd>
@@ -60,21 +62,22 @@ default list of locations will be searched.</p>
 </dl>
 </dd>
 </dl>
-<p>A class to manipulate data for multiple galaxies.</p>
 <dl class="method">
 <dt id="galaxy.galaxies.Galaxies.read_data_files">
 <code class="sig-name descname">read_data_files</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies.read_data_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies.read_data_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attempts to create a Galaxy object for each name/snap combination
 set in <cite>self.names</cite> and <cite>self.snaps</cite></p>
 <p>No return value.
-Sets self.galaxies, a dictionary keyed on name_snap</p>
+Sets <cite>self.galaxies</cite>, a dictionary keyed on <cite>name_snap</cite></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="galaxy.galaxies.Galaxies.get_pivot">
 <code class="sig-name descname">get_pivot</code><span class="sig-paren">(</span><em class="sig-param">aggfunc</em>, <em class="sig-param">values='m'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies.get_pivot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies.get_pivot" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Args: </dt><dd><p>aggfunc (str): ‘count’, ‘sum’, etc as aggregation method
+<dd><p>Generic method to make a pandas pivot table from the 9 combinations of 
+galaxy and particle type.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>aggfunc (str): ‘count’, ‘sum’, etc as aggregation method
 values (str): column name to aggregate</p>
 </dd>
 </dl>
@@ -84,21 +87,52 @@ values (str): column name to aggregate</p>
 <dl class="method">
 <dt id="galaxy.galaxies.Galaxies.get_counts_pivot">
 <code class="sig-name descname">get_counts_pivot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies.get_counts_pivot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies.get_counts_pivot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns: pandas dataframe</p>
+<dd><p>Pivots on <cite>count(‘m)</cite>.</p>
+<p>Returns: pandas dataframe</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="galaxy.galaxies.Galaxies.get_masses_pivot">
 <code class="sig-name descname">get_masses_pivot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies.get_masses_pivot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies.get_masses_pivot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns: pandas dataframe</p>
+<dd><p>Pivots on <cite>sum(‘m)</cite>.</p>
+<p>Returns: pandas dataframe</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="galaxy.galaxies.Galaxies.get_full_df">
 <code class="sig-name descname">get_full_df</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies.get_full_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies.get_full_df" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Returns: </dt><dd><p>Concatenated pandas dataframe from all galaxies
+<dd><p>Combined data for all input files.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>Concatenated pandas dataframe from all galaxies
 Includes ‘name’ and ‘snap’ columns</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.galaxies.Galaxies.get_coms">
+<code class="sig-name descname">get_coms</code><span class="sig-paren">(</span><em class="sig-param">tolerance=0.1</em>, <em class="sig-param">ptypes=(1</em>, <em class="sig-param">2</em>, <em class="sig-param">3)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies.get_coms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies.get_coms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Center of Mass determination for all galaxies. 
+Defaults to all particle types, but <cite>ptypes=(2,)</cite> may be more useful.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>tolerance (float): convergence criterion (kpc)</p>
+</dd>
+<dt>Returns:</dt><dd><p>QTable with COM positions and velocities
+colnames: [‘name’, ‘ptype’, ‘x’, ‘y’, ‘z’, ‘vx’, ‘vy’, ‘vz’, ‘R’, ‘V’]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.galaxies.Galaxies.separations">
+<code class="sig-name descname">separations</code><span class="sig-paren">(</span><em class="sig-param">g1</em>, <em class="sig-param">g2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies.separations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies.separations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Position and velocity of galaxy g2 COM relative to g1 COM. 
+Uses only disk particles for the COM determination.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>g1, g2 (str): galaxies matching entries in self.filenames</p>
+</dd>
+<dt>Returns:</dt><dd><p>Dictionary containing relative position, distance, velocities in
+Cartesian and radial coordinates</p>
 </dd>
 </dl>
 </dd></dl>
@@ -128,6 +162,7 @@ Includes ‘name’ and ‘snap’ columns</p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="galaxy.html">Galaxy class</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Galaxies class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="centerofmass.html">CenterOfMass class</a></li>
 </ul>
 
 <div class="relations">
@@ -135,6 +170,7 @@ Includes ‘name’ and ‘snap’ columns</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="galaxy.html" title="previous chapter">Galaxy class</a></li>
+      <li>Next: <a href="centerofmass.html" title="next chapter">CenterOfMass class</a></li>
   </ul></li>
 </ul>
 </div>
