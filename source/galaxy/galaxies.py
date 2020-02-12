@@ -6,14 +6,8 @@ from numpy.linalg import norm
 import astropy.units as u
 from astropy.table import QTable #, Table
 
-# the next bit is a bodge,
-# it may be better to install the package with setup.py
-try:
-    from galaxy import Galaxy  # works locally
-    from centerofmass import CenterOfMass
-except BaseException:
-    from .galaxy import Galaxy  # works on RTD
-    from .centerofmass import CenterOfMass
+from galaxy.galaxy import Galaxy
+from galaxy.centerofmass import CenterOfMass
 
 
 class Galaxies():

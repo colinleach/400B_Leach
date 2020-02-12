@@ -1,15 +1,11 @@
 # import modules
 import numpy as np
+from numpy.linalg import norm
 
 import astropy.units as u
 import astropy.table as tbl
 
-# the next bit is a bodge,
-# it may be better to install the package with setup.py
-try:
-    from galaxy import Galaxy  # works locally
-except BaseException:
-    from .galaxy import Galaxy  # works on RTD
+from galaxy import Galaxy
 
 class CenterOfMass:
     """

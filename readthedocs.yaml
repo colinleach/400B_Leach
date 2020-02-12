@@ -16,5 +16,5 @@ sphinx:
 python:
   version: 3.7
   install:
-    - requirements: requirements.txt
+    - requirements: readthedocs.requirements.txt
   system_packages: true
