@@ -27,3 +27,18 @@ def test_masses_pivot():
     mp = g.get_masses_pivot()
     assert mp.shape == (4, 4)
     assert mp['1 Halo']['All'] == 4082418000000
+
+def test_get_coms():
+    coms = g.get_coms()
+    colnames = ['name', 'ptype', 'x', 'y', 'z', 'vx', 'vy', 'vz', 'R', 'V']
+    assert coms.colnames == colnames
+    V_vals = np.array([14.14,6.53,10.2,115.61,113.63,110.05,181.72,180.45])
+    assert coms['V'].value[:-1] == approx(V_vals)
+
+def test_separations():
+    seps = g.separations('MW_000', 'M31_000')
+    assert seps['r'].value == approx(769.1)
+    assert seps['vel_mag'].value == approx(117.74)
+    assert seps['v_radial'].value == approx(-115.85)
+    assert seps['v_tan_mag'].value == approx(21.36)
+    
