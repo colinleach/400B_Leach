@@ -47,7 +47,7 @@ def Schechter(M,phistar=0.0166,Mstar=-23.19,alpha=-0.81):
 # alpha (Slope of the Fxn) 
 #             -0.81 defaults from Smith+2009 in Kband
 # Returns: number density of galaxies (comoving units) at that magnitude M.
-    return 0.4*np.log(10)*nstar*10**(0.4*(Mstar - M)*(alpha +1.0))*np.exp(-10**(0.4*(Mstar - M)))
+    return 0.4*np.log(10)*phistar*10**(0.4*(Mstar - M)*(alpha +1.0))*np.exp(-10**(0.4*(Mstar - M)))
 
 
 # # Q1 
