@@ -23,15 +23,8 @@ class MassProfile:
     def __init__(self, gal):
         self.gal = gal
         
-        # store the mass, positions, velocities
-#         self.m = gal.data['m']
-#         self.xyz = np.array([gal.data[col] for col in ('x', 'y', 'z')]) * u.kpc
-#         self.vxyz = np.array([gal.data[col] for col in ('vx', 'vy', 'vz')])
-#         self.ptype = 
-        
         self.com = CenterOfMass(gal)
         self.com_p = self.com.com_p()
-#         self.com_v = self.com.com_v()
         
     def mass_enclosed(self, radii, ptype=None):
         """
