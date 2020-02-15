@@ -152,6 +152,7 @@ class Galaxy():
 
         Args:
             particle_type (int): for particles, 1=DM, 2=disk, 3=bulge
+            dataset (array including a type column): defaults to self.data
 
         Kwargs:
             dataset (np.ndarray): optionally, a starting dataset other than self.data

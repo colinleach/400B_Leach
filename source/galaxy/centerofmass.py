@@ -24,7 +24,7 @@ class CenterOfMass:
     """
     
     
-    def __init__(self, gal, ptype):
+    def __init__(self, gal, ptype=2):
     # Initialize the instance of this Class with the following properties:
     
         # subset with our particle type
