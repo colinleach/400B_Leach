@@ -41,4 +41,6 @@ def test_separations():
     assert seps['vel_mag'].value == approx(117.74)
     assert seps['v_radial'].value == approx(-115.85)
     assert seps['v_tan_mag'].value == approx(21.36)
+    assert (seps['v_radial'].value)**2 + (seps['v_tan_mag'].value)**2 == \
+        approx((seps['vel_mag'].value)**2, rel=5e-3)
     

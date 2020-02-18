@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>galaxy.massprofile &#8212; ASTR400B Leach  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for galaxy.massprofile</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rcParams</span>
+
+<span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
+<span class="kn">from</span> <span class="nn">astropy.constants</span> <span class="kn">import</span> <span class="n">G</span>
+
+<span class="kn">from</span> <span class="nn">galaxy.centerofmass</span> <span class="kn">import</span> <span class="n">CenterOfMass</span>
+
+
+<div class="viewcode-block" id="MassProfile"><a class="viewcode-back" href="../../massprofile.html#galaxy.massprofile.MassProfile">[docs]</a><span class="k">class</span> <span class="nc">MassProfile</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class to define mass enclosed as a function of radius and circular velocity</span>
+<span class="sd">    profiles for a given galaxy and simulation snapshot</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        gal (Galaxy object):</span>
+<span class="sd">            The desired galaxy/snap to operate on</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gal</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gal</span> <span class="o">=</span> <span class="n">gal</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">com</span> <span class="o">=</span> <span class="n">CenterOfMass</span><span class="p">(</span><span class="n">gal</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">com_p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">com_p</span><span class="p">()</span>
+        
+<div class="viewcode-block" id="MassProfile.mass_enclosed"><a class="viewcode-back" href="../../massprofile.html#galaxy.massprofile.MassProfile.mass_enclosed">[docs]</a>    <span class="k">def</span> <span class="nf">mass_enclosed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="n">ptype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the mass within a given radius of the CoM </span>
+<span class="sd">        for a given type of particle.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            radii (array of distances): spheres to integrate over</span>
+<span class="sd">            ptype (int): particle type from (1,2,3), or None for total</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            array of masses, in units of M_sun</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="n">ptype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gal</span><span class="o">.</span><span class="n">data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gal</span><span class="o">.</span><span class="n">filter_by_type</span><span class="p">(</span><span class="n">ptype</span><span class="p">)</span>
+            
+        <span class="n">xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dataset</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">)])</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">kpc</span>
+        
+        <span class="c1"># get coordinates centered on CoM</span>
+        <span class="n">xyz_centered</span> <span class="o">=</span> <span class="n">xyz</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_p</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+        
+        <span class="c1"># distances from CoM:</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">xyz_centered</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        
+        <span class="n">within_r</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">][</span><span class="n">dist</span> <span class="o">&lt;</span> <span class="n">r</span><span class="p">])</span>
+        <span class="n">masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">within_r</span><span class="p">(</span><span class="n">ri</span><span class="p">)</span> <span class="k">for</span> <span class="n">ri</span> <span class="ow">in</span> <span class="n">radii</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1e10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">M_sun</span>
+        
+        <span class="k">return</span> <span class="n">masses</span></div>
+    
+<div class="viewcode-block" id="MassProfile.mass_enclosed_total"><a class="viewcode-back" href="../../massprofile.html#galaxy.massprofile.MassProfile.mass_enclosed_total">[docs]</a>    <span class="k">def</span> <span class="nf">mass_enclosed_total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radii</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the mass within a given radius of the CoM, </span>
+<span class="sd">        summed for all types of particle.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            radii (array of distances): spheres to integrate over</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            array of masses, in units of M_sun</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+<span class="c1">#         return np.sum([self.mass_enclosed(ptype, radii) \</span>
+<span class="c1">#                        for ptype in (1,2,3)], axis=0)</span>
+    
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass_enclosed</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="MassProfile.halo_mass"><a class="viewcode-back" href="../../massprofile.html#galaxy.massprofile.MassProfile.halo_mass">[docs]</a>    <span class="k">def</span> <span class="nf">halo_mass</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s2">&quot;Utility function to get a parameter for Hernquist mass&quot;</span>
+        
+        <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gal</span><span class="o">.</span><span class="n">filter_by_type</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># just halo particles</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1e10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">M_sun</span></div>
+    
+<div class="viewcode-block" id="MassProfile.hernquist_mass"><a class="viewcode-back" href="../../massprofile.html#galaxy.massprofile.MassProfile.hernquist_mass">[docs]</a>    <span class="k">def</span> <span class="nf">hernquist_mass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">M_halo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the mass enclosed for a theoretical profile</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            r (Quantity, units of kpc): distance from center</span>
+<span class="sd">            a (Quantity, units of kpc): scale radius</span>
+<span class="sd">            M_halo (Quantity, units of M_sun): total DM mass (optional)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Total DM mass enclosed within r (M_sun)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="n">M_halo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">M_halo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halo_mass</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">M_halo</span> <span class="o">*</span> <span class="n">r</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>    </div>
+    
+<div class="viewcode-block" id="MassProfile.circular_velocity"><a class="viewcode-back" href="../../massprofile.html#galaxy.massprofile.MassProfile.circular_velocity">[docs]</a>    <span class="k">def</span> <span class="nf">circular_velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="n">ptype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate orbital velocity at a given radius from the CoM </span>
+<span class="sd">        for a given type of particle.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            radii (array of distances): circular orbit</span>
+<span class="sd">            ptype (int): particle type from (1,2,3), or None for total</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            array of circular speeds, in units of km/s</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="n">ptype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">central_mass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass_enclosed_total</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">central_mass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass_enclosed</span><span class="p">(</span><span class="n">radii</span><span class="p">,</span> <span class="n">ptype</span><span class="p">)</span>
+            
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">G</span> <span class="o">*</span> <span class="n">central_mass</span> <span class="o">/</span> <span class="n">radii</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">km</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="MassProfile.circular_velocity_total"><a class="viewcode-back" href="../../massprofile.html#galaxy.massprofile.MassProfile.circular_velocity_total">[docs]</a>    <span class="k">def</span> <span class="nf">circular_velocity_total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radii</span><span class="p">):</span>
+        <span class="s2">&quot;Syntactic sugar for circular_velocity(radii, ptype=None)&quot;</span>
+        
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">circular_velocity</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span></div>
+    
+    <span class="k">def</span> <span class="nf">circular_velocity_hernquist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">M_halo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">central_mass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hernquist_mass</span><span class="p">(</span><span class="n">radii</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">M_halo</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">G</span> <span class="o">*</span> <span class="n">central_mass</span> <span class="o">/</span> <span class="n">radii</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">km</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">ASTR400B Leach</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../galaxy.html">Galaxy class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../galaxies.html">Galaxies class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../centerofmass.html">CenterOfMass class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../massprofile.html">MassProfile class</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Colin Leach.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -25,6 +25,7 @@ Steward Observatory, Spring 2020.
     galaxy
     galaxies
     centerofmass
+    massprofile
 
 Indices and tables
 ==================

@@ -112,7 +112,8 @@ default list of locations will be searched.</p>
 <code class="sig-name descname">filter_by_type</code><span class="sig-paren">(</span><em class="sig-param">particle_type</em>, <em class="sig-param">dataset=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.filter_by_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.filter_by_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subsets the data to a single particle type.</p>
 <dl class="simple">
-<dt>Args:</dt><dd><p>particle_type (int): for particles, 1=DM, 2=disk, 3=bulge</p>
+<dt>Args:</dt><dd><p>particle_type (int): for particles, 1=DM, 2=disk, 3=bulge
+dataset (array including a type column): defaults to self.data</p>
 </dd>
 <dt>Kwargs:</dt><dd><p>dataset (np.ndarray): optionally, a starting dataset other than self.data</p>
 </dd>
@@ -248,6 +249,7 @@ Ordered as [halo, disk, bulge]</p>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Galaxy class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="galaxies.html">Galaxies class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="centerofmass.html">CenterOfMass class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="massprofile.html">MassProfile class</a></li>
 </ul>
 
 <div class="relations">
