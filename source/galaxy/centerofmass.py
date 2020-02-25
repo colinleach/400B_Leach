@@ -58,7 +58,7 @@ class CenterOfMass:
         return np.sum(xyz * m, axis=1) / np.sum(m)
     
     
-    def com_p(self, delta=0.1):
+    def com_p(self, delta=0.1, vol_dec=2.0):
         """
         Function to specifically return the center of mass position and velocity    .
 
@@ -85,8 +85,8 @@ class CenterOfMass:
         r_new = norm(xyz_new, axis=0)
 
         # find the max 3D distance of all particles from the guessed COM                                               
-        # will re-start at half that radius (reduced radius)                                                           
-        r_max = max(r_new)/2.0
+        # will re-start at reduced radius                                                         
+        r_max = max(r_new)/vol_dec
         
         # pick an initial value for the change in COM position                                                      
         # between the first guess above and the new one computed from half that volume
@@ -119,7 +119,7 @@ class CenterOfMass:
             # Before loop continues, reset : RMAX, particle separations and COM                                        
 
             # reduce the volume by a factor of 2 again                                                                 
-            r_max = r_max/2.0
+            r_max = r_max/vol_dec
             # check this.                                                                                              
             # print ("RMAX", RMAX)                                                                                      
 
