@@ -300,62 +300,7 @@ class Galaxy():
 
         return [self.component_mass(ptype) for ptype in (1, 2, 3)]
 
-    def angular_momentum(self):
-        """
-        Returns: 3-vector as array
-            The (x,y,x) components of the angular momentum vector,
-            summed over all particles of all types
-        """
-
-        m = self.data['m']
-        pos = np.array([self.data[xi] for xi in ['x','y','z']])
-        v = np.array([self.data[vxi] for vxi in ['vx','vy','vz']])
-        p = m * v # linear momentum
-
-        # angular momentum of each particle; use first dimension of each array
-        L_i = np.cross(pos, p, 0, 0) 
-
-        return np.sum(L_i, axis=0)
-
-    def rotate_frame(self, to_axis=None):
-        """
-        Arg: to_axis (3-vector)
-                Angular momentum vector will be aligned to this (default z-hat)
-
-        Returns: (positions, velocities), two arrays of shape (3, N)
-                New values for every particle. `self.data` remains unchanged.
-        
-        Based on Rodrigues' rotation formula
-        Ref: https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula
-        """
-
-        if to_axis is None:
-            to_axis = np.array([0, 0, 1])
-        else:
-            to_axis /= norm(to_axis) # we need a unit vector
-
-        L, p, v = self.angular_momentum()
-        L /= norm(L) # we need a unit vector
-
-        # cross product between L and new axis
-        k_vec = np.cross(L, to_axis) # 3-vector
-        s_sq = np.sum(k_vec**2) # scalar, sin theta
-
-        # dot product between L and new axis 
-        c = np.dot(L, to_axis) # scalar, cos theta
-
-        # rotation matrix, 3x3
-        kx, ky, kz = k_vec
-        K = np.array([[0, -kz, ky], [kz, 0, -kx], [-ky, kx, 0]])
-        R = np.eye(3) + K + K@K * (1 - c) / s_sq
-
-        # Rotate coordinate system
-        pos = np.dot(R, p)
-        vel = np.dot(R, v)
-
-        return pos, vel
-
-    # --------------------------------------------------------------------
+        # --------------------------------------------------------------------
     # Define some getters which may turn out to be useful, perhaps
     # --------------------------------------------------------------------
 

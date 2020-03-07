@@ -1,0 +1,358 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>galaxy.utilities &#8212; ASTR400B Leach  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for galaxy.utilities</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">A collection of miscellaneous functions that don&#39;t fit into any of the other classes</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># import modules</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="k">as</span> <span class="nn">so</span>
+
+<span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
+<span class="kn">from</span> <span class="nn">astropy.constants</span> <span class="kn">import</span> <span class="n">G</span>
+
+<span class="c1"># import plotting modules</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">LogNorm</span>
+
+<span class="kn">from</span> <span class="nn">galaxy.galaxy</span> <span class="kn">import</span> <span class="n">Galaxy</span>
+<span class="kn">from</span> <span class="nn">galaxy.galaxies</span> <span class="kn">import</span> <span class="n">Galaxies</span>
+<span class="kn">from</span> <span class="nn">galaxy.centerofmass</span> <span class="kn">import</span> <span class="n">CenterOfMass</span>
+
+<span class="n">G_val</span> <span class="o">=</span> <span class="mf">4.498768e-6</span> <span class="c1"># units of kpc^3/Gyr^2/Msun</span>
+
+<span class="c1"># Function to compute the dynamical mass, given the observed size and velocity </span>
+<span class="c1"># dispersion of a galaxy</span>
+<span class="c1"># See in-class lab 5</span>
+
+<div class="viewcode-block" id="wolf_mass"><a class="viewcode-back" href="../../utilities.html#galaxy.utilities.wolf_mass">[docs]</a><span class="k">def</span> <span class="nf">wolf_mass</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="n">Re</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Wolf mass estimator from Wolf+ 2010</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sigma : </span>
+<span class="sd">            1D line of sight velocity dispersion in km/s</span>
+<span class="sd">        Re : </span>
+<span class="sd">            2D radius enclosing half the stellar mass in pc</span>
+
+<span class="sd">    Returns: estimate of the dynamical mass within the half light radius in Msun</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="mi">4</span> <span class="o">/</span> <span class="n">G_val</span> <span class="o">*</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">Re</span> <span class="o">/</span> <span class="mi">1000</span></div>
+
+<span class="c1"># Stellar to Halo Mass Relation</span>
+
+<span class="c1"># Following the work of Moster et al. 2013 (MNRAS, 428, 3121)</span>
+<span class="c1"># https://ui.adsabs.harvard.edu/abs/2013MNRAS.428.3121M/abstract</span>
+
+<span class="c1"># `Equation 2:` $ \frac{m}{M} = 2N \left[ \left( \frac{M}{M_1} \right)^{-\beta} + </span>
+<span class="c1">#               \left(\frac{M}{M_1} \right)^{\gamma} \right]$ </span>
+<span class="c1"># $m$ = stellar mass, $M$ = halo mass</span>
+<span class="c1"># `Equation 11:` log $M_1(z) = M_{10} + M_{11} \frac{z}{z+1} $ </span>
+<span class="c1"># `Equation 12:` $N(z) = N_{10} + N_{11} \frac{z}{z+1} $</span>
+<span class="c1"># `Equation 13:`  $\beta(z) = \beta_{10} + \beta_{11} \frac{z}{z+1} $</span>
+<span class="c1"># `Equation 14:` $\gamma(z) = \gamma_{10} + \gamma_{11} \frac{z}{z+1} $</span>
+
+<span class="c1"># See in-class lab 5</span>
+
+<span class="k">class</span> <span class="nc">AbundanceMatching</span><span class="p">:</span>
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="s2">&quot; input: Halo mass (Msun) and Redshift&quot;</span>
+        
+        <span class="c1">#initializing the parameters:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">=</span> <span class="n">M</span> <span class="c1"># Halo Mass in Msun</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">z</span>  <span class="c1"># Redshift</span>
+        
+        
+    <span class="k">def</span> <span class="nf">logM1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;eq. 11 of Moster 2013</span>
+<span class="sd">        input: </span>
+<span class="sd">            redshift</span>
+<span class="sd">        output: </span>
+<span class="sd">            M1, characteristic mass in log(Msun)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">M10</span>      <span class="o">=</span> <span class="mf">11.59</span>
+        <span class="n">M11</span>      <span class="o">=</span> <span class="mf">1.195</span> 
+        <span class="k">return</span> <span class="n">M10</span> <span class="o">+</span> <span class="n">M11</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">))</span>  
+    
+    
+    <span class="k">def</span> <span class="nf">N</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;eq. 12 of Moster 2013</span>
+<span class="sd">        input: </span>
+<span class="sd">            redshift</span>
+<span class="sd">        output: </span>
+<span class="sd">            Normalization for eq. 2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">N10</span>      <span class="o">=</span> <span class="mf">0.0351</span>
+        <span class="n">N11</span>      <span class="o">=</span> <span class="o">-</span><span class="mf">0.0247</span>
+    
+        <span class="k">return</span> <span class="n">N10</span> <span class="o">+</span> <span class="n">N11</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">))</span>
+    
+    
+    <span class="k">def</span> <span class="nf">Beta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;eq. 13 of Moster 2013</span>
+<span class="sd">        input: </span>
+<span class="sd">            redshift</span>
+<span class="sd">        output: </span>
+<span class="sd">            power of the low mass slope&quot;&quot;&quot;</span>
+
+        <span class="n">beta10</span>      <span class="o">=</span> <span class="mf">1.376</span>
+        <span class="n">beta11</span>      <span class="o">=</span> <span class="o">-</span><span class="mf">0.826</span>
+    
+        <span class="k">return</span> <span class="n">beta10</span> <span class="o">+</span> <span class="n">beta11</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">))</span>
+    
+    <span class="k">def</span> <span class="nf">Gamma</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;eq. 14 of Moster 2013</span>
+<span class="sd">        input: </span>
+<span class="sd">            redshift</span>
+<span class="sd">        output: </span>
+<span class="sd">            power of the high mass slope &quot;&quot;&quot;</span>
+
+        <span class="n">gamma10</span>      <span class="o">=</span> <span class="mf">0.608</span>
+        <span class="n">gamma11</span>      <span class="o">=</span> <span class="mf">0.329</span>
+    
+        <span class="k">return</span> <span class="n">gamma10</span> <span class="o">+</span> <span class="n">gamma11</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">))</span>
+    
+    
+    <span class="k">def</span> <span class="nf">SHMratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        eq. 2 of Moster + 2013</span>
+<span class="sd">        Inputs: </span>
+<span class="sd">            halo mass M in solar masses (NOT in logspce)</span>
+<span class="sd">            redshift</span>
+<span class="sd">        Outputs: </span>
+<span class="sd">            Stellar mass to halo mass ratio</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">M1</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">logM1</span><span class="p">()</span> <span class="c1"># Converting characteristic mass to Msun from Log(Msun)</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="o">/</span><span class="n">M1</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">Beta</span><span class="p">())</span>  <span class="c1"># Low mass end</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">M</span><span class="o">/</span><span class="n">M1</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Gamma</span><span class="p">())</span>   <span class="c1"># High mass end</span>
+        <span class="n">Norm</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">()</span> <span class="c1"># Normalization</span>
+    
+        <span class="n">SHMratio</span> <span class="o">=</span> <span class="n">Norm</span><span class="o">*</span><span class="p">(</span><span class="n">A</span><span class="o">+</span><span class="n">B</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    
+        <span class="k">return</span> <span class="n">SHMratio</span>
+    
+    
+ <span class="c1"># Q1: add a function to the class that takes the SHM ratio and returns </span>
+<span class="c1"># The stellar mass </span>
+    <span class="k">def</span> <span class="nf">StellarMass</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Using eq 2 of Moster+ 2013</span>
+
+<span class="sd">        Returns the stellar mass (M_sun)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">SHMratio</span><span class="p">()</span>
+
+<span class="c1">#  Function that returns Sersic Profile for an Elliptical System</span>
+<span class="c1"># See in-class lab 6</span>
+
+<div class="viewcode-block" id="sersic"><a class="viewcode-back" href="../../utilities.html#galaxy.utilities.sersic">[docs]</a><span class="k">def</span> <span class="nf">sersic</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">Re</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">Mtot</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Input</span>
+<span class="sd">        R:</span>
+<span class="sd">            radius (kpc)</span>
+<span class="sd">        Re:</span>
+<span class="sd">            half mass radius (kpc)</span>
+<span class="sd">        n:</span>
+<span class="sd">            sersic index</span>
+<span class="sd">        Mtot:</span>
+<span class="sd">            total stellar mass</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">        Surface Brightness profile in Lsun/kpc^2</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># We are assuming M/L = 1, so the luminosity is:</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">Mtot</span>
+    
+    <span class="c1"># the effective surface brightness is</span>
+    <span class="c1"># Ie = L/7.2/pi/Re**2</span>
+    <span class="n">Ie</span> <span class="o">=</span> <span class="n">L</span> <span class="o">/</span> <span class="p">(</span><span class="mf">7.2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">Re</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">Ie</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">7.67</span> <span class="o">*</span> <span class="p">((</span><span class="n">R</span><span class="o">/</span><span class="n">Re</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">))</span></div>
+
+<span class="c1"># Code for plotting contours</span>
+<span class="c1"># from https://gist.github.com/adrn/3993992</span>
+<span class="c1"># See in-class lab 7</span>
+
+<div class="viewcode-block" id="density_contour"><a class="viewcode-back" href="../../utilities.html#galaxy.utilities.density_contour">[docs]</a><span class="k">def</span> <span class="nf">density_contour</span><span class="p">(</span><span class="n">xdata</span><span class="p">,</span> <span class="n">ydata</span><span class="p">,</span> <span class="n">nbins_x</span><span class="p">,</span> <span class="n">nbins_y</span><span class="p">,</span> <span class="n">level_vals</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">contour_kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Create a density contour plot.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">        xdata : numpy.ndarray</span>
+
+<span class="sd">        ydata : numpy.ndarray</span>
+
+<span class="sd">        nbins_x : int</span>
+<span class="sd">            Number of bins along x dimension</span>
+<span class="sd">        nbins_y : int</span>
+<span class="sd">            Number of bins along y dimension</span>
+<span class="sd">        level_vals : list of int</span>
+<span class="sd">            Contour values to include</span>
+<span class="sd">        ax : matplotlib.Axes (optional)</span>
+<span class="sd">            If supplied, plot the contour to this axis. Otherwise, open a new figure</span>
+<span class="sd">        contour_kwargs : dict</span>
+<span class="sd">            kwargs to be passed to pyplot.contour()</span>
+<span class="sd">            i.e. unknown number of keywords </span>
+<span class="sd">        </span>
+<span class="sd">    Example Usage</span>
+<span class="sd">        density_contour(x pos, y pos, contour res, contour res, level_vals, axis, colors for contours)</span>
+<span class="sd">        </span>
+<span class="sd">        e.g.:</span>
+
+<span class="sd">        colors=[&#39;red&#39;,&#39;orange&#39;, &#39;yellow&#39;]</span>
+<span class="sd">        </span>
+<span class="sd">        density_contour(xD, yD, 80, 80, [0.68, 0.8, 0.9], ax=ax, colors=colors)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">find_confidence_interval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pdf</span><span class="p">,</span> <span class="n">confidence_level</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">pdf</span><span class="p">[</span><span class="n">pdf</span> <span class="o">&gt;</span> <span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">-</span> <span class="n">confidence_level</span>
+
+    <span class="n">H</span><span class="p">,</span> <span class="n">xedges</span><span class="p">,</span> <span class="n">yedges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram2d</span><span class="p">(</span><span class="n">xdata</span><span class="p">,</span> <span class="n">ydata</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="p">(</span><span class="n">nbins_x</span><span class="p">,</span><span class="n">nbins_y</span><span class="p">),</span> <span class="n">normed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">x_bin_sizes</span> <span class="o">=</span> <span class="p">(</span><span class="n">xedges</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">xedges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="n">nbins_x</span><span class="p">))</span>
+    <span class="n">y_bin_sizes</span> <span class="o">=</span> <span class="p">(</span><span class="n">yedges</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">yedges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">nbins_y</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="n">pdf</span> <span class="o">=</span> <span class="p">(</span><span class="n">H</span><span class="o">*</span><span class="p">(</span><span class="n">x_bin_sizes</span><span class="o">*</span><span class="n">y_bin_sizes</span><span class="p">))</span>  
+    
+    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">xedges</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">+</span><span class="n">xedges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">yedges</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">+</span><span class="n">yedges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># transpose of distribution fxn</span>
+    <span class="n">fmt</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="c1">### Adjust Here #### </span>
+    
+    <span class="c1"># Contour Levels Definitions </span>
+    <span class="c1"># brentq is root finding method</span>
+    <span class="n">lev_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">so</span><span class="o">.</span><span class="n">brentq</span><span class="p">(</span><span class="n">find_confidence_interval</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">pdf</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
+    <span class="n">levels</span> <span class="o">=</span> <span class="p">[</span><span class="n">lev_fn</span><span class="p">(</span><span class="n">level</span><span class="p">)</span> <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="n">level_vals</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+    
+    <span class="c1"># contour level labels</span>
+    <span class="n">strs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">level</span><span class="p">)</span> <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="n">level_vals</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+
+    
+    <span class="c1">###### </span>
+    
+    <span class="k">if</span> <span class="n">ax</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">contour</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">contour_kwargs</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">contour</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span> <span class="n">strs</span><span class="p">):</span>
+            <span class="n">fmt</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">contour</span><span class="p">,</span> <span class="n">contour</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">contour</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">contour_kwargs</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">contour</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span> <span class="n">strs</span><span class="p">):</span>
+            <span class="n">fmt</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">contour</span><span class="p">,</span> <span class="n">contour</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">contour</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">ASTR400B Leach</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../galaxy.html">Galaxy class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../galaxies.html">Galaxies class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../centerofmass.html">CenterOfMass class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../massprofile.html">MassProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utilities.html">utilities module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Colin Leach.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

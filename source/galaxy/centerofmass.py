@@ -136,7 +136,6 @@ class CenterOfMass:
         # and then return the COM position vector
         return np.round(xyz_com, 2) * u.kpc
         
-    
     def com_v(self, xyz_com):
         """
         Center of Mass velocity
@@ -165,3 +164,83 @@ class CenterOfMass:
 
         # return the COM vector                                                                                        
         return np.round(vxyz_com, 2) * u.km / u.s
+
+    def center_com(self):
+        """
+        Positions and velocities of disk particles relative to the CoM
+
+        Returns : two (3, N) arrays
+            CoM-centric position and velocity
+        """
+
+        # Compute COM 
+        com_p = self.com_p(0.1)
+        com_v = self.com_v(com_p)
+
+        # Determine positions of disk particles relative to COM 
+        xyzD = self.xyz - com_p[:,np.newaxis].value
+
+        # Determine velocities of disk particles relative to COM motion
+        vxyzD = self.vxyz - com_v[:,np.newaxis].value
+
+        return xyzD, vxyzD
+
+
+    def angular_momentum(self):
+        """
+        Returns: 
+            L : 3-vector as array
+                The (x,y,x) components of the angular momentum vector about the CoM,
+                summed over all disk particles
+            pos, v : arrays with shape (3, N)
+                Position and velocity for each particle
+        """
+
+        # ignore masses, these are all the same for disk particles
+        # m = self.data['m']
+        pos, v = self.center_com()
+        # p = m * v # linear momentum
+
+        # angular momentum of each particle; use first dimension of each array
+        L_i = np.cross(pos, v, 0, 0) 
+
+        return np.sum(L_i, axis=0), pos, v
+
+    def rotate_frame(self, to_axis=None):
+        """
+        Arg: to_axis (3-vector)
+                Angular momentum vector will be aligned to this (default z-hat)
+
+        Returns: (positions, velocities), two arrays of shape (3, N)
+                New values for every particle. `self.data` remains unchanged.
+        
+        Based on Rodrigues' rotation formula
+        Ref: https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula
+        """
+
+        if to_axis is None:
+            to_axis = np.array([0, 0, 1])
+        else:
+            to_axis /= norm(to_axis) # we need a unit vector
+
+        L, pos, v = self.angular_momentum()
+        L /= norm(L) # we need a unit vector
+
+        # cross product between L and new axis
+        k_vec = np.cross(L, to_axis) # 3-vector
+        s_sq = np.sum(k_vec**2) # scalar, sin theta
+
+        # dot product between L and new axis 
+        c = np.dot(L, to_axis) # scalar, cos theta
+
+        # rotation matrix, 3x3
+        kx, ky, kz = k_vec
+        K = np.array([[0, -kz, ky], [kz, 0, -kx], [-ky, kx, 0]])
+        R = np.eye(3) + K + K@K * (1 - c) / s_sq
+
+        # Rotate coordinate system
+        pos = np.dot(R, pos)
+        vel = np.dot(R, v)
+
+        return pos, vel
+

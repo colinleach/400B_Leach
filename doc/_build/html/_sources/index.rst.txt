@@ -21,11 +21,13 @@ Steward Observatory, Spring 2020.
 .. toctree::
     :maxdepth: 2
     :caption: Contents:
+    :hidden:
 
     galaxy
     galaxies
     centerofmass
     massprofile
+    utilities
 
 Indices and tables
 ==================

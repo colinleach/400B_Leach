@@ -91,7 +91,7 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">xyz</span> <span class="o">*</span> <span class="n">m</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">m</span><span class="p">)</span></div>
     
     
-<div class="viewcode-block" id="CenterOfMass.com_p"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.com_p">[docs]</a>    <span class="k">def</span> <span class="nf">com_p</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+<div class="viewcode-block" id="CenterOfMass.com_p"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.com_p">[docs]</a>    <span class="k">def</span> <span class="nf">com_p</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">vol_dec</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function to specifically return the center of mass position and velocity    .</span>
 
@@ -118,8 +118,8 @@
         <span class="n">r_new</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">xyz_new</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="c1"># find the max 3D distance of all particles from the guessed COM                                               </span>
-        <span class="c1"># will re-start at half that radius (reduced radius)                                                           </span>
-        <span class="n">r_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">r_new</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span>
+        <span class="c1"># will re-start at reduced radius                                                         </span>
+        <span class="n">r_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">r_new</span><span class="p">)</span><span class="o">/</span><span class="n">vol_dec</span>
         
         <span class="c1"># pick an initial value for the change in COM position                                                      </span>
         <span class="c1"># between the first guess above and the new one computed from half that volume</span>
@@ -152,7 +152,7 @@
             <span class="c1"># Before loop continues, reset : RMAX, particle separations and COM                                        </span>
 
             <span class="c1"># reduce the volume by a factor of 2 again                                                                 </span>
-            <span class="n">r_max</span> <span class="o">=</span> <span class="n">r_max</span><span class="o">/</span><span class="mf">2.0</span>
+            <span class="n">r_max</span> <span class="o">=</span> <span class="n">r_max</span><span class="o">/</span><span class="n">vol_dec</span>
             <span class="c1"># check this.                                                                                              </span>
             <span class="c1"># print (&quot;RMAX&quot;, RMAX)                                                                                      </span>
 
@@ -169,7 +169,6 @@
         <span class="c1"># and then return the COM position vector</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">xyz_com</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">kpc</span></div>
         
-    
 <div class="viewcode-block" id="CenterOfMass.com_v"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.com_v">[docs]</a>    <span class="k">def</span> <span class="nf">com_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz_com</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Center of Mass velocity</span>
@@ -197,7 +196,87 @@
         <span class="n">vxyz_com</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_define</span><span class="p">(</span><span class="n">vxyz_new</span><span class="p">,</span> <span class="n">m_new</span><span class="p">)</span>
 
         <span class="c1"># return the COM vector                                                                                        </span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">vxyz_com</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">km</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span></div></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">vxyz_com</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">km</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span></div>
+
+<div class="viewcode-block" id="CenterOfMass.center_com"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.center_com">[docs]</a>    <span class="k">def</span> <span class="nf">center_com</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Positions and velocities of disk particles relative to the CoM</span>
+
+<span class="sd">        Returns : two (3, N) arrays</span>
+<span class="sd">            CoM-centric position and velocity</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Compute COM </span>
+        <span class="n">com_p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_p</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="n">com_v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_v</span><span class="p">(</span><span class="n">com_p</span><span class="p">)</span>
+
+        <span class="c1"># Determine positions of disk particles relative to COM </span>
+        <span class="n">xyzD</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span> <span class="o">-</span> <span class="n">com_p</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="c1"># Determine velocities of disk particles relative to COM motion</span>
+        <span class="n">vxyzD</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vxyz</span> <span class="o">-</span> <span class="n">com_v</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="k">return</span> <span class="n">xyzD</span><span class="p">,</span> <span class="n">vxyzD</span></div>
+
+
+<div class="viewcode-block" id="CenterOfMass.angular_momentum"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.angular_momentum">[docs]</a>    <span class="k">def</span> <span class="nf">angular_momentum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns: </span>
+<span class="sd">            L : 3-vector as array</span>
+<span class="sd">                The (x,y,x) components of the angular momentum vector about the CoM,</span>
+<span class="sd">                summed over all disk particles</span>
+<span class="sd">            pos, v : arrays with shape (3, N)</span>
+<span class="sd">                Position and velocity for each particle</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># ignore masses, these are all the same for disk particles</span>
+        <span class="c1"># m = self.data[&#39;m&#39;]</span>
+        <span class="n">pos</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">center_com</span><span class="p">()</span>
+        <span class="c1"># p = m * v # linear momentum</span>
+
+        <span class="c1"># angular momentum of each particle; use first dimension of each array</span>
+        <span class="n">L_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> 
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">L_i</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">pos</span><span class="p">,</span> <span class="n">v</span></div>
+
+<div class="viewcode-block" id="CenterOfMass.rotate_frame"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.rotate_frame">[docs]</a>    <span class="k">def</span> <span class="nf">rotate_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Arg: to_axis (3-vector)</span>
+<span class="sd">                Angular momentum vector will be aligned to this (default z-hat)</span>
+
+<span class="sd">        Returns: (positions, velocities), two arrays of shape (3, N)</span>
+<span class="sd">                New values for every particle. `self.data` remains unchanged.</span>
+<span class="sd">        </span>
+<span class="sd">        Based on Rodrigues&#39; rotation formula</span>
+<span class="sd">        Ref: https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">to_axis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">to_axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">to_axis</span> <span class="o">/=</span> <span class="n">norm</span><span class="p">(</span><span class="n">to_axis</span><span class="p">)</span> <span class="c1"># we need a unit vector</span>
+
+        <span class="n">L</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular_momentum</span><span class="p">()</span>
+        <span class="n">L</span> <span class="o">/=</span> <span class="n">norm</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="c1"># we need a unit vector</span>
+
+        <span class="c1"># cross product between L and new axis</span>
+        <span class="n">k_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">to_axis</span><span class="p">)</span> <span class="c1"># 3-vector</span>
+        <span class="n">s_sq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">k_vec</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># scalar, sin theta</span>
+
+        <span class="c1"># dot product between L and new axis </span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">to_axis</span><span class="p">)</span> <span class="c1"># scalar, cos theta</span>
+
+        <span class="c1"># rotation matrix, 3x3</span>
+        <span class="n">kx</span><span class="p">,</span> <span class="n">ky</span><span class="p">,</span> <span class="n">kz</span> <span class="o">=</span> <span class="n">k_vec</span>
+        <span class="n">K</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">kz</span><span class="p">,</span> <span class="n">ky</span><span class="p">],</span> <span class="p">[</span><span class="n">kz</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">kx</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">ky</span><span class="p">,</span> <span class="n">kx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="n">K</span> <span class="o">+</span> <span class="n">K</span><span class="nd">@K</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span> <span class="o">/</span> <span class="n">s_sq</span>
+
+        <span class="c1"># Rotate coordinate system</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+        <span class="n">vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pos</span><span class="p">,</span> <span class="n">vel</span></div></div>
+
 </pre></div>
 
           </div>
@@ -222,6 +301,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../galaxies.html">Galaxies class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../centerofmass.html">CenterOfMass class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../massprofile.html">MassProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utilities.html">utilities module</a></li>
 </ul>
 
 <div class="relations">

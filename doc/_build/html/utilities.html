@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>utilities module &#8212; ASTR400B Leach  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="MassProfile class" href="massprofile.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="toctree-wrapper compound">
+</div>
+<div class="section" id="utilities-module">
+<h1>utilities module<a class="headerlink" href="#utilities-module" title="Permalink to this headline">¶</a></h1>
+<p>A collection of useful functions that don’t fit into any of the other classes.</p>
+<span class="target" id="module-galaxy.utilities"></span><p>A collection of miscellaneous functions that don’t fit into any of the other classes</p>
+<dl class="function">
+<dt id="galaxy.utilities.wolf_mass">
+<code class="sig-prename descclassname">galaxy.utilities.</code><code class="sig-name descname">wolf_mass</code><span class="sig-paren">(</span><em class="sig-param">sigma</em>, <em class="sig-param">Re</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/utilities.html#wolf_mass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.utilities.wolf_mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wolf mass estimator from Wolf+ 2010</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>sigma<span class="classifier"></span></dt><dd><p>1D line of sight velocity dispersion in km/s</p>
+</dd>
+<dt>Re<span class="classifier"></span></dt><dd><p>2D radius enclosing half the stellar mass in pc</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Returns: estimate of the dynamical mass within the half light radius in Msun</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="galaxy.utilities.sersic">
+<code class="sig-prename descclassname">galaxy.utilities.</code><code class="sig-name descname">sersic</code><span class="sig-paren">(</span><em class="sig-param">R</em>, <em class="sig-param">Re</em>, <em class="sig-param">n</em>, <em class="sig-param">Mtot</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/utilities.html#sersic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.utilities.sersic" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Input</dt><dd><dl class="simple">
+<dt>R:</dt><dd><p>radius (kpc)</p>
+</dd>
+<dt>Re:</dt><dd><p>half mass radius (kpc)</p>
+</dd>
+<dt>n:</dt><dd><p>sersic index</p>
+</dd>
+<dt>Mtot:</dt><dd><p>total stellar mass</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns</dt><dd><p>Surface Brightness profile in Lsun/kpc^2</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="galaxy.utilities.density_contour">
+<code class="sig-prename descclassname">galaxy.utilities.</code><code class="sig-name descname">density_contour</code><span class="sig-paren">(</span><em class="sig-param">xdata</em>, <em class="sig-param">ydata</em>, <em class="sig-param">nbins_x</em>, <em class="sig-param">nbins_y</em>, <em class="sig-param">level_vals</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">**contour_kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/utilities.html#density_contour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.utilities.density_contour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a density contour plot.</p>
+<dl>
+<dt>Parameters</dt><dd><p>xdata : numpy.ndarray</p>
+<p>ydata : numpy.ndarray</p>
+<dl class="simple">
+<dt>nbins_x<span class="classifier">int</span></dt><dd><p>Number of bins along x dimension</p>
+</dd>
+<dt>nbins_y<span class="classifier">int</span></dt><dd><p>Number of bins along y dimension</p>
+</dd>
+<dt>level_vals<span class="classifier">list of int</span></dt><dd><p>Contour values to include</p>
+</dd>
+<dt>ax<span class="classifier">matplotlib.Axes (optional)</span></dt><dd><p>If supplied, plot the contour to this axis. Otherwise, open a new figure</p>
+</dd>
+<dt>contour_kwargs<span class="classifier">dict</span></dt><dd><p>kwargs to be passed to pyplot.contour()
+i.e. unknown number of keywords</p>
+</dd>
+</dl>
+</dd>
+<dt>Example Usage</dt><dd><p>density_contour(x pos, y pos, contour res, contour res, level_vals, axis, colors for contours)</p>
+<p>e.g.:</p>
+<p>colors=[‘red’,’orange’, ‘yellow’]</p>
+<p>density_contour(xD, yD, 80, 80, [0.68, 0.8, 0.9], ax=ax, colors=colors)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ASTR400B Leach</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="galaxy.html">Galaxy class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="galaxies.html">Galaxies class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="centerofmass.html">CenterOfMass class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="massprofile.html">MassProfile class</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">utilities module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="massprofile.html" title="previous chapter">MassProfile class</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Colin Leach.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/utilities.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

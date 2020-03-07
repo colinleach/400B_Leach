@@ -74,7 +74,7 @@ and simulation snapshot</p>
 
 <dl class="method">
 <dt id="galaxy.centerofmass.CenterOfMass.com_p">
-<code class="sig-name descname">com_p</code><span class="sig-paren">(</span><em class="sig-param">delta=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/centerofmass.html#CenterOfMass.com_p"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.centerofmass.CenterOfMass.com_p" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">com_p</code><span class="sig-paren">(</span><em class="sig-param">delta=0.1</em>, <em class="sig-param">vol_dec=2.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/centerofmass.html#CenterOfMass.com_p"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.centerofmass.CenterOfMass.com_p" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to specifically return the center of mass position and velocity    .</p>
 <dl class="simple">
 <dt>Kwargs:                                                                                                           </dt><dd><p>delta (tolerance)</p>
@@ -90,6 +90,44 @@ and simulation snapshot</p>
 <dd><p>Center of Mass velocity</p>
 <p>Args: X, Y, Z positions of the COM</p>
 <p>Returns: 3-Vector of COM velocities</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.centerofmass.CenterOfMass.center_com">
+<code class="sig-name descname">center_com</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/centerofmass.html#CenterOfMass.center_com"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.centerofmass.CenterOfMass.center_com" title="Permalink to this definition">¶</a></dt>
+<dd><p>Positions and velocities of disk particles relative to the CoM</p>
+<dl class="simple">
+<dt>Returns<span class="classifier">two (3, N) arrays</span></dt><dd><p>CoM-centric position and velocity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.centerofmass.CenterOfMass.angular_momentum">
+<code class="sig-name descname">angular_momentum</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/centerofmass.html#CenterOfMass.angular_momentum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.centerofmass.CenterOfMass.angular_momentum" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Returns: </dt><dd><dl class="simple">
+<dt>L<span class="classifier">3-vector as array</span></dt><dd><p>The (x,y,x) components of the angular momentum vector about the CoM,
+summed over all disk particles</p>
+</dd>
+<dt>pos, v<span class="classifier">arrays with shape (3, N)</span></dt><dd><p>Position and velocity for each particle</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.centerofmass.CenterOfMass.rotate_frame">
+<code class="sig-name descname">rotate_frame</code><span class="sig-paren">(</span><em class="sig-param">to_axis=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/centerofmass.html#CenterOfMass.rotate_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.centerofmass.CenterOfMass.rotate_frame" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Arg: to_axis (3-vector)</dt><dd><p>Angular momentum vector will be aligned to this (default z-hat)</p>
+</dd>
+<dt>Returns: (positions, velocities), two arrays of shape (3, N)</dt><dd><p>New values for every particle. <cite>self.data</cite> remains unchanged.</p>
+</dd>
+</dl>
+<p>Based on Rodrigues’ rotation formula
+Ref: <a class="reference external" href="https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula">https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula</a></p>
 </dd></dl>
 
 </dd></dl>
@@ -119,6 +157,7 @@ and simulation snapshot</p>
 <li class="toctree-l1"><a class="reference internal" href="galaxies.html">Galaxies class</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">CenterOfMass class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="massprofile.html">MassProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">utilities module</a></li>
 </ul>
 
 <div class="relations">
