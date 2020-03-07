@@ -1,7 +1,5 @@
 import numpy as np
 from numpy.linalg import norm
-import matplotlib.pyplot as plt
-from matplotlib import rcParams
 
 import astropy.units as u
 from astropy.constants import G
