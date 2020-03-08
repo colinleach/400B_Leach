@@ -94,7 +94,7 @@ class TimeCourse():
                 header="{:>10s}{:>11s}{:>11s}{:>11s}{:>11s}{:>11s}{:>11s}"\
                         .format('t', 'x', 'y', 'z', 'vx', 'vy', 'vz'))
 
-        np.savetxt(angmom_fileout, angmom, fmt = "%11.3f"*5, comments='#',
+        np.savetxt(angmom_fileout, angmom, fmt = "%11.3f"*4 + "%11.3e", comments='#',
                 header="{:>10s}{:>11s}{:>11s}{:>11s}{:>11s}"\
                         .format('t', 'x_hat', 'y_hat', 'z_hat', 'L_mag'))
 
