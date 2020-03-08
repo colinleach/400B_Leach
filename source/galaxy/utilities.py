@@ -1,6 +1,4 @@
-"""
-A collection of miscellaneous functions that don't fit into any of the other classes
-"""
+# A collection of miscellaneous functions that don't fit into any of the other classes
 
 # import modules
 import numpy as np
@@ -207,7 +205,7 @@ def density_contour(xdata, ydata, nbins_x, nbins_y, level_vals, ax=None, **conto
         e.g.:
 
         colors=['red','orange', 'yellow']
-        
+
         density_contour(xD, yD, 80, 80, [0.68, 0.8, 0.9], ax=ax, colors=colors)
     """
 

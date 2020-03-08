@@ -165,7 +165,7 @@ class CenterOfMass:
         # return the COM vector                                                                                        
         return np.round(vxyz_com, 2) * u.km / u.s
 
-    def center_com(self):
+    def center_com(self, com_p=None, com_v=None):
         """
         Positions and velocities of disk particles relative to the CoM
 
@@ -173,9 +173,10 @@ class CenterOfMass:
             CoM-centric position and velocity
         """
 
-        # Compute COM 
-        com_p = self.com_p(0.1)
-        com_v = self.com_v(com_p)
+        if com_p is None:
+            com_p = self.com_p(0.1)
+        if com_v is None:
+            com_v = self.com_v(com_p)
 
         # Determine positions of disk particles relative to COM 
         xyzD = self.xyz - com_p[:,np.newaxis].value
@@ -186,7 +187,7 @@ class CenterOfMass:
         return xyzD, vxyzD
 
 
-    def angular_momentum(self):
+    def angular_momentum(self, com_p=None, com_v=None):
         """
         Returns: 
             L : 3-vector as array
@@ -198,7 +199,7 @@ class CenterOfMass:
 
         # ignore masses, these are all the same for disk particles
         # m = self.data['m']
-        pos, v = self.center_com()
+        pos, v = self.center_com(com_p, com_v)
         # p = m * v # linear momentum
 
         # angular momentum of each particle; use first dimension of each array
