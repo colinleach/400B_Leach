@@ -58,6 +58,7 @@ class Galaxies():
             # build the very important dictionary:
             key = f'{name}_{snap:03}'  # e.g 'MW_000'
             self.galaxies[key] = Galaxy(name, snap, self.path)
+            self.time = self.galaxies[key].time
 
             # bits of minor housekeeping:
             self.path = self.galaxies[key].filepath  # may speed up next search
@@ -215,3 +216,32 @@ class Galaxies():
         results['v_tan_mag'] = np.round(norm(results['v_tangential']), 2)
 
         return results
+
+    def total_com(self):
+        """
+        Center of Mass determination for the local group.
+
+        Uses all particles of all types. Position and velocity should be conserved 
+        quantities, subject to numerical imprecision in the sim.
+
+        Returns:
+            position, velocity: 3-vectors
+        """
+
+        # gather the position/velocity data for all galaxies and particle types
+        full_com_p = np.array([0., 0., 0.])
+        full_com_v = np.array([0., 0., 0.])
+
+        total_mass = 0
+
+        for name in self.filenames:
+            g = self.galaxies[name]
+            m = g.data['m']
+            xyz = np.array([g.data[col] for col in ('x', 'y', 'z')])
+            vxyz = np.array([g.data[col] for col in ('vx', 'vy', 'vz')])
+
+            full_com_p += np.sum(xyz * m, axis=1)
+            full_com_v += np.sum(vxyz * m, axis=1)
+            total_mass += np.sum(m)
+
+        return full_com_p / total_mass, full_com_v / total_mass

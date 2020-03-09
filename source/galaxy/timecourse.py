@@ -72,7 +72,6 @@ class TimeCourse():
 
             # store the angular momentum as unit vector and magnitude
             L, _, _ = com.angular_momentum()
-            # L = L.value
             L_mag = norm(L)
             L_hat = L / L_mag
         
@@ -98,4 +97,24 @@ class TimeCourse():
                 header="{:>10s}{:>11s}{:>11s}{:>11s}{:>11s}"\
                         .format('t', 'x_hat', 'y_hat', 'z_hat', 'L_mag'))
 
- 
+    def total_com(self, start=0, end=801, n=5, show_progress=True):
+        """
+        """
+
+        fileout = './total_com.txt'
+        snap_ids = np.arange(start, end+1, n)
+        coms = np.zeros((len(snap_ids), 7))
+
+        for  i, snap in enumerate(snap_ids): # loop over files
+            gals = Galaxies(snaps=[snap]*3, datadir=self.datadir)
+            full_com_p, full_com_v = gals.total_com()
+            t = gals.time.value/1000
+            coms[i] = t, *tuple(full_com_p), *tuple(full_com_v)
+
+            if show_progress:
+                print(snap, end=' ')
+        print('\nDone')
+
+        np.savetxt(fileout, coms, fmt = "%11.3f"*7, comments='#',
+                header="{:>10s}{:>11s}{:>11s}{:>11s}{:>11s}{:>11s}{:>11s}"\
+                        .format('t', 'x', 'y', 'z', 'vx', 'vy', 'vz'))
