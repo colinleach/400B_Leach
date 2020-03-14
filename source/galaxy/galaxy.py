@@ -18,13 +18,20 @@ class Galaxy():
     Args:
         name (str):
             short name used in filename of type 'name_000.txt', eg 'MW', 'M31'.
-
-    Kwargs:
         snap (int):
             Snap number, equivalent to time elapsed. Zero is starting conditions.
         datadir (str):
             Directory to search first for the required file. Optional, and a
             default list of locations will be searched.
+        usesql (bool):
+            If True, data will be taken from a PostgreSQL database instead of
+            text files.
+        ptype (int):
+            Optional. Restrict data to this particle type, for speed. 
+            Only valid with usesql=True.
+        stride (int):
+            Optional. For stride=n, get every nth row in the table.
+            Only valid with usesql=True.
 
     Class attributes:
         filepath (`pathlib.Path` object):
@@ -35,16 +42,76 @@ class Galaxy():
             type, mass, position_xyz, velocity_xyz for each particle
     """
 
-    def __init__(self, name, snap=0, datadir=None):
+    def __init__(self, name, snap=0, datadir=None, usesql=False, ptype=None, stride=1):
         "Initial setup. Currently it calls read_file(), but this may change."
 
         self.name = name
         self.snap = snap
 
-        # We can probably make some assumptions about the filename:
-        self.filename = f"{name}_{snap:03}.txt"
-        self.filepath = self.get_filepath(datadir)
-        self.read_file()
+        if usesql:
+            self.read_db(ptype, stride)
+        else:
+            # We can probably make some assumptions about the filename:
+            self.filename = f"{name}_{snap:03}.txt"
+            self.filepath = self.get_filepath(datadir)
+            self.read_file()
+
+    def read_db(self, ptype, stride):
+        """
+        Get relevant data from a PostgreSQL database and format it to be 
+        identical to that read from test files.
+
+        Args:
+            ptype (int):
+                Optional. Restrict data to this particle type.
+            stride (int):
+                Optional. For stride=n, get every nth row in the table.
+
+        Changes:
+            `self.time`, `self.particle_count` and `self.data` are set.
+
+        Returns: nothing
+        """
+
+        import psycopg2
+
+        # Temporarily, embed connection details here. 
+        # This will need to be moved to a config file or env variables.
+
+        host = '192.168.1.152' # BAD!!
+        username = 'python'
+        password = 'python'
+
+        # make the connection and get a cursor
+        inf = f"dbname=galaxy user={username}  host='{host}' password={password}"
+        conn = psycopg2.connect(inf)
+        cur = conn.cursor()
+
+        # set the elapsed time
+        sql_t = f"SELECT time FROM simdata WHERE galname='{self.name}'"
+        sql_t += f" and snap={self.snap} LIMIT 1"
+        cur.execute(sql_t)
+        time = cur.fetchone()
+        self.time = time[0]
+
+        # set the bulk of the data
+        colheads = ','.join(['type','m','x','y','z','vx','vy','vz'])
+        if stride > 1:
+            sql_d = f"SELECT {colheads}, ROW_NUMBER() OVER () as rn from simdata"
+        else:
+            sql_d = f"SELECT {colheads} from simdata"
+        sql_d += f"  where galname='{self.name}' and snap={self.snap}"
+        if ptype:
+            sql_d += f" and type={ptype}"
+        if stride > 1:
+            sql_d = f"SELECT {colheads} from ( {sql_d} ) as t where rn % {stride} = 0" 
+
+        dtype=[('type', 'uint8'), ('m', '<f4'), ('x', '<f4'), ('y', '<f4'), ('z', '<f4'), 
+                ('vx', '<f4'), ('vy', '<f4'), ('vz', '<f4')]
+
+        cur.execute(sql_d)
+        self.data = np.array(cur.fetchall(), dtype=dtype)
+        self.particle_count = len(self.data)
 
     def get_filepath(self, datadir):
         """
