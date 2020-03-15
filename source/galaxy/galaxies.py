@@ -22,6 +22,15 @@ class Galaxies():
         datadir (str):
             Directory to search first for the required file. Optional, and a
             default list of locations will be searched.
+        usesql (bool):
+            If True, data will be taken from a PostgreSQL database instead of
+            text files.
+        ptype (int):
+            Optional. Restrict data to this particle type, for speed. 
+            Only valid with usesql=True.
+        stride (int):
+            Optional. For stride=n, get every nth row in the table.
+            Only valid with usesql=True.
 
     Class attributes:
         path (`pathlib.Path` object):
@@ -35,12 +44,17 @@ class Galaxies():
     def __init__(self,
                  names=('MW', 'M31', 'M33'),
                  snaps=(0, 0, 0),
-                 datadir=None):
+                 datadir=None,
+                 usesql=False, ptype=None, stride=1):
         "Initial setup."
 
         self.names = names
         self.snaps = snaps
         self.path = datadir
+        self.usesql = usesql
+        self.ptype = ptype
+        self.stride = stride
+
         self.galaxies = {}
         self.filenames = []
         self.read_data_files()
@@ -57,11 +71,12 @@ class Galaxies():
         for name, snap in zip(self.names, self.snaps):
             # build the very important dictionary:
             key = f'{name}_{snap:03}'  # e.g 'MW_000'
-            self.galaxies[key] = Galaxy(name, snap, self.path)
+            self.galaxies[key] = Galaxy(name, snap, self.path, 
+                                        self.usesql, self.ptype, self.stride)
             self.time = self.galaxies[key].time
 
             # bits of minor housekeeping:
-            self.path = self.galaxies[key].filepath  # may speed up next search
+            # self.path = self.galaxies[key].filepath  # may speed up next search
             self.filenames.append(key)
 
     def get_pivot(self, aggfunc, values='m'):
