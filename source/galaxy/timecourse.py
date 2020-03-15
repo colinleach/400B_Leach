@@ -10,8 +10,9 @@ from galaxy.centerofmass import CenterOfMass
 
 class TimeCourse():
 
-    def __init__(self, datadir='.'):
+    def __init__(self, datadir='.', usesql=False):
         self.datadir = datadir
+        self.usesql = usesql
 
     def com_ang_mom(self, galname, start=0, end=801, n=5, show_progress=True):
         """
@@ -61,7 +62,7 @@ class TimeCourse():
             print(galname)
         
         for  i, snap in enumerate(snap_ids): # loop over files
-            gal = Galaxy(galname, snap, datadir=self.datadir)
+            gal = Galaxy(galname, snap, datadir=self.datadir, usesql=self.usesql)
             
             # Initialize an instance of CenterOfMass class, using disk particles
             com = CenterOfMass(gal)
@@ -106,7 +107,7 @@ class TimeCourse():
         coms = np.zeros((len(snap_ids), 7))
 
         for  i, snap in enumerate(snap_ids): # loop over files
-            gals = Galaxies(snaps=[snap]*3, datadir=self.datadir)
+            gals = Galaxies(snaps=[snap]*3, datadir=self.datadir, usesql=self.usesql)
             full_com_p, full_com_v = gals.total_com()
             t = gals.time.value/1000
             coms[i] = t, *tuple(full_com_p), *tuple(full_com_v)
