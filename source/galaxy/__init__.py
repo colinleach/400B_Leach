@@ -6,3 +6,4 @@ from .centerofmass import CenterOfMass
 from .massprofile import MassProfile
 from .timecourse import TimeCourse
 from .utilities import *
+from .db import DB

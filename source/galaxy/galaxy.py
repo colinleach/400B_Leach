@@ -73,19 +73,10 @@ class Galaxy():
         Returns: nothing
         """
 
-        import psycopg2
+        from galaxy.db import DB
 
-        # Temporarily, embed connection details here. 
-        # This will need to be moved to a config file or env variables.
-
-        host = '192.168.1.152' # BAD!!
-        username = 'python'
-        password = 'python'
-
-        # make the connection and get a cursor
-        inf = f"dbname=galaxy user={username}  host='{host}' password={password}"
-        conn = psycopg2.connect(inf)
-        cur = conn.cursor()
+        db = DB()
+        cur = db.get_cursor()
 
         # set the elapsed time
         sql_t = f"SELECT time FROM simdata WHERE galname='{self.name}'"
