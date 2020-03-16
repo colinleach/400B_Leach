@@ -19,6 +19,7 @@ class DB():
         inf = f"dbname={params['dbname']} user={params['username']}"
         inf += f"  host='{params['host']}' password={params['password']}"
         self.connection = psycopg2.connect(inf)
+        self.connection.autocommit = True
         self.cursor  = self.connection.cursor()
 
     def read_params(self):

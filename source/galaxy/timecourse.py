@@ -1,4 +1,5 @@
 # import modules
+from pathlib import Path
 import numpy as np
 from numpy.linalg import norm
 
@@ -7,6 +8,7 @@ import astropy.units as u
 from galaxy.galaxy import Galaxy
 from galaxy.galaxies import Galaxies
 from galaxy.centerofmass import CenterOfMass
+from galaxy.db import DB
 
 class TimeCourse():
 
@@ -14,7 +16,7 @@ class TimeCourse():
         self.datadir = datadir
         self.usesql = usesql
 
-    def com_ang_mom(self, galname, start=0, end=801, n=5, show_progress=True):
+    def write_com_ang_mom(self, galname, start=0, end=801, n=5, show_progress=True):
         """
         Function that loops over all the desired snapshots to compute the COM pos and vel as a 
         function of time.
@@ -98,7 +100,7 @@ class TimeCourse():
                 header="{:>10s}{:>11s}{:>11s}{:>11s}{:>11s}"\
                         .format('t', 'x_hat', 'y_hat', 'z_hat', 'L_mag'))
 
-    def total_com(self, start=0, end=801, n=5, show_progress=True):
+    def write_total_com(self, start=0, end=801, n=5, show_progress=True):
         """
         """
 
@@ -119,3 +121,134 @@ class TimeCourse():
         np.savetxt(fileout, coms, fmt = "%11.3f"*7, comments='#',
                 header="{:>10s}{:>11s}{:>11s}{:>11s}{:>11s}{:>11s}{:>11s}"\
                         .format('t', 'x', 'y', 'z', 'vx', 'vy', 'vz'))
+
+
+    def read_file(self, fullname):
+        """
+        General method for file input. Note that the format is for summary files,
+        (one line per snap), not the raw per-particle files.
+        """
+
+        with open(fullname) as file:
+            data = np.genfromtxt(fullname, dtype=None, names=True, skip_header=0)
+        return data
+ 
+
+    def read_com_file(self, galaxy, datadir='.'):
+        """
+        Get CoM summary from file.
+
+        Args:
+            galaxy (str): 
+                'MW', 'M31', 'M33'
+            datadir (str):
+                path to file
+
+        Returns:
+            np.array with 802 rows, one per snap
+        """
+
+        filename = f'com_{galaxy}.txt'
+        fullname = Path(datadir) / filename
+
+        return self.read_file(fullname)
+    
+    def read_angmom_file(self, galaxy, datadir='.'):
+        """
+        Get CoM summary from file.
+
+        Args:
+            galaxy (str): 
+                'MW', 'M31', 'M33'
+            datadir (str):
+                path to file
+
+        Returns:
+            np.array with 802 rows, one per snap
+        """
+
+        filename = f'angmom_{galaxy}.txt'
+        fullname = Path(datadir) / filename
+
+        return self.read_file(fullname)
+    
+    def read_total_com_file(self, galaxy, datadir='.'):
+        """
+        Get CoM summary from file.
+
+        Args:
+            galaxy (str): 
+                'MW', 'M31', 'M33'
+            datadir (str):
+                path to file
+
+        Returns:
+            np.array with 802 rows, one per snap
+        """
+
+        filename = f'com_{galaxy}.txt'
+        fullname = Path(datadir) / filename
+
+        return self.read_file(fullname)
+    
+    def write_db_tables(self, datadir='.'):
+        """
+        Adds data to the `centerofmass`, `angmom` and `totalcom` tables in the 
+        `galaxy` database
+        """
+
+        filepath = Path(datadir)
+
+        db = DB()
+        cur = db.get_cursor()
+
+        # CoM data
+        colheads = ','.join(['gal','snap','t','x','y','z','vx','vy','vz'])
+        query = f"""
+            INSERT INTO centerofmass( {colheads} ) 
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            ON CONFLICT DO NOTHING
+            """
+
+        for gname in ('MW','M31','M33'):
+            filename = f'com_{gname}.txt'
+            fullname = filepath / filename
+            data = self.read_file(fullname)
+               
+            for snap, d in enumerate(data):
+                rec = [gname, snap,] + list(d)
+                cur.execute(query, rec)
+
+        # angular momentum data
+        colheads = ','.join(['gal','snap','t','x_hat','y_hat','z_hat','l_mag'])
+        query = f"""
+            INSERT INTO angmom( {colheads} ) 
+            VALUES (%s,%s,%s,%s,%s,%s,%s)
+            ON CONFLICT DO NOTHING
+            """
+
+        for gname in ('MW','M31','M33'):
+            filename = f'angmom_{gname}.txt'
+            fullname = filepath / filename
+            data = self.read_file(fullname)
+                
+            for snap, d in enumerate(data):
+                rec = [gname, snap,] + list(d)
+                cur.execute(query, rec)
+
+        # total CoM data
+        colheads = ','.join(['snap','t','x','y','z','vx','vy','vz'])
+        query = f"""
+            INSERT INTO totalcom( {colheads} ) 
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+            ON CONFLICT DO NOTHING
+            """
+
+        filename = 'total_com.txt'
+        fullname = filepath / filename
+        data = self.read_file(fullname)
+            
+        for snap, d in enumerate(data):
+            rec = [snap,] + list(d)
+            cur.execute(query, rec)
+
