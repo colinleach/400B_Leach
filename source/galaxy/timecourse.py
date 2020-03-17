@@ -260,10 +260,10 @@ class TimeCourse():
         query = f"""
                 SELECT {colheads} FROM centerofmass 
                 WHERE snap BETWEEN {snaprange[0]} AND {snaprange[1]}
-                ORDER BY snap
                 """
         if galaxy is not None:
-            query += f" AND gal={galaxy}"
+            query += f" AND gal='{galaxy}'"
+        query += " ORDER BY snap"
 
         db = DB()
         result = db.run_query(query)
@@ -280,10 +280,10 @@ class TimeCourse():
         query = f"""
                 SELECT {colheads} FROM angmom 
                 WHERE snap BETWEEN {snaprange[0]} AND {snaprange[1]}
-                ORDER BY snap
-                """
+               """
         if galaxy is not None:
-            query += f" AND gal={galaxy}"
+            query += f" AND gal='{galaxy}'"
+        query += " ORDER BY snap"
 
         db = DB()
         result = db.run_query(query)
