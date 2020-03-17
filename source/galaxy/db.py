@@ -34,3 +34,14 @@ class DB():
         "A simple getter method"
 
         return self.cursor
+
+    def run_query(self, query):
+        """
+        Runs a SQL query (typically SELECT)
+
+        Returns results in Python list format (not numpy)
+        """
+
+        self.cursor.execute(query)
+        return self.cursor.fetchall()
+ 

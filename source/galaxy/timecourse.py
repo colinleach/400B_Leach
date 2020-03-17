@@ -252,3 +252,62 @@ class TimeCourse():
             rec = [snap,] + list(d)
             cur.execute(query, rec)
 
+    def read_com_db(self, galaxy=None, snaprange=(0,801)):
+        """
+        """
+
+        colheads = ','.join(['gal','snap','t','x','y','z','vx','vy','vz'])
+        query = f"""
+                SELECT {colheads} FROM centerofmass 
+                WHERE snap BETWEEN {snaprange[0]} AND {snaprange[1]}
+                ORDER BY snap
+                """
+        if galaxy is not None:
+            query += f" AND gal={galaxy}"
+
+        db = DB()
+        result = db.run_query(query)
+        dtype=[('gal', 'U3'), ('snap', 'u2'), ('t', '<f4'), ('x', '<f4'), ('y', '<f4'), 
+                ('z', '<f4'), ('vx', '<f4'), ('vy', '<f4'), ('vz', '<f4')]
+
+        return np.array(result, dtype=dtype)
+        
+    def read_angmom_db(self, galaxy=None, snaprange=(0,801)):
+        """
+        """
+
+        colheads = ','.join(['gal','snap','t','x_hat','y_hat','z_hat','l_mag'])
+        query = f"""
+                SELECT {colheads} FROM angmom 
+                WHERE snap BETWEEN {snaprange[0]} AND {snaprange[1]}
+                ORDER BY snap
+                """
+        if galaxy is not None:
+            query += f" AND gal={galaxy}"
+
+        db = DB()
+        result = db.run_query(query)
+        dtype=[('gal', 'U3'), ('snap', 'u2'), ('t', '<f4'), ('x_hat', '<f4'), ('y_hat', '<f4'), 
+                ('z_hat', '<f4'), ('l_mag', '<f4')]
+
+        return np.array(result, dtype=dtype)
+
+    def read_total_com_db(self, snaprange=(0,801)):
+        """
+        """
+
+        colheads = ','.join(['snap','t','x','y','z','vx','vy','vz'])
+        query = f"""
+                SELECT {colheads} FROM totalcom 
+                WHERE snap BETWEEN {snaprange[0]} AND {snaprange[1]}
+                ORDER BY snap
+                """
+
+        db = DB()
+        result = db.run_query(query)
+        dtype=[('snap', 'u2'), ('t', '<f4'), ('x', '<f4'), ('y', '<f4'), 
+                ('z', '<f4'), ('vx', '<f4'), ('vy', '<f4'), ('vz', '<f4')]
+
+        return np.array(result, dtype=dtype)
+        
+       
