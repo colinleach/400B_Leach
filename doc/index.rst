@@ -28,6 +28,7 @@ Steward Observatory, Spring 2020.
     centerofmass
     massprofile
     utilities
+    db
 
 Indices and tables
 ==================

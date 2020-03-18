@@ -40,19 +40,25 @@
 data in a variety of formats.</p>
 <dl class="class">
 <dt id="galaxy.galaxy.Galaxy">
-<em class="property">class </em><code class="sig-prename descclassname">galaxy.galaxy.</code><code class="sig-name descname">Galaxy</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">snap=0</em>, <em class="sig-param">datadir=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">galaxy.galaxy.</code><code class="sig-name descname">Galaxy</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">snap=0</em>, <em class="sig-param">datadir=None</em>, <em class="sig-param">usesql=False</em>, <em class="sig-param">ptype=None</em>, <em class="sig-param">stride=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class to find, read and manipulate files for a single galaxy.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
 <dt>name (str):</dt><dd><p>short name used in filename of type ‘name_000.txt’, eg ‘MW’, ‘M31’.</p>
 </dd>
-</dl>
-</dd>
-<dt>Kwargs:</dt><dd><dl class="simple">
 <dt>snap (int):</dt><dd><p>Snap number, equivalent to time elapsed. Zero is starting conditions.</p>
 </dd>
 <dt>datadir (str):</dt><dd><p>Directory to search first for the required file. Optional, and a
 default list of locations will be searched.</p>
+</dd>
+<dt>usesql (bool):</dt><dd><p>If True, data will be taken from a PostgreSQL database instead of
+text files.</p>
+</dd>
+<dt>ptype (int):</dt><dd><p>Optional. Restrict data to this particle type, for speed. 
+Only valid with usesql=True.</p>
+</dd>
+<dt>stride (int):</dt><dd><p>Optional. For stride=n, get every nth row in the table.
+Only valid with usesql=True.</p>
 </dd>
 </dl>
 </dd>
@@ -66,6 +72,25 @@ default list of locations will be searched.</p>
 </dl>
 </dd>
 </dl>
+<dl class="method">
+<dt id="galaxy.galaxy.Galaxy.read_db">
+<code class="sig-name descname">read_db</code><span class="sig-paren">(</span><em class="sig-param">ptype</em>, <em class="sig-param">stride</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.read_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.read_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get relevant data from a PostgreSQL database and format it to be 
+identical to that read from test files.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>ptype (int):</dt><dd><p>Optional. Restrict data to this particle type.</p>
+</dd>
+<dt>stride (int):</dt><dd><p>Optional. For stride=n, get every nth row in the table.</p>
+</dd>
+</dl>
+</dd>
+<dt>Changes:</dt><dd><p><cite>self.time</cite>, <cite>self.particle_count</cite> and <cite>self.data</cite> are set.</p>
+</dd>
+</dl>
+<p>Returns: nothing</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="galaxy.galaxy.Galaxy.get_filepath">
 <code class="sig-name descname">get_filepath</code><span class="sig-paren">(</span><em class="sig-param">datadir</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.get_filepath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.get_filepath" title="Permalink to this definition">¶</a></dt>

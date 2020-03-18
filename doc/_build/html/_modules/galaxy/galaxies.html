@@ -55,6 +55,15 @@
 <span class="sd">        datadir (str):</span>
 <span class="sd">            Directory to search first for the required file. Optional, and a</span>
 <span class="sd">            default list of locations will be searched.</span>
+<span class="sd">        usesql (bool):</span>
+<span class="sd">            If True, data will be taken from a PostgreSQL database instead of</span>
+<span class="sd">            text files.</span>
+<span class="sd">        ptype (int):</span>
+<span class="sd">            Optional. Restrict data to this particle type, for speed. </span>
+<span class="sd">            Only valid with usesql=True.</span>
+<span class="sd">        stride (int):</span>
+<span class="sd">            Optional. For stride=n, get every nth row in the table.</span>
+<span class="sd">            Only valid with usesql=True.</span>
 
 <span class="sd">    Class attributes:</span>
 <span class="sd">        path (`pathlib.Path` object):</span>
@@ -68,12 +77,17 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">names</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;MW&#39;</span><span class="p">,</span> <span class="s1">&#39;M31&#39;</span><span class="p">,</span> <span class="s1">&#39;M33&#39;</span><span class="p">),</span>
                  <span class="n">snaps</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-                 <span class="n">datadir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                 <span class="n">datadir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">usesql</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ptype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="s2">&quot;Initial setup.&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">names</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">snaps</span> <span class="o">=</span> <span class="n">snaps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">datadir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">usesql</span> <span class="o">=</span> <span class="n">usesql</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ptype</span> <span class="o">=</span> <span class="n">ptype</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stride</span> <span class="o">=</span> <span class="n">stride</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">galaxies</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filenames</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">read_data_files</span><span class="p">()</span>
@@ -90,10 +104,12 @@
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">snap</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">snaps</span><span class="p">):</span>
             <span class="c1"># build the very important dictionary:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{name}</span><span class="s1">_</span><span class="si">{snap:03}</span><span class="s1">&#39;</span>  <span class="c1"># e.g &#39;MW_000&#39;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">galaxies</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">Galaxy</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">snap</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">galaxies</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">Galaxy</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">snap</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> 
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">usesql</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ptype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stride</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">galaxies</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">time</span>
 
             <span class="c1"># bits of minor housekeeping:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">galaxies</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">filepath</span>  <span class="c1"># may speed up next search</span>
+            <span class="c1"># self.path = self.galaxies[key].filepath  # may speed up next search</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">filenames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Galaxies.get_pivot"><a class="viewcode-back" href="../../galaxies.html#galaxy.galaxies.Galaxies.get_pivot">[docs]</a>    <span class="k">def</span> <span class="nf">get_pivot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggfunc</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">):</span>
@@ -247,7 +263,36 @@
         <span class="n">results</span><span class="p">[</span><span class="s1">&#39;v_tangential&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_hat&#39;</span><span class="p">],</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;vel_xyz&#39;</span><span class="p">]),</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">results</span><span class="p">[</span><span class="s1">&#39;v_tan_mag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;v_tangential&#39;</span><span class="p">]),</span> <span class="mi">2</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">results</span></div></div>
+        <span class="k">return</span> <span class="n">results</span></div>
+
+<div class="viewcode-block" id="Galaxies.total_com"><a class="viewcode-back" href="../../galaxies.html#galaxy.galaxies.Galaxies.total_com">[docs]</a>    <span class="k">def</span> <span class="nf">total_com</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Center of Mass determination for the local group.</span>
+
+<span class="sd">        Uses all particles of all types. Position and velocity should be conserved </span>
+<span class="sd">        quantities, subject to numerical imprecision in the sim.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            position, velocity: 3-vectors</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># gather the position/velocity data for all galaxies and particle types</span>
+        <span class="n">full_com_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">])</span>
+        <span class="n">full_com_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">])</span>
+
+        <span class="n">total_mass</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filenames</span><span class="p">:</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">galaxies</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span>
+            <span class="n">xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">g</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">)])</span>
+            <span class="n">vxyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">g</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;vx&#39;</span><span class="p">,</span> <span class="s1">&#39;vy&#39;</span><span class="p">,</span> <span class="s1">&#39;vz&#39;</span><span class="p">)])</span>
+
+            <span class="n">full_com_p</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">xyz</span> <span class="o">*</span> <span class="n">m</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">full_com_v</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">vxyz</span> <span class="o">*</span> <span class="n">m</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">total_mass</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">full_com_p</span> <span class="o">/</span> <span class="n">total_mass</span><span class="p">,</span> <span class="n">full_com_v</span> <span class="o">/</span> <span class="n">total_mass</span></div></div>
 </pre></div>
 
           </div>
@@ -273,6 +318,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../centerofmass.html">CenterOfMass class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../massprofile.html">MassProfile class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../utilities.html">utilities module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../db.html">DB class</a></li>
 </ul>
 
 <div class="relations">

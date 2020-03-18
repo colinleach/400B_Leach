@@ -198,7 +198,7 @@
         <span class="c1"># return the COM vector                                                                                        </span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">vxyz_com</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">km</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span></div>
 
-<div class="viewcode-block" id="CenterOfMass.center_com"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.center_com">[docs]</a>    <span class="k">def</span> <span class="nf">center_com</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CenterOfMass.center_com"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.center_com">[docs]</a>    <span class="k">def</span> <span class="nf">center_com</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">com_p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">com_v</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Positions and velocities of disk particles relative to the CoM</span>
 
@@ -206,9 +206,10 @@
 <span class="sd">            CoM-centric position and velocity</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># Compute COM </span>
-        <span class="n">com_p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_p</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
-        <span class="n">com_v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_v</span><span class="p">(</span><span class="n">com_p</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">com_p</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">com_p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_p</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">com_v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">com_v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_v</span><span class="p">(</span><span class="n">com_p</span><span class="p">)</span>
 
         <span class="c1"># Determine positions of disk particles relative to COM </span>
         <span class="n">xyzD</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span> <span class="o">-</span> <span class="n">com_p</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
@@ -219,7 +220,7 @@
         <span class="k">return</span> <span class="n">xyzD</span><span class="p">,</span> <span class="n">vxyzD</span></div>
 
 
-<div class="viewcode-block" id="CenterOfMass.angular_momentum"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.angular_momentum">[docs]</a>    <span class="k">def</span> <span class="nf">angular_momentum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CenterOfMass.angular_momentum"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.angular_momentum">[docs]</a>    <span class="k">def</span> <span class="nf">angular_momentum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">com_p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">com_v</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns: </span>
 <span class="sd">            L : 3-vector as array</span>
@@ -231,7 +232,7 @@
 
         <span class="c1"># ignore masses, these are all the same for disk particles</span>
         <span class="c1"># m = self.data[&#39;m&#39;]</span>
-        <span class="n">pos</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">center_com</span><span class="p">()</span>
+        <span class="n">pos</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">center_com</span><span class="p">(</span><span class="n">com_p</span><span class="p">,</span> <span class="n">com_v</span><span class="p">)</span>
         <span class="c1"># p = m * v # linear momentum</span>
 
         <span class="c1"># angular momentum of each particle; use first dimension of each array</span>
@@ -302,6 +303,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../centerofmass.html">CenterOfMass class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../massprofile.html">MassProfile class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../utilities.html">utilities module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../db.html">DB class</a></li>
 </ul>
 
 <div class="relations">

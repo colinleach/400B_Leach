@@ -39,7 +39,7 @@
 <p>This stores and manipulates data for multiple galaxies and snaps.</p>
 <dl class="class">
 <dt id="galaxy.galaxies.Galaxies">
-<em class="property">class </em><code class="sig-prename descclassname">galaxy.galaxies.</code><code class="sig-name descname">Galaxies</code><span class="sig-paren">(</span><em class="sig-param">names=('MW'</em>, <em class="sig-param">'M31'</em>, <em class="sig-param">'M33')</em>, <em class="sig-param">snaps=(0</em>, <em class="sig-param">0</em>, <em class="sig-param">0)</em>, <em class="sig-param">datadir=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">galaxy.galaxies.</code><code class="sig-name descname">Galaxies</code><span class="sig-paren">(</span><em class="sig-param">names=('MW'</em>, <em class="sig-param">'M31'</em>, <em class="sig-param">'M33')</em>, <em class="sig-param">snaps=(0</em>, <em class="sig-param">0</em>, <em class="sig-param">0)</em>, <em class="sig-param">datadir=None</em>, <em class="sig-param">usesql=False</em>, <em class="sig-param">ptype=None</em>, <em class="sig-param">stride=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class to manipulate data for multiple galaxies.</p>
 <dl class="simple">
 <dt>Kwargs:</dt><dd><dl class="simple">
@@ -49,6 +49,15 @@
 </dd>
 <dt>datadir (str):</dt><dd><p>Directory to search first for the required file. Optional, and a
 default list of locations will be searched.</p>
+</dd>
+<dt>usesql (bool):</dt><dd><p>If True, data will be taken from a PostgreSQL database instead of
+text files.</p>
+</dd>
+<dt>ptype (int):</dt><dd><p>Optional. Restrict data to this particle type, for speed. 
+Only valid with usesql=True.</p>
+</dd>
+<dt>stride (int):</dt><dd><p>Optional. For stride=n, get every nth row in the table.
+Only valid with usesql=True.</p>
 </dd>
 </dl>
 </dd>
@@ -137,6 +146,18 @@ Cartesian and radial coordinates</p>
 </dl>
 </dd></dl>
 
+<dl class="method">
+<dt id="galaxy.galaxies.Galaxies.total_com">
+<code class="sig-name descname">total_com</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxies.html#Galaxies.total_com"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxies.Galaxies.total_com" title="Permalink to this definition">¶</a></dt>
+<dd><p>Center of Mass determination for the local group.</p>
+<p>Uses all particles of all types. Position and velocity should be conserved 
+quantities, subject to numerical imprecision in the sim.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>position, velocity: 3-vectors</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -164,6 +185,7 @@ Cartesian and radial coordinates</p>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Galaxies class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="centerofmass.html">CenterOfMass class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="massprofile.html">MassProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">utilities module</a></li>
 </ul>
 
 <div class="relations">
