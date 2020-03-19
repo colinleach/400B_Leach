@@ -310,4 +310,13 @@ class TimeCourse():
 
         return np.array(result, dtype=dtype)
         
-       
+    def get_one_com(self, gal, snap)       :
+        """
+        """
+
+        com = self.read_com_db(gal, (snap,snap))
+        xyz = np.array([com[xi] for xi in ('x','y','z')])
+        vxyz = np.array([com[vxi] for vxi in ('vx','vy','vz')])
+
+        # need to massage the shapes a bit to match what c.com_p() returns
+        return xyz.T[0], vxyz.T[0]

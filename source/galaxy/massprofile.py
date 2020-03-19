@@ -18,11 +18,20 @@ class MassProfile:
     """
     
     
-    def __init__(self, gal):
+    def __init__(self, gal, com_p=None):
         self.gal = gal
         
         self.com = CenterOfMass(gal)
-        self.com_p = self.com.com_p()
+
+        if com_p is None:
+            self.com_p = self.com.com_p()
+        else:
+            self.com_p = com_p
+
+        try:
+            _ = self.com_p.unit
+        except AttributeError: # not a Quantity
+            self.com_p *= u.kpc
         
     def mass_enclosed(self, radii, ptype=None):
         """
@@ -49,6 +58,7 @@ class MassProfile:
         
         # distances from CoM:
         dist = norm(xyz_centered, axis=0)
+        print(xyz_centered.shape, dist.shape)
         
         within_r = lambda r: np.sum(dataset['m'][dist < r])
         masses = np.array([within_r(ri) for ri in radii]) * 1e10 * u.M_sun

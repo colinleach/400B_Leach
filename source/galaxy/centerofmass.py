@@ -140,16 +140,18 @@ class CenterOfMass:
         """
         Center of Mass velocity
 
-        Args: X, Y, Z positions of the COM
+        Args: X, Y, Z positions of the COM (no units)
 
         Returns: 3-Vector of COM velocities
         """
+
+        xyz_com = xyz_com.value
         
-        # the max distance from the center that we will use to determine the center of mass velocity                   
-        rv_max = 15.0*u.kpc
+        # the max distance from the center that we will use to determine the CoM velocity                   
+        rv_max = 15.0 # implicit u.kpc
 
         # determine the position of all particles relative to the center of mass position
-        xyz_v = self.xyz * u.kpc - xyz_com[:, np.newaxis]
+        xyz_v = self.xyz - xyz_com[:, np.newaxis]
         r_v = norm(xyz_v, axis=0)
         
         # determine the index for those particles within the max radius
@@ -174,15 +176,15 @@ class CenterOfMass:
         """
 
         if com_p is None:
-            com_p = self.com_p(0.1)
+            com_p = self.com_p(0.1).value
         if com_v is None:
-            com_v = self.com_v(com_p)
+            com_v = self.com_v(com_p).value
 
         # Determine positions of disk particles relative to COM 
-        xyzD = self.xyz - com_p[:,np.newaxis].value
+        xyzD = self.xyz - com_p[:, np.newaxis]
 
         # Determine velocities of disk particles relative to COM motion
-        vxyzD = self.vxyz - com_v[:,np.newaxis].value
+        vxyzD = self.vxyz - com_v[:, np.newaxis]
 
         return xyzD, vxyzD
 
@@ -207,7 +209,7 @@ class CenterOfMass:
 
         return np.sum(L_i, axis=0), pos, v
 
-    def rotate_frame(self, to_axis=None):
+    def rotate_frame(self, to_axis=None, com_p=None, com_v=None):
         """
         Arg: to_axis (3-vector)
                 Angular momentum vector will be aligned to this (default z-hat)
@@ -224,7 +226,7 @@ class CenterOfMass:
         else:
             to_axis /= norm(to_axis) # we need a unit vector
 
-        L, pos, v = self.angular_momentum()
+        L, pos, v = self.angular_momentum(com_p, com_v)
         L /= norm(L) # we need a unit vector
 
         # cross product between L and new axis
