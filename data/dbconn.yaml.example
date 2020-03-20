@@ -1,0 +1,7 @@
+# file ~/dbconn.yaml
+# change as appropriate and put it in your home directory
+
+dbname: galaxy
+host: 192.168.1.152
+username: python
+password: python
