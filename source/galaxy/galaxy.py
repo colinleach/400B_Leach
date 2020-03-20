@@ -83,7 +83,7 @@ class Galaxy():
         sql_t += f" and snap={self.snap} LIMIT 1"
         cur.execute(sql_t)
         time = cur.fetchone()
-        self.time = time[0]
+        self.time = time[0] * u.Myr
 
         # set the bulk of the data
         colheads = ','.join(['type','m','x','y','z','vx','vy','vz'])

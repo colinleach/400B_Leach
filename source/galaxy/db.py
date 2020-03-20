@@ -1,7 +1,6 @@
 import psycopg2
 import yaml
 from pathlib import Path
-home = str(Path.home())
 
 class DB():
     """
