@@ -17,7 +17,7 @@ from galaxy.massprofile import MassProfile
 from galaxy.timecourse import TimeCourse
 from galaxy.plots import Plots
 
-def make_plot(gname, snap, lim):
+def make_plot(gname, snap, lim, fname):
     try:
         gal = Galaxy(gname, snap, usesql=True, ptype=2)
         t = gal.time.value / 1000
@@ -30,12 +30,12 @@ def make_plot(gname, snap, lim):
     tc = TimeCourse(usesql=True)
     com_xyz, com_vxyz = tc.get_one_com(gname, snap)
 
-    gal_xyzD, gal_vxyzD = com.center_com(com_xyz, com_vxyz)
+    # gal_xyzD, gal_vxyzD = com.center_com(com_xyz, com_vxyz)
 
     # determine the rotated velocity vectors
-    rn, vn = com.rotate_frame(com_p=com_xyz, com_v=com_vxyz)
+    rn, _ = com.rotate_frame(com_p=com_xyz, com_v=com_vxyz)
 
-    p.plot_density(rn, gname, t, pngout=True, snap=snap, lim=60)
+    p.plot_density(rn, gname, snap, t, pngout=True, lim=60, fname=fname)
     plt.close('all')
 
 p = Plots()
@@ -47,20 +47,34 @@ limits = {'MW': (50, 80),
 cmd = ''
 
 datadir = Path.home() / 'HighRes'
+cmdfile = 'make_densities.sh'
+
+with open(cmdfile, 'w') as fp:
+    fp.write(cmd)
 
 for gname in ('MW', 'M31', 'M33'):
     print(gname)
+    group = 'early'
     for snap in np.arange(0, 300):
         print(snap, end=' ')
-        lim = limits[galname][0]
-        make_plot(gname, snap, lim, group='early')
-    cmd += f'ffmpeg -r 10  -start_number 0  -s 1920x1080 -i {gname}_density_early_%03d.png'
+        lim = limits[gname][0]
+        fname = f'png_files/{gname}_density_{group}_{snap:03}.png'
+        make_plot(gname, snap, lim, fname=fname)
+    cmd += f'ffmpeg -r 10  -start_number 290  -s 1920x1080'
+    cmd += f' -i png_files/{gname}_density_early_%03d.png'
     cmd += f' -vcodec libx264 -vf fps=25 -crf 25  -pix_fmt yuv420p {gname}_early.mp4\n'
+    with open(cmdfile, 'w') as fp:
+        fp.write(cmd)
 
     for snap in np.arange(290, 802):
         print(snap, end=' ')
-        lim = limits[galname][1]
-        make_plot(gname, snap, lim, group='late')
-    cmd += f'ffmpeg -r 10  -start_number 0  -s 1920x1080 -i {gname}_density_late_%03d.png'
+        group = 'late'
+        lim = limits[gname][1]
+        fname = f'png_files/{gname}_density_{group}_{snap:03}.png'
+        make_plot(gname, snap, lim, fname=fname)
+    cmd += f'ffmpeg -r 10  -start_number 290  -s 1920x1080'
+    cmd += f' -i png_files/{gname}_density_late_%03d.png'
     cmd += f' -vcodec libx264 -vf fps=25 -crf 25  -pix_fmt yuv420p {gname}_late.mp4\n'
+    with open(cmdfile, 'w') as fp:
+        fp.write(cmd)
 

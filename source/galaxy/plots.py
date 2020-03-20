@@ -92,7 +92,7 @@ class Plots():
         
         return contour
 
-    def plot_density(self, rn, galname, t, lim=None, pngout=False, snap=None, group=None):
+    def plot_density(self, rn, galname, snap, t, lim=None, pngout=False, fname=None):
         """
         """
 
@@ -159,7 +159,7 @@ class Plots():
 
         # Save to a file
         if pngout:
-            fname = f'{galname}_density_{group}_{snap:03}.png'
+            # fname = f'{galname}_density_{group}_{snap:03}.png'
             # plt.savefig(fname, dpi='figure', bbox_inches='tight', pad_inches=0.1);   
             plt.savefig(fname, dpi='figure');   
             
