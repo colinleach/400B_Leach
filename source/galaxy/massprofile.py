@@ -58,7 +58,6 @@ class MassProfile:
         
         # distances from CoM:
         dist = norm(xyz_centered, axis=0)
-        print(xyz_centered.shape, dist.shape)
         
         within_r = lambda r: np.sum(dataset['m'][dist < r])
         masses = np.array([within_r(ri) for ri in radii]) * 1e10 * u.M_sun

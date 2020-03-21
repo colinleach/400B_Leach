@@ -38,7 +38,8 @@ class DB():
         """
         Runs a SQL query (typically SELECT)
 
-        Returns results in Python list format (not numpy)
+        Returns results in Python list format 
+        (not numpy, which would need a dtype list)
         """
 
         self.cursor.execute(query)

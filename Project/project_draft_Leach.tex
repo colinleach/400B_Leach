@@ -2,6 +2,8 @@
 
 \usepackage{natbib}
 
+\newcommand{\todo}{\color{red}{TODO}\color{black}\hspace{2mm}}
+
 \begin{document}
 	
 \title{ASTR400B Project Report, Spring 2020}
@@ -17,6 +19,17 @@ A summary to be inserted here
 \section{Introduction}
 
 The simulation of Milky Way--M31--M33 orbital evolution was described previously \citep{marel_m31_2012}. That paper included an extensive analysis of both N-body simulations and semi-analytic orbit integrations. The present study uses data from the same N-body simulation to carry out further computational analysis.
+
+\section{Data}
+
+Data from one N-body simulation in \citep{marel_m31_2012} was supplied in text-file format by one of the original authors. This included position and velocity data for each particle at the current epoch ($t=0$) and 800 future timesteps. For ease of analysis, this was all transferred to the open source database PostgreSQL\footnote{\url{http://www.postgresql.org}} (approximately 1.35 billion records). The same database was used for computed summary data during the analysis.
+
+Particle counts for each timepoint are shown in Table 1
+
+\todo add table
+
+\section{Software}
+
 
 
 \citep{toomre_galactic_1972}

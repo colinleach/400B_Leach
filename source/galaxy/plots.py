@@ -150,8 +150,10 @@ class Plots():
 
         self.density_contour(rn[0,:], rn[2,:], 80, 80, level_vals, ax=ax1, colors=colors)
 
-        #adjust tick label font size
-        label_size = 18
+        # adjusting tick label font size led to all sorts of problems
+        # so commented out for now
+
+        # label_size = 18
         # matplotlib.rcParams['xtick.labelsize'] = label_size 
         # matplotlib.rcParams['ytick.labelsize'] = label_size
 
@@ -159,7 +161,37 @@ class Plots():
 
         # Save to a file
         if pngout:
-            # fname = f'{galname}_density_{group}_{snap:03}.png'
-            # plt.savefig(fname, dpi='figure', bbox_inches='tight', pad_inches=0.1);   
             plt.savefig(fname, dpi='figure');   
             
+    def plot_phase(self, rn, vn, R, Vcirc, galname, t, xlim=20, ylim=200, pngout=False, fname=None):
+        """
+        """
+
+        # Make a phase diagram
+        # Disk Velocity Field edge on.
+
+        fig = plt.figure()
+        DPI = fig.get_dpi()
+        fig.set_size_inches(1000.0/float(DPI),700.0/float(DPI))
+
+        ax = plt.subplot(111)
+
+        # looking at galaxy edge on along x axis, vy is line of sight velocity
+
+        plt.hist2d(rn[0,:], vn[1,:], bins=150, norm=LogNorm())
+        plt.colorbar()
+
+        # Add the circular velocity
+        plt.plot(R, Vcirc, color="red")
+        plt.plot(-R, -Vcirc, color="red")
+
+        # Add axis labels
+        plt.xlabel('x (kpc)', fontsize=22)
+        plt.ylabel('Velocity Y Direction (km/s)', fontsize=22)
+
+        plt.xlim(-xlim, xlim)
+        plt.ylim(-ylim, ylim)
+
+        # Save file
+        if pngout:
+            plt.savefig(fname, dpi='figure');   
