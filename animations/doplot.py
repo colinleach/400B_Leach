@@ -35,7 +35,7 @@ def make_plot(gname, snap, lim, fname):
     # determine the rotated velocity vectors
     rn, _ = com.rotate_frame(com_p=com_xyz, com_v=com_vxyz)
 
-    p.plot_density(rn, gname, snap, t, pngout=True, lim=60, fname=fname)
+    p.plot_density(rn, gname, snap, t, pngout=True, lim=lim, fname=fname)
     plt.close('all')
 
 p = Plots()
@@ -60,7 +60,7 @@ for gname in ('MW', 'M31', 'M33'):
         lim = limits[gname][0]
         fname = f'png_files/{gname}_density_{group}_{snap:03}.png'
         make_plot(gname, snap, lim, fname=fname)
-    cmd += f'ffmpeg -r 10  -start_number 290  -s 1920x1080'
+    cmd += f'ffmpeg -r 10  -start_number 0  -s 1920x1080'
     cmd += f' -i png_files/{gname}_density_early_%03d.png'
     cmd += f' -vcodec libx264 -vf fps=25 -crf 25  -pix_fmt yuv420p {gname}_early.mp4\n'
     with open(cmdfile, 'w') as fp:
