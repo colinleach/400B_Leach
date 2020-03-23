@@ -1,0 +1,271 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>TimeCourse class &#8212; ASTR400B Leach  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="utilities module" href="utilities.html" />
+    <link rel="prev" title="MassProfile class" href="massprofile.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-galaxy.timecourse"></span><div class="section" id="timecourse-class">
+<h1>TimeCourse class<a class="headerlink" href="#timecourse-class" title="Permalink to this headline">¶</a></h1>
+<p>Various methods to work with data across a series of snaps (timepoints).</p>
+<dl class="class">
+<dt id="galaxy.timecourse.TimeCourse">
+<em class="property">class </em><code class="sig-prename descclassname">galaxy.timecourse.</code><code class="sig-name descname">TimeCourse</code><span class="sig-paren">(</span><em class="sig-param">datadir='.'</em>, <em class="sig-param">usesql=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.write_com_ang_mom">
+<code class="sig-name descname">write_com_ang_mom</code><span class="sig-paren">(</span><em class="sig-param">galname</em>, <em class="sig-param">start=0</em>, <em class="sig-param">end=801</em>, <em class="sig-param">n=5</em>, <em class="sig-param">show_progress=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.write_com_ang_mom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.write_com_ang_mom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that loops over all the desired snapshots to compute the COM pos and vel as a 
+function of time.</p>
+<dl class="simple">
+<dt>inputs:</dt><dd><dl class="simple">
+<dt>galname (str):</dt><dd><p>‘MW’, ‘M31’ or ‘M33’</p>
+</dd>
+<dt>start, end (int):</dt><dd><p>first and last snap numbers to include</p>
+</dd>
+<dt>n (int):</dt><dd><p>stride length for the sequence</p>
+</dd>
+<dt>datadir (str):</dt><dd><p>path to the input data</p>
+</dd>
+<dt>show_progress (bool):</dt><dd><p>prints each snap number as it is processed</p>
+</dd>
+</dl>
+</dd>
+<dt>returns: </dt><dd><p>Two text files saved to disk.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.write_total_com">
+<code class="sig-name descname">write_total_com</code><span class="sig-paren">(</span><em class="sig-param">start=0</em>, <em class="sig-param">end=801</em>, <em class="sig-param">n=1</em>, <em class="sig-param">show_progress=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.write_total_com"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.write_total_com" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that loops over all the desired snapshots to compute the overall COM 
+pos and vel as a function of time. Uses all particles in all galaxies.</p>
+<dl class="simple">
+<dt>inputs:</dt><dd><dl class="simple">
+<dt>start, end (int):</dt><dd><p>first and last snap numbers to include</p>
+</dd>
+<dt>n (int):</dt><dd><p>stride length for the sequence</p>
+</dd>
+<dt>show_progress (bool):</dt><dd><p>prints each snap number as it is processed</p>
+</dd>
+</dl>
+</dd>
+<dt>output: </dt><dd><p>Text file saved to disk.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.write_total_angmom">
+<code class="sig-name descname">write_total_angmom</code><span class="sig-paren">(</span><em class="sig-param">start=0</em>, <em class="sig-param">end=801</em>, <em class="sig-param">n=1</em>, <em class="sig-param">show_progress=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.write_total_angmom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.write_total_angmom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that loops over all the desired snapshots to compute the overall 
+angular momentum as a function of time. Uses all particles in all galaxies.</p>
+<dl class="simple">
+<dt>inputs:</dt><dd><dl class="simple">
+<dt>start, end (int):</dt><dd><p>first and last snap numbers to include</p>
+</dd>
+<dt>n (int):</dt><dd><p>stride length for the sequence</p>
+</dd>
+<dt>show_progress (bool):</dt><dd><p>prints each snap number as it is processed</p>
+</dd>
+</dl>
+</dd>
+<dt>output: </dt><dd><p>Text file saved to disk.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.read_file">
+<code class="sig-name descname">read_file</code><span class="sig-paren">(</span><em class="sig-param">fullname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>General method for file input. Note that the format is for summary files,
+(one line per snap), not the raw per-particle files.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.read_com_file">
+<code class="sig-name descname">read_com_file</code><span class="sig-paren">(</span><em class="sig-param">galaxy</em>, <em class="sig-param">datadir='.'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_com_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_com_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get CoM summary from file.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>galaxy (str): </dt><dd><p>‘MW’, ‘M31’, ‘M33’</p>
+</dd>
+<dt>datadir (str):</dt><dd><p>path to file</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>np.array with 802 rows, one per snap</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.read_angmom_file">
+<code class="sig-name descname">read_angmom_file</code><span class="sig-paren">(</span><em class="sig-param">galaxy</em>, <em class="sig-param">datadir='.'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_angmom_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_angmom_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get CoM summary from file.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>galaxy (str): </dt><dd><p>‘MW’, ‘M31’, ‘M33’</p>
+</dd>
+<dt>datadir (str):</dt><dd><p>path to file</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>np.array with 802 rows, one per snap</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.read_total_com_file">
+<code class="sig-name descname">read_total_com_file</code><span class="sig-paren">(</span><em class="sig-param">galaxy</em>, <em class="sig-param">datadir='.'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_total_com_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_total_com_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get CoM summary from file.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>galaxy (str): </dt><dd><p>‘MW’, ‘M31’, ‘M33’</p>
+</dd>
+<dt>datadir (str):</dt><dd><p>path to file</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>np.array with 802 rows, one per snap</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.write_db_tables">
+<code class="sig-name descname">write_db_tables</code><span class="sig-paren">(</span><em class="sig-param">datadir='.'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.write_db_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.write_db_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds data to the <cite>centerofmass</cite>, <cite>angmom</cite> and <cite>totalcom</cite> tables in the 
+<cite>galaxy</cite> database</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.read_com_db">
+<code class="sig-name descname">read_com_db</code><span class="sig-paren">(</span><em class="sig-param">galaxy=None</em>, <em class="sig-param">snaprange=(0</em>, <em class="sig-param">801)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_com_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_com_db" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.read_angmom_db">
+<code class="sig-name descname">read_angmom_db</code><span class="sig-paren">(</span><em class="sig-param">galaxy=None</em>, <em class="sig-param">snaprange=(0</em>, <em class="sig-param">801)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_angmom_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_angmom_db" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.read_total_com_db">
+<code class="sig-name descname">read_total_com_db</code><span class="sig-paren">(</span><em class="sig-param">snaprange=(0</em>, <em class="sig-param">801)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_total_com_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_total_com_db" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.get_one_com">
+<code class="sig-name descname">get_one_com</code><span class="sig-paren">(</span><em class="sig-param">gal</em>, <em class="sig-param">snap</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.get_one_com"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.get_one_com" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ASTR400B Leach</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="galaxy.html">Galaxy class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="galaxies.html">Galaxies class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="centerofmass.html">CenterOfMass class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="massprofile.html">MassProfile class</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">TimeCourse class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">utilities module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="db.html">DB class</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="massprofile.html" title="previous chapter">MassProfile class</a></li>
+      <li>Next: <a href="utilities.html" title="next chapter">utilities module</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Colin Leach.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/timecourse.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

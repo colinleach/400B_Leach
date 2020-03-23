@@ -207,81 +207,6 @@
         
     <span class="k">return</span> <span class="n">Ie</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">7.67</span> <span class="o">*</span> <span class="p">((</span><span class="n">R</span><span class="o">/</span><span class="n">Re</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">))</span></div>
 
-<span class="c1"># Code for plotting contours</span>
-<span class="c1"># from https://gist.github.com/adrn/3993992</span>
-<span class="c1"># See in-class lab 7</span>
-
-<div class="viewcode-block" id="density_contour"><a class="viewcode-back" href="../../utilities.html#galaxy.utilities.density_contour">[docs]</a><span class="k">def</span> <span class="nf">density_contour</span><span class="p">(</span><span class="n">xdata</span><span class="p">,</span> <span class="n">ydata</span><span class="p">,</span> <span class="n">nbins_x</span><span class="p">,</span> <span class="n">nbins_y</span><span class="p">,</span> <span class="n">level_vals</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">contour_kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">    Create a density contour plot.</span>
-<span class="sd">    </span>
-<span class="sd">    Parameters</span>
-<span class="sd">        xdata : numpy.ndarray</span>
-
-<span class="sd">        ydata : numpy.ndarray</span>
-
-<span class="sd">        nbins_x : int</span>
-<span class="sd">            Number of bins along x dimension</span>
-<span class="sd">        nbins_y : int</span>
-<span class="sd">            Number of bins along y dimension</span>
-<span class="sd">        level_vals : list of int</span>
-<span class="sd">            Contour values to include</span>
-<span class="sd">        ax : matplotlib.Axes (optional)</span>
-<span class="sd">            If supplied, plot the contour to this axis. Otherwise, open a new figure</span>
-<span class="sd">        contour_kwargs : dict</span>
-<span class="sd">            kwargs to be passed to pyplot.contour()</span>
-<span class="sd">            i.e. unknown number of keywords </span>
-<span class="sd">        </span>
-<span class="sd">    Example Usage</span>
-<span class="sd">        density_contour(x pos, y pos, contour res, contour res, level_vals, axis, colors for contours)</span>
-<span class="sd">        </span>
-<span class="sd">        e.g.:</span>
-
-<span class="sd">        colors=[&#39;red&#39;,&#39;orange&#39;, &#39;yellow&#39;]</span>
-
-<span class="sd">        density_contour(xD, yD, 80, 80, [0.68, 0.8, 0.9], ax=ax, colors=colors)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">find_confidence_interval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pdf</span><span class="p">,</span> <span class="n">confidence_level</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">pdf</span><span class="p">[</span><span class="n">pdf</span> <span class="o">&gt;</span> <span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">-</span> <span class="n">confidence_level</span>
-
-    <span class="n">H</span><span class="p">,</span> <span class="n">xedges</span><span class="p">,</span> <span class="n">yedges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram2d</span><span class="p">(</span><span class="n">xdata</span><span class="p">,</span> <span class="n">ydata</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="p">(</span><span class="n">nbins_x</span><span class="p">,</span><span class="n">nbins_y</span><span class="p">),</span> <span class="n">normed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">x_bin_sizes</span> <span class="o">=</span> <span class="p">(</span><span class="n">xedges</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">xedges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="n">nbins_x</span><span class="p">))</span>
-    <span class="n">y_bin_sizes</span> <span class="o">=</span> <span class="p">(</span><span class="n">yedges</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">yedges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">nbins_y</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
-
-    <span class="n">pdf</span> <span class="o">=</span> <span class="p">(</span><span class="n">H</span><span class="o">*</span><span class="p">(</span><span class="n">x_bin_sizes</span><span class="o">*</span><span class="n">y_bin_sizes</span><span class="p">))</span>  
-    
-    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">xedges</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">+</span><span class="n">xedges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">yedges</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">+</span><span class="n">yedges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-    <span class="n">Z</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># transpose of distribution fxn</span>
-    <span class="n">fmt</span> <span class="o">=</span> <span class="p">{}</span>
-    
-    <span class="c1">### Adjust Here #### </span>
-    
-    <span class="c1"># Contour Levels Definitions </span>
-    <span class="c1"># brentq is root finding method</span>
-    <span class="n">lev_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">so</span><span class="o">.</span><span class="n">brentq</span><span class="p">(</span><span class="n">find_confidence_interval</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">pdf</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
-    <span class="n">levels</span> <span class="o">=</span> <span class="p">[</span><span class="n">lev_fn</span><span class="p">(</span><span class="n">level</span><span class="p">)</span> <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="n">level_vals</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
-    
-    <span class="c1"># contour level labels</span>
-    <span class="n">strs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">level</span><span class="p">)</span> <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="n">level_vals</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
-
-    
-    <span class="c1">###### </span>
-    
-    <span class="k">if</span> <span class="n">ax</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">contour</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">contour_kwargs</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">contour</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span> <span class="n">strs</span><span class="p">):</span>
-            <span class="n">fmt</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">contour</span><span class="p">,</span> <span class="n">contour</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">contour</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">contour_kwargs</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">contour</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span> <span class="n">strs</span><span class="p">):</span>
-            <span class="n">fmt</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">contour</span><span class="p">,</span> <span class="n">contour</span><span class="o">.</span><span class="n">levels</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">fmt</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">contour</span></div>
-
 </pre></div>
 
           </div>
@@ -306,6 +231,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../galaxies.html">Galaxies class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../centerofmass.html">CenterOfMass class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../massprofile.html">MassProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../timecourse.html">TimeCourse class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../utilities.html">utilities module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../db.html">DB class</a></li>
 </ul>

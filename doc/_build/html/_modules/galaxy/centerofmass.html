@@ -173,16 +173,18 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Center of Mass velocity</span>
 
-<span class="sd">        Args: X, Y, Z positions of the COM</span>
+<span class="sd">        Args: X, Y, Z positions of the COM (no units)</span>
 
 <span class="sd">        Returns: 3-Vector of COM velocities</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">xyz_com</span> <span class="o">=</span> <span class="n">xyz_com</span><span class="o">.</span><span class="n">value</span>
         
-        <span class="c1"># the max distance from the center that we will use to determine the center of mass velocity                   </span>
-        <span class="n">rv_max</span> <span class="o">=</span> <span class="mf">15.0</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">kpc</span>
+        <span class="c1"># the max distance from the center that we will use to determine the CoM velocity                   </span>
+        <span class="n">rv_max</span> <span class="o">=</span> <span class="mf">15.0</span> <span class="c1"># implicit u.kpc</span>
 
         <span class="c1"># determine the position of all particles relative to the center of mass position</span>
-        <span class="n">xyz_v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">kpc</span> <span class="o">-</span> <span class="n">xyz_com</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+        <span class="n">xyz_v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span> <span class="o">-</span> <span class="n">xyz_com</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
         <span class="n">r_v</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">xyz_v</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         
         <span class="c1"># determine the index for those particles within the max radius</span>
@@ -207,15 +209,15 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">com_p</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">com_p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_p</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+            <span class="n">com_p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_p</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
         <span class="k">if</span> <span class="n">com_v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">com_v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_v</span><span class="p">(</span><span class="n">com_p</span><span class="p">)</span>
+            <span class="n">com_v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_v</span><span class="p">(</span><span class="n">com_p</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
 
         <span class="c1"># Determine positions of disk particles relative to COM </span>
-        <span class="n">xyzD</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span> <span class="o">-</span> <span class="n">com_p</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">xyzD</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span> <span class="o">-</span> <span class="n">com_p</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
 
         <span class="c1"># Determine velocities of disk particles relative to COM motion</span>
-        <span class="n">vxyzD</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vxyz</span> <span class="o">-</span> <span class="n">com_v</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">vxyzD</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vxyz</span> <span class="o">-</span> <span class="n">com_v</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">xyzD</span><span class="p">,</span> <span class="n">vxyzD</span></div>
 
@@ -240,7 +242,7 @@
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">L_i</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">pos</span><span class="p">,</span> <span class="n">v</span></div>
 
-<div class="viewcode-block" id="CenterOfMass.rotate_frame"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.rotate_frame">[docs]</a>    <span class="k">def</span> <span class="nf">rotate_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CenterOfMass.rotate_frame"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.rotate_frame">[docs]</a>    <span class="k">def</span> <span class="nf">rotate_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">com_p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">com_v</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Arg: to_axis (3-vector)</span>
 <span class="sd">                Angular momentum vector will be aligned to this (default z-hat)</span>
@@ -257,7 +259,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">to_axis</span> <span class="o">/=</span> <span class="n">norm</span><span class="p">(</span><span class="n">to_axis</span><span class="p">)</span> <span class="c1"># we need a unit vector</span>
 
-        <span class="n">L</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular_momentum</span><span class="p">()</span>
+        <span class="n">L</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular_momentum</span><span class="p">(</span><span class="n">com_p</span><span class="p">,</span> <span class="n">com_v</span><span class="p">)</span>
         <span class="n">L</span> <span class="o">/=</span> <span class="n">norm</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="c1"># we need a unit vector</span>
 
         <span class="c1"># cross product between L and new axis</span>
@@ -302,6 +304,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../galaxies.html">Galaxies class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../centerofmass.html">CenterOfMass class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../massprofile.html">MassProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../timecourse.html">TimeCourse class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../utilities.html">utilities module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../db.html">DB class</a></li>
 </ul>

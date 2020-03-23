@@ -27,6 +27,7 @@ Steward Observatory, Spring 2020.
     galaxies
     centerofmass
     massprofile
+    timecourse
     utilities
     db
 

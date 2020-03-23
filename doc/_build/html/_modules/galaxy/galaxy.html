@@ -116,7 +116,7 @@
         <span class="n">sql_t</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; and snap=</span><span class="si">{self.snap}</span><span class="s2"> LIMIT 1&quot;</span>
         <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql_t</span><span class="p">)</span>
         <span class="n">time</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">Myr</span>
 
         <span class="c1"># set the bulk of the data</span>
         <span class="n">colheads</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;type&#39;</span><span class="p">,</span><span class="s1">&#39;m&#39;</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="s1">&#39;z&#39;</span><span class="p">,</span><span class="s1">&#39;vx&#39;</span><span class="p">,</span><span class="s1">&#39;vy&#39;</span><span class="p">,</span><span class="s1">&#39;vz&#39;</span><span class="p">])</span>
@@ -450,6 +450,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../galaxies.html">Galaxies class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../centerofmass.html">CenterOfMass class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../massprofile.html">MassProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../timecourse.html">TimeCourse class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../utilities.html">utilities module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../db.html">DB class</a></li>
 </ul>

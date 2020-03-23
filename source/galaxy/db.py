@@ -6,7 +6,7 @@ class DB():
     """
     A simple wrapper class for connecting to the PostgreSQL database.
 
-    Takes no argmuments. Relies on having connection information in
+    Takes no arguments. Relies on having connection information in
     `~/dbconn.yaml`. 
     """
 

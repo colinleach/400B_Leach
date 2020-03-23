@@ -51,11 +51,20 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     
     
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gal</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gal</span><span class="p">,</span> <span class="n">com_p</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gal</span> <span class="o">=</span> <span class="n">gal</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">com</span> <span class="o">=</span> <span class="n">CenterOfMass</span><span class="p">(</span><span class="n">gal</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">com_p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">com_p</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">com_p</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">com_p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">com_p</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">com_p</span> <span class="o">=</span> <span class="n">com_p</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_p</span><span class="o">.</span><span class="n">unit</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span> <span class="c1"># not a Quantity</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">com_p</span> <span class="o">*=</span> <span class="n">u</span><span class="o">.</span><span class="n">kpc</span>
         
 <div class="viewcode-block" id="MassProfile.mass_enclosed"><a class="viewcode-back" href="../../massprofile.html#galaxy.massprofile.MassProfile.mass_enclosed">[docs]</a>    <span class="k">def</span> <span class="nf">mass_enclosed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="n">ptype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -182,6 +191,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../galaxies.html">Galaxies class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../centerofmass.html">CenterOfMass class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../massprofile.html">MassProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../timecourse.html">TimeCourse class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../utilities.html">utilities module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../db.html">DB class</a></li>
 </ul>

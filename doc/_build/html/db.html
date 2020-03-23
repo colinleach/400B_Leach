@@ -14,6 +14,7 @@
     <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="utilities module" href="utilities.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -39,7 +40,7 @@
 <dt id="galaxy.db.DB">
 <em class="property">class </em><code class="sig-prename descclassname">galaxy.db.</code><code class="sig-name descname">DB</code><a class="reference internal" href="_modules/galaxy/db.html#DB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.db.DB" title="Permalink to this definition">¶</a></dt>
 <dd><p>A simple wrapper class for connecting to the PostgreSQL database.</p>
-<p>Takes no argmuments. Relies on having connection information in
+<p>Takes no arguments. Relies on having connection information in
 <cite>~/dbconn.yaml</cite>.</p>
 <dl class="method">
 <dt id="galaxy.db.DB.read_params">
@@ -57,7 +58,8 @@
 <dt id="galaxy.db.DB.run_query">
 <code class="sig-name descname">run_query</code><span class="sig-paren">(</span><em class="sig-param">query</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/db.html#DB.run_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.db.DB.run_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs a SQL query (typically SELECT)</p>
-<p>Returns results in Python list format (not numpy)</p>
+<p>Returns results in Python list format 
+(not numpy, which would need a dtype list)</p>
 </dd></dl>
 
 </dd></dl>
@@ -82,18 +84,21 @@
 
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="galaxy.html">Galaxy class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="galaxies.html">Galaxies class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="centerofmass.html">CenterOfMass class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="massprofile.html">MassProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="timecourse.html">MassProfile class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utilities.html">utilities module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">DB class</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="utilities.html" title="previous chapter">utilities module</a></li>
   </ul></li>
 </ul>
 </div>

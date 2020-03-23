@@ -14,7 +14,8 @@
     <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="MassProfile class" href="massprofile.html" />
+    <link rel="next" title="DB class" href="db.html" />
+    <link rel="prev" title="MassProfile class" href="timecourse.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -72,35 +73,6 @@
 </dl>
 </dd></dl>
 
-<dl class="function">
-<dt id="galaxy.utilities.density_contour">
-<code class="sig-prename descclassname">galaxy.utilities.</code><code class="sig-name descname">density_contour</code><span class="sig-paren">(</span><em class="sig-param">xdata</em>, <em class="sig-param">ydata</em>, <em class="sig-param">nbins_x</em>, <em class="sig-param">nbins_y</em>, <em class="sig-param">level_vals</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">**contour_kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/utilities.html#density_contour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.utilities.density_contour" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a density contour plot.</p>
-<dl>
-<dt>Parameters</dt><dd><p>xdata : numpy.ndarray</p>
-<p>ydata : numpy.ndarray</p>
-<dl class="simple">
-<dt>nbins_x<span class="classifier">int</span></dt><dd><p>Number of bins along x dimension</p>
-</dd>
-<dt>nbins_y<span class="classifier">int</span></dt><dd><p>Number of bins along y dimension</p>
-</dd>
-<dt>level_vals<span class="classifier">list of int</span></dt><dd><p>Contour values to include</p>
-</dd>
-<dt>ax<span class="classifier">matplotlib.Axes (optional)</span></dt><dd><p>If supplied, plot the contour to this axis. Otherwise, open a new figure</p>
-</dd>
-<dt>contour_kwargs<span class="classifier">dict</span></dt><dd><p>kwargs to be passed to pyplot.contour()
-i.e. unknown number of keywords</p>
-</dd>
-</dl>
-</dd>
-<dt>Example Usage</dt><dd><p>density_contour(x pos, y pos, contour res, contour res, level_vals, axis, colors for contours)</p>
-<p>e.g.:</p>
-<p>colors=[‘red’,’orange’, ‘yellow’]</p>
-<p>density_contour(xD, yD, 80, 80, [0.68, 0.8, 0.9], ax=ax, colors=colors)</p>
-</dd>
-</dl>
-</dd></dl>
-
 </div>
 
 
@@ -126,14 +98,17 @@ i.e. unknown number of keywords</p>
 <li class="toctree-l1"><a class="reference internal" href="galaxies.html">Galaxies class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="centerofmass.html">CenterOfMass class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="massprofile.html">MassProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="timecourse.html">MassProfile class</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">utilities module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="db.html">DB class</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="massprofile.html" title="previous chapter">MassProfile class</a></li>
+      <li>Previous: <a href="timecourse.html" title="previous chapter">MassProfile class</a></li>
+      <li>Next: <a href="db.html" title="next chapter">DB class</a></li>
   </ul></li>
 </ul>
 </div>
