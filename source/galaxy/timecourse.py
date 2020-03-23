@@ -100,8 +100,21 @@ class TimeCourse():
                 header="{:>10s}{:>11s}{:>11s}{:>11s}{:>11s}"\
                         .format('t', 'x_hat', 'y_hat', 'z_hat', 'L_mag'))
 
-    def write_total_com(self, start=0, end=801, n=5, show_progress=True):
+    def write_total_com(self, start=0, end=801, n=1, show_progress=True):
         """
+        Function that loops over all the desired snapshots to compute the overall COM 
+        pos and vel as a function of time. Uses all particles in all galaxies.
+
+        inputs:
+            start, end (int):
+                first and last snap numbers to include
+            n (int):
+                stride length for the sequence
+            show_progress (bool):
+                prints each snap number as it is processed
+            
+        output: 
+            Text file saved to disk. 
         """
 
         fileout = './total_com.txt'
@@ -121,6 +134,46 @@ class TimeCourse():
         np.savetxt(fileout, coms, fmt = "%11.3f"*7, comments='#',
                 header="{:>10s}{:>11s}{:>11s}{:>11s}{:>11s}{:>11s}{:>11s}"\
                         .format('t', 'x', 'y', 'z', 'vx', 'vy', 'vz'))
+
+    def write_total_angmom(self, start=0, end=801, n=1, show_progress=True):
+        """
+        Function that loops over all the desired snapshots to compute the overall 
+        angular momentum as a function of time. Uses all particles in all galaxies.
+
+        inputs:
+            start, end (int):
+                first and last snap numbers to include
+            n (int):
+                stride length for the sequence
+            show_progress (bool):
+                prints each snap number as it is processed
+            
+        output: 
+            Text file saved to disk. 
+        """
+
+        fileout = './total_angmom.txt'
+        snap_ids = np.arange(start, end+1, n)
+        angmoms = np.zeros((len(snap_ids), 4))
+
+        com = self.read_total_com_db([start, end])
+        # print(com.shape, com['x'].shape)
+        com_xyz = np.array([com[xi] for xi in ('x','y','z')]).T
+        # print(com_xyz, com_xyz.shape)
+
+        for  i, snap in enumerate(snap_ids): # loop over files
+            gals = Galaxies(snaps=[snap]*3, datadir=self.datadir, usesql=self.usesql)
+            L = gals.total_angmom(com_xyz[i])
+            t = gals.time.value/1000
+            angmoms[i] = t, *tuple(L)
+
+            if show_progress:
+                print(snap, end=' ')
+        print('\nDone')
+
+        np.savetxt(fileout, angmoms, fmt = "%11.3f"*4, comments='#',
+                header="{:>10s}{:>11s}{:>11s}{:>11s}"\
+                        .format('t', 'Lx', 'Ly', 'Lz'))
 
 
     def read_file(self, fullname):

@@ -1,6 +1,8 @@
 \documentclass{aastex63}
 
 \usepackage{natbib}
+\usepackage{booktabs} % helps with pandas to_latex() output
+\usepackage{multirow}
 
 \newcommand{\todo}{\color{red}{TODO}\color{black}\hspace{2mm}}
 
@@ -22,11 +24,64 @@ The simulation of Milky Way--M31--M33 orbital evolution was described previously
 
 \section{Data}
 
-Data from one N-body simulation in \citep{marel_m31_2012} was supplied in text-file format by one of the original authors. This included position and velocity data for each particle at the current epoch ($t=0$) and 800 future timesteps. For ease of analysis, this was all transferred to the open source database PostgreSQL\footnote{\url{http://www.postgresql.org}} (approximately 1.35 billion records). The same database was used for computed summary data during the analysis.
+Data from one N-body simulation in \citep{marel_m31_2012} was supplied in text-file format by one of the original authors. This included position and velocity data for each particle at the current epoch ($t=0$) and 800 future timesteps. For ease of analysis, this was all transferred to the open source database PostgreSQL\footnote{\url{http://www.postgresql.org}} (approximately 1.35 billion records). The same database was used to store computed summary data during the analysis.
 
-Particle counts for each timepoint are shown in Table 1
+Particle counts for each time point are shown in Table 1 and total masses in Table 2.
 
-\todo add table
+The coordinate system is approximately centered on the Milky Way at $t=0$. The center of mass (CoM) of all particles in the system is not fixed over time, moving at an average of (35.9, -26.7, 27.5) km/s with some minor fluctuations due to numerical approximations. 
+
+\begin{deluxetable*}{crrrr}[htb!]
+\tablenum{1}
+\tablecaption{Particle counts}
+\tablewidth{0pt}
+\tablehead{
+	\colhead{Galaxy} & \colhead{DM Halo} & \colhead{Disk} & \colhead{Bulge} & \colhead{Total} 
+	%\colhead{Name} & \colhead{Count} & \colhead{Count} & \colhead{Count} & \colhead{}
+}
+\startdata
+	MW   &  250,000 &   375,000 &    50,000 &   675,000 \\
+	M31  &  250,000 &   600,000 &    95,000 &   945,000 \\
+	M33  &   25,000 &    46,500 &        0 &    71,500 \\
+	\midrule
+	Local Group  &  525,000 &  1,021,500 &   145,000 &  1,691,500 \
+\enddata
+\end{deluxetable*}
+
+
+\begin{deluxetable*}{crrrr}[htb!]
+\tablenum{2}
+\tablecaption{Aggregate masses ($M_\Sun \times 10^{12}$)}
+\tablewidth{0pt}
+\tablehead{
+	\colhead{Galaxy} & \colhead{DM Halo} & \colhead{Disk} & \colhead{Bulge} & \colhead{Total}
+}
+\startdata
+	MW  &      1.975 &      0.075 &       0.010 &  2.060 \\
+    M31 &      1.921 &      0.120 &       0.019 &  2.060  \\
+	M33 &      0.187 &      0.009 &       0.000 &  0.196  \\
+	\midrule
+	Local Group &   4.082 &      0.204 &       0.029 &  4.316 \\
+\enddata
+\end{deluxetable*}
+
+%\begin{deluxetable*}{c|rrrr|rrrr}[htb!]
+%\tablenum{1}
+%\tablecaption{Particle counts}
+%\tablewidth{0pt}
+%\tablehead{
+%	\colhead{Galaxy} & \colhead{Halo} & \colhead{Disk} & \colhead{Bulge} & \colhead{Total}  & \colhead{Halo} & \colhead{Disk} & \colhead{Bulge} & \colhead{Total} 
+%	 && \multicolumn{2}{c}\colhead{Counts} &&& \multicolumn{3}{c}\colhead{Masses ($M_\Sun \times 10^{12}$)}
+%	}
+%%\colnumbers
+%\startdata
+%	MW   &   50,000 &   75,000 &    10,000 &  135,000 &  1.975 &  0.075 &   0.010 &  2.060 \\
+%	M31  &   5,0000 &  120,000 &    19,000 &  189,000 &  1.921 &  0.120 &   0.019 &  2.060  \\
+%	M33  &    5,000 &    9,300 &        0 &   14,300 &  0.187 &  0.009 &   0.000 &  0.196 \\
+%	\midrule
+%	Local Group  &  105,000 &  204,300 &    29,000 &  338,300 &  4.082 &  0.204 &   0.029 &  4.316 \\
+%\enddata
+%\end{deluxetable*}
+
 
 \section{Software}
 

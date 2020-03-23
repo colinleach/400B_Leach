@@ -260,3 +260,29 @@ class Galaxies():
             total_mass += np.sum(m)
 
         return full_com_p / total_mass, full_com_v / total_mass
+
+    def total_angmom(self, origin):
+        """
+        Calculate angular momentum summed over all particles in the local group,
+        abot point `origin`.
+
+        Arg:
+            origin (3-vector): x,y,z coordinates
+
+        Returns:
+            angular momentum: 3-vector
+        """
+
+        L = 0
+
+        for gname in self.filenames:
+            data = self.galaxies[gname].data
+            # print(data.shape, origin.shape)
+            m = data['m']
+            xyz = np.array([data[xi] for xi in ('x','y','z')]) 
+            xyz -= origin[:, np.newaxis]
+            vxyz = np.array([data[vxi] for vxi in ('vx','vy','vz')])
+            p = m * xyz
+            L += np.sum(np.cross(xyz, p, axis=0), axis=1)
+
+        return L
