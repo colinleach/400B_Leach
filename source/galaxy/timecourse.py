@@ -239,6 +239,50 @@ class TimeCourse():
                 header="{:>10s}{:>11s}"\
                         .format('t', 'sigma'))
 
+    def write_LG_normal(self, start=0, end=801):
+        """
+        Calculates the normal to a plane containing the three galaxy CoMs.
+
+        Args:
+            start, end (int):
+                first and last snap numbers to include
+            
+        output: 
+            Text file saved to disk. 
+        """
+
+        # get all the CoM info from postgres
+        MW_data = self.read_com_db('MW')
+        M31_data = self.read_com_db('M31')
+        M33_data = self.read_com_db('M33')
+        
+        # pull out just the 3 columns giving position
+        MW_coms = np.array([MW_data[xi] for xi in ('x','y','z')])
+        M31_coms = np.array([M31_data[xi] for xi in ('x','y','z')])
+        M33_coms = np.array([M33_data[xi] for xi in ('x','y','z')])
+
+        # define 2 vectors that lie in the plane
+        M31_MW = MW_coms - M31_coms
+        M31_M33 = M33_coms - M31_coms
+
+        # the normal we want comes from the vector cross product
+        normals = np.cross(M31_MW, M31_M33, axis=0)
+        normals /= norm(normals, axis=0)
+
+        output = np.concatenate((MW_data['t'][:,np.newaxis], normals.T), axis=1)
+        print(output.shape)
+            
+        # compose the filename for output
+        fileout = './normals.txt'
+
+        # write the data to file
+        # we do this because we don't want to have to repeat this process 
+        # this code should only have to be called once per galaxy.
+        np.savetxt(fileout, output, fmt = "%11.3f"*4, comments='#',
+                header="{:>10s}{:>11s}{:>11s}{:>11s}"\
+                        .format('t', 'x_hat', 'y_hat', 'z_hat'))
+              
+
     def read_file(self, fullname):
         """
         General method for file input. Note that the format is for summary files,
@@ -288,13 +332,11 @@ class TimeCourse():
 
         return self.read_file(fullname)
     
-    def read_total_com_file(self, galaxy, datadir='.'):
+    def read_total_com_file(self, datadir='.'):
         """
         Get CoM summary from file.
 
         Args:
-            galaxy (str): 
-                'MW', 'M31', 'M33'
             datadir (str):
                 path to file
 
@@ -302,13 +344,30 @@ class TimeCourse():
             np.array with 802 rows, one per snap
         """
 
-        filename = f'com_{galaxy}.txt'
+        filename = 'total_com.txt'
         fullname = Path(datadir) / filename
 
         return self.read_file(fullname)
     
+    def read_normals_file(self, datadir='.'):
+        """
+        Get normals to plane containing 3 galaxy CoMs from file.
+
+        Args:
+            datadir (str):
+                path to file
+
+        Returns:
+            np.array with 802 rows, one per snap
+        """
+
+        filename = 'normals.txt'
+        fullname = Path(datadir) / filename
+
+        return self.read_file(fullname)
+
     def write_db_tables(self, datadir='.', do_com=False, do_angmom=False, 
-                        do_totalcom=False, do_totalangmom=False):
+                        do_totalcom=False, do_totalangmom=False, do_normals=False):
         """
         Adds data to the `centerofmass`, `angmom` and `totalcom` tables in the 
         `galaxy` database
@@ -389,9 +448,34 @@ class TimeCourse():
                 rec = [snap,] + list(d)
                 cur.execute(query, rec)
 
+        # 3-galaxy normals data
+        if do_normals:
+            colheads = ','.join(['snap','t','x_hat','y_hat','z_hat'])
+            query = f"""
+                INSERT INTO normals( {colheads} ) 
+                VALUES (%s,%s,%s,%s,%s)
+                ON CONFLICT DO NOTHING
+                """
+
+            filename = 'normals.txt'
+            fullname = filepath / filename
+            data = self.read_file(fullname)
+                
+            for snap, d in enumerate(data):
+                rec = [snap,] + list(d)
+                cur.execute(query, rec)
+
     def read_com_db(self, galaxy=None, snaprange=(0,801)):
         """
-        """
+        Retrieves CoM positions from postgres for a range of snaps.
+
+        Args:
+            galaxy (str):
+                Optional, defaults to all. Can be 'MW', 'M31' , 'M33'
+            snaprange (pair of ints):
+                Optional, defaults to all. First and last snap to include.
+                This is NOT the [first, last+1] convention of Python.
+       """
 
         colheads = ','.join(['gal','snap','t','x','y','z','vx','vy','vz'])
         query = f"""
@@ -411,7 +495,15 @@ class TimeCourse():
         
     def read_angmom_db(self, galaxy=None, snaprange=(0,801)):
         """
-        """
+        Retrieves disk angular momentum from postgres for a range of snaps.
+
+        Args:
+            galaxy (str):
+                Optional, defaults to all. Can be 'MW, 'M31 , 'M33'
+            snaprange (pair of ints):
+                Optional, defaults to all. First and last snap to include.
+                This is NOT the [first, last+1] convention of Python.
+       """
 
         colheads = ','.join(['gal','snap','t','x_hat','y_hat','z_hat','l_mag'])
         query = f"""
@@ -431,7 +523,13 @@ class TimeCourse():
 
     def read_total_com_db(self, snaprange=(0,801)):
         """
-        """
+        Retrieves total CoM positions from postgres for a range of snaps.
+
+        Args:
+            snaprange (pair of ints):
+                Optional, defaults to all. First and last snap to include.
+                This is NOT the [first, last+1] convention of Python.
+       """
 
         colheads = ','.join(['snap','t','x','y','z','vx','vy','vz'])
         query = f"""
@@ -449,6 +547,13 @@ class TimeCourse():
         
     def get_one_com(self, gal, snap)       :
         """
+        Gets a CoM from postgres for the specified galaxy and snap.
+
+        Args:
+            gal (str): 
+                Can be 'MW, 'M31 , 'M33'
+            snap (int):
+                The timepoint.
         """
 
         com = self.read_com_db(gal, (snap,snap))
@@ -460,6 +565,9 @@ class TimeCourse():
         
     def read_total_angmom_db(self, snaprange=(0,801)):
         """
+        Gets the total angular momentum of the 3-galaxy system. In practice, 
+        this turns out to be near-zero at all timepoints and can be ignored
+        in future work.
         """
 
         colheads = ','.join(['snap','t','Lx','Ly','Lz'])
@@ -473,6 +581,25 @@ class TimeCourse():
         result = db.run_query(query)
         dtype=[('snap', 'u2'), ('t', '<f4'), ('Lx', '<f4'), ('Ly', '<f4'), 
                 ('Lz', '<f4')]
+
+        return np.array(result, dtype=dtype)
+
+    def read_normals_db(self, snaprange=(0,801)):
+        """
+        Gets the normals to the 3-galaxy plane.
+        """
+
+        colheads = ','.join(['snap','t','x_hat','y_hat','z_hat'])
+        query = f"""
+                SELECT {colheads} FROM normals 
+                WHERE snap BETWEEN {snaprange[0]} AND {snaprange[1]}
+                ORDER BY snap
+               """
+ 
+        db = DB()
+        result = db.run_query(query)
+        dtype=[('snap', 'u2'), ('t', '<f4'), ('x_hat', '<f4'), ('y_hat', '<f4'), 
+                ('z_hat', '<f4')]
 
         return np.array(result, dtype=dtype)
 

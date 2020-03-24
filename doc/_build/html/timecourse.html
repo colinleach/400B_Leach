@@ -105,6 +105,30 @@ angular momentum as a function of time. Uses all particles in all galaxies.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.write_vel_disp">
+<code class="sig-name descname">write_vel_disp</code><span class="sig-paren">(</span><em class="sig-param">galname</em>, <em class="sig-param">start=0</em>, <em class="sig-param">end=801</em>, <em class="sig-param">n=1</em>, <em class="sig-param">show_progress=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.write_vel_disp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.write_vel_disp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that loops over all the desired snapshots to compute the veocity dispersion
+sigma as a function of time.</p>
+<dl class="simple">
+<dt>inputs:</dt><dd><dl class="simple">
+<dt>galname (str):</dt><dd><p>‘MW’, ‘M31’ or ‘M33’</p>
+</dd>
+<dt>start, end (int):</dt><dd><p>first and last snap numbers to include</p>
+</dd>
+<dt>n (int):</dt><dd><p>stride length for the sequence</p>
+</dd>
+<dt>datadir (str):</dt><dd><p>path to the input data</p>
+</dd>
+<dt>show_progress (bool):</dt><dd><p>prints each snap number as it is processed</p>
+</dd>
+</dl>
+</dd>
+<dt>returns: </dt><dd><p>Text file saved to disk.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="galaxy.timecourse.TimeCourse.read_file">
 <code class="sig-name descname">read_file</code><span class="sig-paren">(</span><em class="sig-param">fullname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>General method for file input. Note that the format is for summary files,
@@ -164,7 +188,7 @@ angular momentum as a function of time. Uses all particles in all galaxies.</p>
 
 <dl class="method">
 <dt id="galaxy.timecourse.TimeCourse.write_db_tables">
-<code class="sig-name descname">write_db_tables</code><span class="sig-paren">(</span><em class="sig-param">datadir='.'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.write_db_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.write_db_tables" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_db_tables</code><span class="sig-paren">(</span><em class="sig-param">datadir='.'</em>, <em class="sig-param">do_com=False</em>, <em class="sig-param">do_angmom=False</em>, <em class="sig-param">do_totalcom=False</em>, <em class="sig-param">do_totalangmom=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.write_db_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.write_db_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds data to the <cite>centerofmass</cite>, <cite>angmom</cite> and <cite>totalcom</cite> tables in the 
 <cite>galaxy</cite> database</p>
 </dd></dl>
@@ -172,21 +196,67 @@ angular momentum as a function of time. Uses all particles in all galaxies.</p>
 <dl class="method">
 <dt id="galaxy.timecourse.TimeCourse.read_com_db">
 <code class="sig-name descname">read_com_db</code><span class="sig-paren">(</span><em class="sig-param">galaxy=None</em>, <em class="sig-param">snaprange=(0</em>, <em class="sig-param">801)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_com_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_com_db" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Retrieves CoM positions from postgres for a range of snaps.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>galaxy (str):</dt><dd><p>Optional, defaults to all. Can be ‘MW, ‘M31 , ‘M33</p>
+</dd>
+<dt>snaprange (pair of ints):</dt><dd><p>Optional, defaults to all. First and last snap to include.
+This is NOT the [first, last+1] convention of Python.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="galaxy.timecourse.TimeCourse.read_angmom_db">
 <code class="sig-name descname">read_angmom_db</code><span class="sig-paren">(</span><em class="sig-param">galaxy=None</em>, <em class="sig-param">snaprange=(0</em>, <em class="sig-param">801)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_angmom_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_angmom_db" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Retrieves disk angular momentum from postgres for a range of snaps.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>galaxy (str):</dt><dd><p>Optional, defaults to all. Can be ‘MW, ‘M31 , ‘M33’</p>
+</dd>
+<dt>snaprange (pair of ints):</dt><dd><p>Optional, defaults to all. First and last snap to include.
+This is NOT the [first, last+1] convention of Python.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="galaxy.timecourse.TimeCourse.read_total_com_db">
 <code class="sig-name descname">read_total_com_db</code><span class="sig-paren">(</span><em class="sig-param">snaprange=(0</em>, <em class="sig-param">801)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_total_com_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_total_com_db" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Retrieves total CoM positions from postgres for a range of snaps.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>snaprange (pair of ints):</dt><dd><p>Optional, defaults to all. First and last snap to include.
+This is NOT the [first, last+1] convention of Python.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="galaxy.timecourse.TimeCourse.get_one_com">
 <code class="sig-name descname">get_one_com</code><span class="sig-paren">(</span><em class="sig-param">gal</em>, <em class="sig-param">snap</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.get_one_com"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.get_one_com" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a CoM from postgres for the specified galaxy and snap.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>gal (str): </dt><dd><p>Can be ‘MW, ‘M31 , ‘M33’</p>
+</dd>
+<dt>snap (int):</dt><dd><p>The timepoint.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.read_total_angmom_db">
+<code class="sig-name descname">read_total_angmom_db</code><span class="sig-paren">(</span><em class="sig-param">snaprange=(0</em>, <em class="sig-param">801)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_total_angmom_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_total_angmom_db" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

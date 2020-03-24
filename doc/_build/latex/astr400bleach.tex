@@ -73,7 +73,7 @@
 
 
 \title{ASTR400B Leach}
-\date{Jan 26, 2020}
+\date{Mar 24, 2020}
 \release{}
 \author{Colin Leach}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -96,6 +96,12 @@ Steward Observatory, Spring 2020.
 \sphinxstylestrong{Instructor:} Prof. Gurtina Besla,  \sphinxstylestrong{TA:} Rixin Li
 
 \sphinxstylestrong{GitHub:} \sphinxurl{https://github.com/colinleach/400B\_Leach}
+\begin{quote}\begin{description}
+\item[{Warning}] \leavevmode
+This is a student project. I will try to make it as professional as
+possible, but let’s be realistic in our expectations.
+
+\end{description}\end{quote}
 \phantomsection\label{\detokenize{galaxy:module-galaxy.galaxy}}\index{galaxy.galaxy (module)@\spxentry{galaxy.galaxy}\spxextra{module}}
 
 \chapter{Galaxy class}
@@ -105,25 +111,36 @@ data in a variety of formats.
 \index{Galaxy (class in galaxy.galaxy)@\spxentry{Galaxy}\spxextra{class in galaxy.galaxy}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{galaxy.galaxy.}}\sphinxbfcode{\sphinxupquote{Galaxy}}}{\emph{name}, \emph{snap=0}, \emph{datadir=None}}{}~\begin{description}
-\item[{Args: }] \leavevmode\begin{description}
-\item[{name (str): }] \leavevmode
+\phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{galaxy.galaxy.}}\sphinxbfcode{\sphinxupquote{Galaxy}}}{\emph{name}, \emph{snap=0}, \emph{datadir=None}, \emph{usesql=False}, \emph{ptype=None}, \emph{stride=1}}{}
+A class to find, read and manipulate files for a single galaxy.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{name (str):}] \leavevmode
 short name used in filename of type ‘name\_000.txt’, eg ‘MW’, ‘M31’.
 
-\end{description}
-
-\item[{Kwargs:}] \leavevmode\begin{description}
-\item[{snap (int): }] \leavevmode
+\item[{snap (int):}] \leavevmode
 Snap number, equivalent to time elapsed. Zero is starting conditions.
 
 \item[{datadir (str):}] \leavevmode
-Directory to search first for the required file. Optional, and a 
+Directory to search first for the required file. Optional, and a
 default list of locations will be searched.
+
+\item[{usesql (bool):}] \leavevmode
+If True, data will be taken from a PostgreSQL database instead of
+text files.
+
+\item[{ptype (int):}] \leavevmode
+Optional. Restrict data to this particle type, for speed. 
+Only valid with usesql=True.
+
+\item[{stride (int):}] \leavevmode
+Optional. For stride=n, get every nth row in the table.
+Only valid with usesql=True.
 
 \end{description}
 
 \item[{Class attributes:}] \leavevmode\begin{description}
-\item[{path (\sphinxtitleref{pathlib.Path} object): }] \leavevmode
+\item[{filepath (\sphinxtitleref{pathlib.Path} object):}] \leavevmode
 directory containing the data file
 
 \item[{filename (str):}] \leavevmode
@@ -135,8 +152,31 @@ type, mass, position\_xyz, velocity\_xyz for each particle
 \end{description}
 
 \end{description}
+\index{read\_db() (galaxy.galaxy.Galaxy method)@\spxentry{read\_db()}\spxextra{galaxy.galaxy.Galaxy method}}
 
-A class to find, read and manipulate files for a single galaxy.
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.read_db}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{read\_db}}}{\emph{ptype}, \emph{stride}}{}
+Get relevant data from a PostgreSQL database and format it to be 
+identical to that read from test files.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{ptype (int):}] \leavevmode
+Optional. Restrict data to this particle type.
+
+\item[{stride (int):}] \leavevmode
+Optional. For stride=n, get every nth row in the table.
+
+\end{description}
+
+\item[{Changes:}] \leavevmode
+\sphinxtitleref{self.time}, \sphinxtitleref{self.particle\_count} and \sphinxtitleref{self.data} are set.
+
+\end{description}
+
+Returns: nothing
+
+\end{fulllineitems}
+
 \index{get\_filepath() (galaxy.galaxy.Galaxy method)@\spxentry{get\_filepath()}\spxextra{galaxy.galaxy.Galaxy method}}
 
 \begin{fulllineitems}
@@ -144,7 +184,7 @@ A class to find, read and manipulate files for a single galaxy.
 \item[{Args:}] \leavevmode
 datadir (str): path to search first for the required file
 
-\item[{Returns:   }] \leavevmode
+\item[{Returns:}] \leavevmode
 \sphinxtitleref{pathlib.Path} object. A directory containing the file.
 
 \item[{Raises:}] \leavevmode
@@ -165,46 +205,72 @@ Read in a datafile in np.ndarray format, store in \sphinxtitleref{self.data}.
 \item[{Requires:}] \leavevmode
 \sphinxtitleref{self.path} and \sphinxtitleref{self.filename} are already set.
 
-\item[{Returns: }] \leavevmode
-nothing
+\item[{Changes:}] \leavevmode
+\sphinxtitleref{self.time}, \sphinxtitleref{self.particle\_count} and \sphinxtitleref{self.data} are set.
 
 \end{description}
+
+Returns: nothing
+
+\end{fulllineitems}
+
+\index{type2name() (galaxy.galaxy.Galaxy method)@\spxentry{type2name()}\spxextra{galaxy.galaxy.Galaxy method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.type2name}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{type2name}}}{\emph{particle\_type}}{}
+Args: particle\_type (int): valid values are 1, 2, or 3
+
+Returns: typename (str): ‘DM’, ‘disk’ or ‘bulge’
+
+\end{fulllineitems}
+
+\index{name2type() (galaxy.galaxy.Galaxy method)@\spxentry{name2type()}\spxextra{galaxy.galaxy.Galaxy method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.name2type}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{name2type}}}{\emph{typename}}{}
+Args: typename (str): valid values are ‘DM’, ‘disk’ or ‘bulge’
+
+Returns: particle\_type (int): 1, 2, or 3 as used in data files
 
 \end{fulllineitems}
 
 \index{filter\_by\_type() (galaxy.galaxy.Galaxy method)@\spxentry{filter\_by\_type()}\spxextra{galaxy.galaxy.Galaxy method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.filter_by_type}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{filter\_by\_type}}}{\emph{type}, \emph{dataset=None}}{}~\begin{description}
+\phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.filter_by_type}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{filter\_by\_type}}}{\emph{particle\_type}, \emph{dataset=None}}{}
+Subsets the data to a single particle type.
+\begin{description}
 \item[{Args:}] \leavevmode
-type (int): for particles, 1=DM, 2=disk, 3=bulge
+particle\_type (int): for particles, 1=DM, 2=disk, 3=bulge
+dataset (array including a type column): defaults to self.data
 
 \item[{Kwargs:}] \leavevmode
-dataset (np.ndarray): a starting dataset other than self.data
-
-\item[{Returns: }] \leavevmode
-np.ndarray: subset data
+dataset (np.ndarray): optionally, a starting dataset other than self.data
 
 \end{description}
+
+Returns: np.ndarray: subset data
 
 \end{fulllineitems}
 
 \index{single\_particle\_properties() (galaxy.galaxy.Galaxy method)@\spxentry{single\_particle\_properties()}\spxextra{galaxy.galaxy.Galaxy method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.single_particle_properties}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{single\_particle\_properties}}}{\emph{type=None}, \emph{particle\_num=0}}{}~\begin{description}
+\phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.single_particle_properties}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{single\_particle\_properties}}}{\emph{particle\_type=None}, \emph{particle\_num=0}}{}
+Calculates distance from the origin and magnitude of the velocity.
+\begin{description}
 \item[{Kwargs:}] \leavevmode\begin{description}
-\item[{type (int): }] \leavevmode
+\item[{particle\_type (int):}] \leavevmode
 a subset of the data filtered by 1=DM, 2=disk, 3=bulge
 
-\item[{particle\_num (int): }] \leavevmode
+\item[{particle\_num (int):}] \leavevmode
 zero\sphinxhyphen{}based index to an array of particles
 
 \end{description}
 
-\item[{returns: }] \leavevmode\begin{description}
+\item[{returns:}] \leavevmode\begin{description}
 \item[{3\sphinxhyphen{}tuple of}] \leavevmode
-Euclidean distance from CoM (kpc),
+Euclidean distance from origin (kpc),
 Euclidean velocity magnitude (km/s),
 particle mass (M\_sun)
 
@@ -217,15 +283,74 @@ particle mass (M\_sun)
 \index{all\_particle\_properties() (galaxy.galaxy.Galaxy method)@\spxentry{all\_particle\_properties()}\spxextra{galaxy.galaxy.Galaxy method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.all_particle_properties}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{all\_particle\_properties}}}{\emph{type=None}}{}~\begin{description}
-\item[{Kwargs:}] \leavevmode\begin{description}
-\item[{type (int): }] \leavevmode
-a subset of the data filtered by 1=DM, 2=disk, 3=bulge
+\phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.all_particle_properties}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{all\_particle\_properties}}}{\emph{particle\_type=None}, \emph{as\_table=True}}{}
+Calculates distances from the origin and magnitude of the velocities
+for all particles (default) or a specied particle type.
+\begin{description}
+\item[{Kwargs: }] \leavevmode\begin{description}
+\item[{particle\_type (int):}] \leavevmode
+A subset of the data filtered by 1=DM, 2=disk, 3=bulge
+
+\item[{as\_table (boolean): Return type. }] \leavevmode
+If True, an astropy QTable with units. 
+If False, np.ndarrays for position and velocity
 
 \end{description}
 
 \item[{Returns:}] \leavevmode
-QTable: The full list with units, optionally filtered by type.
+QTable: 
+The full list, optionally with units, optionally filtered by type.
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{component\_count() (galaxy.galaxy.Galaxy method)@\spxentry{component\_count()}\spxextra{galaxy.galaxy.Galaxy method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.component_count}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{component\_count}}}{\emph{particle\_type=None}}{}~\begin{description}
+\item[{Kwargs: particle\_type (int):}] \leavevmode
+a subset of the data filtered by 1=DM, 2=disk, 3=bulge
+
+\item[{Returns: Quantity:}] \leavevmode
+The number of particles in the galaxy of this type
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{all\_component\_counts() (galaxy.galaxy.Galaxy method)@\spxentry{all\_component\_counts()}\spxextra{galaxy.galaxy.Galaxy method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.all_component_counts}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{all\_component\_counts}}}{}{}~\begin{description}
+\item[{Returns: list:}] \leavevmode
+The aggregate masses of particles of each type in the galaxy
+Ordered as {[}halo, disk, bulge{]}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{component\_mass() (galaxy.galaxy.Galaxy method)@\spxentry{component\_mass()}\spxextra{galaxy.galaxy.Galaxy method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.component_mass}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{component\_mass}}}{\emph{particle\_type=None}}{}~\begin{description}
+\item[{Kwargs: particle\_type (int):}] \leavevmode
+a subset of the data filtered by 1=DM, 2=disk, 3=bulge
+
+\item[{Returns: Quantity:}] \leavevmode
+The aggregate mass of all particles in the galaxy of this type
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{all\_component\_masses() (galaxy.galaxy.Galaxy method)@\spxentry{all\_component\_masses()}\spxextra{galaxy.galaxy.Galaxy method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.all_component_masses}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{all\_component\_masses}}}{}{}~\begin{description}
+\item[{Returns: list:}] \leavevmode
+The aggregate masses of particles of each type in the galaxy
 
 \end{description}
 
@@ -234,11 +359,8 @@ QTable: The full list with units, optionally filtered by type.
 \index{get\_array() (galaxy.galaxy.Galaxy method)@\spxentry{get\_array()}\spxextra{galaxy.galaxy.Galaxy method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.get_array}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_array}}}{}{}~\begin{description}
-\item[{Returns: }] \leavevmode
-data in \sphinxtitleref{np.ndarray} format
-
-\end{description}
+\phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.get_array}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_array}}}{}{}
+Returns: all particle data in \sphinxtitleref{np.ndarray} format
 
 Pretty superfluous in Python (which has no private class members)
 
@@ -248,8 +370,7 @@ Pretty superfluous in Python (which has no private class members)
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.get_df}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_df}}}{}{}
-Returns:
-data as pandas dataframe
+Returns: data as pandas dataframe
 
 \end{fulllineitems}
 
@@ -257,8 +378,817 @@ data as pandas dataframe
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.get_qtable}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_qtable}}}{}{}
-Returns:
-data as astropy QTable, with units
+Returns: data as astropy QTable, with units
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\phantomsection\label{\detokenize{galaxies:module-galaxy.galaxies}}\index{galaxy.galaxies (module)@\spxentry{galaxy.galaxies}\spxextra{module}}
+
+\chapter{Galaxies class}
+\label{\detokenize{galaxies:galaxies-class}}\label{\detokenize{galaxies::doc}}
+This stores and manipulates data for multiple galaxies and snaps.
+\index{Galaxies (class in galaxy.galaxies)@\spxentry{Galaxies}\spxextra{class in galaxy.galaxies}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{galaxies:galaxy.galaxies.Galaxies}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{galaxy.galaxies.}}\sphinxbfcode{\sphinxupquote{Galaxies}}}{\emph{names=(\textquotesingle{}MW\textquotesingle{}}, \emph{\textquotesingle{}M31\textquotesingle{}}, \emph{\textquotesingle{}M33\textquotesingle{})}, \emph{snaps=(0}, \emph{0}, \emph{0)}, \emph{datadir=None}, \emph{usesql=False}, \emph{ptype=None}, \emph{stride=1}}{}
+A class to manipulate data for multiple galaxies.
+\begin{description}
+\item[{Kwargs:}] \leavevmode\begin{description}
+\item[{names (iterable of str):}] \leavevmode
+short names used in filename of type ‘name\_000.txt’, eg ‘MW’, ‘M31’.
+
+\item[{snaps (iterable of int):}] \leavevmode
+Snap number, equivalent to time elapsed. Zero is starting conditions.
+
+\item[{datadir (str):}] \leavevmode
+Directory to search first for the required file. Optional, and a
+default list of locations will be searched.
+
+\item[{usesql (bool):}] \leavevmode
+If True, data will be taken from a PostgreSQL database instead of
+text files.
+
+\item[{ptype (int):}] \leavevmode
+Optional. Restrict data to this particle type, for speed. 
+Only valid with usesql=True.
+
+\item[{stride (int):}] \leavevmode
+Optional. For stride=n, get every nth row in the table.
+Only valid with usesql=True.
+
+\end{description}
+
+\item[{Class attributes:}] \leavevmode\begin{description}
+\item[{path (\sphinxtitleref{pathlib.Path} object):}] \leavevmode
+directory (probably) containing the data files
+
+\item[{filenames (list of str):}] \leavevmode
+in \sphinxtitleref{name\_snap} format, something like ‘MW\_000’ (no extension)
+
+\item[{galaxies (dict):}] \leavevmode
+key is filename, value is the corresponding Galaxy object
+
+\end{description}
+
+\end{description}
+\index{read\_data\_files() (galaxy.galaxies.Galaxies method)@\spxentry{read\_data\_files()}\spxextra{galaxy.galaxies.Galaxies method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{galaxies:galaxy.galaxies.Galaxies.read_data_files}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{read\_data\_files}}}{}{}
+Attempts to create a Galaxy object for each name/snap combination
+set in \sphinxtitleref{self.names} and \sphinxtitleref{self.snaps}
+
+No return value.
+Sets \sphinxtitleref{self.galaxies}, a dictionary keyed on \sphinxtitleref{name\_snap}
+
+\end{fulllineitems}
+
+\index{get\_pivot() (galaxy.galaxies.Galaxies method)@\spxentry{get\_pivot()}\spxextra{galaxy.galaxies.Galaxies method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{galaxies:galaxy.galaxies.Galaxies.get_pivot}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_pivot}}}{\emph{aggfunc}, \emph{values=\textquotesingle{}m\textquotesingle{}}}{}
+Generic method to make a pandas pivot table from the 9 combinations of 
+galaxy and particle type.
+\begin{description}
+\item[{Args:}] \leavevmode
+aggfunc (str): ‘count’, ‘sum’, etc as aggregation method
+values (str): column name to aggregate
+
+\end{description}
+
+Returns: pandas dataframe
+
+\end{fulllineitems}
+
+\index{get\_counts\_pivot() (galaxy.galaxies.Galaxies method)@\spxentry{get\_counts\_pivot()}\spxextra{galaxy.galaxies.Galaxies method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{galaxies:galaxy.galaxies.Galaxies.get_counts_pivot}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_counts\_pivot}}}{}{}
+Pivots on \sphinxtitleref{count(‘m)}.
+
+Returns: pandas dataframe
+
+\end{fulllineitems}
+
+\index{get\_masses\_pivot() (galaxy.galaxies.Galaxies method)@\spxentry{get\_masses\_pivot()}\spxextra{galaxy.galaxies.Galaxies method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{galaxies:galaxy.galaxies.Galaxies.get_masses_pivot}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_masses\_pivot}}}{}{}
+Pivots on \sphinxtitleref{sum(‘m)}.
+
+Returns: pandas dataframe
+
+\end{fulllineitems}
+
+\index{get\_full\_df() (galaxy.galaxies.Galaxies method)@\spxentry{get\_full\_df()}\spxextra{galaxy.galaxies.Galaxies method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{galaxies:galaxy.galaxies.Galaxies.get_full_df}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_full\_df}}}{}{}
+Combined data for all input files.
+\begin{description}
+\item[{Returns:}] \leavevmode
+Concatenated pandas dataframe from all galaxies
+Includes ‘name’ and ‘snap’ columns
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{get\_coms() (galaxy.galaxies.Galaxies method)@\spxentry{get\_coms()}\spxextra{galaxy.galaxies.Galaxies method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{galaxies:galaxy.galaxies.Galaxies.get_coms}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_coms}}}{\emph{tolerance=0.1}, \emph{ptypes=(1}, \emph{2}, \emph{3)}}{}
+Center of Mass determination for all galaxies. 
+Defaults to all particle types, but \sphinxtitleref{ptypes=(2,)} may be more useful.
+\begin{description}
+\item[{Args:}] \leavevmode
+tolerance (float): convergence criterion (kpc)
+
+\item[{Returns:}] \leavevmode
+QTable with COM positions and velocities
+colnames: {[}‘name’, ‘ptype’, ‘x’, ‘y’, ‘z’, ‘vx’, ‘vy’, ‘vz’, ‘R’, ‘V’{]}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{separations() (galaxy.galaxies.Galaxies method)@\spxentry{separations()}\spxextra{galaxy.galaxies.Galaxies method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{galaxies:galaxy.galaxies.Galaxies.separations}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{separations}}}{\emph{g1}, \emph{g2}}{}
+Position and velocity of galaxy g2 COM relative to g1 COM. 
+Uses only disk particles for the COM determination.
+\begin{description}
+\item[{Args:}] \leavevmode
+g1, g2 (str): galaxies matching entries in self.filenames
+
+\item[{Returns:}] \leavevmode
+Dictionary containing relative position, distance, velocities in
+Cartesian and radial coordinates
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{total\_com() (galaxy.galaxies.Galaxies method)@\spxentry{total\_com()}\spxextra{galaxy.galaxies.Galaxies method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{galaxies:galaxy.galaxies.Galaxies.total_com}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{total\_com}}}{}{}
+Center of Mass determination for the local group.
+
+Uses all particles of all types. Position and velocity should be conserved 
+quantities, subject to numerical imprecision in the sim.
+\begin{description}
+\item[{Returns:}] \leavevmode
+position, velocity: 3\sphinxhyphen{}vectors
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{total\_angmom() (galaxy.galaxies.Galaxies method)@\spxentry{total\_angmom()}\spxextra{galaxy.galaxies.Galaxies method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{galaxies:galaxy.galaxies.Galaxies.total_angmom}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{total\_angmom}}}{\emph{origin}}{}
+Calculate angular momentum summed over all particles in the local group,
+abot point \sphinxtitleref{origin}.
+\begin{description}
+\item[{Arg:}] \leavevmode
+origin (3\sphinxhyphen{}vector): x,y,z coordinates
+
+\item[{Returns:}] \leavevmode
+angular momentum: 3\sphinxhyphen{}vector
+
+\end{description}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\phantomsection\label{\detokenize{centerofmass:module-galaxy.centerofmass}}\index{galaxy.centerofmass (module)@\spxentry{galaxy.centerofmass}\spxextra{module}}
+
+\chapter{CenterOfMass class}
+\label{\detokenize{centerofmass:centerofmass-class}}\label{\detokenize{centerofmass::doc}}
+Determines position and velocity of the COM for a galaxy/particle
+type combination.
+\index{CenterOfMass (class in galaxy.centerofmass)@\spxentry{CenterOfMass}\spxextra{class in galaxy.centerofmass}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{centerofmass:galaxy.centerofmass.CenterOfMass}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{galaxy.centerofmass.}}\sphinxbfcode{\sphinxupquote{CenterOfMass}}}{\emph{gal}, \emph{ptype=2}}{}
+Class to define COM position and velocity properties of a given galaxy 
+and simulation snapshot
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{gal (Galaxy object):}] \leavevmode
+The desired galaxy/snap to operate on
+
+\item[{ptype (int):}] \leavevmode
+for particles, 1=DM/halo, 2=disk, 3=bulge
+
+\end{description}
+
+\item[{Throws:}] \leavevmode
+ValueError, if there are no particles of this type in this galaxy
+(typically, halo particles in M33)
+
+\end{description}
+\index{com\_define() (galaxy.centerofmass.CenterOfMass method)@\spxentry{com\_define()}\spxextra{galaxy.centerofmass.CenterOfMass method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{centerofmass:galaxy.centerofmass.CenterOfMass.com_define}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{com\_define}}}{\emph{xyz}, \emph{m}}{}
+Function to compute the center of mass position or velocity generically
+\begin{description}
+\item[{Args: }] \leavevmode\begin{description}
+\item[{xyz (array with shape (3, N)):}] \leavevmode
+(x, y, z) positions or velocities
+
+\item[{m (1\sphinxhyphen{}D array):}] \leavevmode
+particle masses
+
+\end{description}
+
+\item[{Returns: }] \leavevmode
+3\sphinxhyphen{}element array, the center of mass coordinates
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{com\_p() (galaxy.centerofmass.CenterOfMass method)@\spxentry{com\_p()}\spxextra{galaxy.centerofmass.CenterOfMass method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{centerofmass:galaxy.centerofmass.CenterOfMass.com_p}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{com\_p}}}{\emph{delta=0.1}, \emph{vol\_dec=2.0}}{}
+Function to specifically return the center of mass position and velocity    .
+\begin{description}
+\item[{Kwargs:                                                                                                           }] \leavevmode
+delta (tolerance)
+
+\item[{Returns: }] \leavevmode
+One 3\sphinxhyphen{}vector, coordinates of the center of mass position (kpc)
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{com\_v() (galaxy.centerofmass.CenterOfMass method)@\spxentry{com\_v()}\spxextra{galaxy.centerofmass.CenterOfMass method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{centerofmass:galaxy.centerofmass.CenterOfMass.com_v}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{com\_v}}}{\emph{xyz\_com}}{}
+Center of Mass velocity
+
+Args: X, Y, Z positions of the COM (no units)
+
+Returns: 3\sphinxhyphen{}Vector of COM velocities
+
+\end{fulllineitems}
+
+\index{center\_com() (galaxy.centerofmass.CenterOfMass method)@\spxentry{center\_com()}\spxextra{galaxy.centerofmass.CenterOfMass method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{centerofmass:galaxy.centerofmass.CenterOfMass.center_com}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{center\_com}}}{\emph{com\_p=None}, \emph{com\_v=None}}{}
+Positions and velocities of disk particles relative to the CoM
+\begin{description}
+\item[{Returns}] \leavevmode{[}two (3, N) arrays{]}
+CoM\sphinxhyphen{}centric position and velocity
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{angular\_momentum() (galaxy.centerofmass.CenterOfMass method)@\spxentry{angular\_momentum()}\spxextra{galaxy.centerofmass.CenterOfMass method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{centerofmass:galaxy.centerofmass.CenterOfMass.angular_momentum}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{angular\_momentum}}}{\emph{com\_p=None}, \emph{com\_v=None}}{}~\begin{description}
+\item[{Returns: }] \leavevmode\begin{description}
+\item[{L}] \leavevmode{[}3\sphinxhyphen{}vector as array{]}
+The (x,y,x) components of the angular momentum vector about the CoM,
+summed over all disk particles
+
+\item[{pos, v}] \leavevmode{[}arrays with shape (3, N){]}
+Position and velocity for each particle
+
+\end{description}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{rotate\_frame() (galaxy.centerofmass.CenterOfMass method)@\spxentry{rotate\_frame()}\spxextra{galaxy.centerofmass.CenterOfMass method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{centerofmass:galaxy.centerofmass.CenterOfMass.rotate_frame}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{rotate\_frame}}}{\emph{to\_axis=None}, \emph{com\_p=None}, \emph{com\_v=None}}{}~\begin{description}
+\item[{Arg: to\_axis (3\sphinxhyphen{}vector)}] \leavevmode
+Angular momentum vector will be aligned to this (default z\sphinxhyphen{}hat)
+
+\item[{Returns: (positions, velocities), two arrays of shape (3, N)}] \leavevmode
+New values for every particle. \sphinxtitleref{self.data} remains unchanged.
+
+\end{description}
+
+Based on Rodrigues’ rotation formula
+Ref: \sphinxurl{https://en.wikipedia.org/wiki/Rodrigues\%27\_rotation\_formula}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\phantomsection\label{\detokenize{massprofile:module-galaxy.massprofile}}\index{galaxy.massprofile (module)@\spxentry{galaxy.massprofile}\spxextra{module}}
+
+\chapter{MassProfile class}
+\label{\detokenize{massprofile:massprofile-class}}\label{\detokenize{massprofile::doc}}
+Calculates mass vs. radius relations and rotation curves for a given galaxy.
+\index{MassProfile (class in galaxy.massprofile)@\spxentry{MassProfile}\spxextra{class in galaxy.massprofile}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{massprofile:galaxy.massprofile.MassProfile}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{galaxy.massprofile.}}\sphinxbfcode{\sphinxupquote{MassProfile}}}{\emph{gal}, \emph{com\_p=None}}{}
+Class to define mass enclosed as a function of radius and circular velocity
+profiles for a given galaxy and simulation snapshot
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{gal (Galaxy object):}] \leavevmode
+The desired galaxy/snap to operate on
+
+\end{description}
+
+\end{description}
+\index{mass\_enclosed() (galaxy.massprofile.MassProfile method)@\spxentry{mass\_enclosed()}\spxextra{galaxy.massprofile.MassProfile method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{massprofile:galaxy.massprofile.MassProfile.mass_enclosed}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{mass\_enclosed}}}{\emph{radii}, \emph{ptype=None}}{}
+Calculate the mass within a given radius of the CoM 
+for a given type of particle.
+\begin{description}
+\item[{Args:}] \leavevmode
+radii (array of distances): spheres to integrate over
+ptype (int): particle type from (1,2,3), or None for total
+
+\item[{Returns:}] \leavevmode
+array of masses, in units of M\_sun
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{mass\_enclosed\_total() (galaxy.massprofile.MassProfile method)@\spxentry{mass\_enclosed\_total()}\spxextra{galaxy.massprofile.MassProfile method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{massprofile:galaxy.massprofile.MassProfile.mass_enclosed_total}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{mass\_enclosed\_total}}}{\emph{radii}}{}
+Calculate the mass within a given radius of the CoM, 
+summed for all types of particle.
+\begin{description}
+\item[{Args:}] \leavevmode
+radii (array of distances): spheres to integrate over
+
+\item[{Returns:}] \leavevmode
+array of masses, in units of M\_sun
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{halo\_mass() (galaxy.massprofile.MassProfile method)@\spxentry{halo\_mass()}\spxextra{galaxy.massprofile.MassProfile method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{massprofile:galaxy.massprofile.MassProfile.halo_mass}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{halo\_mass}}}{}{}
+Utility function to get a parameter for Hernquist mass
+
+\end{fulllineitems}
+
+\index{hernquist\_mass() (galaxy.massprofile.MassProfile method)@\spxentry{hernquist\_mass()}\spxextra{galaxy.massprofile.MassProfile method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{massprofile:galaxy.massprofile.MassProfile.hernquist_mass}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{hernquist\_mass}}}{\emph{r}, \emph{a}, \emph{M\_halo=None}}{}
+Calculate the mass enclosed for a theoretical profile
+\begin{description}
+\item[{Args:}] \leavevmode
+r (Quantity, units of kpc): distance from center
+a (Quantity, units of kpc): scale radius
+M\_halo (Quantity, units of M\_sun): total DM mass (optional)
+
+\item[{Returns:}] \leavevmode
+Total DM mass enclosed within r (M\_sun)
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{circular\_velocity() (galaxy.massprofile.MassProfile method)@\spxentry{circular\_velocity()}\spxextra{galaxy.massprofile.MassProfile method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{massprofile:galaxy.massprofile.MassProfile.circular_velocity}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{circular\_velocity}}}{\emph{radii}, \emph{ptype=None}}{}
+Calculate orbital velocity at a given radius from the CoM 
+for a given type of particle.
+\begin{description}
+\item[{Args:}] \leavevmode
+radii (array of distances): circular orbit
+ptype (int): particle type from (1,2,3), or None for total
+
+\item[{Returns:}] \leavevmode
+array of circular speeds, in units of km/s
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{circular\_velocity\_total() (galaxy.massprofile.MassProfile method)@\spxentry{circular\_velocity\_total()}\spxextra{galaxy.massprofile.MassProfile method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{massprofile:galaxy.massprofile.MassProfile.circular_velocity_total}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{circular\_velocity\_total}}}{\emph{radii}}{}
+Syntactic sugar for circular\_velocity(radii, ptype=None)
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\phantomsection\label{\detokenize{timecourse:module-galaxy.timecourse}}\index{galaxy.timecourse (module)@\spxentry{galaxy.timecourse}\spxextra{module}}
+
+\chapter{TimeCourse class}
+\label{\detokenize{timecourse:timecourse-class}}\label{\detokenize{timecourse::doc}}
+Various methods to work with data across a series of snaps (timepoints).
+\index{TimeCourse (class in galaxy.timecourse)@\spxentry{TimeCourse}\spxextra{class in galaxy.timecourse}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{galaxy.timecourse.}}\sphinxbfcode{\sphinxupquote{TimeCourse}}}{\emph{datadir=\textquotesingle{}.\textquotesingle{}}, \emph{usesql=False}}{}~\index{write\_com\_ang\_mom() (galaxy.timecourse.TimeCourse method)@\spxentry{write\_com\_ang\_mom()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.write_com_ang_mom}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{write\_com\_ang\_mom}}}{\emph{galname}, \emph{start=0}, \emph{end=801}, \emph{n=5}, \emph{show\_progress=True}}{}
+Function that loops over all the desired snapshots to compute the COM pos and vel as a 
+function of time.
+\begin{description}
+\item[{inputs:}] \leavevmode\begin{description}
+\item[{galname (str):}] \leavevmode
+‘MW’, ‘M31’ or ‘M33’
+
+\item[{start, end (int):}] \leavevmode
+first and last snap numbers to include
+
+\item[{n (int):}] \leavevmode
+stride length for the sequence
+
+\item[{datadir (str):}] \leavevmode
+path to the input data
+
+\item[{show\_progress (bool):}] \leavevmode
+prints each snap number as it is processed
+
+\end{description}
+
+\item[{returns: }] \leavevmode
+Two text files saved to disk.
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{write\_total\_com() (galaxy.timecourse.TimeCourse method)@\spxentry{write\_total\_com()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.write_total_com}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{write\_total\_com}}}{\emph{start=0}, \emph{end=801}, \emph{n=1}, \emph{show\_progress=True}}{}
+Function that loops over all the desired snapshots to compute the overall COM 
+pos and vel as a function of time. Uses all particles in all galaxies.
+\begin{description}
+\item[{inputs:}] \leavevmode\begin{description}
+\item[{start, end (int):}] \leavevmode
+first and last snap numbers to include
+
+\item[{n (int):}] \leavevmode
+stride length for the sequence
+
+\item[{show\_progress (bool):}] \leavevmode
+prints each snap number as it is processed
+
+\end{description}
+
+\item[{output: }] \leavevmode
+Text file saved to disk.
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{write\_total\_angmom() (galaxy.timecourse.TimeCourse method)@\spxentry{write\_total\_angmom()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.write_total_angmom}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{write\_total\_angmom}}}{\emph{start=0}, \emph{end=801}, \emph{n=1}, \emph{show\_progress=True}}{}
+Function that loops over all the desired snapshots to compute the overall 
+angular momentum as a function of time. Uses all particles in all galaxies.
+\begin{description}
+\item[{inputs:}] \leavevmode\begin{description}
+\item[{start, end (int):}] \leavevmode
+first and last snap numbers to include
+
+\item[{n (int):}] \leavevmode
+stride length for the sequence
+
+\item[{show\_progress (bool):}] \leavevmode
+prints each snap number as it is processed
+
+\end{description}
+
+\item[{output: }] \leavevmode
+Text file saved to disk.
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{write\_vel\_disp() (galaxy.timecourse.TimeCourse method)@\spxentry{write\_vel\_disp()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.write_vel_disp}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{write\_vel\_disp}}}{\emph{galname}, \emph{start=0}, \emph{end=801}, \emph{n=1}, \emph{show\_progress=True}}{}
+Function that loops over all the desired snapshots to compute the veocity dispersion
+sigma as a function of time.
+\begin{description}
+\item[{inputs:}] \leavevmode\begin{description}
+\item[{galname (str):}] \leavevmode
+‘MW’, ‘M31’ or ‘M33’
+
+\item[{start, end (int):}] \leavevmode
+first and last snap numbers to include
+
+\item[{n (int):}] \leavevmode
+stride length for the sequence
+
+\item[{datadir (str):}] \leavevmode
+path to the input data
+
+\item[{show\_progress (bool):}] \leavevmode
+prints each snap number as it is processed
+
+\end{description}
+
+\item[{returns: }] \leavevmode
+Text file saved to disk.
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{read\_file() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_file()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.read_file}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{read\_file}}}{\emph{fullname}}{}
+General method for file input. Note that the format is for summary files,
+(one line per snap), not the raw per\sphinxhyphen{}particle files.
+
+\end{fulllineitems}
+
+\index{read\_com\_file() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_com\_file()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.read_com_file}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{read\_com\_file}}}{\emph{galaxy}, \emph{datadir=\textquotesingle{}.\textquotesingle{}}}{}
+Get CoM summary from file.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{galaxy (str): }] \leavevmode
+‘MW’, ‘M31’, ‘M33’
+
+\item[{datadir (str):}] \leavevmode
+path to file
+
+\end{description}
+
+\item[{Returns:}] \leavevmode
+np.array with 802 rows, one per snap
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{read\_angmom\_file() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_angmom\_file()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.read_angmom_file}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{read\_angmom\_file}}}{\emph{galaxy}, \emph{datadir=\textquotesingle{}.\textquotesingle{}}}{}
+Get CoM summary from file.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{galaxy (str): }] \leavevmode
+‘MW’, ‘M31’, ‘M33’
+
+\item[{datadir (str):}] \leavevmode
+path to file
+
+\end{description}
+
+\item[{Returns:}] \leavevmode
+np.array with 802 rows, one per snap
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{read\_total\_com\_file() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_total\_com\_file()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.read_total_com_file}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{read\_total\_com\_file}}}{\emph{galaxy}, \emph{datadir=\textquotesingle{}.\textquotesingle{}}}{}
+Get CoM summary from file.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{galaxy (str): }] \leavevmode
+‘MW’, ‘M31’, ‘M33’
+
+\item[{datadir (str):}] \leavevmode
+path to file
+
+\end{description}
+
+\item[{Returns:}] \leavevmode
+np.array with 802 rows, one per snap
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{write\_db\_tables() (galaxy.timecourse.TimeCourse method)@\spxentry{write\_db\_tables()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.write_db_tables}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{write\_db\_tables}}}{\emph{datadir=\textquotesingle{}.\textquotesingle{}}, \emph{do\_com=False}, \emph{do\_angmom=False}, \emph{do\_totalcom=False}, \emph{do\_totalangmom=False}}{}
+Adds data to the \sphinxtitleref{centerofmass}, \sphinxtitleref{angmom} and \sphinxtitleref{totalcom} tables in the 
+\sphinxtitleref{galaxy} database
+
+\end{fulllineitems}
+
+\index{read\_com\_db() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_com\_db()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.read_com_db}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{read\_com\_db}}}{\emph{galaxy=None}, \emph{snaprange=(0}, \emph{801)}}{}
+Retrieves CoM positions from postgres for a range of snaps.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{galaxy (str):}] \leavevmode
+Optional, defaults to all. Can be ‘MW, ‘M31 , ‘M33
+
+\item[{snaprange (pair of ints):}] \leavevmode
+Optional, defaults to all. First and last snap to include.
+This is NOT the {[}first, last+1{]} convention of Python.
+
+\end{description}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{read\_angmom\_db() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_angmom\_db()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.read_angmom_db}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{read\_angmom\_db}}}{\emph{galaxy=None}, \emph{snaprange=(0}, \emph{801)}}{}
+Retrieves disk angular momentum from postgres for a range of snaps.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{galaxy (str):}] \leavevmode
+Optional, defaults to all. Can be ‘MW, ‘M31 , ‘M33’
+
+\item[{snaprange (pair of ints):}] \leavevmode
+Optional, defaults to all. First and last snap to include.
+This is NOT the {[}first, last+1{]} convention of Python.
+
+\end{description}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{read\_total\_com\_db() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_total\_com\_db()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.read_total_com_db}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{read\_total\_com\_db}}}{\emph{snaprange=(0}, \emph{801)}}{}
+Retrieves total CoM positions from postgres for a range of snaps.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{snaprange (pair of ints):}] \leavevmode
+Optional, defaults to all. First and last snap to include.
+This is NOT the {[}first, last+1{]} convention of Python.
+
+\end{description}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{get\_one\_com() (galaxy.timecourse.TimeCourse method)@\spxentry{get\_one\_com()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.get_one_com}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_one\_com}}}{\emph{gal}, \emph{snap}}{}
+Gets a CoM from postgres for the specified galaxy and snap.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{gal (str): }] \leavevmode
+Can be ‘MW, ‘M31 , ‘M33’
+
+\item[{snap (int):}] \leavevmode
+The timepoint.
+
+\end{description}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{read\_total\_angmom\_db() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_total\_angmom\_db()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.read_total_angmom_db}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{read\_total\_angmom\_db}}}{\emph{snaprange=(0}, \emph{801)}}{}
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+
+
+\chapter{utilities module}
+\label{\detokenize{utilities:utilities-module}}\label{\detokenize{utilities::doc}}
+A collection of useful functions that don’t fit into any of the other classes.
+
+\phantomsection\label{\detokenize{utilities:module-galaxy.utilities}}\index{galaxy.utilities (module)@\spxentry{galaxy.utilities}\spxextra{module}}\index{wolf\_mass() (in module galaxy.utilities)@\spxentry{wolf\_mass()}\spxextra{in module galaxy.utilities}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{utilities:galaxy.utilities.wolf_mass}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{galaxy.utilities.}}\sphinxbfcode{\sphinxupquote{wolf\_mass}}}{\emph{sigma}, \emph{Re}}{}
+Wolf mass estimator from Wolf+ 2010
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{sigma}] \leavevmode{[}{]}
+1D line of sight velocity dispersion in km/s
+
+\item[{Re}] \leavevmode{[}{]}
+2D radius enclosing half the stellar mass in pc
+
+\end{description}
+
+\end{description}
+
+Returns: estimate of the dynamical mass within the half light radius in Msun
+
+\end{fulllineitems}
+
+\index{sersic() (in module galaxy.utilities)@\spxentry{sersic()}\spxextra{in module galaxy.utilities}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{utilities:galaxy.utilities.sersic}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{galaxy.utilities.}}\sphinxbfcode{\sphinxupquote{sersic}}}{\emph{R}, \emph{Re}, \emph{n}, \emph{Mtot}}{}~\begin{description}
+\item[{Input}] \leavevmode\begin{description}
+\item[{R:}] \leavevmode
+radius (kpc)
+
+\item[{Re:}] \leavevmode
+half mass radius (kpc)
+
+\item[{n:}] \leavevmode
+sersic index
+
+\item[{Mtot:}] \leavevmode
+total stellar mass
+
+\end{description}
+
+\item[{Returns}] \leavevmode
+Surface Brightness profile in Lsun/kpc\textasciicircum{}2
+
+\end{description}
+
+\end{fulllineitems}
+
+\phantomsection\label{\detokenize{db:module-galaxy.db}}\index{galaxy.db (module)@\spxentry{galaxy.db}\spxextra{module}}
+
+\chapter{DB class}
+\label{\detokenize{db:db-class}}\label{\detokenize{db::doc}}
+A wrapper for connections to the PostgreSQL database
+\index{DB (class in galaxy.db)@\spxentry{DB}\spxextra{class in galaxy.db}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{db:galaxy.db.DB}}\pysigline{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{galaxy.db.}}\sphinxbfcode{\sphinxupquote{DB}}}
+A simple wrapper class for connecting to the PostgreSQL database.
+
+Takes no arguments. Relies on having connection information in
+\sphinxtitleref{\textasciitilde{}/dbconn.yaml}.
+\index{read\_params() (galaxy.db.DB method)@\spxentry{read\_params()}\spxextra{galaxy.db.DB method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{db:galaxy.db.DB.read_params}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{read\_params}}}{}{}
+Needs the yaml parameter file to be in the user’s home directory
+
+\end{fulllineitems}
+
+\index{get\_cursor() (galaxy.db.DB method)@\spxentry{get\_cursor()}\spxextra{galaxy.db.DB method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{db:galaxy.db.DB.get_cursor}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_cursor}}}{}{}
+A simple getter method
+
+\end{fulllineitems}
+
+\index{run\_query() (galaxy.db.DB method)@\spxentry{run\_query()}\spxextra{galaxy.db.DB method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{db:galaxy.db.DB.run_query}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{run\_query}}}{\emph{query}}{}
+Runs a SQL query (typically SELECT)
+
+Returns results in Python list format 
+(not numpy, which would need a dtype list)
 
 \end{fulllineitems}
 
@@ -285,7 +1215,13 @@ data as astropy QTable, with units
 \begin{sphinxtheindex}
 \let\bigletter\sphinxstyleindexlettergroup
 \bigletter{g}
+\item\relax\sphinxstyleindexentry{galaxy.centerofmass}\sphinxstyleindexpageref{centerofmass:\detokenize{module-galaxy.centerofmass}}
+\item\relax\sphinxstyleindexentry{galaxy.db}\sphinxstyleindexpageref{db:\detokenize{module-galaxy.db}}
+\item\relax\sphinxstyleindexentry{galaxy.galaxies}\sphinxstyleindexpageref{galaxies:\detokenize{module-galaxy.galaxies}}
 \item\relax\sphinxstyleindexentry{galaxy.galaxy}\sphinxstyleindexpageref{galaxy:\detokenize{module-galaxy.galaxy}}
+\item\relax\sphinxstyleindexentry{galaxy.massprofile}\sphinxstyleindexpageref{massprofile:\detokenize{module-galaxy.massprofile}}
+\item\relax\sphinxstyleindexentry{galaxy.timecourse}\sphinxstyleindexpageref{timecourse:\detokenize{module-galaxy.timecourse}}
+\item\relax\sphinxstyleindexentry{galaxy.utilities}\sphinxstyleindexpageref{utilities:\detokenize{module-galaxy.utilities}}
 \end{sphinxtheindex}
 
 \renewcommand{\indexname}{Index}

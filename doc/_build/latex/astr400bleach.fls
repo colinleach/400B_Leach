@@ -266,6 +266,8 @@ INPUT /usr/local/noapt/texlive/2019/texmf-dist/fonts/vf/adobe/times/ptmbi8t.vf
 INPUT /usr/local/noapt/texlive/2019/texmf-dist/fonts/tfm/adobe/times/ptmbi8r.tfm
 INPUT /usr/local/noapt/texlive/2019/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 INPUT /usr/local/noapt/texlive/2019/texmf-dist/tex/latex/psnfss/ts1ptm.fd
+INPUT /usr/local/noapt/texlive/2019/texmf-dist/fonts/tfm/adobe/times/ptmri8c.tfm
+INPUT /usr/local/noapt/texlive/2019/texmf-dist/fonts/vf/adobe/times/ptmri8c.vf
 INPUT /usr/local/noapt/texlive/2019/texmf-dist/fonts/tfm/adobe/times/ptmr8c.tfm
 INPUT /usr/local/noapt/texlive/2019/texmf-dist/fonts/vf/adobe/times/ptmr8c.vf
 INPUT /usr/local/noapt/texlive/2019/texmf-dist/fonts/vf/adobe/helvetic/phvr8t.vf

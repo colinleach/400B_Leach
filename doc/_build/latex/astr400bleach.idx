@@ -1,10 +1,68 @@
 \indexentry{galaxy.galaxy (module)@\spxentry{galaxy.galaxy}\spxextra{module}|hyperpage}{1}
 \indexentry{Galaxy (class in galaxy.galaxy)@\spxentry{Galaxy}\spxextra{class in galaxy.galaxy}|hyperpage}{3}
+\indexentry{read\_db() (galaxy.galaxy.Galaxy method)@\spxentry{read\_db()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{3}
 \indexentry{get\_filepath() (galaxy.galaxy.Galaxy method)@\spxentry{get\_filepath()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{3}
 \indexentry{read\_file() (galaxy.galaxy.Galaxy method)@\spxentry{read\_file()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{3}
-\indexentry{filter\_by\_type() (galaxy.galaxy.Galaxy method)@\spxentry{filter\_by\_type()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{3}
-\indexentry{single\_particle\_properties() (galaxy.galaxy.Galaxy method)@\spxentry{single\_particle\_properties()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{3}
+\indexentry{type2name() (galaxy.galaxy.Galaxy method)@\spxentry{type2name()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{4}
+\indexentry{name2type() (galaxy.galaxy.Galaxy method)@\spxentry{name2type()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{4}
+\indexentry{filter\_by\_type() (galaxy.galaxy.Galaxy method)@\spxentry{filter\_by\_type()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{4}
+\indexentry{single\_particle\_properties() (galaxy.galaxy.Galaxy method)@\spxentry{single\_particle\_properties()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{4}
 \indexentry{all\_particle\_properties() (galaxy.galaxy.Galaxy method)@\spxentry{all\_particle\_properties()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{4}
-\indexentry{get\_array() (galaxy.galaxy.Galaxy method)@\spxentry{get\_array()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{4}
-\indexentry{get\_df() (galaxy.galaxy.Galaxy method)@\spxentry{get\_df()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{4}
-\indexentry{get\_qtable() (galaxy.galaxy.Galaxy method)@\spxentry{get\_qtable()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{4}
+\indexentry{component\_count() (galaxy.galaxy.Galaxy method)@\spxentry{component\_count()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{4}
+\indexentry{all\_component\_counts() (galaxy.galaxy.Galaxy method)@\spxentry{all\_component\_counts()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{4}
+\indexentry{component\_mass() (galaxy.galaxy.Galaxy method)@\spxentry{component\_mass()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{4}
+\indexentry{all\_component\_masses() (galaxy.galaxy.Galaxy method)@\spxentry{all\_component\_masses()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{4}
+\indexentry{get\_array() (galaxy.galaxy.Galaxy method)@\spxentry{get\_array()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{5}
+\indexentry{get\_df() (galaxy.galaxy.Galaxy method)@\spxentry{get\_df()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{5}
+\indexentry{get\_qtable() (galaxy.galaxy.Galaxy method)@\spxentry{get\_qtable()}\spxextra{galaxy.galaxy.Galaxy method}|hyperpage}{5}
+\indexentry{galaxy.galaxies (module)@\spxentry{galaxy.galaxies}\spxextra{module}|hyperpage}{5}
+\indexentry{Galaxies (class in galaxy.galaxies)@\spxentry{Galaxies}\spxextra{class in galaxy.galaxies}|hyperpage}{7}
+\indexentry{read\_data\_files() (galaxy.galaxies.Galaxies method)@\spxentry{read\_data\_files()}\spxextra{galaxy.galaxies.Galaxies method}|hyperpage}{7}
+\indexentry{get\_pivot() (galaxy.galaxies.Galaxies method)@\spxentry{get\_pivot()}\spxextra{galaxy.galaxies.Galaxies method}|hyperpage}{7}
+\indexentry{get\_counts\_pivot() (galaxy.galaxies.Galaxies method)@\spxentry{get\_counts\_pivot()}\spxextra{galaxy.galaxies.Galaxies method}|hyperpage}{7}
+\indexentry{get\_masses\_pivot() (galaxy.galaxies.Galaxies method)@\spxentry{get\_masses\_pivot()}\spxextra{galaxy.galaxies.Galaxies method}|hyperpage}{7}
+\indexentry{get\_full\_df() (galaxy.galaxies.Galaxies method)@\spxentry{get\_full\_df()}\spxextra{galaxy.galaxies.Galaxies method}|hyperpage}{7}
+\indexentry{get\_coms() (galaxy.galaxies.Galaxies method)@\spxentry{get\_coms()}\spxextra{galaxy.galaxies.Galaxies method}|hyperpage}{8}
+\indexentry{separations() (galaxy.galaxies.Galaxies method)@\spxentry{separations()}\spxextra{galaxy.galaxies.Galaxies method}|hyperpage}{8}
+\indexentry{total\_com() (galaxy.galaxies.Galaxies method)@\spxentry{total\_com()}\spxextra{galaxy.galaxies.Galaxies method}|hyperpage}{8}
+\indexentry{total\_angmom() (galaxy.galaxies.Galaxies method)@\spxentry{total\_angmom()}\spxextra{galaxy.galaxies.Galaxies method}|hyperpage}{8}
+\indexentry{galaxy.centerofmass (module)@\spxentry{galaxy.centerofmass}\spxextra{module}|hyperpage}{8}
+\indexentry{CenterOfMass (class in galaxy.centerofmass)@\spxentry{CenterOfMass}\spxextra{class in galaxy.centerofmass}|hyperpage}{9}
+\indexentry{com\_define() (galaxy.centerofmass.CenterOfMass method)@\spxentry{com\_define()}\spxextra{galaxy.centerofmass.CenterOfMass method}|hyperpage}{9}
+\indexentry{com\_p() (galaxy.centerofmass.CenterOfMass method)@\spxentry{com\_p()}\spxextra{galaxy.centerofmass.CenterOfMass method}|hyperpage}{9}
+\indexentry{com\_v() (galaxy.centerofmass.CenterOfMass method)@\spxentry{com\_v()}\spxextra{galaxy.centerofmass.CenterOfMass method}|hyperpage}{9}
+\indexentry{center\_com() (galaxy.centerofmass.CenterOfMass method)@\spxentry{center\_com()}\spxextra{galaxy.centerofmass.CenterOfMass method}|hyperpage}{9}
+\indexentry{angular\_momentum() (galaxy.centerofmass.CenterOfMass method)@\spxentry{angular\_momentum()}\spxextra{galaxy.centerofmass.CenterOfMass method}|hyperpage}{9}
+\indexentry{rotate\_frame() (galaxy.centerofmass.CenterOfMass method)@\spxentry{rotate\_frame()}\spxextra{galaxy.centerofmass.CenterOfMass method}|hyperpage}{9}
+\indexentry{galaxy.massprofile (module)@\spxentry{galaxy.massprofile}\spxextra{module}|hyperpage}{10}
+\indexentry{MassProfile (class in galaxy.massprofile)@\spxentry{MassProfile}\spxextra{class in galaxy.massprofile}|hyperpage}{11}
+\indexentry{mass\_enclosed() (galaxy.massprofile.MassProfile method)@\spxentry{mass\_enclosed()}\spxextra{galaxy.massprofile.MassProfile method}|hyperpage}{11}
+\indexentry{mass\_enclosed\_total() (galaxy.massprofile.MassProfile method)@\spxentry{mass\_enclosed\_total()}\spxextra{galaxy.massprofile.MassProfile method}|hyperpage}{11}
+\indexentry{halo\_mass() (galaxy.massprofile.MassProfile method)@\spxentry{halo\_mass()}\spxextra{galaxy.massprofile.MassProfile method}|hyperpage}{11}
+\indexentry{hernquist\_mass() (galaxy.massprofile.MassProfile method)@\spxentry{hernquist\_mass()}\spxextra{galaxy.massprofile.MassProfile method}|hyperpage}{11}
+\indexentry{circular\_velocity() (galaxy.massprofile.MassProfile method)@\spxentry{circular\_velocity()}\spxextra{galaxy.massprofile.MassProfile method}|hyperpage}{11}
+\indexentry{circular\_velocity\_total() (galaxy.massprofile.MassProfile method)@\spxentry{circular\_velocity\_total()}\spxextra{galaxy.massprofile.MassProfile method}|hyperpage}{11}
+\indexentry{galaxy.timecourse (module)@\spxentry{galaxy.timecourse}\spxextra{module}|hyperpage}{11}
+\indexentry{TimeCourse (class in galaxy.timecourse)@\spxentry{TimeCourse}\spxextra{class in galaxy.timecourse}|hyperpage}{13}
+\indexentry{write\_com\_ang\_mom() (galaxy.timecourse.TimeCourse method)@\spxentry{write\_com\_ang\_mom()}\spxextra{galaxy.timecourse.TimeCourse method}|hyperpage}{13}
+\indexentry{write\_total\_com() (galaxy.timecourse.TimeCourse method)@\spxentry{write\_total\_com()}\spxextra{galaxy.timecourse.TimeCourse method}|hyperpage}{13}
+\indexentry{write\_total\_angmom() (galaxy.timecourse.TimeCourse method)@\spxentry{write\_total\_angmom()}\spxextra{galaxy.timecourse.TimeCourse method}|hyperpage}{13}
+\indexentry{write\_vel\_disp() (galaxy.timecourse.TimeCourse method)@\spxentry{write\_vel\_disp()}\spxextra{galaxy.timecourse.TimeCourse method}|hyperpage}{13}
+\indexentry{read\_file() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_file()}\spxextra{galaxy.timecourse.TimeCourse method}|hyperpage}{14}
+\indexentry{read\_com\_file() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_com\_file()}\spxextra{galaxy.timecourse.TimeCourse method}|hyperpage}{14}
+\indexentry{read\_angmom\_file() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_angmom\_file()}\spxextra{galaxy.timecourse.TimeCourse method}|hyperpage}{14}
+\indexentry{read\_total\_com\_file() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_total\_com\_file()}\spxextra{galaxy.timecourse.TimeCourse method}|hyperpage}{14}
+\indexentry{write\_db\_tables() (galaxy.timecourse.TimeCourse method)@\spxentry{write\_db\_tables()}\spxextra{galaxy.timecourse.TimeCourse method}|hyperpage}{14}
+\indexentry{read\_com\_db() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_com\_db()}\spxextra{galaxy.timecourse.TimeCourse method}|hyperpage}{14}
+\indexentry{read\_angmom\_db() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_angmom\_db()}\spxextra{galaxy.timecourse.TimeCourse method}|hyperpage}{14}
+\indexentry{read\_total\_com\_db() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_total\_com\_db()}\spxextra{galaxy.timecourse.TimeCourse method}|hyperpage}{15}
+\indexentry{get\_one\_com() (galaxy.timecourse.TimeCourse method)@\spxentry{get\_one\_com()}\spxextra{galaxy.timecourse.TimeCourse method}|hyperpage}{15}
+\indexentry{read\_total\_angmom\_db() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_total\_angmom\_db()}\spxextra{galaxy.timecourse.TimeCourse method}|hyperpage}{15}
+\indexentry{galaxy.utilities (module)@\spxentry{galaxy.utilities}\spxextra{module}|hyperpage}{17}
+\indexentry{wolf\_mass() (in module galaxy.utilities)@\spxentry{wolf\_mass()}\spxextra{in module galaxy.utilities}|hyperpage}{17}
+\indexentry{sersic() (in module galaxy.utilities)@\spxentry{sersic()}\spxextra{in module galaxy.utilities}|hyperpage}{17}
+\indexentry{galaxy.db (module)@\spxentry{galaxy.db}\spxextra{module}|hyperpage}{17}
+\indexentry{DB (class in galaxy.db)@\spxentry{DB}\spxextra{class in galaxy.db}|hyperpage}{19}
+\indexentry{read\_params() (galaxy.db.DB method)@\spxentry{read\_params()}\spxextra{galaxy.db.DB method}|hyperpage}{19}
+\indexentry{get\_cursor() (galaxy.db.DB method)@\spxentry{get\_cursor()}\spxextra{galaxy.db.DB method}|hyperpage}{19}
+\indexentry{run\_query() (galaxy.db.DB method)@\spxentry{run\_query()}\spxextra{galaxy.db.DB method}|hyperpage}{19}

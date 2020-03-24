@@ -5,28 +5,120 @@
 \let\spxextra \sphinxstyleindexextra
 
   \bigletter A
+  \item \spxentry{all\_component\_counts()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{4}
+  \item \spxentry{all\_component\_masses()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{4}
   \item \spxentry{all\_particle\_properties()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{4}
+  \item \spxentry{angular\_momentum()}\spxextra{galaxy.centerofmass.CenterOfMass method}, 
+		\hyperpage{9}
+
+  \indexspace
+  \bigletter C
+  \item \spxentry{center\_com()}\spxextra{galaxy.centerofmass.CenterOfMass method}, \hyperpage{9}
+  \item \spxentry{CenterOfMass}\spxextra{class in galaxy.centerofmass}, \hyperpage{9}
+  \item \spxentry{circular\_velocity()}\spxextra{galaxy.massprofile.MassProfile method}, 
+		\hyperpage{11}
+  \item \spxentry{circular\_velocity\_total()}\spxextra{galaxy.massprofile.MassProfile method}, 
+		\hyperpage{11}
+  \item \spxentry{com\_define()}\spxextra{galaxy.centerofmass.CenterOfMass method}, \hyperpage{9}
+  \item \spxentry{com\_p()}\spxextra{galaxy.centerofmass.CenterOfMass method}, \hyperpage{9}
+  \item \spxentry{com\_v()}\spxextra{galaxy.centerofmass.CenterOfMass method}, \hyperpage{9}
+  \item \spxentry{component\_count()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{4}
+  \item \spxentry{component\_mass()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{4}
+
+  \indexspace
+  \bigletter D
+  \item \spxentry{DB}\spxextra{class in galaxy.db}, \hyperpage{19}
 
   \indexspace
   \bigletter F
-  \item \spxentry{filter\_by\_type()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{3}
+  \item \spxentry{filter\_by\_type()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{4}
 
   \indexspace
   \bigletter G
+  \item \spxentry{Galaxies}\spxextra{class in galaxy.galaxies}, \hyperpage{7}
   \item \spxentry{Galaxy}\spxextra{class in galaxy.galaxy}, \hyperpage{3}
+  \item \spxentry{galaxy.centerofmass}\spxextra{module}, \hyperpage{8}
+  \item \spxentry{galaxy.db}\spxextra{module}, \hyperpage{17}
+  \item \spxentry{galaxy.galaxies}\spxextra{module}, \hyperpage{5}
   \item \spxentry{galaxy.galaxy}\spxextra{module}, \hyperpage{1}
-  \item \spxentry{get\_array()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{4}
-  \item \spxentry{get\_df()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{4}
+  \item \spxentry{galaxy.massprofile}\spxextra{module}, \hyperpage{10}
+  \item \spxentry{galaxy.timecourse}\spxextra{module}, \hyperpage{11}
+  \item \spxentry{galaxy.utilities}\spxextra{module}, \hyperpage{17}
+  \item \spxentry{get\_array()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{5}
+  \item \spxentry{get\_coms()}\spxextra{galaxy.galaxies.Galaxies method}, \hyperpage{8}
+  \item \spxentry{get\_counts\_pivot()}\spxextra{galaxy.galaxies.Galaxies method}, \hyperpage{7}
+  \item \spxentry{get\_cursor()}\spxextra{galaxy.db.DB method}, \hyperpage{19}
+  \item \spxentry{get\_df()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{5}
   \item \spxentry{get\_filepath()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{3}
-  \item \spxentry{get\_qtable()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{4}
+  \item \spxentry{get\_full\_df()}\spxextra{galaxy.galaxies.Galaxies method}, \hyperpage{7}
+  \item \spxentry{get\_masses\_pivot()}\spxextra{galaxy.galaxies.Galaxies method}, \hyperpage{7}
+  \item \spxentry{get\_one\_com()}\spxextra{galaxy.timecourse.TimeCourse method}, \hyperpage{15}
+  \item \spxentry{get\_pivot()}\spxextra{galaxy.galaxies.Galaxies method}, \hyperpage{7}
+  \item \spxentry{get\_qtable()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{5}
+
+  \indexspace
+  \bigletter H
+  \item \spxentry{halo\_mass()}\spxextra{galaxy.massprofile.MassProfile method}, \hyperpage{11}
+  \item \spxentry{hernquist\_mass()}\spxextra{galaxy.massprofile.MassProfile method}, 
+		\hyperpage{11}
+
+  \indexspace
+  \bigletter M
+  \item \spxentry{mass\_enclosed()}\spxextra{galaxy.massprofile.MassProfile method}, \hyperpage{11}
+  \item \spxentry{mass\_enclosed\_total()}\spxextra{galaxy.massprofile.MassProfile method}, 
+		\hyperpage{11}
+  \item \spxentry{MassProfile}\spxextra{class in galaxy.massprofile}, \hyperpage{11}
+
+  \indexspace
+  \bigletter N
+  \item \spxentry{name2type()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{4}
 
   \indexspace
   \bigletter R
+  \item \spxentry{read\_angmom\_db()}\spxextra{galaxy.timecourse.TimeCourse method}, \hyperpage{14}
+  \item \spxentry{read\_angmom\_file()}\spxextra{galaxy.timecourse.TimeCourse method}, 
+		\hyperpage{14}
+  \item \spxentry{read\_com\_db()}\spxextra{galaxy.timecourse.TimeCourse method}, \hyperpage{14}
+  \item \spxentry{read\_com\_file()}\spxextra{galaxy.timecourse.TimeCourse method}, \hyperpage{14}
+  \item \spxentry{read\_data\_files()}\spxextra{galaxy.galaxies.Galaxies method}, \hyperpage{7}
+  \item \spxentry{read\_db()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{3}
   \item \spxentry{read\_file()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{3}
+  \item \spxentry{read\_file()}\spxextra{galaxy.timecourse.TimeCourse method}, \hyperpage{14}
+  \item \spxentry{read\_params()}\spxextra{galaxy.db.DB method}, \hyperpage{19}
+  \item \spxentry{read\_total\_angmom\_db()}\spxextra{galaxy.timecourse.TimeCourse method}, 
+		\hyperpage{15}
+  \item \spxentry{read\_total\_com\_db()}\spxextra{galaxy.timecourse.TimeCourse method}, 
+		\hyperpage{15}
+  \item \spxentry{read\_total\_com\_file()}\spxextra{galaxy.timecourse.TimeCourse method}, 
+		\hyperpage{14}
+  \item \spxentry{rotate\_frame()}\spxextra{galaxy.centerofmass.CenterOfMass method}, \hyperpage{9}
+  \item \spxentry{run\_query()}\spxextra{galaxy.db.DB method}, \hyperpage{19}
 
   \indexspace
   \bigletter S
+  \item \spxentry{separations()}\spxextra{galaxy.galaxies.Galaxies method}, \hyperpage{8}
+  \item \spxentry{sersic()}\spxextra{in module galaxy.utilities}, \hyperpage{17}
   \item \spxentry{single\_particle\_properties()}\spxextra{galaxy.galaxy.Galaxy method}, 
-		\hyperpage{3}
+		\hyperpage{4}
+
+  \indexspace
+  \bigletter T
+  \item \spxentry{TimeCourse}\spxextra{class in galaxy.timecourse}, \hyperpage{13}
+  \item \spxentry{total\_angmom()}\spxextra{galaxy.galaxies.Galaxies method}, \hyperpage{8}
+  \item \spxentry{total\_com()}\spxextra{galaxy.galaxies.Galaxies method}, \hyperpage{8}
+  \item \spxentry{type2name()}\spxextra{galaxy.galaxy.Galaxy method}, \hyperpage{4}
+
+  \indexspace
+  \bigletter W
+  \item \spxentry{wolf\_mass()}\spxextra{in module galaxy.utilities}, \hyperpage{17}
+  \item \spxentry{write\_com\_ang\_mom()}\spxextra{galaxy.timecourse.TimeCourse method}, 
+		\hyperpage{13}
+  \item \spxentry{write\_db\_tables()}\spxextra{galaxy.timecourse.TimeCourse method}, 
+		\hyperpage{14}
+  \item \spxentry{write\_total\_angmom()}\spxextra{galaxy.timecourse.TimeCourse method}, 
+		\hyperpage{13}
+  \item \spxentry{write\_total\_com()}\spxextra{galaxy.timecourse.TimeCourse method}, 
+		\hyperpage{13}
+  \item \spxentry{write\_vel\_disp()}\spxextra{galaxy.timecourse.TimeCourse method}, \hyperpage{13}
 
 \end{sphinxtheindex}
