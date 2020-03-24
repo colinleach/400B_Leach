@@ -175,6 +175,69 @@ class TimeCourse():
                 header="{:>10s}{:>11s}{:>11s}{:>11s}"\
                         .format('t', 'Lx', 'Ly', 'Lz'))
 
+    def write_vel_disp(self, galname, start=0, end=801, n=1, show_progress=True):
+        """
+        Function that loops over all the desired snapshots to compute the veocity dispersion
+        sigma as a function of time.
+
+        inputs:
+            galname (str):
+                'MW', 'M31' or 'M33'
+            start, end (int):
+                first and last snap numbers to include
+            n (int):
+                stride length for the sequence
+            datadir (str):
+                path to the input data
+            show_progress (bool):
+                prints each snap number as it is processed
+            
+        returns: 
+            Text file saved to disk. 
+        """
+
+        # compose the filename for output
+        fileout = f'./sigma_{galname}.txt'
+
+         # generate the snapshot id sequence 
+        snap_ids = np.arange(start, end+1, n)
+        
+        # initialize the array for orbital info: t, sigma
+        sigmas = np.zeros((len(snap_ids), 2))
+        
+        if show_progress:
+            print(galname)
+        
+        for  i, snap in enumerate(snap_ids): # loop over files
+            gal = Galaxy(galname, snap, datadir=self.datadir, usesql=self.usesql)
+            
+            # Initialize an instance of CenterOfMass class, using disk particles
+            com = CenterOfMass(gal)
+
+            # Store the COM pos and vel. Remember that now COM_P required VolDec
+            com_xyz, com_vxyz = self.get_one_com(galname, snap)  
+
+            gal_xyzD, gal_vxyzD = com.center_com(com_xyz, com_vxyz)
+
+            # determine the rotated velocity vectors
+            _, vn = com.rotate_frame(com_p=com_xyz, com_v=com_vxyz)
+            
+            # calculate velocity dispersion
+            v_radial = vn[1]
+            v_mean = np.mean(v_radial)
+            sigmas[i] = gal.time.value/1000, np.std(v_radial - v_mean)
+
+            # print snap_id to see the progress
+            if show_progress:
+                print(snap, end=' ')
+        print('\nDone')
+            
+        # write the data to file
+        # we do this because we don't want to have to repeat this process 
+        # this code should only have to be called once per galaxy.
+        np.savetxt(fileout, sigmas, fmt = "%11.3f"*2, comments='#',
+                header="{:>10s}{:>11s}"\
+                        .format('t', 'sigma'))
 
     def read_file(self, fullname):
         """
@@ -244,7 +307,8 @@ class TimeCourse():
 
         return self.read_file(fullname)
     
-    def write_db_tables(self, datadir='.'):
+    def write_db_tables(self, datadir='.', do_com=False, do_angmom=False, 
+                        do_totalcom=False, do_totalangmom=False):
         """
         Adds data to the `centerofmass`, `angmom` and `totalcom` tables in the 
         `galaxy` database
@@ -256,54 +320,74 @@ class TimeCourse():
         cur = db.get_cursor()
 
         # CoM data
-        colheads = ','.join(['gal','snap','t','x','y','z','vx','vy','vz'])
-        query = f"""
-            INSERT INTO centerofmass( {colheads} ) 
-            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
-            ON CONFLICT DO NOTHING
-            """
+        if do_com:
+            colheads = ','.join(['gal','snap','t','x','y','z','vx','vy','vz'])
+            query = f"""
+                INSERT INTO centerofmass( {colheads} ) 
+                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                ON CONFLICT DO NOTHING
+                """
 
-        for gname in ('MW','M31','M33'):
-            filename = f'com_{gname}.txt'
-            fullname = filepath / filename
-            data = self.read_file(fullname)
-               
-            for snap, d in enumerate(data):
-                rec = [gname, snap,] + list(d)
-                cur.execute(query, rec)
+            for gname in ('MW','M31','M33'):
+                filename = f'com_{gname}.txt'
+                fullname = filepath / filename
+                data = self.read_file(fullname)
+                
+                for snap, d in enumerate(data):
+                    rec = [gname, snap,] + list(d)
+                    cur.execute(query, rec)
 
         # angular momentum data
-        colheads = ','.join(['gal','snap','t','x_hat','y_hat','z_hat','l_mag'])
-        query = f"""
-            INSERT INTO angmom( {colheads} ) 
-            VALUES (%s,%s,%s,%s,%s,%s,%s)
-            ON CONFLICT DO NOTHING
-            """
+        if do_angmom:
+            colheads = ','.join(['gal','snap','t','x_hat','y_hat','z_hat','l_mag'])
+            query = f"""
+                INSERT INTO angmom( {colheads} ) 
+                VALUES (%s,%s,%s,%s,%s,%s,%s)
+                ON CONFLICT DO NOTHING
+                """
 
-        for gname in ('MW','M31','M33'):
-            filename = f'angmom_{gname}.txt'
+            for gname in ('MW','M31','M33'):
+                filename = f'angmom_{gname}.txt'
+                fullname = filepath / filename
+                data = self.read_file(fullname)
+                    
+                for snap, d in enumerate(data):
+                    rec = [gname, snap,] + list(d)
+                    cur.execute(query, rec)
+
+        # total CoM data
+        if do_totalcom:
+            colheads = ','.join(['snap','t','x','y','z','vx','vy','vz'])
+            query = f"""
+                INSERT INTO totalcom( {colheads} ) 
+                VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+                ON CONFLICT DO NOTHING
+                """
+
+            filename = 'total_com.txt'
             fullname = filepath / filename
             data = self.read_file(fullname)
                 
             for snap, d in enumerate(data):
-                rec = [gname, snap,] + list(d)
+                rec = [snap,] + list(d)
                 cur.execute(query, rec)
 
-        # total CoM data
-        colheads = ','.join(['snap','t','x','y','z','vx','vy','vz'])
-        query = f"""
-            INSERT INTO totalcom( {colheads} ) 
-            VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
-            ON CONFLICT DO NOTHING
-            """
+        # total angular momentum data
+        if do_totalangmom:
+            colheads = ','.join(['snap','t','Lx','Ly','Lz'])
+            query = f"""
+                INSERT INTO totalangmom( {colheads} ) 
+                VALUES (%s,%s,%s,%s,%s)
+                ON CONFLICT DO NOTHING
+                """
 
-        filename = 'total_com.txt'
-        fullname = filepath / filename
-        data = self.read_file(fullname)
-            
-        for snap, d in enumerate(data):
-            rec = [snap,] + list(d)
-            cur.execute(query, rec)
+            filename = 'total_angmom.txt'
+            fullname = filepath / filename
+            data = self.read_file(fullname)
+                
+            for snap, d in enumerate(data):
+                rec = [snap,] + list(d)
+                cur.execute(query, rec)
 
     def read_com_db(self, galaxy=None, snaprange=(0,801)):
         """
@@ -373,3 +457,22 @@ class TimeCourse():
 
         # need to massage the shapes a bit to match what c.com_p() returns
         return xyz.T[0], vxyz.T[0]
+        
+    def read_total_angmom_db(self, snaprange=(0,801)):
+        """
+        """
+
+        colheads = ','.join(['snap','t','Lx','Ly','Lz'])
+        query = f"""
+                SELECT {colheads} FROM totalangmom 
+                WHERE snap BETWEEN {snaprange[0]} AND {snaprange[1]}
+                ORDER BY snap
+               """
+ 
+        db = DB()
+        result = db.run_query(query)
+        dtype=[('snap', 'u2'), ('t', '<f4'), ('Lx', '<f4'), ('Ly', '<f4'), 
+                ('Lz', '<f4')]
+
+        return np.array(result, dtype=dtype)
+
