@@ -11,6 +11,30 @@ from galaxy.centerofmass import CenterOfMass
 from galaxy.db import DB
 
 class TimeCourse():
+    """
+    A commection of methods for generating, reading and writing summary data for 
+    parameters that change over the timecourse of the simulation.
+
+    These fall into a few groups:
+        `write_xxx()` : 
+            Methods that loop through the raw data, calculate parameters and write 
+            the results to file. Can be slow (hours) to run but Only run once. 
+            See the `data` folder for the resulting files, one line per snap.
+
+        `read_xxx_file(`)` :
+            Read in the summary files and return a numpy array. These rely on the
+            generic `read_file()` method.
+
+        `read_xxx_db()` :
+            Get the summary data from postgres instead of a text file. 
+            The returned array should be identical to the `read_xxx_file()` group.
+
+        `write_db_tables()` :
+            Read a text file, insert the contents to a postgres table.
+
+        `get_one_com()` :
+            Convenience method to return a single CoM position.
+    """
 
     def __init__(self, datadir='.', usesql=False):
         self.datadir = datadir

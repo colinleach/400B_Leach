@@ -92,7 +92,7 @@ class Plots():
         
         return contour
 
-    def plot_density(self, rn, galname, snap, t, lim=None, pngout=False, fname=None):
+    def plot_density(self, rn, galname, snap, t, lim=None, nbins=150, pngout=False, fname=None):
         """
         """
 
@@ -108,7 +108,7 @@ class Plots():
 
         # plot the particle density
         # can modify bin number (bin =100 smoothest)
-        h0 = ax0.hist2d(rn[0,:], rn[1,:], bins=150, norm=LogNorm(), cmap='magma')
+        h0 = ax0.hist2d(rn[0,:], rn[1,:], bins=nbins, norm=LogNorm(), cmap='magma')
         fig.colorbar(h0[3], ax=ax0)
 
         # Add axis labels
@@ -134,7 +134,7 @@ class Plots():
 
         # plot the particle density
         # can modify bin number (bin =100 smoothest)
-        h1 = ax1.hist2d(rn[0,:], rn[2,:], bins=150, norm=LogNorm(), cmap='magma')
+        h1 = ax1.hist2d(rn[0,:], rn[2,:], bins=nbins, norm=LogNorm(), cmap='magma')
         fig.colorbar(h1[3], ax=ax1)
 
         # Add axis labels

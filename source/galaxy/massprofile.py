@@ -15,6 +15,8 @@ class MassProfile:
     Args:
         gal (Galaxy object):
             The desired galaxy/snap to operate on
+        com_p (3-vector):
+            Optional. The position of the disk CoM.
     """
     
     
