@@ -7,3 +7,4 @@ from .massprofile import MassProfile
 from .timecourse import TimeCourse
 from .utilities import *
 from .db import DB
+from .m33analyticorbit import M33AnalyticOrbit

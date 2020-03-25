@@ -313,8 +313,7 @@ class TimeCourse():
         (one line per snap), not the raw per-particle files.
         """
 
-        with open(fullname) as file:
-            data = np.genfromtxt(fullname, dtype=None, names=True, skip_header=0)
+        data = np.genfromtxt(fullname, dtype=None, names=True, skip_header=0)
         return data
  
 

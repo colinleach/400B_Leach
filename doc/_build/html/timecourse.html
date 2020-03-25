@@ -40,7 +40,28 @@
 <dl class="class">
 <dt id="galaxy.timecourse.TimeCourse">
 <em class="property">class </em><code class="sig-prename descclassname">galaxy.timecourse.</code><code class="sig-name descname">TimeCourse</code><span class="sig-paren">(</span><em class="sig-param">datadir='.'</em>, <em class="sig-param">usesql=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>A commection of methods for generating, reading and writing summary data for 
+parameters that change over the timecourse of the simulation.</p>
+<dl class="simple">
+<dt>These fall into a few groups:</dt><dd><dl class="simple">
+<dt><cite>write_xxx()</cite><span class="classifier"></span></dt><dd><p>Methods that loop through the raw data, calculate parameters and write 
+the results to file. Can be slow (hours) to run but Only run once. 
+See the <cite>data</cite> folder for the resulting files, one line per snap.</p>
+</dd>
+<dt><cite>read_xxx_file(</cite>)` :</dt><dd><p>Read in the summary files and return a numpy array. These rely on the
+generic <cite>read_file()</cite> method.</p>
+</dd>
+<dt><cite>read_xxx_db()</cite> :</dt><dd><p>Get the summary data from postgres instead of a text file. 
+The returned array should be identical to the <cite>read_xxx_file()</cite> group.</p>
+</dd>
+<dt><cite>write_db_tables()</cite> :</dt><dd><p>Read a text file, insert the contents to a postgres table.</p>
+</dd>
+<dt><cite>get_one_com()</cite> :</dt><dd><p>Convenience method to return a single CoM position.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
 <dt id="galaxy.timecourse.TimeCourse.write_com_ang_mom">
 <code class="sig-name descname">write_com_ang_mom</code><span class="sig-paren">(</span><em class="sig-param">galname</em>, <em class="sig-param">start=0</em>, <em class="sig-param">end=801</em>, <em class="sig-param">n=5</em>, <em class="sig-param">show_progress=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.write_com_ang_mom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.write_com_ang_mom" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function that loops over all the desired snapshots to compute the COM pos and vel as a 
@@ -129,6 +150,21 @@ sigma as a function of time.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.write_LG_normal">
+<code class="sig-name descname">write_LG_normal</code><span class="sig-paren">(</span><em class="sig-param">start=0</em>, <em class="sig-param">end=801</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.write_LG_normal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.write_LG_normal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the normal to a plane containing the three galaxy CoMs.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>start, end (int):</dt><dd><p>first and last snap numbers to include</p>
+</dd>
+</dl>
+</dd>
+<dt>output: </dt><dd><p>Text file saved to disk.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="galaxy.timecourse.TimeCourse.read_file">
 <code class="sig-name descname">read_file</code><span class="sig-paren">(</span><em class="sig-param">fullname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>General method for file input. Note that the format is for summary files,
@@ -171,12 +207,25 @@ sigma as a function of time.</p>
 
 <dl class="method">
 <dt id="galaxy.timecourse.TimeCourse.read_total_com_file">
-<code class="sig-name descname">read_total_com_file</code><span class="sig-paren">(</span><em class="sig-param">galaxy</em>, <em class="sig-param">datadir='.'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_total_com_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_total_com_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">read_total_com_file</code><span class="sig-paren">(</span><em class="sig-param">datadir='.'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_total_com_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_total_com_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get CoM summary from file.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
-<dt>galaxy (str): </dt><dd><p>‘MW’, ‘M31’, ‘M33’</p>
+<dt>datadir (str):</dt><dd><p>path to file</p>
 </dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>np.array with 802 rows, one per snap</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.read_normals_file">
+<code class="sig-name descname">read_normals_file</code><span class="sig-paren">(</span><em class="sig-param">datadir='.'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_normals_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_normals_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get normals to plane containing 3 galaxy CoMs from file.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
 <dt>datadir (str):</dt><dd><p>path to file</p>
 </dd>
 </dl>
@@ -188,7 +237,7 @@ sigma as a function of time.</p>
 
 <dl class="method">
 <dt id="galaxy.timecourse.TimeCourse.write_db_tables">
-<code class="sig-name descname">write_db_tables</code><span class="sig-paren">(</span><em class="sig-param">datadir='.'</em>, <em class="sig-param">do_com=False</em>, <em class="sig-param">do_angmom=False</em>, <em class="sig-param">do_totalcom=False</em>, <em class="sig-param">do_totalangmom=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.write_db_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.write_db_tables" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_db_tables</code><span class="sig-paren">(</span><em class="sig-param">datadir='.'</em>, <em class="sig-param">do_com=False</em>, <em class="sig-param">do_angmom=False</em>, <em class="sig-param">do_totalcom=False</em>, <em class="sig-param">do_totalangmom=False</em>, <em class="sig-param">do_normals=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.write_db_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.write_db_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds data to the <cite>centerofmass</cite>, <cite>angmom</cite> and <cite>totalcom</cite> tables in the 
 <cite>galaxy</cite> database</p>
 </dd></dl>
@@ -199,7 +248,7 @@ sigma as a function of time.</p>
 <dd><p>Retrieves CoM positions from postgres for a range of snaps.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
-<dt>galaxy (str):</dt><dd><p>Optional, defaults to all. Can be ‘MW, ‘M31 , ‘M33</p>
+<dt>galaxy (str):</dt><dd><p>Optional, defaults to all. Can be ‘MW’, ‘M31’ , ‘M33’</p>
 </dd>
 <dt>snaprange (pair of ints):</dt><dd><p>Optional, defaults to all. First and last snap to include.
 This is NOT the [first, last+1] convention of Python.</p>
@@ -257,7 +306,16 @@ This is NOT the [first, last+1] convention of Python.</p>
 <dl class="method">
 <dt id="galaxy.timecourse.TimeCourse.read_total_angmom_db">
 <code class="sig-name descname">read_total_angmom_db</code><span class="sig-paren">(</span><em class="sig-param">snaprange=(0</em>, <em class="sig-param">801)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_total_angmom_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_total_angmom_db" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Gets the total angular momentum of the 3-galaxy system. In practice, 
+this turns out to be near-zero at all timepoints and can be ignored
+in future work.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.read_normals_db">
+<code class="sig-name descname">read_normals_db</code><span class="sig-paren">(</span><em class="sig-param">snaprange=(0</em>, <em class="sig-param">801)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_normals_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_normals_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the normals to the 3-galaxy plane.</p>
+</dd></dl>
 
 </dd></dl>
 

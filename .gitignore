@@ -141,3 +141,9 @@ Untitled*.ipynb
 
 # too many files
 png_files/
+
+# recorded lectures
+Lectures/*.mp4
+ASTR400B*.mp4
+*.m3u
+*.m4a

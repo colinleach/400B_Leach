@@ -5,7 +5,7 @@ from numpy.linalg import norm
 import astropy.units as u
 import astropy.table as tbl
 
-from galaxy import Galaxy
+from galaxy.galaxy import Galaxy
 
 class CenterOfMass:
     """
