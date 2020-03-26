@@ -390,10 +390,10 @@ class TimeCourse():
         return self.read_file(fullname)
 
     def write_db_tables(self, datadir='.', do_com=False, do_angmom=False, 
-                        do_totalcom=False, do_totalangmom=False, do_normals=False):
+                        do_totalcom=False, do_totalangmom=False, do_normals=False,
+                        do_sigmas=False):
         """
-        Adds data to the `centerofmass`, `angmom` and `totalcom` tables in the 
-        `galaxy` database
+        Adds data to the various tables in the `galaxy` database
         """
 
         filepath = Path(datadir)
@@ -487,6 +487,24 @@ class TimeCourse():
             for snap, d in enumerate(data):
                 rec = [snap,] + list(d)
                 cur.execute(query, rec)
+
+        # velocity dispersions
+        if do_sigmas:
+            colheads = ','.join(['gal','snap','t','sigma'])
+            query = f"""
+                INSERT INTO sigmas( {colheads} ) 
+                VALUES (%s,%s,%s,%s)
+                ON CONFLICT DO NOTHING
+                """
+
+            for gname in ('MW','M31','M33'):
+                filename = f'sigma_{gname}.txt'
+                fullname = filepath / filename
+                data = self.read_file(fullname)
+                    
+                for snap, d in enumerate(data):
+                    rec = [gname, snap,] + list(d)
+                    cur.execute(query, rec)
 
     def read_com_db(self, galaxy=None, snaprange=(0,801)):
         """
@@ -623,6 +641,26 @@ class TimeCourse():
         result = db.run_query(query)
         dtype=[('snap', 'u2'), ('t', '<f4'), ('x_hat', '<f4'), ('y_hat', '<f4'), 
                 ('z_hat', '<f4')]
+
+        return np.array(result, dtype=dtype)
+
+    def read_sigmas_db(self, galaxy=None, snaprange=(0,801)):
+        """
+        Gets the velocity dispersions (km/s) for one galaxy at a range of snaps.
+        """
+
+        colheads = ','.join(['gal','snap','t','sigma'])
+        query = f"""
+                SELECT {colheads} FROM sigmas 
+                WHERE snap BETWEEN {snaprange[0]} AND {snaprange[1]}
+                """
+        if galaxy is not None:
+            query += f" AND gal='{galaxy}'"
+        query += " ORDER BY snap"
+
+        db = DB()
+        result = db.run_query(query)
+        dtype=[('gal', 'U3'), ('snap', 'u2'), ('t', '<f4'), ('sigma', '<f4')]
 
         return np.array(result, dtype=dtype)
 
