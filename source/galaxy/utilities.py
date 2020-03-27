@@ -135,8 +135,8 @@ class AbundanceMatching:
         return SHMratio
     
     
- # Q1: add a function to the class that takes the SHM ratio and returns 
-# The stellar mass 
+    # Method that takes the SHM ratio and returns the stellar mass 
+
     def StellarMass(self):
         """
         Using eq 2 of Moster+ 2013
@@ -145,6 +145,7 @@ class AbundanceMatching:
         """
         
         return self.M * self.SHMratio()
+        
 
 #  Function that returns Sersic Profile for an Elliptical System
 # See in-class lab 6
@@ -174,3 +175,60 @@ def sersic(R, Re, n, Mtot):
         
     return Ie * np.exp(-7.67 * ((R/Re)**(1.0/n) - 1.0))
 
+# Some functions to calculate useful 3D rotation matrices
+
+def rotation_matrix_to_vector(old_axis, to_axis=None):
+    """
+    Args: 
+        old_axis (3-vector)
+            Vector to be brought into alignment with `to_axis` by rotation about the origin
+        to_axis (3-vector)
+            Angular momentum vector will be aligned to this (default z_hat)
+
+    Returns: 
+        3x3 rotation matrix
+
+    Based on Rodrigues' rotation formula
+    Ref: https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula
+    
+    Note that orientation in the plane perpendicular to 'to_axis' is arbitrary 
+    """
+
+    if to_axis is None:
+        to_axis = np.array([0, 0, 1])
+    else:
+        to_axis /= norm(to_axis) # we need a unit vector
+
+    # cross product between old_axis and new axis
+    k_vec = np.cross(old_axis, to_axis) # 3-vector
+    s_sq = np.sum(k_vec**2) # scalar, sin theta
+
+    # dot product between old_axis and new axis 
+    c = np.dot(old_axis, to_axis) # scalar, cos theta
+
+    # rotation matrix, 3x3
+    kx, ky, kz = k_vec
+    K = np.array([[0, -kz, ky], [kz, 0, -kx], [-ky, kx, 0]])
+    R = np.eye(3) + K + K@K * (1 - c) / s_sq
+
+    return R
+
+def z_rotation_matrix(pt1, pt2):
+    """
+    Rotates about z-axis to line up two given points along the x-axis
+
+    Args:
+        pt1, pt2 (2-component iterables)
+            define points to be placed on the  x-axis
+
+    Returns:
+        3x3 rotation matrix
+    """
+
+    diff = pt2 - pt1
+    theta = -np.arctan(diff[1] / diff[0])
+    print(theta*180/np.pi)
+    R = np.array([[np.cos(theta), -np.sin(theta), 0], 
+                  [np.sin(theta), np.cos(theta), 0],
+                  [0, 0, 1]])
+    return -R

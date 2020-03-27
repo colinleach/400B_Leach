@@ -221,7 +221,8 @@ class TimeCourse():
         """
 
         # compose the filename for output
-        fileout = f'./sigma_{galname}.txt'
+        # fileout = f'./sigma_{galname}.txt'
+        fileout = f'./sigma_{galname}_2.txt'
 
          # generate the snapshot id sequence 
         snap_ids = np.arange(start, end+1, n)
@@ -247,7 +248,7 @@ class TimeCourse():
             _, vn = com.rotate_frame(com_p=com_xyz, com_v=com_vxyz)
             
             # calculate velocity dispersion
-            v_radial = vn[1]
+            v_radial = (vn[0] + vn[1]) / 2
             v_mean = np.mean(v_radial)
             sigmas[i] = gal.time.value/1000, np.std(v_radial - v_mean)
 
