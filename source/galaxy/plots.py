@@ -92,13 +92,40 @@ class Plots():
         
         return contour
 
-    def plot_density(self, rn, galname, snap, t, lim=None, nbins=150, pngout=False, fname=None):
+    def plot_density(self, rn, galname, snap, t, lim=None, nbins=150, 
+                    pngout=False, fname=None):
         """
+        Particle column density plot, 2D histograms overlaid with contours. 
+        
+        Shows x,y (face-on) and x,z (edge-on) orientations, assuming rotation 
+        axis is along z.
+
+        Args:
+            rn (np.array, shape (3,N))
+                (x,y,z) coordinates
+            galname (str)
+                Galaxy name, just for the title
+            snap (int):
+                Timepoint sequence number, as used in the data filename
+            t (float):
+                Time in Gyr
+            lim (number):
+                Optional, x and y limits of the plot in kpc
+            nbins (int)
+                Optional, for passing to plt.hist2d
+            pngout (bool)
+                Optional, write a file to disk?
+            fname (str)
+                Output filename, required only if pngout=True            
         """
 
+        # The simple figsize format is OK for static images:
         # fig = plt.figure(figsize=(20,9))
+
+        # If saved files are to be used for animations with ffmpeg, row
+        # count must be an even number. This hack ensures that.
         fig = plt.figure()
-        DPI = fig.get_dpi()
+        DPI = fig.get_dpi() # dots per inch of your display
         fig.set_size_inches(1200.0/float(DPI),610.0/float(DPI))
 
         subplots = (121, 122)
