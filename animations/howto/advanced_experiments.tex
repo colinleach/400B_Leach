@@ -1,0 +1,94 @@
+\input{header.tex}
+
+%\setlength{\headsep}{-10pt}
+\setlength{\parskip}{0.2em}
+%\setlength{\textheight}{11 in}
+\setlength{\skip\footins}{20pt}
+
+% opening
+\title{Plotting large datasets, Part 3: Advanced experiments}
+\author{Colin Leach, March 2020}
+\date{\vspace{-3ex}}
+
+\hyphenpenalty=1000
+
+\begin{document}
+	
+\maketitle
+
+This should really be called ``Things I don't understand yet''. It won't be much use for 400B work, but I've posted it for the tiny minority who might be interested.
+
+Getting away from matplotlib, there are some newer\footnote{In other words, typically less finished and poorly documented} options which use the power of modern graphics cards to handle large numbers of points. More powerful, steeper learning curve.
+
+\section{datashader}
+
+Websites: \url{https://github.com/holoviz/datashader} and \url{https://datashader.org}
+
+This needs the data to be arranged columnwise in a (single) pandas dataframe; fairly typical for modern plotting packages. Used in isolation, datashader will make a 2D image. To add axes, labels, etc, it needs to be hooked into a suitable browser-based package such as Bokeh (usually) or Plotly (under development). This can mean a LOT of extra packages to install from conda or pip and lots of potential conflicts\footnote{The recent release of Bokeh 2.0 broke datashader 0.10.0. For now, use Bokeh 1.4.0 and hope datashader 0.13 is released soon. The developer says he's working on it while in self-isolation after flying home from Covid-hit Spain.}
+
+It was a fight for me to get something working. Documentation is extensive, but sometimes out of date and actively misleading (it took over an hour to change the colormap at about the 20th attempt).
+The best result so far starts with a bunch of imports:
+
+\lstdefinestyle{py}{
+	belowcaptionskip=1\baselineskip,
+	breaklines=true,
+	frame=L,
+	xleftmargin=\parindent,
+	language=Python,
+	showstringspaces=false,
+	basicstyle=\footnotesize\ttfamily,
+	keywordstyle=\bfseries\color{green!40!black},
+	commentstyle=\itshape\color{purple!40!black},
+	identifierstyle=\color{blue},
+	stringstyle=\color{orange},
+}
+
+\lstset{style=py} 
+\begin{lstlisting}
+import pandas as pd
+import numpy as np
+from matplotlib import cm # use the same colormap as other examples
+
+import holoviews as hv
+import holoviews.operation.datashader as hd
+hv.extension("bokeh") 
+hv.output(backend="bokeh")
+
+import datashader as ds
+\end{lstlisting}
+
+Then massage the data into the right format and plot it:
+
+\begin{lstlisting}
+# convert np.array to pandas dataframe
+points_df = pd.DataFrame(disks.T, columns=('x (kpc)','y (kpc)','z (kpc)'))
+
+# convert df to Holoviews points
+points = hv.Points(points_df)
+
+# plot in Bokeh
+hd.datashade(points, cmap=cm.magma).opts(height=600, width=600)
+\end{lstlisting}
+
+The results aren't terrible (see below), but we've still to make the cmap logarithmic, fix the font sizes and add a title. All possible, but perhaps another day...
+
+Meanwhile, the best feature is it lets you (in Jupyter) pan with mouse drags and zoom with the mouse wheel or box selection. Matplotlib can't do that so easily (though the ``\%matplotlib notebook'' IPython magic is an option worth knowing about).
+
+{\centering \includegraphics[scale=0.65]{bokeh_datashade} \par}
+
+
+\section{ipyvolume}
+
+Works natively with 3D data. Only in the browser as it relies on WebGL rendering and Javascript.
+
+Websites: \url{https://github.com/maartenbreddels/ipyvolume} and  \url{https://ipyvolume.readthedocs.io/en/latest/}
+
+Spectacular when the developer (Maarten Breddels, a Dutch astronomer) demonstrates it at conferences, not so easy for the rest of us. I totally failed with this about a year ago, still psyching myself up for another attempt. Anyone else tried it?
+
+\section{All things OpenGL}
+
+Now we're at the heavy end of the options. With pyqt5 + (pyopengl or vispy), an experienced graphics programmer with unlimited time can do virtually anything. Though the same person would probably ignore Python and use C++ with GLSL; probably wise, because the C++ libraries at least have excellent documentation.
+
+I played with this a bit over spring break. At the current rate of progress, I may have a crude prototype working by the end of the Spring 2021 semester (but no promises).
+
+\end{document}
