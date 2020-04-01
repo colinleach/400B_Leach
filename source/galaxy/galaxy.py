@@ -83,7 +83,10 @@ class Galaxy():
         sql_t += f" and snap={self.snap} LIMIT 1"
         cur.execute(sql_t)
         time = cur.fetchone()
-        self.time = time[0] * u.Myr
+        try:
+            self.time = time[0] * u.Myr
+        except TypeError:
+            print(self.name, self.snap, ptype)
 
         # set the bulk of the data
         colheads = ','.join(['type','m','x','y','z','vx','vy','vz'])
