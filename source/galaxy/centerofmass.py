@@ -231,7 +231,7 @@ class CenterOfMass:
 
         # cross product between L and new axis
         k_vec = np.cross(L, to_axis) # 3-vector
-        s_sq = np.sum(k_vec**2) # scalar, sin theta
+        s_sq = np.sum(k_vec**2) # scalar, sin^2 theta
 
         # dot product between L and new axis 
         c = np.dot(L, to_axis) # scalar, cos theta

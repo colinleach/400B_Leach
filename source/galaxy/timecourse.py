@@ -239,7 +239,7 @@ class TimeCourse():
             # Initialize an instance of CenterOfMass class, using disk particles
             com = CenterOfMass(gal)
 
-            # Store the COM pos and vel. Remember that now COM_P required VolDec
+            # COM pos and vel
             com_xyz, com_vxyz = self.get_one_com(galname, snap)  
 
             gal_xyzD, gal_vxyzD = com.center_com(com_xyz, com_vxyz)
@@ -248,7 +248,7 @@ class TimeCourse():
             _, vn = com.rotate_frame(com_p=com_xyz, com_v=com_vxyz)
             
             # calculate velocity dispersion
-            v_radial = (vn[0] + vn[1]) / 2
+            v_radial = vn[0] # just x-component
             v_mean = np.mean(v_radial)
             sigmas[i] = gal.time.value/1000, np.std(v_radial - v_mean)
 
