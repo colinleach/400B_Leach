@@ -4,6 +4,8 @@
 \usepackage{booktabs} % helps with pandas to_latex() output
 \usepackage{multirow}
 
+\graphicspath{{img/}}
+
 \newcommand{\todo}{\color{red}{TODO}\color{black}\hspace{2mm}}
 
 \shorttitle{ASTR400B report}
@@ -76,11 +78,63 @@ The work in this report was carried out in Python using standard package. Full d
 
 \subsection{Trajectories}
 
+Refer to Figure \ref{fig:traj}
+
+\begin{figure}[ht!]
+	\plotone{trajectories.pdf}
+	\caption{Trajectories of each galactic center of mass in (left plot) and perpendicular (right plot) to the X',Y' plane. Points are at ?? Gyr intervals.
+		\label{fig:traj}}
+\end{figure}
 
 
-\subsection{Close approach}
+\subsection{MW-M31 Close approach}
 
-\citep{toomre_galactic_1972}
+\subsubsection{Inclinations}
+
+\todo{Relative rotation axes of disks}\ 
+
+\subsubsection{Tidal tails and bridges}
+
+\todo{identify, trace history, trace fate}
+
+\subsubsection{Velocity dispersion}
+
+Refer to Figure \ref{fig:vel_disp}
+
+\begin{figure}[ht!]
+	\plotone{vel_disp.pdf}
+	\caption{Velocity dispersion of disk particles from each galaxy over time.
+	\label{fig:vel_disp}}
+\end{figure}
+
+\subsection{MW-M31 merger remnant}
+
+\todo{shape - how to get principal axes? boxiness?}
+
+Refer to Figure \ref{fig:rem_shape}
+
+\begin{figure}[ht!]
+	\plotone{remnant_shape.pdf}
+	\caption{Luminous star density of the MW-M31 remnant in three orthogonal projections.
+	\label{fig:rem_shape}}
+\end{figure}
+
+
+\subsubsection{Rotation}
+
+\todo{phase diagram}
+
+Refer to Figure \ref{fig:rem_phase}
+
+\begin{figure}[ht!]
+	\plotone{remnant_phase.pdf}
+	\caption{Phase diagrams of the MW-M31 remnant.
+	\label{fig:rem_phase}}
+\end{figure}
+
+\todo{alignment between particles of different origin?}
+
+%\citep{toomre_galactic_1972}
 
 
 \bibliography{project_Leach}{}

@@ -33,7 +33,7 @@ class Plots():
                 Number of bins along x dimension
             nbins_y : int
                 Number of bins along y dimension
-            level_vals : list of int
+            level_vals : list of float
                 Contour values to include
             ax : matplotlib.Axes (optional)
                 If supplied, plot the contour to this axis. Otherwise, open a new figure

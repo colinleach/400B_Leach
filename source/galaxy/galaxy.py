@@ -96,7 +96,7 @@ class Galaxy():
             sql_d = f"SELECT {colheads} from simdata"
         sql_d += f"  where galname='{self.name}' and snap={self.snap}"
         if ptype:
-            sql_d += f" and type={ptype}"
+            sql_d += f" and type={ptype} ORDER BY pnum"
         if stride > 1:
             sql_d = f"SELECT {colheads} from ( {sql_d} ) as t where rn % {stride} = 0" 
 

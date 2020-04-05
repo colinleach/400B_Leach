@@ -94,9 +94,12 @@ class MassProfile:
         Calculate the mass enclosed for a theoretical profile
         
         Args:
-            r (Quantity, units of kpc): distance from center
-            a (Quantity, units of kpc): scale radius
-            M_halo (Quantity, units of M_sun): total DM mass (optional)
+            r (Quantity, units of kpc): 
+                distance from center
+            a (Quantity, units of kpc): 
+                scale radius
+            M_halo (Quantity, units of M_sun): 
+                total DM mass (optional)
 
         Returns:
             Total DM mass enclosed within r (M_sun)

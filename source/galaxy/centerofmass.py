@@ -28,9 +28,12 @@ class CenterOfMass:
     # Initialize the instance of this Class with the following properties:
     
         # subset with our particle type
-        self.data = gal.filter_by_type(ptype)     
-        if self.data.shape[0] == 0:
-            raise ValueError(f'No particles of type {ptype} in {gal.filename}')
+        if ptype is None:
+            self.data = gal.data
+        else:
+            self.data = gal.filter_by_type(ptype)     
+            if self.data.shape[0] == 0:
+                raise ValueError(f'No particles of type {ptype} in {gal.filename}')
 
         #create an array to store indexes of particles of desired Ptype                                
         # self.index = np.where(self.data['type'] == ptype)
@@ -145,7 +148,10 @@ class CenterOfMass:
         Returns: 3-Vector of COM velocities
         """
 
-        xyz_com = xyz_com.value
+        try:
+            xyz_com = xyz_com.value # in case units passed in
+        except AttributeError:
+            pass 
         
         # the max distance from the center that we will use to determine the CoM velocity                   
         rv_max = 15.0 # implicit u.kpc
