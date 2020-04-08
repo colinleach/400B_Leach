@@ -199,6 +199,8 @@ def rotation_matrix_to_vector(old_axis, to_axis=None):
     else:
         to_axis /= norm(to_axis) # we need a unit vector
 
+    old_axis /= norm(old_axis)
+
     # cross product between old_axis and new axis
     k_vec = np.cross(old_axis, to_axis) # 3-vector
     s_sq = np.sum(k_vec**2) # scalar, sin theta
