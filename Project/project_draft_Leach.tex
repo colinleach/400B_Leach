@@ -13,13 +13,13 @@
 
 \begin{document}
 	
-\title{Dynamics of the Local Group}
+\title{Future Dynamics of the Local Group}
 
 \author[0000-0003-3608-1546]{Colin Leach}
 
 \begin{abstract}
 	
-\color{red}This is a very early draft consisting mostly of placeholders and preliminary ideas. I only pushed it to GitHub so that I wouldn't lose it.\color{black}
+\color{red}This is a very early draft consisting mostly of placeholders and preliminary ideas. I only pushed it to GitHub so that I wouldn't lose it.\color{black}\\
 
 \end{abstract}
 
@@ -35,7 +35,7 @@ Particle counts for each time point are shown in Table 1 and total masses in Tab
 
 The coordinate system is approximately centered on the Milky Way at $t=0$. The center of mass (CoM) of all particles in the system is not fixed over time, moving at an average of (35.9, -26.7, 27.5) km/s with some minor fluctuations due to numerical approximations. In contrast, the total angular momentum of the system is very small at all time points.
 
-\begin{deluxetable*}{crrrr}[htb!]
+\begin{deluxetable}{crrrr}[htb!]
 \tablenum{1}
 \tablecaption{Particle counts}
 \tablewidth{0pt}
@@ -48,12 +48,12 @@ The coordinate system is approximately centered on the Milky Way at $t=0$. The c
 	M31  &  250,000 &   600,000 &    95,000 &   945,000 \\
 	M33  &   25,000 &    46,500 &        0 &    71,500 \\
 	\midrule
-	Local Group  &  525,000 &  1,021,500 &   145,000 &  1,691,500 \
+	LG  &  525,000 &  1,021,500 &   145,000 &  1,691,500
 \enddata
-\end{deluxetable*}
+\end{deluxetable}
 
 
-\begin{deluxetable*}{crrrr}[htb!]
+\begin{deluxetable}{crrrr}[htb!]
 \tablenum{2}
 \tablecaption{Aggregate masses ($M_\Sun \times 10^{12}$)}
 \tablewidth{0pt}
@@ -65,14 +65,14 @@ The coordinate system is approximately centered on the Milky Way at $t=0$. The c
     M31 &      1.921 &      0.120 &       0.019 &  2.060  \\
 	M33 &      0.187 &      0.009 &       0.000 &  0.196  \\
 	\midrule
-	Local Group &   4.082 &      0.204 &       0.029 &  4.316 \\
+	LG &   4.082 &      0.204 &       0.029 &  4.316
 \enddata
-\end{deluxetable*}
+\end{deluxetable}
 
 
 \section{Software}
 
-The work in this report was carried out in Python using standard package. Full details are available online\footnote{Code \url{https://github.com/colinleach/400B_Leach}\\documentation \url{https://400b-leach.readthedocs.io}}
+The work in this report was carried out in Python using standard packages. Full details are available online\footnote{Code \url{https://github.com/colinleach/400B_Leach}\\documentation \url{https://400b-leach.readthedocs.io}}
 
 \section{Results}
 
@@ -96,6 +96,34 @@ Refer to Figure \ref{fig:traj}
 \subsubsection{Tidal tails and bridges}
 
 \todo{identify, trace history, trace fate}
+
+\begin{deluxetable}{crrr}[htb!]
+	\tablenum{3}
+	\tablecaption{Particle counts close to the midplane}
+	\tablewidth{0pt}
+	\tablehead{
+		\colhead{} & \colhead{Bulge} & \colhead{Disk} & \colhead{Total}
+	}
+	\startdata
+	M31     &   1137 &     4 &  1141 \\
+	MW      &    305 &  1317 &  1622 \\
+	\midrule
+	Total     &   1442 &  1321 &  2763 \\
+	\enddata
+\end{deluxetable}
+
+\begin{figure}[ht!]
+	\plotone{bridge.pdf}
+	\caption{Manual selection of bridge particles.
+		\label{fig:bridge}}
+\end{figure}
+
+\begin{figure}[ht!]
+	\plotone{density_rot_300.pdf}
+	\caption{View along the midplane.
+		\label{fig:bridge2}}
+\end{figure}
+
 
 \subsubsection{Velocity dispersion}
 
