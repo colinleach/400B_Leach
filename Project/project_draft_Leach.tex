@@ -19,58 +19,60 @@
 
 \begin{abstract}
 	
-\color{red}This is a very early draft consisting mostly of placeholders and preliminary ideas. I only pushed it to GitHub so that I wouldn't lose it.\color{black}\\
+\color{red}This is a very early draft consisting mostly of placeholders and preliminary ideas. I only pushed it to GitHub so that I wouldn't lose it.\color{black}
 
 \end{abstract}
 
+\keywords{Galaxy Merger -- Local Group -- Stellar Disk -- Stellar Bulge -- \textit{and more}}
+
 \section{Introduction}
 
-The simulation of Milky Way--M31--M33 orbital evolution was described previously \citep{marel_m31_2012}. That paper included an extensive analysis of both N-body simulations and semi-analytic orbit integrations. The present study uses data from the same N-body simulation to carry out further computational analysis.
+The largest galaxies in our Local Group (LG) are the Milky Way (MW), Andromeda (M31) and Triangulum (M33).  A simulation of MW--M31--M33 orbital evolution was described previously in \citep{marel_m31_2012}, hereafter Marel12. That paper included an extensive analysis of both N-body simulations and semi-analytic orbit integrations. The present study uses data from the same N-body simulation to carry out further computational analysis.
 
-\section{Data}
+\todo{phases of the sim}\ 
 
-Data from one N-body simulation in \citep{marel_m31_2012} was supplied in text-file format by one of the original authors. This included position and velocity data for each particle at the current epoch ($t=0$) and 800 future timesteps. For ease of analysis, this was all transferred to the open source database PostgreSQL\footnote{\url{http://www.postgresql.org}} (approximately 1.35 billion records). The same database was used to store computed summary data during the analysis.
+\subsection{Data}
 
-Particle counts for each time point are shown in Table 1 and total masses in Table 2.
-
-The coordinate system is approximately centered on the Milky Way at $t=0$. The center of mass (CoM) of all particles in the system is not fixed over time, moving at an average of (35.9, -26.7, 27.5) km/s with some minor fluctuations due to numerical approximations. In contrast, the total angular momentum of the system is very small at all time points.
+Data from one N-body simulation in Marel12 was supplied in text-file format by one of the original authors. This included position and velocity data for each particle at the current epoch ($t=0$) and 800 future time steps. For ease of analysis, this was all transferred to the open source database PostgreSQL\footnote{\url{http://www.postgresql.org}} (approximately 1.35 billion records). The same database was used to store computed summary data during the analysis.
 
 \begin{deluxetable}{crrrr}[htb!]
-\tablenum{1}
-\tablecaption{Particle counts}
-\tablewidth{0pt}
-\tablehead{
-	\colhead{Galaxy} & \colhead{DM Halo} & \colhead{Disk} & \colhead{Bulge} & \colhead{Total} 
-	%\colhead{Name} & \colhead{Count} & \colhead{Count} & \colhead{Count} & \colhead{}
-}
-\startdata
+	\tablenum{1}
+	\tablecaption{Particle counts}
+	\tablewidth{0pt}
+	\tablehead{
+		\colhead{Galaxy} & \colhead{DM Halo} & \colhead{Disk} & \colhead{Bulge} & \colhead{Total} 
+		%\colhead{Name} & \colhead{Count} & \colhead{Count} & \colhead{Count} & \colhead{}
+	}
+	\startdata
 	MW   &  250,000 &   375,000 &    50,000 &   675,000 \\
 	M31  &  250,000 &   600,000 &    95,000 &   945,000 \\
 	M33  &   25,000 &    46,500 &        0 &    71,500 \\
 	\midrule
 	LG  &  525,000 &  1,021,500 &   145,000 &  1,691,500
-\enddata
-\end{deluxetable}
+	\enddata
+\end{deluxetable}\vspace{-5mm}
 
+Particle counts for each time point are shown in Table 1 and total masses in Table 2. We can see that total mass is the same for MW/M31 but our galaxy has more luminous stars (higher baryon fraction) and M31 has more dark matter (lower baryon fraction). M33 is about 10-fold lighter than either.
 
 \begin{deluxetable}{crrrr}[htb!]
-\tablenum{2}
-\tablecaption{Aggregate masses ($M_\Sun \times 10^{12}$)}
-\tablewidth{0pt}
-\tablehead{
-	\colhead{Galaxy} & \colhead{DM Halo} & \colhead{Disk} & \colhead{Bulge} & \colhead{Total}
-}
-\startdata
+	\tablenum{2}
+	\tablecaption{Aggregate masses ($M_\Sun \times 10^{12}$)}
+	\tablewidth{0pt}
+	\tablehead{
+		\colhead{Galaxy} & \colhead{DM Halo} & \colhead{Disk} & \colhead{Bulge} & \colhead{Total}
+	}
+	\startdata
 	MW  &      1.975 &      0.075 &       0.010 &  2.060 \\
-    M31 &      1.921 &      0.120 &       0.019 &  2.060  \\
+	M31 &      1.921 &      0.120 &       0.019 &  2.060  \\
 	M33 &      0.187 &      0.009 &       0.000 &  0.196  \\
 	\midrule
 	LG &   4.082 &      0.204 &       0.029 &  4.316
-\enddata
+	\enddata
 \end{deluxetable}
 
+The coordinate system is approximately centered on the Milky Way at $t=0$. The center of mass (CoM) of all particles in the system is not fixed over time, moving at an average of $\left< 35.9, -26.7, 27.5 \right>$ km/s with some minor fluctuations due to numerical approximations. In contrast, the total angular momentum of the system is very small at all time points.
 
-\section{Software}
+\subsection{Software}
 
 The work in this report was carried out in Python using standard packages. Full details are available online\footnote{Code \url{https://github.com/colinleach/400B_Leach}\\documentation \url{https://400b-leach.readthedocs.io}}
 
@@ -78,13 +80,17 @@ The work in this report was carried out in Python using standard packages. Full 
 
 \subsection{Trajectories}
 
-Refer to Figure \ref{fig:traj}
+The simulation does not explicitly include a supermassive black hole (SMBH) at the center of each galaxy, but the galactic center was defined by calculating the center of mass (CoM) of the disk particles and iteratively constraining the radius of interest until convergence.
 
-\begin{figure}[ht!]
+To plot motions of the three galactic CoMs it is convenient to transform to a coordinate system in which at $t=0$ they all lie in the $x,y$ plane with MW and M31 on the $x$-axis. The overall CoM is moving, as noted above, so at each time point the coordinates are translated to center it at the origin.
+
+\begin{figure}[htb!]
 	\plotone{trajectories.pdf}
 	\caption{Trajectories of each galactic center of mass in (left plot) and perpendicular (right plot) to the X',Y' plane. Points are at ?? Gyr intervals.
 		\label{fig:traj}}
 \end{figure}
+
+In Marel12 this is referred to as the X',Y',Z' coordinate system and their Figure 2 shows multiple views of how the galaxies move through time. In this paper, Figure \ref{fig:traj} shows some alternative views in essentially the same coordinates (up to a sign; the $x$ and $z$ axes are flipped). The left panel reproduces the top left panel of Marel12. The right panel shows that MW and M31 remain close to the starting plane while M33 has large and irregular out-of-plane motions.
 
 
 \subsection{MW-M31 Close approach}
@@ -94,6 +100,8 @@ Refer to Figure \ref{fig:traj}
 \todo{Relative rotation axes of disks}\ 
 
 \subsubsection{Tidal tails and bridges}
+
+Refer to key early paper \citep{toomre_galactic_1972}
 
 \todo{identify, trace history, trace fate}
 
@@ -118,7 +126,7 @@ Refer to Figure \ref{fig:traj}
 		\label{fig:bridge}}
 \end{figure}
 
-\begin{figure}[ht!]
+\begin{figure}[htb!]
 	\plotone{density_rot_300.pdf}
 	\caption{View along the midplane.
 		\label{fig:bridge2}}
@@ -129,7 +137,7 @@ Refer to Figure \ref{fig:traj}
 
 Refer to Figure \ref{fig:vel_disp}
 
-\begin{figure}[ht!]
+\begin{figure}[htb!]
 	\plotone{vel_disp.pdf}
 	\caption{Velocity dispersion of disk particles from each galaxy over time.
 	\label{fig:vel_disp}}
@@ -141,7 +149,7 @@ Refer to Figure \ref{fig:vel_disp}
 
 Refer to Figure \ref{fig:rem_shape}
 
-\begin{figure}[ht!]
+\begin{figure}[htb!]
 	\plotone{remnant_shape.pdf}
 	\caption{Luminous star density of the MW-M31 remnant in three orthogonal projections.
 	\label{fig:rem_shape}}
@@ -154,7 +162,7 @@ Refer to Figure \ref{fig:rem_shape}
 
 Refer to Figure \ref{fig:rem_phase}
 
-\begin{figure}[ht!]
+\begin{figure}[htb!]
 	\plotone{remnant_phase.pdf}
 	\caption{Phase diagrams of the MW-M31 remnant.
 	\label{fig:rem_phase}}
@@ -162,7 +170,6 @@ Refer to Figure \ref{fig:rem_phase}
 
 \todo{alignment between particles of different origin?}
 
-%\citep{toomre_galactic_1972}
 
 
 \bibliography{project_Leach}{}
