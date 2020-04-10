@@ -524,9 +524,10 @@ class TimeCourse():
                 SELECT {colheads} FROM centerofmass 
                 WHERE snap BETWEEN {snaprange[0]} AND {snaprange[1]}
                 """
-        if galaxy is not None:
-            query += f" AND gal='{galaxy}'"
-        query += " ORDER BY snap"
+        if galaxy is None:
+            query += " ORDER BY snap"
+        else:
+            query += f" AND gal='{galaxy}' ORDER BY galaxy, snap"
 
         db = DB()
         result = db.run_query(query)

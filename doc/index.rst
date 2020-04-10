@@ -30,6 +30,8 @@ Steward Observatory, Spring 2020.
     timecourse
     utilities
     db
+    remnant
+    approaches
 
 Indices and tables
 ==================

@@ -237,9 +237,8 @@ sigma as a function of time.</p>
 
 <dl class="method">
 <dt id="galaxy.timecourse.TimeCourse.write_db_tables">
-<code class="sig-name descname">write_db_tables</code><span class="sig-paren">(</span><em class="sig-param">datadir='.'</em>, <em class="sig-param">do_com=False</em>, <em class="sig-param">do_angmom=False</em>, <em class="sig-param">do_totalcom=False</em>, <em class="sig-param">do_totalangmom=False</em>, <em class="sig-param">do_normals=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.write_db_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.write_db_tables" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds data to the <cite>centerofmass</cite>, <cite>angmom</cite> and <cite>totalcom</cite> tables in the 
-<cite>galaxy</cite> database</p>
+<code class="sig-name descname">write_db_tables</code><span class="sig-paren">(</span><em class="sig-param">datadir='.'</em>, <em class="sig-param">do_com=False</em>, <em class="sig-param">do_angmom=False</em>, <em class="sig-param">do_totalcom=False</em>, <em class="sig-param">do_totalangmom=False</em>, <em class="sig-param">do_normals=False</em>, <em class="sig-param">do_sigmas=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.write_db_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.write_db_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds data to the various tables in the <cite>galaxy</cite> database</p>
 </dd></dl>
 
 <dl class="method">
@@ -317,6 +316,12 @@ in future work.</p>
 <dd><p>Gets the normals to the 3-galaxy plane.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.read_sigmas_db">
+<code class="sig-name descname">read_sigmas_db</code><span class="sig-paren">(</span><em class="sig-param">galaxy=None</em>, <em class="sig-param">snaprange=(0</em>, <em class="sig-param">801)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_sigmas_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_sigmas_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the velocity dispersions (km/s) for one galaxy at a range of snaps.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -347,6 +352,8 @@ in future work.</p>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">TimeCourse class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utilities.html">utilities module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="db.html">DB class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remnant.html">Remnant class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="approaches.html">Approaches class</a></li>
 </ul>
 
 <div class="relations">

@@ -73,6 +73,40 @@
 </dl>
 </dd></dl>
 
+<dl class="function">
+<dt id="galaxy.utilities.rotation_matrix_to_vector">
+<code class="sig-prename descclassname">galaxy.utilities.</code><code class="sig-name descname">rotation_matrix_to_vector</code><span class="sig-paren">(</span><em class="sig-param">old_axis</em>, <em class="sig-param">to_axis=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/utilities.html#rotation_matrix_to_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.utilities.rotation_matrix_to_vector" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Args: </dt><dd><dl class="simple">
+<dt>old_axis (3-vector)</dt><dd><p>Vector to be brought into alignment with <cite>to_axis</cite> by rotation about the origin</p>
+</dd>
+<dt>to_axis (3-vector)</dt><dd><p>Angular momentum vector will be aligned to this (default z_hat)</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns: </dt><dd><p>3x3 rotation matrix</p>
+</dd>
+</dl>
+<p>Based on Rodrigues’ rotation formula
+Ref: <a class="reference external" href="https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula">https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula</a></p>
+<p>Note that orientation in the plane perpendicular to ‘to_axis’ is arbitrary</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="galaxy.utilities.z_rotation_matrix">
+<code class="sig-prename descclassname">galaxy.utilities.</code><code class="sig-name descname">z_rotation_matrix</code><span class="sig-paren">(</span><em class="sig-param">pt1</em>, <em class="sig-param">pt2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/utilities.html#z_rotation_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.utilities.z_rotation_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotates about z-axis to line up two given points along the x-axis</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>pt1, pt2 (2-component iterables)</dt><dd><p>define points to be placed on the  x-axis</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>3x3 rotation matrix</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 
 
@@ -101,6 +135,8 @@
 <li class="toctree-l1"><a class="reference internal" href="timecourse.html">TimeCourse class</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">utilities module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="db.html">DB class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remnant.html">Remnant class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="approaches.html">Approaches class</a></li>
 </ul>
 
 <div class="relations">

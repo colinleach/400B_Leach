@@ -116,7 +116,10 @@
         <span class="n">sql_t</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; and snap=</span><span class="si">{self.snap}</span><span class="s2"> LIMIT 1&quot;</span>
         <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql_t</span><span class="p">)</span>
         <span class="n">time</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">Myr</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">Myr</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">snap</span><span class="p">,</span> <span class="n">ptype</span><span class="p">)</span>
 
         <span class="c1"># set the bulk of the data</span>
         <span class="n">colheads</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;type&#39;</span><span class="p">,</span><span class="s1">&#39;m&#39;</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="s1">&#39;z&#39;</span><span class="p">,</span><span class="s1">&#39;vx&#39;</span><span class="p">,</span><span class="s1">&#39;vy&#39;</span><span class="p">,</span><span class="s1">&#39;vz&#39;</span><span class="p">])</span>
@@ -126,7 +129,7 @@
             <span class="n">sql_d</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT </span><span class="si">{colheads}</span><span class="s2"> from simdata&quot;</span>
         <span class="n">sql_d</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  where galname=&#39;</span><span class="si">{self.name}</span><span class="s2">&#39; and snap=</span><span class="si">{self.snap}</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="n">ptype</span><span class="p">:</span>
-            <span class="n">sql_d</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; and type=</span><span class="si">{ptype}</span><span class="s2">&quot;</span>
+            <span class="n">sql_d</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; and type=</span><span class="si">{ptype}</span><span class="s2"> ORDER BY pnum&quot;</span>
         <span class="k">if</span> <span class="n">stride</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">sql_d</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT </span><span class="si">{colheads}</span><span class="s2"> from ( </span><span class="si">{sql_d}</span><span class="s2"> ) as t where rn % </span><span class="si">{stride}</span><span class="s2"> = 0&quot;</span> 
 
@@ -453,6 +456,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../timecourse.html">TimeCourse class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../utilities.html">utilities module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../db.html">DB class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../remnant.html">Remnant class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../approaches.html">Approaches class</a></li>
 </ul>
 
 <div class="relations">

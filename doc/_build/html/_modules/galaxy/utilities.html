@@ -168,8 +168,8 @@
         <span class="k">return</span> <span class="n">SHMratio</span>
     
     
- <span class="c1"># Q1: add a function to the class that takes the SHM ratio and returns </span>
-<span class="c1"># The stellar mass </span>
+    <span class="c1"># Method that takes the SHM ratio and returns the stellar mass </span>
+
     <span class="k">def</span> <span class="nf">StellarMass</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Using eq 2 of Moster+ 2013</span>
@@ -178,6 +178,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">SHMratio</span><span class="p">()</span>
+        
 
 <span class="c1">#  Function that returns Sersic Profile for an Elliptical System</span>
 <span class="c1"># See in-class lab 6</span>
@@ -207,6 +208,65 @@
         
     <span class="k">return</span> <span class="n">Ie</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">7.67</span> <span class="o">*</span> <span class="p">((</span><span class="n">R</span><span class="o">/</span><span class="n">Re</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">))</span></div>
 
+<span class="c1"># Some functions to calculate useful 3D rotation matrices</span>
+
+<div class="viewcode-block" id="rotation_matrix_to_vector"><a class="viewcode-back" href="../../utilities.html#galaxy.utilities.rotation_matrix_to_vector">[docs]</a><span class="k">def</span> <span class="nf">rotation_matrix_to_vector</span><span class="p">(</span><span class="n">old_axis</span><span class="p">,</span> <span class="n">to_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Args: </span>
+<span class="sd">        old_axis (3-vector)</span>
+<span class="sd">            Vector to be brought into alignment with `to_axis` by rotation about the origin</span>
+<span class="sd">        to_axis (3-vector)</span>
+<span class="sd">            Angular momentum vector will be aligned to this (default z_hat)</span>
+
+<span class="sd">    Returns: </span>
+<span class="sd">        3x3 rotation matrix</span>
+
+<span class="sd">    Based on Rodrigues&#39; rotation formula</span>
+<span class="sd">    Ref: https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula</span>
+<span class="sd">    </span>
+<span class="sd">    Note that orientation in the plane perpendicular to &#39;to_axis&#39; is arbitrary </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">to_axis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">to_axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">to_axis</span> <span class="o">/=</span> <span class="n">norm</span><span class="p">(</span><span class="n">to_axis</span><span class="p">)</span> <span class="c1"># we need a unit vector</span>
+
+    <span class="n">old_axis</span> <span class="o">/=</span> <span class="n">norm</span><span class="p">(</span><span class="n">old_axis</span><span class="p">)</span>
+
+    <span class="c1"># cross product between old_axis and new axis</span>
+    <span class="n">k_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">old_axis</span><span class="p">,</span> <span class="n">to_axis</span><span class="p">)</span> <span class="c1"># 3-vector</span>
+    <span class="n">s_sq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">k_vec</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># scalar, sin theta</span>
+
+    <span class="c1"># dot product between old_axis and new axis </span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">old_axis</span><span class="p">,</span> <span class="n">to_axis</span><span class="p">)</span> <span class="c1"># scalar, cos theta</span>
+
+    <span class="c1"># rotation matrix, 3x3</span>
+    <span class="n">kx</span><span class="p">,</span> <span class="n">ky</span><span class="p">,</span> <span class="n">kz</span> <span class="o">=</span> <span class="n">k_vec</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">kz</span><span class="p">,</span> <span class="n">ky</span><span class="p">],</span> <span class="p">[</span><span class="n">kz</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">kx</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">ky</span><span class="p">,</span> <span class="n">kx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="n">K</span> <span class="o">+</span> <span class="n">K</span><span class="nd">@K</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span> <span class="o">/</span> <span class="n">s_sq</span>
+
+    <span class="k">return</span> <span class="n">R</span></div>
+
+<div class="viewcode-block" id="z_rotation_matrix"><a class="viewcode-back" href="../../utilities.html#galaxy.utilities.z_rotation_matrix">[docs]</a><span class="k">def</span> <span class="nf">z_rotation_matrix</span><span class="p">(</span><span class="n">pt1</span><span class="p">,</span> <span class="n">pt2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Rotates about z-axis to line up two given points along the x-axis</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        pt1, pt2 (2-component iterables)</span>
+<span class="sd">            define points to be placed on the  x-axis</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        3x3 rotation matrix</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">pt2</span> <span class="o">-</span> <span class="n">pt1</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">diff</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">diff</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">theta</span><span class="o">*</span><span class="mi">180</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="mi">0</span><span class="p">],</span> 
+                  <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="mi">0</span><span class="p">],</span>
+                  <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">R</span></div>
 </pre></div>
 
           </div>
@@ -234,6 +294,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../timecourse.html">TimeCourse class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../utilities.html">utilities module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../db.html">DB class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../remnant.html">Remnant class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../approaches.html">Approaches class</a></li>
 </ul>
 
 <div class="relations">

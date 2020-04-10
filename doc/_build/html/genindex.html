@@ -46,7 +46,10 @@
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
+ | <a href="#V"><strong>V</strong></a>
  | <a href="#W"><strong>W</strong></a>
+ | <a href="#X"><strong>X</strong></a>
+ | <a href="#Z"><strong>Z</strong></a>
  
 </div>
 <h2 id="A">A</h2>
@@ -61,6 +64,8 @@
       <li><a href="galaxy.html#galaxy.galaxy.Galaxy.all_particle_properties">all_particle_properties() (galaxy.galaxy.Galaxy method)</a>
 </li>
       <li><a href="centerofmass.html#galaxy.centerofmass.CenterOfMass.angular_momentum">angular_momentum() (galaxy.centerofmass.CenterOfMass method)</a>
+</li>
+      <li><a href="approaches.html#galaxy.approaches.Approaches">Approaches (class in galaxy.approaches)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -114,6 +119,8 @@
 </li>
       <li><a href="galaxy.html#galaxy.galaxy.Galaxy">Galaxy (class in galaxy.galaxy)</a>
 </li>
+      <li><a href="approaches.html#module-galaxy.approaches">galaxy.approaches (module)</a>
+</li>
       <li><a href="centerofmass.html#module-galaxy.centerofmass">galaxy.centerofmass (module)</a>
 </li>
       <li><a href="db.html#module-galaxy.db">galaxy.db (module)</a>
@@ -124,14 +131,16 @@
 </li>
       <li><a href="massprofile.html#module-galaxy.massprofile">galaxy.massprofile (module)</a>
 </li>
+      <li><a href="remnant.html#module-galaxy.remnant">galaxy.remnant (module)</a>
+</li>
       <li><a href="timecourse.html#module-galaxy.timecourse">galaxy.timecourse (module)</a>
 </li>
       <li><a href="utilities.html#module-galaxy.utilities">galaxy.utilities (module)</a>
 </li>
-      <li><a href="galaxy.html#galaxy.galaxy.Galaxy.get_array">get_array() (galaxy.galaxy.Galaxy method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="galaxy.html#galaxy.galaxy.Galaxy.get_array">get_array() (galaxy.galaxy.Galaxy method)</a>
+</li>
       <li><a href="galaxies.html#galaxy.galaxies.Galaxies.get_coms">get_coms() (galaxy.galaxies.Galaxies method)</a>
 </li>
       <li><a href="galaxies.html#galaxy.galaxies.Galaxies.get_counts_pivot">get_counts_pivot() (galaxy.galaxies.Galaxies method)</a>
@@ -202,8 +211,14 @@
 </li>
       <li><a href="galaxies.html#galaxy.galaxies.Galaxies.read_data_files">read_data_files() (galaxy.galaxies.Galaxies method)</a>
 </li>
-      <li><a href="galaxy.html#galaxy.galaxy.Galaxy.read_db">read_db() (galaxy.galaxy.Galaxy method)</a>
+      <li><a href="approaches.html#galaxy.approaches.Approaches.read_db">read_db() (galaxy.approaches.Approaches method)</a>
+
+      <ul>
+        <li><a href="galaxy.html#galaxy.galaxy.Galaxy.read_db">(galaxy.galaxy.Galaxy method)</a>
 </li>
+        <li><a href="remnant.html#galaxy.remnant.Remnant.read_db">(galaxy.remnant.Remnant method)</a>
+</li>
+      </ul></li>
       <li><a href="galaxy.html#galaxy.galaxy.Galaxy.read_file">read_file() (galaxy.galaxy.Galaxy method)</a>
 
       <ul>
@@ -218,13 +233,19 @@
 </li>
       <li><a href="db.html#galaxy.db.DB.read_params">read_params() (galaxy.db.DB method)</a>
 </li>
+      <li><a href="timecourse.html#galaxy.timecourse.TimeCourse.read_sigmas_db">read_sigmas_db() (galaxy.timecourse.TimeCourse method)</a>
+</li>
       <li><a href="timecourse.html#galaxy.timecourse.TimeCourse.read_total_angmom_db">read_total_angmom_db() (galaxy.timecourse.TimeCourse method)</a>
 </li>
       <li><a href="timecourse.html#galaxy.timecourse.TimeCourse.read_total_com_db">read_total_com_db() (galaxy.timecourse.TimeCourse method)</a>
 </li>
       <li><a href="timecourse.html#galaxy.timecourse.TimeCourse.read_total_com_file">read_total_com_file() (galaxy.timecourse.TimeCourse method)</a>
 </li>
+      <li><a href="remnant.html#galaxy.remnant.Remnant">Remnant (class in galaxy.remnant)</a>
+</li>
       <li><a href="centerofmass.html#galaxy.centerofmass.CenterOfMass.rotate_frame">rotate_frame() (galaxy.centerofmass.CenterOfMass method)</a>
+</li>
+      <li><a href="utilities.html#galaxy.utilities.rotation_matrix_to_vector">rotation_matrix_to_vector() (in module galaxy.utilities)</a>
 </li>
       <li><a href="db.html#galaxy.db.DB.run_query">run_query() (galaxy.db.DB method)</a>
 </li>
@@ -261,6 +282,18 @@
   </ul></td>
 </tr></table>
 
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="approaches.html#galaxy.approaches.Approaches.vxyz">vxyz() (galaxy.approaches.Approaches method)</a>
+
+      <ul>
+        <li><a href="remnant.html#galaxy.remnant.Remnant.vxyz">(galaxy.remnant.Remnant method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -279,6 +312,26 @@
       <li><a href="timecourse.html#galaxy.timecourse.TimeCourse.write_total_com">write_total_com() (galaxy.timecourse.TimeCourse method)</a>
 </li>
       <li><a href="timecourse.html#galaxy.timecourse.TimeCourse.write_vel_disp">write_vel_disp() (galaxy.timecourse.TimeCourse method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="X">X</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="approaches.html#galaxy.approaches.Approaches.xyz">xyz() (galaxy.approaches.Approaches method)</a>
+
+      <ul>
+        <li><a href="remnant.html#galaxy.remnant.Remnant.xyz">(galaxy.remnant.Remnant method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Z">Z</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="utilities.html#galaxy.utilities.z_rotation_matrix">z_rotation_matrix() (in module galaxy.utilities)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -310,6 +363,8 @@
 <li class="toctree-l1"><a class="reference internal" href="timecourse.html">TimeCourse class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utilities.html">utilities module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="db.html">DB class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remnant.html">Remnant class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="approaches.html">Approaches class</a></li>
 </ul>
 
 <div class="relations">

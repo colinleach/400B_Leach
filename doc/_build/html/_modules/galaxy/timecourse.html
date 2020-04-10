@@ -254,7 +254,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># compose the filename for output</span>
-        <span class="n">fileout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;./sigma_</span><span class="si">{galname}</span><span class="s1">.txt&#39;</span>
+        <span class="c1"># fileout = f&#39;./sigma_{galname}.txt&#39;</span>
+        <span class="n">fileout</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;./sigma_</span><span class="si">{galname}</span><span class="s1">_2.txt&#39;</span>
 
          <span class="c1"># generate the snapshot id sequence </span>
         <span class="n">snap_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
@@ -271,7 +272,7 @@
             <span class="c1"># Initialize an instance of CenterOfMass class, using disk particles</span>
             <span class="n">com</span> <span class="o">=</span> <span class="n">CenterOfMass</span><span class="p">(</span><span class="n">gal</span><span class="p">)</span>
 
-            <span class="c1"># Store the COM pos and vel. Remember that now COM_P required VolDec</span>
+            <span class="c1"># COM pos and vel</span>
             <span class="n">com_xyz</span><span class="p">,</span> <span class="n">com_vxyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_one_com</span><span class="p">(</span><span class="n">galname</span><span class="p">,</span> <span class="n">snap</span><span class="p">)</span>  
 
             <span class="n">gal_xyzD</span><span class="p">,</span> <span class="n">gal_vxyzD</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="n">center_com</span><span class="p">(</span><span class="n">com_xyz</span><span class="p">,</span> <span class="n">com_vxyz</span><span class="p">)</span>
@@ -280,7 +281,7 @@
             <span class="n">_</span><span class="p">,</span> <span class="n">vn</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="n">rotate_frame</span><span class="p">(</span><span class="n">com_p</span><span class="o">=</span><span class="n">com_xyz</span><span class="p">,</span> <span class="n">com_v</span><span class="o">=</span><span class="n">com_vxyz</span><span class="p">)</span>
             
             <span class="c1"># calculate velocity dispersion</span>
-            <span class="n">v_radial</span> <span class="o">=</span> <span class="n">vn</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">v_radial</span> <span class="o">=</span> <span class="n">vn</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># just x-component</span>
             <span class="n">v_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">v_radial</span><span class="p">)</span>
             <span class="n">sigmas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">gal</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">value</span><span class="o">/</span><span class="mi">1000</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">v_radial</span> <span class="o">-</span> <span class="n">v_mean</span><span class="p">)</span>
 
@@ -346,8 +347,7 @@
 <span class="sd">        (one line per snap), not the raw per-particle files.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fullname</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">fullname</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">fullname</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">data</span></div>
  
 
@@ -424,10 +424,10 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">fullname</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TimeCourse.write_db_tables"><a class="viewcode-back" href="../../timecourse.html#galaxy.timecourse.TimeCourse.write_db_tables">[docs]</a>    <span class="k">def</span> <span class="nf">write_db_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datadir</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">do_com</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">do_angmom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
-                        <span class="n">do_totalcom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">do_totalangmom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">do_normals</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                        <span class="n">do_totalcom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">do_totalangmom</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">do_normals</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">do_sigmas</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Adds data to the `centerofmass`, `angmom` and `totalcom` tables in the </span>
-<span class="sd">        `galaxy` database</span>
+<span class="sd">        Adds data to the various tables in the `galaxy` database</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">filepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">datadir</span><span class="p">)</span>
@@ -520,7 +520,25 @@
                 
             <span class="k">for</span> <span class="n">snap</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
                 <span class="n">rec</span> <span class="o">=</span> <span class="p">[</span><span class="n">snap</span><span class="p">,]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-                <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">rec</span><span class="p">)</span></div>
+                <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">rec</span><span class="p">)</span>
+
+        <span class="c1"># velocity dispersions</span>
+        <span class="k">if</span> <span class="n">do_sigmas</span><span class="p">:</span>
+            <span class="n">colheads</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;gal&#39;</span><span class="p">,</span><span class="s1">&#39;snap&#39;</span><span class="p">,</span><span class="s1">&#39;t&#39;</span><span class="p">,</span><span class="s1">&#39;sigma&#39;</span><span class="p">])</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                INSERT INTO sigmas( </span><span class="si">{colheads}</span><span class="s2"> ) </span>
+<span class="s2">                VALUES (</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">)</span>
+<span class="s2">                ON CONFLICT DO NOTHING</span>
+<span class="s2">                &quot;&quot;&quot;</span>
+
+            <span class="k">for</span> <span class="n">gname</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;MW&#39;</span><span class="p">,</span><span class="s1">&#39;M31&#39;</span><span class="p">,</span><span class="s1">&#39;M33&#39;</span><span class="p">):</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;sigma_</span><span class="si">{gname}</span><span class="s1">.txt&#39;</span>
+                <span class="n">fullname</span> <span class="o">=</span> <span class="n">filepath</span> <span class="o">/</span> <span class="n">filename</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">fullname</span><span class="p">)</span>
+                    
+                <span class="k">for</span> <span class="n">snap</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+                    <span class="n">rec</span> <span class="o">=</span> <span class="p">[</span><span class="n">gname</span><span class="p">,</span> <span class="n">snap</span><span class="p">,]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+                    <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">rec</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TimeCourse.read_com_db"><a class="viewcode-back" href="../../timecourse.html#galaxy.timecourse.TimeCourse.read_com_db">[docs]</a>    <span class="k">def</span> <span class="nf">read_com_db</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">galaxy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">snaprange</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">801</span><span class="p">)):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -658,6 +676,26 @@
         <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;snap&#39;</span><span class="p">,</span> <span class="s1">&#39;u2&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;f4&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;x_hat&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;f4&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;y_hat&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;f4&#39;</span><span class="p">),</span> 
                 <span class="p">(</span><span class="s1">&#39;z_hat&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;f4&#39;</span><span class="p">)]</span>
 
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TimeCourse.read_sigmas_db"><a class="viewcode-back" href="../../timecourse.html#galaxy.timecourse.TimeCourse.read_sigmas_db">[docs]</a>    <span class="k">def</span> <span class="nf">read_sigmas_db</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">galaxy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">snaprange</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">801</span><span class="p">)):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the velocity dispersions (km/s) for one galaxy at a range of snaps.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">colheads</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;gal&#39;</span><span class="p">,</span><span class="s1">&#39;snap&#39;</span><span class="p">,</span><span class="s1">&#39;t&#39;</span><span class="p">,</span><span class="s1">&#39;sigma&#39;</span><span class="p">])</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                SELECT </span><span class="si">{colheads}</span><span class="s2"> FROM sigmas </span>
+<span class="s2">                WHERE snap BETWEEN </span><span class="si">{snaprange[0]}</span><span class="s2"> AND </span><span class="si">{snaprange[1]}</span><span class="s2"></span>
+<span class="s2">                &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">galaxy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; AND gal=&#39;</span><span class="si">{galaxy}</span><span class="s2">&#39;&quot;</span>
+        <span class="n">query</span> <span class="o">+=</span> <span class="s2">&quot; ORDER BY snap&quot;</span>
+
+        <span class="n">db</span> <span class="o">=</span> <span class="n">DB</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;gal&#39;</span><span class="p">,</span> <span class="s1">&#39;U3&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;snap&#39;</span><span class="p">,</span> <span class="s1">&#39;u2&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;f4&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;f4&#39;</span><span class="p">)]</span>
+
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span></div></div>
 
 </pre></div>
@@ -687,6 +725,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../timecourse.html">TimeCourse class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../utilities.html">utilities module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../db.html">DB class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../remnant.html">Remnant class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../approaches.html">Approaches class</a></li>
 </ul>
 
 <div class="relations">

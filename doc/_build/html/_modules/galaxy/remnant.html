@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>galaxy.remnant &#8212; ASTR400B Leach  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for galaxy.remnant</h1><div class="highlight"><pre>
+<span></span><span class="c1"># standard Python imports</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="c1"># scientific package imports</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
+
+<span class="kn">from</span> <span class="nn">galaxy.galaxy</span> <span class="kn">import</span> <span class="n">Galaxy</span>
+
+
+<div class="viewcode-block" id="Remnant"><a class="viewcode-back" href="../../remnant.html#galaxy.remnant.Remnant">[docs]</a><span class="k">class</span> <span class="nc">Remnant</span><span class="p">(</span><span class="n">Galaxy</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to work with the MW-M31 post-merger remant.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        snap (int):</span>
+<span class="sd">            Snap number, equivalent to time elapsed. </span>
+<span class="sd">            Defaults to the last timepoint.</span>
+<span class="sd">        datadir (str):</span>
+<span class="sd">            Directory to search first for the required file. Optional, and a</span>
+<span class="sd">            default list of locations will be searched.</span>
+<span class="sd">        usesql (bool):</span>
+<span class="sd">            If True, data will be taken from a PostgreSQL database instead of</span>
+<span class="sd">            text files.</span>
+<span class="sd">        stride (int):</span>
+<span class="sd">            Optional. For stride=n, get every nth row in the table.</span>
+<span class="sd">            Only valid with usesql=True.</span>
+
+<span class="sd">    Class attributes:</span>
+<span class="sd">        data (np.ndarray):</span>
+<span class="sd">            type, mass, position_xyz, velocity_xyz for each particle</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snap</span><span class="o">=</span><span class="mi">801</span><span class="p">,</span> <span class="n">datadir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">usesql</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="s2">&quot;Initial setup. Currently it calls read_file(), but this may change.&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">snap</span> <span class="o">=</span> <span class="n">snap</span>
+
+        <span class="k">if</span> <span class="n">usesql</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">read_db</span><span class="p">(</span><span class="n">stride</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+<div class="viewcode-block" id="Remnant.read_db"><a class="viewcode-back" href="../../remnant.html#galaxy.remnant.Remnant.read_db">[docs]</a>    <span class="k">def</span> <span class="nf">read_db</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stride</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get relevant data from a PostgreSQL database and format it to be </span>
+<span class="sd">        identical to that read from test files.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            stride (int):</span>
+<span class="sd">                Optional. For stride=n, get every nth row in the table.</span>
+
+<span class="sd">        Changes:</span>
+<span class="sd">            `self.time`, `self.particle_count` and `self.data` are set.</span>
+
+<span class="sd">        Returns: nothing</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">from</span> <span class="nn">galaxy.db</span> <span class="kn">import</span> <span class="n">DB</span>
+
+        <span class="n">db</span> <span class="o">=</span> <span class="n">DB</span><span class="p">()</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get_cursor</span><span class="p">()</span>
+
+        <span class="c1"># set the elapsed time</span>
+        <span class="n">sql_t</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT time FROM simdata WHERE galname in (&#39;MW&#39;, &#39;M31&#39;)&quot;</span>
+        <span class="n">sql_t</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; and snap=</span><span class="si">{self.snap}</span><span class="s2"> LIMIT 1&quot;</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql_t</span><span class="p">)</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">Myr</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">snap</span><span class="p">,</span> <span class="n">ptype</span><span class="p">)</span>
+
+        <span class="c1"># set the bulk of the data</span>
+        <span class="n">colheads</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;galname&#39;</span><span class="p">,</span><span class="s1">&#39;type&#39;</span><span class="p">,</span><span class="s1">&#39;m&#39;</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="s1">&#39;z&#39;</span><span class="p">,</span><span class="s1">&#39;vx&#39;</span><span class="p">,</span><span class="s1">&#39;vy&#39;</span><span class="p">,</span><span class="s1">&#39;vz&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">stride</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">sql_d</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT </span><span class="si">{colheads}</span><span class="s2">, ROW_NUMBER() OVER () as rn from simdata&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sql_d</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT </span><span class="si">{colheads}</span><span class="s2"> from simdata&quot;</span>
+        <span class="n">sql_d</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  where galname in (&#39;MW&#39;, &#39;M31&#39;) and snap=</span><span class="si">{self.snap}</span><span class="s2">&quot;</span>
+        <span class="n">sql_d</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; and type in (2,3)&quot;</span>
+        <span class="n">sql_d</span> <span class="o">+=</span> <span class="s2">&quot; ORDER BY galname, pnum&quot;</span>
+        <span class="k">if</span> <span class="n">stride</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">sql_d</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT </span><span class="si">{colheads}</span><span class="s2"> from ( </span><span class="si">{sql_d}</span><span class="s2"> ) as t where rn % </span><span class="si">{stride}</span><span class="s2"> = 0&quot;</span> 
+
+        <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;galname&#39;</span><span class="p">,</span> <span class="s1">&#39;U3&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;uint8&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;f4&#39;</span><span class="p">),</span> 
+                <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;f4&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;f4&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;f4&#39;</span><span class="p">),</span> 
+                <span class="p">(</span><span class="s1">&#39;vx&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;f4&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;vy&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;f4&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;vz&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;f4&#39;</span><span class="p">)]</span>
+
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql_d</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">particle_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="Remnant.xyz"><a class="viewcode-back" href="../../remnant.html#galaxy.remnant.Remnant.xyz">[docs]</a>    <span class="k">def</span> <span class="nf">xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convenience method to get positions as a np.array of shape (3,N)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">xi</span><span class="p">]</span> <span class="k">for</span> <span class="n">xi</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="s1">&#39;z&#39;</span><span class="p">)])</span></div>
+
+<div class="viewcode-block" id="Remnant.vxyz"><a class="viewcode-back" href="../../remnant.html#galaxy.remnant.Remnant.vxyz">[docs]</a>    <span class="k">def</span> <span class="nf">vxyz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convenience method to get velocities as a np.array of shape (3,N)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">vxi</span><span class="p">]</span> <span class="k">for</span> <span class="n">vxi</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;vx&#39;</span><span class="p">,</span><span class="s1">&#39;vy&#39;</span><span class="p">,</span><span class="s1">&#39;vz&#39;</span><span class="p">)])</span></div></div>
+
+        
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">ASTR400B Leach</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../galaxy.html">Galaxy class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../galaxies.html">Galaxies class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../centerofmass.html">CenterOfMass class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../massprofile.html">MassProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../timecourse.html">TimeCourse class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utilities.html">utilities module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../db.html">DB class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../remnant.html">Remnant class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../approaches.html">Approaches class</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Colin Leach.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

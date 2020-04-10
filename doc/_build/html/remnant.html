@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Remnant class &#8212; ASTR400B Leach  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Approaches class" href="approaches.html" />
+    <link rel="prev" title="DB class" href="db.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-galaxy.remnant"></span><div class="section" id="remnant-class">
+<h1>Remnant class<a class="headerlink" href="#remnant-class" title="Permalink to this headline">¶</a></h1>
+<p>Treats the post-merger remnant of MW-M31 as a galaxy.</p>
+<dl class="class">
+<dt id="galaxy.remnant.Remnant">
+<em class="property">class </em><code class="sig-prename descclassname">galaxy.remnant.</code><code class="sig-name descname">Remnant</code><span class="sig-paren">(</span><em class="sig-param">snap=801</em>, <em class="sig-param">datadir=None</em>, <em class="sig-param">usesql=False</em>, <em class="sig-param">stride=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remnant.html#Remnant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remnant.Remnant" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class to work with the MW-M31 post-merger remant.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>snap (int):</dt><dd><p>Snap number, equivalent to time elapsed. 
+Defaults to the last timepoint.</p>
+</dd>
+<dt>datadir (str):</dt><dd><p>Directory to search first for the required file. Optional, and a
+default list of locations will be searched.</p>
+</dd>
+<dt>usesql (bool):</dt><dd><p>If True, data will be taken from a PostgreSQL database instead of
+text files.</p>
+</dd>
+<dt>stride (int):</dt><dd><p>Optional. For stride=n, get every nth row in the table.
+Only valid with usesql=True.</p>
+</dd>
+</dl>
+</dd>
+<dt>Class attributes:</dt><dd><dl class="simple">
+<dt>data (np.ndarray):</dt><dd><p>type, mass, position_xyz, velocity_xyz for each particle</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="galaxy.remnant.Remnant.read_db">
+<code class="sig-name descname">read_db</code><span class="sig-paren">(</span><em class="sig-param">stride</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remnant.html#Remnant.read_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remnant.Remnant.read_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get relevant data from a PostgreSQL database and format it to be 
+identical to that read from test files.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>stride (int):</dt><dd><p>Optional. For stride=n, get every nth row in the table.</p>
+</dd>
+</dl>
+</dd>
+<dt>Changes:</dt><dd><p><cite>self.time</cite>, <cite>self.particle_count</cite> and <cite>self.data</cite> are set.</p>
+</dd>
+</dl>
+<p>Returns: nothing</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.remnant.Remnant.xyz">
+<code class="sig-name descname">xyz</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remnant.html#Remnant.xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remnant.Remnant.xyz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience method to get positions as a np.array of shape (3,N)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.remnant.Remnant.vxyz">
+<code class="sig-name descname">vxyz</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remnant.html#Remnant.vxyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remnant.Remnant.vxyz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience method to get velocities as a np.array of shape (3,N)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ASTR400B Leach</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="galaxy.html">Galaxy class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="galaxies.html">Galaxies class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="centerofmass.html">CenterOfMass class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="massprofile.html">MassProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="timecourse.html">TimeCourse class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">utilities module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="db.html">DB class</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Remnant class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="approaches.html">Approaches class</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="db.html" title="previous chapter">DB class</a></li>
+      <li>Next: <a href="approaches.html" title="next chapter">Approaches class</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Colin Leach.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/remnant.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
