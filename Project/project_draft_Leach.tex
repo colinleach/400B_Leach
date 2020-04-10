@@ -90,7 +90,7 @@ To plot motions of the three galactic CoMs it is convenient to transform to a co
 		\label{fig:traj}}
 \end{figure}
 
-In Marel12 this is referred to as the X',Y',Z' coordinate system and their Figure 2 shows multiple views of how the galaxies move through time. In this paper, Figure \ref{fig:traj} shows some alternative views in essentially the same coordinates (up to a sign; the $x$ and $z$ axes are flipped). The left panel reproduces the top left panel of Marel12. The right panel shows that MW and M31 remain close to the starting plane while M33 has large and irregular out-of-plane motions.
+In Marel12 this is referred to as the X',Y',Z' coordinate system and their fig. 2 shows multiple views of how the galaxies move through time. In this paper, Figure \ref{fig:traj} shows some alternative views in essentially the same coordinates (up to a sign; the $x$ and $z$ axes are flipped). The left panel reproduces the top left panel of Marel12. The right panel shows that MW and M31 remain close to the starting plane while M33 has large and irregular out-of-plane motions.
 
 Relative motions of the CoMs are shown against time in Figure \ref{fig:rel_motion}, equivalent to figures 3 and 4 in Marel12.
 
@@ -100,7 +100,9 @@ Relative motions of the CoMs are shown against time in Figure \ref{fig:rel_motio
 		\label{fig:rel_motion}}
 \end{figure}
 
+There is a MW-M31 close approach shortly before 4 Gyr, to a minimum separation of 35.1 kpc, then a separation to 173 kpc and finally a convergence and merger between 5.9 - 6.5 Gyr. Relative velocities spike sharply during these approaches, as potential energy is converted to kinetic energy, before declining to essentially zero.
 
+Meanwhile, in this simulation run M33 remains separate throughout, albeit on a decaying orbit. In Marel12 the authors investigate the effect of small changes in initial conditions and estimate a ??\% chance of an M33-MW collision before the M31-MW merger.
 
 \subsection{MW-M31 Close approach}
 
@@ -110,9 +112,28 @@ Relative motions of the CoMs are shown against time in Figure \ref{fig:rel_motio
 
 \subsubsection{Tidal tails and bridges}
 
-Refer to key early paper \citep{toomre_galactic_1972}
+The presence of long, symmetrical tails giving some galaxies a distinct `S'-shape has been described at least as far back as \citep{zwicky_novel_1955}. Some astronomers postulated that these were the result of tidal forces during close, glancing encounters, but this was often contested until a detailed computational study by \citet{toomre_galactic_1972}.
 
-\todo{identify, trace history, trace fate}
+In our simulation, both MW and M31 disks remain near-circular during much of the close approach, but conspicuous tails develop as the centers then move further apart. We also see a more sparsely-populated bridge forming between the galaxies.
+
+To determine the nature and origin of stars in this region, a manual selection was performed as in Figure \ref{fig:bridge}. Stars within the yellow rectangle (left panel) are shown with velocity vectors (center panel) and origin (right panel). Velocities are mostly moderate (\todo{stats}), with only a few stars having high kinetic energy. 
+
+
+\begin{figure}[ht!]
+	\plotone{bridge.pdf}
+	\caption{Manual selection of bridge particles. The left panel shows stellar surface density and the selected region. The center panel shows velocity vectors for these stars and the right panel shows origin by galaxy and particle type. Orientation is with MW top, M31 bottom and M33 lower left.
+	\label{fig:bridge}}
+\end{figure}
+
+It appears from the right panel that stars in the tail regions originate in the corresponding disk. The bridge region is more mixed and appears to have a high proportion of former bulge stars. To study this further the coordinate system was transformed to place the large galaxy CoMs on the $x$-axis at $\pm 64$ kpc, as in Figure \ref{fig:bridge2}. It is clear in this view that one MW tail is oriented approximately towards the center of M31. 
+
+\begin{figure}[htb!]
+	\plotone{density_rot_300.pdf}
+	\caption{View along the midplane.
+		\label{fig:bridge2}}
+\end{figure}
+
+The different orientations mean that symmetry about the midplane is imperfect, so the ``bridge'' region was taken as $-20 < x < 30$ kpc. A count of stars in this region is shown in Table 3. This confirms that the largest populations are MW disk stars (mostly in a relatively dense tail) and M31 bulge stars (more widely dispersed).
 
 \begin{deluxetable}{crrr}[htb!]
 	\tablenum{3}
@@ -122,25 +143,14 @@ Refer to key early paper \citep{toomre_galactic_1972}
 		\colhead{} & \colhead{Bulge} & \colhead{Disk} & \colhead{Total}
 	}
 	\startdata
-	M31     &   1137 &     4 &  1141 \\
 	MW      &    305 &  1317 &  1622 \\
+	M31     &   1137 &     4 &  1141 \\
 	\midrule
 	Total     &   1442 &  1321 &  2763 \\
 	\enddata
 \end{deluxetable}
 
-\begin{figure}[ht!]
-	\plotone{bridge.pdf}
-	\caption{Manual selection of bridge particles.
-		\label{fig:bridge}}
-\end{figure}
-
-\begin{figure}[htb!]
-	\plotone{density_rot_300.pdf}
-	\caption{View along the midplane.
-		\label{fig:bridge2}}
-\end{figure}
-
+\todo{identify, trace history, trace fate}
 
 \subsubsection{Velocity dispersion}
 

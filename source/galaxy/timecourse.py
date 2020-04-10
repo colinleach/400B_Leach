@@ -527,7 +527,7 @@ class TimeCourse():
         if galaxy is None:
             query += " ORDER BY snap"
         else:
-            query += f" AND gal='{galaxy}' ORDER BY galaxy, snap"
+            query += f" AND gal='{galaxy}' ORDER BY gal, snap"
 
         db = DB()
         result = db.run_query(query)
