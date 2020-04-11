@@ -302,11 +302,57 @@ class TimeCourse():
 
         # write the data to file
         # we do this because we don't want to have to repeat this process 
-        # this code should only have to be called once per galaxy.
+        # this code should only have to be called once
         np.savetxt(fileout, output, fmt = "%11.3f"*4, comments='#',
                 header="{:>10s}{:>11s}{:>11s}{:>11s}"\
                         .format('t', 'x_hat', 'y_hat', 'z_hat'))
               
+    def write_rel_motion(self, start=0, end=801):
+        """
+        """
+
+        # get all the CoM info from postgres
+        MW_data = self.read_com_db('MW')
+        M31_data = self.read_com_db('M31')
+        M33_data = self.read_com_db('M33')
+        
+        # pull out the 3 columns giving position
+        pos_MW_coms = np.array([MW_data[xi] for xi in ('x','y','z')])
+        pos_M31_coms = np.array([M31_data[xi] for xi in ('x','y','z')])
+        pos_M33_coms = np.array([M33_data[xi] for xi in ('x','y','z')])
+
+        # pull out the 3 columns giving velocity
+        vel_MW_coms = np.array([MW_data[vxi] for vxi in ('vx','vy','vz')])
+        vel_M31_coms = np.array([M31_data[vxi] for vxi in ('vx','vy','vz')])
+        vel_M33_coms = np.array([M33_data[vxi] for vxi in ('vx','vy','vz')])
+
+        # define relative distances
+        pos_MW_M31 = norm(pos_MW_coms - pos_M31_coms, axis=0)
+        pos_M33_M31 = norm(pos_M33_coms - pos_M31_coms, axis=0)
+        pos_M33_MW = norm(pos_M33_coms - pos_MW_coms, axis=0)
+
+        # define relative speeds
+        vel_MW_M31 = norm(vel_MW_coms - vel_M31_coms, axis=0)
+        vel_M33_M31 = norm(vel_M33_coms - vel_M31_coms, axis=0)
+        vel_M33_MW = norm(vel_M33_coms - vel_MW_coms, axis=0)
+
+        output_cols = [MW_data['t'], 
+                        pos_MW_M31, pos_M33_M31, pos_M33_MW,
+                        vel_MW_M31, vel_M33_M31, vel_M33_MW]
+        output = np.column_stack(output_cols)
+        print(output.shape)
+            
+        # compose the filename for output
+        fileout = './relmotion.txt'
+
+        # write the data to file
+        # we do this because we don't want to have to repeat this process 
+        # this code should only have to be called once
+        np.savetxt(fileout, output, fmt = "%13.3f"*7, comments='#',
+                header="{:>12s}{:>13s}{:>13s}{:>13s}{:>13s}{:>13s}{:>13s}"\
+                        .format('t', 'pos_MW_M31', 'pos_M33_M31', 'pos_M33_MW',
+                                    'vel_MW_M31', 'vel_M33_M31', 'vels_M33_MW'))
+  
 
     def read_file(self, fullname):
         """
@@ -390,9 +436,26 @@ class TimeCourse():
 
         return self.read_file(fullname)
 
+    def read_relmotion_file(self, datadir='.'):
+        """
+        Get relative CoM distances/velocities from file.
+
+        Args:
+            datadir (str):
+                path to file
+
+        Returns:
+            np.array with 802 rows, one per snap
+        """
+
+        filename = 'relmotion.txt'
+        fullname = Path(datadir) / filename
+
+        return self.read_file(fullname)
+
     def write_db_tables(self, datadir='.', do_com=False, do_angmom=False, 
                         do_totalcom=False, do_totalangmom=False, do_normals=False,
-                        do_sigmas=False):
+                        do_sigmas=False, do_relmotion=False):
         """
         Adds data to the various tables in the `galaxy` database
         """
@@ -507,6 +570,24 @@ class TimeCourse():
                     rec = [gname, snap,] + list(d)
                     cur.execute(query, rec)
 
+        # relative motions
+        if do_relmotion:
+            colheads = ','.join(['snap','t','pos_MW_M31','pos_M33_M31','pos_M33_MW',
+                                    'vel_MW_M31','vel_M33_M31','vel_M33_MW'])
+            query = f"""
+                INSERT INTO relmotion( {colheads} ) 
+                VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+                ON CONFLICT DO NOTHING
+                """
+
+            filename = 'relmotion.txt'
+            fullname = filepath / filename
+            data = self.read_file(fullname)
+                
+            for snap, d in enumerate(data):
+                rec = [snap,] + list(d)
+                cur.execute(query, rec)
+
     def read_com_db(self, galaxy=None, snaprange=(0,801)):
         """
         Retrieves CoM positions from postgres for a range of snaps.
@@ -587,7 +668,7 @@ class TimeCourse():
                 ('z', '<f4'), ('vx', '<f4'), ('vy', '<f4'), ('vz', '<f4')]
 
         return np.array(result, dtype=dtype)
-        
+
     def get_one_com(self, gal, snap)       :
         """
         Gets a CoM from postgres for the specified galaxy and snap.
@@ -666,3 +747,30 @@ class TimeCourse():
 
         return np.array(result, dtype=dtype)
 
+    def read_relmotion_db(self, snaprange=(0,801)):
+        """
+        Retrieves relative CoM positions and velocities from postgres 
+        for a range of snaps.
+
+        Args:
+            snaprange (pair of ints):
+                Optional, defaults to all. First and last snap to include.
+                This is NOT the [first, last+1] convention of Python.
+       """
+
+        colheads = ','.join(['snap','t','pos_MW_M31','pos_M33_M31','pos_M33_MW',
+                                    'vel_MW_M31','vel_M33_M31','vel_M33_MW'])
+        query = f"""
+                SELECT {colheads} FROM relmotion 
+                WHERE snap BETWEEN {snaprange[0]} AND {snaprange[1]}
+                ORDER BY snap
+                """
+
+        db = DB()
+        result = db.run_query(query)
+        dtype=[('snap', 'u2'), ('t', '<f4'), 
+                ('pos_MW_M31', '<f4'), ('pos_M33_M31', '<f4'), ('pos_M33_MW', '<f4'), 
+                ('vel_MW_M31', '<f4'), ('vel_M33_M31', '<f4'), ('vel_M33_MW', '<f4')]
+
+        return np.array(result, dtype=dtype)
+        
