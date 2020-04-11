@@ -7,6 +7,7 @@ import scipy.optimize as so
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
+from matplotlib import rcParams
 
 class Plots():
     """
@@ -190,7 +191,8 @@ class Plots():
         if pngout:
             plt.savefig(fname, dpi='figure');   
             
-    def plot_phase(self, rn, vn, R, Vcirc, galname, t, xlim=20, ylim=200, pngout=False, fname=None):
+    def plot_phase(self, rn, vn, R, Vcirc, galname, t, xlim=20, ylim=200, 
+                    pngout=False, fname=None):
         """
         """
 
@@ -222,3 +224,113 @@ class Plots():
         # Save file
         if pngout:
             plt.savefig(fname, dpi='figure');   
+
+    def mass_profiles(self, radii, mass_profiles, t, figsize=(18,8), ylim=(1e7, 1e12), 
+                    pngout=False, fname=None):
+        """
+        The `MassProfile` class has methods `mass_enclosed()` and `mass_enclosed_total()` 
+        which accept arrays of radii. This gives us most of what we need for plotting.
+
+        Args:
+
+        """
+
+        assert len(mass_profiles) == 3 # MW, M31, M33 - matching the 3 subplots
+        fig = plt.figure(figsize=figsize)
+        subplots = (131, 132, 133)
+
+        for i in range(len(mass_profiles)):
+            # set up this subplot
+            ax = plt.subplot(subplots[i])
+            gname, mp = mass_profiles[i]
+            
+            # add the curves
+            ax.semilogy(radii, mp.mass_enclosed_total(radii), 'b-', lw=3, 
+                        label='Total')
+            ax.semilogy(radii, mp.mass_enclosed(radii, 1), 'r:', lw=3, 
+                        label='Halo particles')
+            ax.semilogy(radii, mp.mass_enclosed(radii, 2), 'g--', lw=3, 
+                        label='Disk particles')
+            ax.semilogy(radii, mp.mass_enclosed(radii, 3), 'm-.', lw=3, 
+                        label='Bulge particles')
+
+            #adjust tick label font size
+            label_size = 16
+            rcParams['xtick.labelsize'] = label_size 
+            rcParams['ytick.labelsize'] = label_size
+
+            # Add labels and subplot title
+            ax.set_xlabel('Radius (kpc)', fontsize=20)
+            if i == 0: # left subplot only
+                ax.set_ylabel(r'Mass enclosed ($M_\odot$)', fontsize=22)
+                ax.legend(loc='lower right',fontsize='xx-large', shadow=True)
+            ax.set_title(gname[:-4], fontsize=24)
+
+            #set axis limits
+            ax.set_ylim(ylim[0], ylim[1])
+
+        # Overall title
+        fig.suptitle(f'Mass Profiles by Particle Type, t={t:.2f} Gyr', y=1.0, 
+                    fontsize=24, weight='bold')
+
+        # Save file
+        if pngout:
+            plt.savefig(fname, dpi='figure');   
+
+    def rotation_curves(self, radii, mass_profiles, fitted_a, t, 
+                 figsize=(18,8), ylim=(1e7, 1e12), pngout=False, fname=None):
+        """
+        """
+        
+        assert len(mass_profiles) == 3
+        fig = plt.figure(figsize=figsize)
+        subplots = (131, 132, 133)
+
+        for i in range(len(mass_profiles)):
+            ax = plt.subplot(subplots[i])
+            gname, mp = mass_profiles[i]
+            
+            # the a value is from scipy.optimize, above
+            a_opt = fitted_a[gname]
+            
+            # add the curves
+            ax.plot(radii, mp.circular_velocity_total(radii), 'b-', lw=3, 
+                        label='Total')
+            ax.plot(radii, mp.circular_velocity(radii, 1), 'r:', lw=3, 
+                        label='Halo particles')
+            ax.plot(radii, mp.circular_velocity(radii, 2), 'g--', lw=3, 
+                        label='Disk particles')
+            
+            # M33 has no bulge, but include it just to get a legend
+            # The other subplots have no empty areas
+            ax.plot(radii, mp.circular_velocity(radii, 3), 'm-.', lw=3, 
+                        label='Bulge particles')
+            
+            # add the Hernquist profile, use our best-fit a 
+            ax.plot(radii, mp.circular_velocity_hernquist(radii, a_opt), 'c-', lw=2, 
+                        label='Hernquist profile')
+
+            #adjust tick label font size
+            label_size = 16
+            rcParams['xtick.labelsize'] = label_size 
+            rcParams['ytick.labelsize'] = label_size
+
+            # Add labels
+            ax.set_xlabel('Radius (kpc)', fontsize=20)
+            if i == 0: # left subplot only
+                ax.set_ylabel(r'Circular velocity (km/s)', fontsize=22)
+            if i == 2: # right subplot only
+                ax.legend(fontsize='xx-large', shadow=True)
+            ax.set_title(gname[:-4], fontsize=24)
+
+            #set axis limits
+            ax.set_ylim(0, 270)
+
+        fig.suptitle(f'Rotation curves by Particle Type, t={t:.2f}', y=1.0, 
+                    fontsize=24, weight='bold')
+
+        # Save file
+        if pngout:
+            plt.savefig(fname, dpi='figure');   
+
+ 

@@ -1,5 +1,6 @@
 import numpy as np
 from numpy.linalg import norm
+from scipy.optimize import curve_fit
 
 import astropy.units as u
 from astropy.constants import G
@@ -116,8 +117,10 @@ class MassProfile:
         for a given type of particle.
         
         Args:
-            radii (array of distances): circular orbit
-            ptype (int): particle type from (1,2,3), or None for total
+            radii (array of distances): 
+                circular orbit
+            ptype (int): 
+                particle type from (1,2,3), or None for total
             
         Returns:
             array of circular speeds, in units of km/s
@@ -136,6 +139,49 @@ class MassProfile:
         return self.circular_velocity(radii)
     
     def circular_velocity_hernquist(self, radii, a, M_halo=None):
+        """
+        Theoretical V_circ assuming halo mass follows a Hernquist profile
+
+        Args:
+            radii (array of distances): 
+                circular orbit
+            a (Quantity, units of kpc): 
+                scale radius
+            M_halo (Quantity, units of M_sun): 
+                total DM mass (optional)               
+        """
+
         central_mass = self.hernquist_mass(radii, a, M_halo)
         
         return np.sqrt(G * central_mass / radii).to(u.km / u.s)
+
+    def fit_hernquist_a(self, r_inner=1, r_outer=30):
+        """
+        Get `scipy.optimize` to do a non-linear least squares fit to find
+        the best scale radius `a` for the Hernquist profile.
+
+        Args:
+            r_inner (numeric):
+                Optional. Minimum radius to consider (implicit kpc). 
+                Avoid values < 1 as they cause numeric problems.
+            r_outer (numeric):
+                Optional. Maximum radius to consider (implicit kpc). 
+        """
+
+        # A function suitable for curve_fit. Units must be removed.
+        def hq(r, a):
+            masses = (self.hernquist_mass(r*u.kpc, a*u.kpc)).value
+            return np.log(masses)
+
+        # The fitting has problems inside 1 kpc, so use a more restricted 
+        # range of radii than for the plots
+        radii_outer = np.linspace(r_inner, r_outer) * u.kpc
+
+        # y values to fit to
+        halo = np.log(self.mass_enclosed(radii_outer, 1).value)
+        
+        # run the fit and store the optimum a value
+        popt, pcov = curve_fit(hq, radii_outer, halo, (60,))
+        fitted_a = np.round(popt[0], 1)*u.kpc
+
+        return fitted_a

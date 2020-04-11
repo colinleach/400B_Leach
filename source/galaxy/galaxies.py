@@ -8,6 +8,7 @@ from astropy.table import QTable #, Table
 
 from galaxy.galaxy import Galaxy
 from galaxy.centerofmass import CenterOfMass
+# from galaxy.utilities import is_iterable
 
 
 class Galaxies():
@@ -49,7 +50,10 @@ class Galaxies():
         "Initial setup."
 
         self.names = names
-        self.snaps = snaps
+        if self.is_iterable(snaps):
+            self.snaps = snaps
+        else:
+            self.snaps = (snaps, snaps, snaps)
         self.path = datadir
         self.usesql = usesql
         self.ptype = ptype
@@ -58,6 +62,15 @@ class Galaxies():
         self.galaxies = {}
         self.filenames = []
         self.read_data_files()
+
+    def is_iterable(self, x):
+        # a surprising omission from standard Python?
+        try:
+            iterator = iter(x)
+        except TypeError:
+            return False
+        else:
+            return True       
 
     def read_data_files(self):
         """

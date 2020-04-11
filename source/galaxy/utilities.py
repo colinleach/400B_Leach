@@ -209,9 +209,9 @@ def jacobi_radius(r, M_host, M_sat):
     
     returns: 
         Jacobi radius (kpc)
-   """
+    """
 
-   return r * (M_sat / (2*M_host))**(1/3)
+    return r * (M_sat / (2*M_host))**(1/3)
 
 def jacobi_mass(Rj, r, Mhost):
     """
@@ -292,3 +292,12 @@ def z_rotation_matrix(pt1, pt2):
                   [np.sin(theta), np.cos(theta), 0],
                   [0, 0, 1]])
     return -R
+
+def is_iterable(x):
+    # a surprising omission from standard Python?
+    try:
+        iterator = iter(x)
+    except TypeError:
+        return False
+    else:
+        return True       
