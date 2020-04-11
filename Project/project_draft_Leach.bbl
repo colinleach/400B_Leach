@@ -5,10 +5,83 @@
 \providecommand{\doeprint}[1]{\href{http://ascl.net/#1}{\nolinkurl{http://ascl.net/#1}}}
 \providecommand{\doarXiv}[1]{\href{https://arxiv.org/abs/#1}{\nolinkurl{https://arxiv.org/abs/#1}}}
 
-\bibitem[{Marel {et~al.}(2012)Marel, Besla, Cox, Sohn, \&
+\bibitem[{Brown {et~al.}(2018)Brown, Vallenari, Prusti, Bruijne, Babusiaux,
+  Bailer-Jones, Biermann, Evans, Eyer, Jansen, Jordi, Klioner, Lammers,
+  Lindegren, Luri, Mignard, Panem, Pourbaix, Randich, Sartoretti, Siddiqui,
+  Soubiran, Leeuwen, Walton, Arenou, Bastian, Cropper, Drimmel, Katz, Lattanzi,
+  Bakker, Cacciari, Castañeda, Chaoul, Cheek, Angeli, Fabricius, Guerra, Holl,
+  Masana, Messineo, Mowlavi, Nienartowicz, Panuzzo, Portell, Riello, Seabroke,
+  Tanga, Thévenin, Gracia-Abril, Comoretto, Garcia-Reinaldos, Teyssier,
+  Altmann, Andrae, Audard, Bellas-Velidis, Benson, Berthier, Blomme, Burgess,
+  Busso, Carry, Cellino, Clementini, Clotet, Creevey, Davidson, Ridder,
+  Delchambre, Dell’Oro, Ducourant, Fernández-Hernández, Fouesneau, Frémat,
+  Galluccio, García-Torres, González-Núñez, González-Vidal, Gosset, Guy,
+  Halbwachs, Hambly, Harrison, Hernández, Hestroffer, Hodgkin, Hutton,
+  Jasniewicz, Jean-Antoine-Piccolo, Jordan, Korn, Krone-Martins, Lanzafame,
+  Lebzelter, Löffler, Manteiga, Marrese, Martín-Fleitas, Moitinho, Mora,
+  Muinonen, Osinde, Pancino, Pauwels, Petit, Recio-Blanco, Richards, Rimoldini,
+  Robin, Sarro, Siopis, Smith, Sozzetti, Süveges, Torra, Reeven, Abbas,
+  Aramburu, Accart, Aerts, Altavilla, Álvarez, Alvarez, Alves, Anderson,
+  Andrei, Varela, Antiche, Antoja, Arcay, Astraatmadja, Bach, Baker,
+  Balaguer-Núñez, Balm, Barache, Barata, Barbato, Barblan, Barklem, Barrado,
+  Barros, Barstow, Muñoz, Bassilana, Becciani, Bellazzini, Berihuete, Bertone,
+  Bianchi, Bienaymé, Blanco-Cuaresma, Boch, Boeche, Bombrun, Borrachero,
+  Bossini, Bouquillon, Bourda, Bragaglia, Bramante, Breddels, Bressan,
+  Brouillet, Brüsemeister, Brugaletta, Bucciarelli, Burlacu, Busonero,
+  Butkevich, Buzzi, Caffau, Cancelliere, Cannizzaro, Cantat-Gaudin, Carballo,
+  Carlucci, Carrasco, Casamiquela, Castellani, Castro-Ginard, Charlot, Chemin,
+  Chiavassa, Cocozza, Costigan, Cowell, Crifo, Crosta, Crowley, Cuypers†,
+  Dafonte, Damerdji, Dapergolas, David, David, Laverny, Luise, March, Martino,
+  Souza, Torres, Debosscher, Pozo, Delbo, Delgado, Delgado, Matteo, Diakite,
+  Diener, Distefano, Dolding, Drazinos, Durán, Edvardsson, Enke, Eriksson,
+  Esquej, Bontemps, Fabre, Fabrizio, Faigler, Falcão, Casas, Federici,
+  Fedorets, Fernique, Figueras, Filippi, Findeisen, Fonti, Fraile, Fraser,
+  Frézouls, Gai, Galleti, Garabato, García-Sedano, Garofalo, Garralda, Gavel,
+  Gavras, Gerssen, Geyer, Giacobbe, Gilmore, Girona, Giuffrida, Glass, Gomes,
+  Granvik, Gueguen, Guerrier, Guiraud, Gutiérrez-Sánchez, Haigron,
+  Hatzidimitriou, Hauser, Haywood, Heiter, Helmi, Heu, Hilger, Hobbs, Hofmann,
+  Holland, Huckle, Hypki, Icardi, Janßen, Fombelle, Jonker, Juhász, Julbe,
+  Karampelas, Kewley, Klar, Kochoska, Kohley, Kolenberg, Kontizas, Kontizas,
+  Koposov, Kordopatis, Kostrzewa-Rutkowska, Koubsky, Lambert, Lanza, Lasne,
+  Lavigne, Fustec, Poncin-Lafitte, Lebreton, Leccia, Leclerc, Lecoeur-Taibi,
+  Lenhardt, Leroux, Liao, Licata, Lindstrøm, Lister, Livanou, Lobel, López,
+  Managau, Mann, Mantelet, Marchal, Marchant, Marconi, Marinoni, Marschalkó,
+  Marshall, Martino, Marton, Mary, Massari, Matijevič, Mazeh, McMillan,
+  Messina, Michalik, Millar, Molina, Molinaro, Molnár, Montegriffo, Mor,
+  Morbidelli, Morel, Morris, Mulone, Muraveva, Musella, Nelemans, Nicastro,
+  Noval, O’Mullane, Ordénovic, Ordóñez-Blanco, Osborne, Pagani, Pagano,
+  Pailler, Palacin, Palaversa, Panahi, Pawlak, Piersimoni, Pineau, Plachy,
+  Plum, Poggio, Poujoulet, Prša, Pulone, Racero, Ragaini, Rambaux,
+  Ramos-Lerate, Regibo, Reylé, Riclet, Ripepi, Riva, Rivard, Rixon, Roegiers,
+  Roelens, Romero-Gómez, Rowell, Royer, Ruiz-Dern, Sadowski, Sellés,
+  Sahlmann, Salgado, Salguero, Sanna, Santana-Ros, Sarasso, Savietto,
+  Schultheis, Sciacca, Segol, Segovia, Ségransan, Shih, Siltala, Silva, Smart,
+  Smith, Solano, Solitro, Sordo, Nieto, Souchay, Spagna, Spoto, Stampa, Steele,
+  Steidelmüller, Stephenson, Stoev, Suess, Surdej, Szabados, Szegedi-Elek,
+  Tapiador, Taris, Tauran, Taylor, Teixeira, Terrett, Teyssandier, Thuillot,
+  Titarenko, Clotet, Turon, Ulla, Utrilla, Uzzi, Vaillant, Valentini, Valette,
+  Elteren, Hemelryck, Leeuwen, Vaschetto, Vecchiato, Veljanoski, Viala,
+  Vicente, Vogt, Essen, Voss, Votruba, Voutsinas, Walmsley, Weiler, Wertz,
+  Wevers, Wyrzykowski, Yoldas, Žerjal, Ziaeepour, Zorec, Zschocke, Zucker,
+  Zurbach, \& Zwitter}]{brown_gaia_2018}
+Brown, A. G.~A., Vallenari, A., Prusti, T., {et~al.} 2018, Astronomy \&
+  Astrophysics, 616, A1, \dodoi{10.1051/0004-6361/201833051}
+
+\bibitem[{Marel {et~al.}(2012{\natexlab{a}})Marel, Besla, Cox, Sohn, \&
   Anderson}]{marel_m31_2012}
-Marel, R. P. v.~d., Besla, G., Cox, T.~J., Sohn, S.~T., \& Anderson, J. 2012,
-  The Astrophysical Journal, 753, 9, \dodoi{10.1088/0004-637X/753/1/9}
+Marel, R. P. v.~d., Besla, G., Cox, T.~J., Sohn, S.~T., \& Anderson, J.
+  2012{\natexlab{a}}, The Astrophysical Journal, 753, 9,
+  \dodoi{10.1088/0004-637X/753/1/9}
+
+\bibitem[{Marel {et~al.}(2012{\natexlab{b}})Marel, Fardal, Besla, Beaton, Sohn,
+  Anderson, Brown, \& Guhathakurta}]{marel_m31_2012-1}
+Marel, R. P. v.~d., Fardal, M., Besla, G., {et~al.} 2012{\natexlab{b}}, The
+  Astrophysical Journal, 753, 8, \dodoi{10.1088/0004-637X/753/1/8}
+
+\bibitem[{Marel {et~al.}(2019)Marel, Fardal, Sohn, Patel, Besla, Pino,
+  Sahlmann, \& Watkins}]{marel_first_2019}
+Marel, R. P. v.~d., Fardal, M.~A., Sohn, S.~T., {et~al.} 2019, The
+  Astrophysical Journal, 872, 24, \dodoi{10.3847/1538-4357/ab001b}
 
 \bibitem[{Toomre \& Toomre(1972)}]{toomre_galactic_1972}
 Toomre, A., \& Toomre, J. 1972, The Astrophysical Journal, 178, 623,

@@ -27,13 +27,15 @@
 
 \section{Introduction}
 
-The largest galaxies in our Local Group (LG) are the Milky Way (MW), Andromeda (M31) and Triangulum (M33).  A simulation of MW--M31--M33 orbital evolution was described previously in \citep{marel_m31_2012}, hereafter Marel12. That paper included an extensive analysis of both N-body simulations and semi-analytic orbit integrations. The present study uses data from the same N-body simulation to carry out further computational analysis.
+The largest galaxies in our Local Group (LG) are the Milky Way (MW), Andromeda (M31) and Triangulum (M33).  A simulation of MW--M31--M33 orbital evolution was described previously in \citep{marel_m31_2012}, hereafter vdM12. That paper included an extensive analysis of both N-body simulations and semi-analytic orbit integrations. The present study uses data from the same N-body simulation to carry out further computational analysis.
+
+The simulation was based on data in \citep{marel_m31_2012-1} suggesting that M31 is approaching the MW directly with little proper motion detected by Hubble Space Telescope (HST) studies. Recent data from Gaia DR2 \citep{brown_gaia_2018} suggest that infall is slightly less radial than previously thought \citep{marel_first_2019}, leading to a slightly later first approach with a larger pericenter distance. However, detailed simulations based on that new data have not yet been carried out.
 
 \todo{phases of the sim}\ 
 
 \subsection{Data}
 
-Data from one N-body simulation in Marel12 was supplied in text-file format by one of the original authors. This included position and velocity data for each particle at the current epoch ($t=0$) and 800 future time steps. For ease of analysis, this was all transferred to the open source database PostgreSQL\footnote{\url{http://www.postgresql.org}} (approximately 1.35 billion records). The same database was used to store computed summary data during the analysis.
+Data from one N-body simulation in vdM12 was supplied in text-file format by one of the original authors. This included position and velocity data for each particle at the current epoch ($t=0$) and 800 future time steps. For ease of analysis, this was all transferred to the open source database PostgreSQL\footnote{\url{http://www.postgresql.org}} (approximately 1.35 billion records). The same database was used to store computed summary data during the analysis.
 
 \begin{deluxetable}{crrrr}[htb!]
 	\tablenum{1}
@@ -50,7 +52,7 @@ Data from one N-body simulation in Marel12 was supplied in text-file format by o
 	\midrule
 	LG  &  525,000 &  1,021,500 &   145,000 &  1,691,500
 	\enddata
-\end{deluxetable}\vspace{-5mm}
+\end{deluxetable}
 
 Particle counts for each time point are shown in Table 1 and total masses in Table 2. We can see that total mass is the same for MW/M31 but our galaxy has more luminous stars (higher baryon fraction) and M31 has more dark matter (lower baryon fraction). M33 is about 10-fold lighter than either.
 
@@ -90,9 +92,9 @@ To plot motions of the three galactic CoMs it is convenient to transform to a co
 		\label{fig:traj}}
 \end{figure}
 
-In Marel12 this is referred to as the X',Y',Z' coordinate system and their fig. 2 shows multiple views of how the galaxies move through time. In this paper, Figure \ref{fig:traj} shows some alternative views in essentially the same coordinates (up to a sign; the $x$ and $z$ axes are flipped). The left panel reproduces the top left panel of Marel12. The right panel shows that MW and M31 remain close to the starting plane while M33 has large and irregular out-of-plane motions.
+In vdM12 this is referred to as the X',Y',Z' coordinate system and their fig. 2 shows multiple views of how the galaxies move through time. In this paper, Figure \ref{fig:traj} shows some alternative views in essentially the same coordinates (up to a sign; the $x$ and $z$ axes are flipped). The left panel reproduces the top left panel of vdM12. The right panel shows that MW and M31 remain close to the starting plane while M33 has large and irregular out-of-plane motions.
 
-Relative motions of the CoMs are shown against time in Figure \ref{fig:rel_motion}, equivalent to figures 3 and 4 in Marel12.
+Relative motions of the CoMs are shown against time in Figure \ref{fig:rel_motion}, equivalent to figures 3 and 4 in vdM12.
 
 \begin{figure}[htb!]
 	\plotone{rel_motion.pdf}
@@ -102,7 +104,7 @@ Relative motions of the CoMs are shown against time in Figure \ref{fig:rel_motio
 
 There is a MW-M31 close approach shortly before 4 Gyr, to a minimum separation of 35.1 kpc, then a separation to 173 kpc and finally a convergence and merger between 5.9 - 6.5 Gyr. Relative velocities spike sharply during these approaches, as potential energy is converted to kinetic energy, before declining to essentially zero.
 
-Meanwhile, in this simulation run M33 remains separate throughout, albeit on a decaying orbit. In Marel12 the authors investigate the effect of small changes in initial conditions and estimate a ??\% chance of an M33-MW collision before the M31-MW merger.
+Meanwhile, in this simulation run M33 remains separate throughout, albeit on a decaying orbit. In vdM12 the authors investigate the effect of small changes in initial conditions and estimate a 9\% chance of an M33-MW collision before the M31-MW merger.
 
 \subsection{MW-M31 Close approach}
 
@@ -129,7 +131,7 @@ It appears from the right panel that stars in the tail regions originate in the 
 
 \begin{figure}[htb!]
 	\plotone{density_rot_300.pdf}
-	\caption{View along the midplane.
+	\caption{View along the midplane between the galactic centers, MW on the left.
 		\label{fig:bridge2}}
 \end{figure}
 
@@ -152,7 +154,9 @@ The different orientations mean that symmetry about the midplane is imperfect, s
 
 \todo{identify, trace history, trace fate}
 
-\subsubsection{Velocity dispersion}
+\subsection{Velocity dispersion}
+
+
 
 Refer to Figure \ref{fig:vel_disp}
 

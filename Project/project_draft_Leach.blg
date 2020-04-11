@@ -4,44 +4,44 @@ The top-level auxiliary file: project_draft_Leach.aux
 The style file: aasjournal.bst
 Database file #1: project_Leach.bib
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
-You've used 3 entries,
+You've used 6 entries,
             3168 wiz_defined-function locations,
-            676 strings with 5406 characters,
-and the built_in function-call counts, 1258 in all, are:
-= -- 108
-> -- 80
+            698 strings with 14161 characters,
+and the built_in function-call counts, 8702 in all, are:
+= -- 240
+> -- 1572
 < -- 2
-+ -- 27
-- -- 29
-* -- 104
-:= -- 234
-add.period$ -- 3
-call.type$ -- 3
-change.case$ -- 17
-chr.to.int$ -- 3
-cite$ -- 3
-duplicate$ -- 49
-empty$ -- 80
-format.name$ -- 33
-if$ -- 250
-int.to.chr$ -- 1
++ -- 528
+- -- 535
+* -- 1162
+:= -- 1886
+add.period$ -- 6
+call.type$ -- 6
+change.case$ -- 43
+chr.to.int$ -- 5
+cite$ -- 6
+duplicate$ -- 100
+empty$ -- 157
+format.name$ -- 540
+if$ -- 1457
+int.to.chr$ -- 2
 int.to.str$ -- 0
-missing$ -- 3
-newline$ -- 17
-num.names$ -- 12
-pop$ -- 15
+missing$ -- 6
+newline$ -- 26
+num.names$ -- 24
+pop$ -- 41
 preamble$ -- 1
-purify$ -- 17
+purify$ -- 43
 quote$ -- 0
-skip$ -- 43
+skip$ -- 78
 stack$ -- 0
-substring$ -- 45
-swap$ -- 0
+substring$ -- 84
+swap$ -- 2
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 27
+type$ -- 54
 warning$ -- 0
-while$ -- 12
+while$ -- 23
 width$ -- 0
-write$ -- 40
+write$ -- 73
