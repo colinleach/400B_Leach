@@ -147,11 +147,11 @@ class AbundanceMatching:
         return self.M * self.SHMratio()
         
 
-#  Function that returns Sersic Profile for an Elliptical System
-# See in-class lab 6
-
 def sersic(R, Re, n, Mtot):
     """
+    Function that returns Sersic Profile for an Elliptical System
+    (See in-class lab 6)
+
     Input
         R:
             radius (kpc)
@@ -174,6 +174,64 @@ def sersic(R, Re, n, Mtot):
     Ie = L / (7.2 * np.pi * Re**2)
         
     return Ie * np.exp(-7.67 * ((R/Re)**(1.0/n) - 1.0))
+
+def HernquistM(r, a=60*u.kpc, M_halo=1.97e12*u.M_sun):
+    """
+    Args:
+        r (Quantity, units of kpc): distance from center
+        a (Quantity, units of kpc): scale radius
+        M_halo (Quantity, units of M_sun): total DM mass 
+        
+    Returns:
+        Total DM mass enclosed within r (M_sun)
+    """
+    
+    return np.round(M_halo * r**2 / (a + r)**2, 2)
+
+def jacobi_radius(r, M_host, M_sat):
+    """
+    The Jacobi Radius for a satellite on a circular orbit about an extended host, 
+    where the host is assumed to be well modeled as an isothermal sphere halo:
+
+    R_j = r * (M_sat / 2 M_host(<r))}^(1/3)
+
+    For MW/LMC, the Isothermal Sphere approximation is not a bad one within 50 kpc.
+
+    In other contexts, can be called the Roche radius, Roche limit or Hill radius.
+
+    Args:
+        r: 
+            distance between stellite and host (kpc)
+        M_host: 
+            host mass enclosed within r (M_sun)
+        M_sat: 
+            satellite mass (M_sun)
+    
+    returns: 
+        Jacobi radius (kpc)
+   """
+
+   return r * (M_sat / (2*M_host))**(1/3)
+
+def jacobi_mass(Rj, r, Mhost):
+    """
+    Function that returns min mass of a satellite given its observed size + distance 
+    from a massive host: Msat = (Rj/r)**3 * 2 * Mhost
+
+    Args:
+        Rj: 
+            Jacobi radius (approx as observed size) (kpc)
+        r: 
+            distance between stellite and host (kpc)
+        Mhost: 
+            mass enclosed within r (M_sun)
+    
+    returns: 
+        Minimum mass Msat of a satellite given its current size (M_sun)
+    """
+    
+    return (Rj/r)**3 * 2 * M_host
+
 
 # Some functions to calculate useful 3D rotation matrices
 
