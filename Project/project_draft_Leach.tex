@@ -27,11 +27,11 @@
 
 \section{Introduction}
 
-The largest galaxies in our Local Group (LG) are the Milky Way (MW), Andromeda (M31) and Triangulum (M33).  A simulation of MW--M31--M33 orbital evolution was described previously in \citep{marel_m31_2012}, hereafter vdM12. That paper included an extensive analysis of both N-body simulations and semi-analytic orbit integrations. The present study uses data from the same N-body simulation to carry out further computational analysis.
+The largest galaxies in our Local Group (LG) are the Milky Way (MW), Andromeda (M31) and Triangulum (M33).  A simulation of MW--M31--M33 orbital evolution was described previously in \citet{marel_m31_2012}, hereafter vdM12. That paper included an extensive analysis of both N-body simulations and semi-analytic orbit integrations. The present study uses data from the same N-body simulation to carry out further computational analysis.
 
-The simulation was based on data in \citep{marel_m31_2012-1} suggesting that M31 is approaching the MW directly with little proper motion detected by Hubble Space Telescope (HST) studies. Recent data from Gaia DR2 \citep{brown_gaia_2018} suggest that infall is slightly less radial than previously thought \citep{marel_first_2019}, leading to a slightly later first approach with a larger pericenter distance. However, detailed simulations based on that new data have not yet been carried out.
+The simulation was based on data in vdM12 suggesting that M31 is approaching the MW directly with little proper motion detected by Hubble Space Telescope (HST) studies. Recent data from Gaia DR2 \citep{brown_gaia_2018} suggest that infall is slightly less radial than previously thought \citep{marel_first_2019}, leading to a slightly later first approach with a larger pericenter distance. However, detailed simulations based on that new data have not yet been carried out.
 
-\todo{phases of the sim}\ 
+\todo{structure of the paper}\ 
 
 \subsection{Data}
 
@@ -80,31 +80,46 @@ The work in this report was carried out in Python using standard packages. Full 
 
 \section{Results}
 
+\begin{figure*}[htb!]
+	\plotone{trajectories.pdf}
+	\caption{Trajectories of each galactic center of mass in (left plot) and perpendicular (right plot) to the X',Y' plane. Points are at 71 Myr intervals.
+		\label{fig:traj}}
+\end{figure*}
+
+\begin{figure*}[bth]
+	\plotone{rel_motion.pdf}
+	\caption{Separations (left plot) and relative velocities (right plot) of galactic CoMs.
+		\label{fig:rel_motion}}
+\end{figure*}
+
 \subsection{Trajectories}
 
 The simulation does not explicitly include a supermassive black hole (SMBH) at the center of each galaxy, but the galactic center was defined by calculating the center of mass (CoM) of the disk particles and iteratively constraining the radius of interest until convergence.
 
 To plot motions of the three galactic CoMs it is convenient to transform to a coordinate system in which at $t=0$ they all lie in the $x,y$ plane with MW and M31 on the $x$-axis. The overall CoM is moving, as noted above, so at each time point the coordinates are translated to center it at the origin.
 
-\begin{figure}[htb!]
-	\plotone{trajectories.pdf}
-	\caption{Trajectories of each galactic center of mass in (left plot) and perpendicular (right plot) to the X',Y' plane. Points are at ?? Gyr intervals.
-		\label{fig:traj}}
-\end{figure}
-
-In vdM12 this is referred to as the X',Y',Z' coordinate system and their fig. 2 shows multiple views of how the galaxies move through time. In this paper, Figure \ref{fig:traj} shows some alternative views in essentially the same coordinates (up to a sign; the $x$ and $z$ axes are flipped). The left panel reproduces the top left panel of vdM12. The right panel shows that MW and M31 remain close to the starting plane while M33 has large and irregular out-of-plane motions.
+In vdM12 this is referred to as the X',Y',Z' coordinate system and their fig. 2 shows multiple views of how the galaxies move through time. In this paper, Figure \ref{fig:traj} shows some alternative views in essentially the same coordinates (up to a sign; the $x$ and $z$ axes are flipped). The left panel reproduces the top left panel of vdM12. The right panel shows that MW and M31 remain close to the starting plane while M33 has larger, irregular out-of-plane motions.
 
 Relative motions of the CoMs are shown against time in Figure \ref{fig:rel_motion}, equivalent to figures 3 and 4 in vdM12.
 
-\begin{figure}[htb!]
-	\plotone{rel_motion.pdf}
-	\caption{Separations (left plot) and relative velocities (right plot) of galactic CoMs.
-		\label{fig:rel_motion}}
-\end{figure}
 
-There is a MW-M31 close approach shortly before 4 Gyr, to a minimum separation of 35.1 kpc, then a separation to 173 kpc and finally a convergence and merger between 5.9 - 6.5 Gyr. Relative velocities spike sharply during these approaches, as potential energy is converted to kinetic energy, before declining to essentially zero.
+\begin{figure*}[ht!]
+	\plotone{massprof_000}
+	\caption{Mass profiles for each galaxy at the current epoch.
+		\label{fig:massprof0}}
+\end{figure*}
+
+There is a MW-M31 close approach shortly before 4 Gyr, to a minimum separation of 35.1 kpc at first pericenter, then a separation to 173 kpc and finally a convergence to ?? kpc at second pericenter and merger between 5.9 - 6.5 Gyr. Relative velocities spike sharply during these approaches, as potential energy is converted to kinetic energy, before declining to essentially zero.
 
 Meanwhile, in this simulation run M33 remains separate throughout, albeit on a decaying orbit. In vdM12 the authors investigate the effect of small changes in initial conditions and estimate a 9\% chance of an M33-MW collision at first pericenter, before the M31-MW merger.
+
+\subsection{Mass profiles and rotation curves}
+
+Figure \ref{fig:massprof0} shows... \todo{set xlim, make y axis log}\ 
+
+\todo{identify the bar?}\ 
+
+\todo{sersic profiles at various stages?}\ 
 
 \subsection{MW-M31 Close approach}
 
@@ -112,17 +127,23 @@ Meanwhile, in this simulation run M33 remains separate throughout, albeit on a d
 
 \todo{Relative rotation axes of disks}\ 
 
+\begin{figure}[ht!]
+	\plotone{inclinations.pdf}
+	\caption{Angular momentum inclination angles for each set of galactic disk particles. Left panel: angle to theX',Y' plane. Right panel: angle between pairs of galaxies.
+		\label{fig:inclinations}}
+\end{figure}
+
 \subsubsection{Tidal tails and bridges}
 
-The presence of long, symmetrical tails giving some galaxies a distinct `S'-shape has been described at least as far back as \citep{zwicky_novel_1955}. Some astronomers postulated that these were the result of tidal forces during close, glancing encounters, but this was often contested until a detailed computational study by \citet{toomre_galactic_1972}.
+The presence of long, symmetrical tails giving some galaxies a distinct `S'-shape has been described at least as far back as \citet{zwicky_novel_1955}. Some astronomers postulated that these were the result of tidal forces during close, glancing encounters, but this was often contested until a detailed computational study by \citet{toomre_galactic_1972}.
 
 In our simulation, both MW and M31 disks remain near-circular during much of the close approach, but conspicuous tails develop as the centers then move further apart. We also see a more sparsely-populated bridge forming between the galaxies.
 
-To determine the nature and origin of stars in this region, a manual selection was performed as in Figure \ref{fig:bridge}. Stars within the yellow rectangle (left panel) are shown with velocity vectors (center panel) and origin (right panel). Velocities are mostly moderate (\todo{stats}), with only a few stars having high kinetic energy. 
+To determine the nature and origin of stars in this region, a manual selection was performed as in Figure \ref{fig:bridge}. Stars within the yellow rectangle (left panel) are shown with velocity vectors (center panel) and origin (right panel). Velocities are mostly moderate (mean 195 km/s, range 19-586 km/s), with relatively few stars having high kinetic energy. 
 
 
 \begin{figure*}[ht!]
-	\plotone{bridge.pdf}
+	\plotone{selected.pdf}
 	\caption{Manual selection of bridge particles at ?? Gyr after the first MW-M31 pericenter. The left panel shows stellar surface density and the selected region. The center panel shows velocity vectors for these stars and the right panel shows origin by galaxy and particle type. Orientation is with MW top, M31 bottom and M33 lower left.
 	\label{fig:bridge}}
 \end{figure*}
@@ -152,13 +173,13 @@ The different orientations mean that symmetry about the midplane is imperfect, s
 	\enddata
 \end{deluxetable}
 
-\todo{identify, trace history, trace fate}
+\todo{identify, trace history, trace fate}\ 
+
+\todo{Jacobi radius}\ 
 
 \subsection{Velocity dispersion}
 
-
-
-Refer to Figure \ref{fig:vel_disp}
+The changes in velocity dispersion of disk particles originating from each galaxy are shown in \ref{fig:vel_disp}. The small periodic oscillation seen from the start, especially in M31, appears to be caused by deviations from radial symmetry in the disk: spiral arms and an increasingly prominent bar. Small MW spikes at initial pericenter (around 4 Gyr) and much larger ones at merger (around 6 Gyr) are clearly visible.
 
 \begin{figure}[htb!]
 	\plotone{vel_disp.pdf}
@@ -200,6 +221,13 @@ Refer to Figure \ref{fig:rem_phase}
 
 \todo{alignment between particles of different origin?}
 
+\subsection{Dark Matter halo}
+
+May need to be split up amongst previous sections
+
+\todo{what happens during close approach? merger? remanant?}
+
+Hernquist profiles at different stages
 
 
 \bibliography{project_Leach}{}

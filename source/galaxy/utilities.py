@@ -13,9 +13,9 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
 
-from galaxy.galaxy import Galaxy
-from galaxy.galaxies import Galaxies
-from galaxy.centerofmass import CenterOfMass
+# from galaxy.galaxy import Galaxy
+# from galaxy.galaxies import Galaxies
+# from galaxy.centerofmass import CenterOfMass
 
 G_val = 4.498768e-6 # units of kpc^3/Gyr^2/Msun
 
