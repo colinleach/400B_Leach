@@ -86,6 +86,7 @@ class Galaxy():
         try:
             self.time = time[0] * u.Myr
         except TypeError:
+            print(time)
             print(self.name, self.snap, ptype)
 
         # set the bulk of the data
@@ -396,3 +397,18 @@ class Galaxy():
             t[col] *= (u.km / u.s)
 
         return t
+
+    def xyz(self):
+        """
+        Returns position as a (3,N) array
+        """
+
+        return np.array([self.data[xi] for xi in ('x','y','z')])
+
+    def vxyz(self):
+        """
+        Returns velocity as a (3,N) array
+        """
+
+        return np.array([self.data[vxi] for xi in ('vx','vy','vz')])
+        

@@ -109,7 +109,7 @@ Relative motions of the CoMs are shown against time in Figure \ref{fig:rel_motio
 		\label{fig:massprof0}}
 \end{figure*}
 
-There is a MW-M31 close approach shortly before 4 Gyr, to a minimum separation of 35.1 kpc at first pericenter, then a separation to 173 kpc and finally a convergence to ?? kpc at second pericenter and merger between 5.9 - 6.5 Gyr. Relative velocities spike sharply during these approaches, as potential energy is converted to kinetic energy, before declining to essentially zero.
+There is a MW-M31 close approach with first pericenter at 3.96 Gyr with a minimum separation of 35.1 kpc, then a separation to 173 kpc and finally a convergence to 7.8 kpc at second pericenter and merger between 5.9 - 6.5 Gyr. Relative velocities spike sharply during these approaches, as potential energy is converted to kinetic energy, before declining to essentially zero.
 
 Meanwhile, in this simulation run M33 remains separate throughout, albeit on a decaying orbit. In vdM12 the authors investigate the effect of small changes in initial conditions and estimate a 9\% chance of an M33-MW collision at first pericenter, before the M31-MW merger.
 
@@ -117,9 +117,15 @@ Meanwhile, in this simulation run M33 remains separate throughout, albeit on a d
 
 Figure \ref{fig:massprof0} shows... \todo{set xlim, make y axis log}\ 
 
+The dark matter halo is fitted by a Hernquist profile \citep{hernquist_analytical_1990}. The cumulative mass out to radius $r$ is given by
+\[ M(r) = M_h \frac{r^2}{(a+r)^2} \]
+where $M_h$ is the total mass of halo particles and $a$ is a scale radius. Non-linear least squares fitting gave scale radii of 61.1 kpc for MW and M31, 24.3 kpc for M33.
+
 \todo{identify the bar?}\ 
 
 \todo{sersic profiles at various stages?}\ 
+
+
 
 \subsection{MW-M31 Close approach}
 
@@ -127,11 +133,11 @@ Figure \ref{fig:massprof0} shows... \todo{set xlim, make y axis log}\
 
 \todo{Relative rotation axes of disks}\ 
 
-\begin{figure}[ht!]
+\begin{figure*}[ht!]
 	\plotone{inclinations.pdf}
 	\caption{Angular momentum inclination angles for each set of galactic disk particles. Left panel: angle to theX',Y' plane. Right panel: angle between pairs of galaxies.
 		\label{fig:inclinations}}
-\end{figure}
+\end{figure*}
 
 \subsubsection{Tidal tails and bridges}
 
@@ -144,7 +150,7 @@ To determine the nature and origin of stars in this region, a manual selection w
 
 \begin{figure*}[ht!]
 	\plotone{selected.pdf}
-	\caption{Manual selection of bridge particles at ?? Gyr after the first MW-M31 pericenter. The left panel shows stellar surface density and the selected region. The center panel shows velocity vectors for these stars and the right panel shows origin by galaxy and particle type. Orientation is with MW top, M31 bottom and M33 lower left.
+	\caption{Manual selection of bridge particles at 0.33 Gyr after the first MW-M31 pericenter. The left panel shows stellar surface density and the selected region. The center panel shows velocity vectors for these stars and the right panel shows origin by galaxy and particle type. Orientation is with MW top, M31 bottom and M33 lower left.
 	\label{fig:bridge}}
 \end{figure*}
 
@@ -227,7 +233,7 @@ May need to be split up amongst previous sections
 
 \todo{what happens during close approach? merger? remanant?}
 
-Hernquist profiles at different stages
+Hernquist profiles at different stages: \todo{plot of scale radius evolution}
 
 
 \bibliography{project_Leach}{}

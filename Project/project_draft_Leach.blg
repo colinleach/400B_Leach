@@ -6,37 +6,37 @@ Database file #1: project_Leach.bib
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 You've used 6 entries,
             3168 wiz_defined-function locations,
-            698 strings with 14161 characters,
-and the built_in function-call counts, 8702 in all, are:
-= -- 240
-> -- 1572
-< -- 2
-+ -- 528
-- -- 535
-* -- 1162
-:= -- 1886
+            701 strings with 13954 characters,
+and the built_in function-call counts, 8434 in all, are:
+= -- 221
+> -- 1526
+< -- 3
++ -- 510
+- -- 515
+* -- 1123
+:= -- 1834
 add.period$ -- 6
 call.type$ -- 6
-change.case$ -- 43
-chr.to.int$ -- 5
+change.case$ -- 36
+chr.to.int$ -- 6
 cite$ -- 6
-duplicate$ -- 100
-empty$ -- 157
-format.name$ -- 540
-if$ -- 1457
-int.to.chr$ -- 2
+duplicate$ -- 98
+empty$ -- 159
+format.name$ -- 521
+if$ -- 1414
+int.to.chr$ -- 1
 int.to.str$ -- 0
 missing$ -- 6
 newline$ -- 26
 num.names$ -- 24
-pop$ -- 41
+pop$ -- 33
 preamble$ -- 1
-purify$ -- 43
+purify$ -- 36
 quote$ -- 0
-skip$ -- 78
+skip$ -- 83
 stack$ -- 0
-substring$ -- 84
-swap$ -- 2
+substring$ -- 90
+swap$ -- 0
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
