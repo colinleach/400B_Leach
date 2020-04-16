@@ -31,7 +31,9 @@ The largest galaxies in our Local Group (LG) are the Milky Way (MW), Andromeda (
 
 The simulation was based on data in vdM12 suggesting that M31 is approaching the MW directly with little proper motion detected by Hubble Space Telescope (HST) studies. Recent data from Gaia DR2 \citep{brown_gaia_2018} suggest that infall is slightly less radial than previously thought \citep{marel_first_2019}, leading to a slightly later first approach with a larger pericenter distance. However, detailed simulations based on that new data have not yet been carried out.
 
-\todo{structure of the paper}\ 
+This paper will review the initial conditions and time evolution for multiple physical parameters of the simulation. Particular attention will be paid to the first MW-M31 close apprach around 4 Gyr, the second approach and merger around 6 Gyr, and the structure and dynamics of the post-merger remnant.
+
+Time probably precludes much analysis of the fate of M33, which will need to be the subject of a future paper.
 
 \subsection{Data}
 
@@ -74,12 +76,6 @@ Particle counts for each time point are shown in Table 1 and total masses in Tab
 
 The coordinate system is approximately centered on the Milky Way at $t=0$. The center of mass (CoM) of all particles in the system is not fixed over time, moving at an average of $\left< 35.9, -26.7, 27.5 \right>$ km/s with some minor fluctuations due to numerical approximations. In contrast, the total angular momentum of the system is very small at all time points.
 
-\subsection{Software}
-
-The work in this report was carried out in Python using standard packages. Full details are available online\footnote{Code \url{https://github.com/colinleach/400B_Leach}\\documentation \url{https://400b-leach.readthedocs.io}}
-
-\section{Results}
-
 \begin{figure*}[htb!]
 	\plotone{trajectories.pdf}
 	\caption{Trajectories of each galactic center of mass in (left plot) and perpendicular (right plot) to the X',Y' plane. Points are at 71 Myr intervals.
@@ -92,16 +88,17 @@ The work in this report was carried out in Python using standard packages. Full 
 		\label{fig:rel_motion}}
 \end{figure*}
 
+\subsection{Software}
+
+The work in this report was carried out in Python using standard packages. Full details are available online\footnote{Code \url{https://github.com/colinleach/400B_Leach}\\documentation \url{https://400b-leach.readthedocs.io}}
+
+\section{Results}
+
 \subsection{Trajectories}
 
 The simulation does not explicitly include a supermassive black hole (SMBH) at the center of each galaxy, but the galactic center was defined by calculating the center of mass (CoM) of the disk particles and iteratively constraining the radius of interest until convergence.
 
 To plot motions of the three galactic CoMs it is convenient to transform to a coordinate system in which at $t=0$ they all lie in the $x,y$ plane with MW and M31 on the $x$-axis. The overall CoM is moving, as noted above, so at each time point the coordinates are translated to center it at the origin.
-
-In vdM12 this is referred to as the X',Y',Z' coordinate system and their fig. 2 shows multiple views of how the galaxies move through time. In this paper, Figure \ref{fig:traj} shows some alternative views in essentially the same coordinates (up to a sign; the $x$ and $z$ axes are flipped). The left panel reproduces the top left panel of vdM12. The right panel shows that MW and M31 remain close to the starting plane while M33 has larger, irregular out-of-plane motions.
-
-Relative motions of the CoMs are shown against time in Figure \ref{fig:rel_motion}, equivalent to figures 3 and 4 in vdM12.
-
 
 \begin{figure*}[ht!]
 	\plotone{massprof_000}
@@ -109,29 +106,20 @@ Relative motions of the CoMs are shown against time in Figure \ref{fig:rel_motio
 		\label{fig:massprof0}}
 \end{figure*}
 
+\begin{figure*}[ht!]
+	\plotone{rotcurve_000}
+	\caption{Rotation curves for each galaxy at the current epoch.
+		\label{fig:rotcurve0}}
+\end{figure*}
+
+In vdM12 this is referred to as the X',Y',Z' coordinate system and their fig. 2 shows multiple views of how the galaxies move through time. In this paper, Figure \ref{fig:traj} shows some alternative views in essentially the same coordinates (up to a sign; the $x$ and $z$ axes are flipped). The left panel reproduces the top left panel of vdM12. The right panel shows that MW and M31 remain close to the starting plane while M33 has larger, irregular out-of-plane motions.
+
+Relative motions of the CoMs are shown against time in Figure \ref{fig:rel_motion}, equivalent to figures 3 and 4 in vdM12.
+
+
 There is a MW-M31 close approach with first pericenter at 3.96 Gyr with a minimum separation of 35.1 kpc, then a separation to 173 kpc and finally a convergence to 7.8 kpc at second pericenter and merger between 5.9 - 6.5 Gyr. Relative velocities spike sharply during these approaches, as potential energy is converted to kinetic energy, before declining to essentially zero.
 
 Meanwhile, in this simulation run M33 remains separate throughout, albeit on a decaying orbit. In vdM12 the authors investigate the effect of small changes in initial conditions and estimate a 9\% chance of an M33-MW collision at first pericenter, before the M31-MW merger.
-
-\subsection{Mass profiles and rotation curves}
-
-Figure \ref{fig:massprof0} shows... \todo{set xlim, make y axis log}\ 
-
-The dark matter halo is fitted by a Hernquist profile \citep{hernquist_analytical_1990}. The cumulative mass out to radius $r$ is given by
-\[ M(r) = M_h \frac{r^2}{(a+r)^2} \]
-where $M_h$ is the total mass of halo particles and $a$ is a scale radius. Non-linear least squares fitting gave scale radii of 61.1 kpc for MW and M31, 24.3 kpc for M33.
-
-\todo{identify the bar?}\ 
-
-\todo{sersic profiles at various stages?}\ 
-
-
-
-\subsection{MW-M31 Close approach}
-
-\subsubsection{Inclinations}
-
-\todo{Relative rotation axes of disks}\ 
 
 \begin{figure*}[ht!]
 	\plotone{inclinations.pdf}
@@ -140,6 +128,32 @@ where $M_h$ is the total mass of halo particles and $a$ is a scale radius. Non-l
 \end{figure*}
 
 \subsubsection{Tidal tails and bridges}
+
+\subsection{Mass profiles and rotation curves}
+
+Figure \ref{fig:massprof0} shows the cumulative mass profile, by particle type and in total, for each galaxy. As expected (\todo{ref?}), the centre of each galaxy is dominated by baryonic matter with the DM halo becoming dominant at larger radii.
+
+Figure \ref{fig:rotcurve0} shows the rotation curves expected from these mass profiles. Without the DM halo the circular velocity would peak within a few kpc of the CoM then fall steadily at larger radii. With the more diffuse DM halo added, we see the relatively flat overall rotation curves which attracted the attention of astronomers including \citet{zwicky_rotverschiebung_1933} and \citet{rubin_rotation_1970}
+
+\todo{set xlim, make y axis log}\ 
+
+Figure \ref{fig:rotcurve0} also adds a theoretical curve in which the dark matter halo is fitted by a Hernquist profile \citep{hernquist_analytical_1990}. The cumulative mass out to radius $r$ is given by
+\[ M(r) = M_h \frac{r^2}{(a+r)^2} \]
+where $M_h$ is the total mass of halo particles and $a$ is a scale radius. Non-linear least squares fitting gave scale radii of 61.1 kpc for MW and M31, 24.3 kpc for M33 at $t=0$.
+
+\todo{identify the bar?}\ 
+
+\todo{sersic profiles at various stages?}\ 
+
+\todo{time evolution of Herquist a?}
+
+\todo{more on spiral arms}
+
+\subsection{MW-M31 Close approach}
+
+\subsubsection{Inclinations}
+
+\todo{Relative rotation axes of disks}\ --  prograde?
 
 The presence of long, symmetrical tails giving some galaxies a distinct `S'-shape has been described at least as far back as \citet{zwicky_novel_1955}. Some astronomers postulated that these were the result of tidal forces during close, glancing encounters, but this was often contested until a detailed computational study by \citet{toomre_galactic_1972}.
 
@@ -195,9 +209,19 @@ The changes in velocity dispersion of disk particles originating from each galax
 
 \subsection{MW-M31 merger}
 
+After second pericenter, the MW and M31 never fully separate and eventually merge. Their mass ratio is 1:1.6 for stellar matter and 1:1 when the DM halo is included. This is thus a `major merger' in the terminology of \todo{ref?}
+
+
+
 \subsubsection{Inclinations}
 
-\todo{Relative rotation axes of disks}\ 
+\todo{Relative rotation axes of disks}\ -- prograde?
+
+\todo{expanded 3D trajectories}
+
+\todo{changes in velocity dispersion}
+
+\todo{changes in mass profile}
 
 
 \subsection{MW-M31 merger remnant}

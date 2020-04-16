@@ -80,12 +80,20 @@ Marel, R. P. v.~d., Besla, G., Cox, T.~J., Sohn, S.~T., \& Anderson, J. 2012,
 Marel, R. P. v.~d., Fardal, M.~A., Sohn, S.~T., {et~al.} 2019, The
   Astrophysical Journal, 872, 24, \dodoi{10.3847/1538-4357/ab001b}
 
+\bibitem[{Rubin \& Ford(1970)}]{rubin_rotation_1970}
+Rubin, V.~C., \& Ford, Jr., W.~K. 1970, The Astrophysical Journal, 159, 379,
+  \dodoi{10.1086/150317}
+
 \bibitem[{Toomre \& Toomre(1972)}]{toomre_galactic_1972}
 Toomre, A., \& Toomre, J. 1972, The Astrophysical Journal, 178, 623,
   \dodoi{10.1086/151823}
 
+\bibitem[{Zwicky(1933)}]{zwicky_rotverschiebung_1933}
+Zwicky, F. 1933, Helvetica Physica Acta, 6, 110.
+\newblock \url{http://adsabs.harvard.edu/abs/1933AcHPh...6..110Z}
+
 \bibitem[{Zwicky(1955)}]{zwicky_novel_1955}
-Zwicky, F. 1955, Publications of the Astronomical Society of the Pacific, 67,
-  232, \dodoi{10.1086/126807}
+---. 1955, Publications of the Astronomical Society of the Pacific, 67, 232,
+  \dodoi{10.1086/126807}
 
 \end{thebibliography}
