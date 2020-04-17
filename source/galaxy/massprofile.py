@@ -155,7 +155,7 @@ class MassProfile:
         
         return np.sqrt(G * central_mass / radii).to(u.km / u.s)
 
-    def fit_hernquist_a(self, r_inner=1, r_outer=30):
+    def fit_hernquist_a(self, r_inner=1, r_outer=30, get_details=False):
         """
         Get `scipy.optimize` to do a non-linear least squares fit to find
         the best scale radius `a` for the Hernquist profile.
@@ -183,5 +183,9 @@ class MassProfile:
         # run the fit and store the optimum a value
         popt, pcov = curve_fit(hq, radii_outer, halo, (60,))
         fitted_a = np.round(popt[0], 1)*u.kpc
+        perr = np.round(np.sqrt(np.diag(pcov))[0], 1)*u.kpc
 
-        return fitted_a
+        if get_details:
+            return fitted_a, perr
+        else:
+            return fitted_a

@@ -5,6 +5,11 @@
 \providecommand{\doeprint}[1]{\href{http://ascl.net/#1}{\nolinkurl{http://ascl.net/#1}}}
 \providecommand{\doarXiv}[1]{\href{https://arxiv.org/abs/#1}{\nolinkurl{https://arxiv.org/abs/#1}}}
 
+\bibitem[{Boylan-Kolchin {et~al.}(2008)Boylan-Kolchin, Ma, \&
+  Quataert}]{boylan-kolchin_dynamical_2008}
+Boylan-Kolchin, M., Ma, C.-P., \& Quataert, E. 2008, Monthly Notices of the
+  Royal Astronomical Society, 383, 93, \dodoi{10.1111/j.1365-2966.2007.12530.x}
+
 \bibitem[{Brown {et~al.}(2018)Brown, Vallenari, Prusti, Bruijne, Babusiaux,
   Bailer-Jones, Biermann, Evans, Eyer, Jansen, Jordi, Klioner, Lammers,
   Lindegren, Luri, Mignard, Panem, Pourbaix, Randich, Sartoretti, Siddiqui,
@@ -69,6 +74,10 @@ Brown, A. G.~A., Vallenari, A., Prusti, T., {et~al.} 2018, Astronomy \&
 
 \bibitem[{Hernquist(1990)}]{hernquist_analytical_1990}
 Hernquist, L. 1990, The Astrophysical Journal, 356, 359, \dodoi{10.1086/168845}
+
+\bibitem[{Ji {et~al.}(2014)Ji, Peirani, \& Yi}]{ji_lifetime_2014}
+Ji, I., Peirani, S., \& Yi, S.~K. 2014, Astronomy \& Astrophysics, 566, A97,
+  \dodoi{10.1051/0004-6361/201423530}
 
 \bibitem[{Marel {et~al.}(2012)Marel, Besla, Cox, Sohn, \&
   Anderson}]{marel_m31_2012}
