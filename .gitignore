@@ -141,6 +141,7 @@ Untitled*.ipynb
 
 # too many files
 png_files/
+animations/*.png
 
 # recorded lectures
 Lectures/*.mp4

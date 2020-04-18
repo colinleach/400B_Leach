@@ -45,3 +45,13 @@ class DB():
         self.cursor.execute(query)
         return self.cursor.fetchall()
  
+    def get_xyz(self, gal, snap):
+        """
+        """
+
+        sql = f"""SELECT pnum, x, y, z 
+        FROM simdata 
+        WHERE galname='{gal}' AND snap={snap}
+        ORDER BY pnum"""
+        return self.run_query(sql)
+
