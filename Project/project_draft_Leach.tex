@@ -125,8 +125,6 @@ There is a MW-M31 close approach with first pericenter at 3.96 Gyr with a minimu
 
 Meanwhile, in this simulation run M33 remains separate throughout, albeit on a decaying orbit. In vdM12 the authors investigate the effect of small changes in initial conditions and estimate a 9\% chance of an M33-MW collision at first pericenter, before the M31-MW merger.
 
-\subsubsection{Tidal tails and bridges}
-
 \subsection{Mass profiles and rotation curves}
 
 Figure \ref{fig:massprof0} shows the cumulative mass profile, by particle type and in total, for each galaxy. The center of each galaxy is dominated by baryonic matter with the DM halo becoming dominant at larger radii.
@@ -147,18 +145,28 @@ Figure \ref{fig:rotcurve0} shows the rotation curves expected from these mass pr
 		\label{fig:rotcurve0}}
 \end{figure}
 
-
 \todo{set xlim, make y axis log}\ 
+
+\subsection{DM halo}
 
 Figure \ref{fig:rotcurve0} also adds a theoretical curve in which the dark matter halo is fitted by a Hernquist profile \citep{hernquist_analytical_1990}. The cumulative mass out to radius $r$ is given by
 \[ M(r) = M_h \frac{r^2}{(a+r)^2} \]
-where $M_h$ is the total mass of halo particles and $a$ is a scale radius. Non-linear least squares fitting gave scale radii of 61.1 kpc for MW and M31, 24.3 kpc for M33 at $t=0$.
+where $M_h$ is the total mass of halo particles (see Table 2) and $a$ is a scale radius. Non-linear least squares fitting gave scale radii of 61.1 kpc for MW and M31, 24.3 kpc for M33 at $t=0$.
+
+Time evolution of the scale radius $a$ is shown in Figure \ref{fig:hernquist_a}. The MW and M31 remain very similar through first pericenter, then start to diverge with MW particles tending to a larger radius than M31. This becomes most pronounced during and after merger. The dissimilar distribution in the merger remnant will be discussed in a later section.  
+
+\begin{figure}[htb!]
+	%	\epsscale{0.8}
+	\plotone{hernquist_a.pdf}
+	\caption{Hernquist scale radius $a$ for DM halo particles originating from each galaxy, with $1\sigma$ error bars.
+		\label{fig:hernquist_a}}
+\end{figure}
+
+The scale radius for M33 grows inexorably as the original halo is scattered by tidal forces. Figure \ref{fig:hernquist_a} also shows the increasingly wide error bars for M33: halo particles for this galaxy are no longer well fitted by a Hernquist profile.
 
 \todo{identify the bar?}\ 
 
 \todo{sersic profiles at various stages?}\ 
-
-\todo{time evolution of Herquist a?}
 
 \todo{more on spiral arms}
 
@@ -180,6 +188,7 @@ where $M_h$ is the total mass of halo particles and $a$ is a scale radius. Non-l
 		\label{fig:inclinations_mutual}}
 \end{figure}
 
+\subsubsection{Tidal tails and bridges}
 
 The presence of long, symmetrical tails giving some galaxies a distinct `S'-shape has been described at least as far back as \citet{zwicky_novel_1955}. Some astronomers postulated that these were the result of tidal forces during close, glancing encounters, but this was often contested until a detailed computational study by \citet{toomre_galactic_1972}.
 
@@ -189,6 +198,7 @@ To determine the nature and origin of stars in this region, a manual selection w
 
 
 \begin{figure*}[ht!]
+	\epsscale{1.12}
 	\plotone{selected.pdf}
 	\caption{Manual selection of bridge particles at 0.33 Gyr after the first MW-M31 pericenter. The left panel shows stellar surface density and the selected region. The center panel shows velocity vectors for these stars and the right panel shows origin by galaxy and particle type. Orientation is with MW top, M31 bottom and M33 lower left.
 	\label{fig:bridge}}
@@ -197,14 +207,13 @@ To determine the nature and origin of stars in this region, a manual selection w
 It appears from the right panel that stars in the tail regions originate in the corresponding disk. The bridge region is more mixed and appears to have a high proportion of former bulge stars. To study this further the coordinate system was transformed to place the large galaxy CoMs on the $x$-axis at $\pm 64$ kpc, as in Figure \ref{fig:bridge2}. It is clear in this view that one MW tail is oriented approximately towards the center of M31. 
 
 \begin{figure}[htb!]
+	\epsscale{1.1}
 	\plotone{density_rot_300.pdf}
 	\caption{View along the midplane between the galactic centers, MW on the left.
 		\label{fig:bridge2}}
 \end{figure}
 
-The different orientations mean that symmetry about the midplane is imperfect, so the ``bridge'' region was taken as $-20 < x < 30$ kpc. A count of stars in this region is shown in Table 3. This confirms that the largest populations are MW disk stars (mostly in a relatively dense tail) and M31 bulge stars (more widely dispersed).
-
-\begin{deluxetable}{crrr}[htb!]
+\begin{deluxetable}{crrr}[ht!]
 	\tablenum{3}
 	\tablecaption{Particle counts close to the midplane}
 	\tablewidth{0pt}
@@ -219,6 +228,8 @@ The different orientations mean that symmetry about the midplane is imperfect, s
 	\enddata
 \end{deluxetable}
 
+The different orientations mean that symmetry about the midplane is imperfect, so the ``bridge'' region was taken as $-20 < x < 30$ kpc. A count of stars in this region is shown in Table 3. This confirms that the largest populations are MW disk stars (mostly in a relatively dense tail) and M31 bulge stars (more widely dispersed).
+
 \todo{identify, trace history, trace fate}\ 
 
 \todo{Jacobi radius}\ 
@@ -227,7 +238,10 @@ The different orientations mean that symmetry about the midplane is imperfect, s
 
 The changes in velocity dispersion of disk particles originating from each galaxy are shown in \ref{fig:vel_disp}. The small periodic oscillation seen from the start, especially in M31, appears to be caused by deviations from radial symmetry in the disk: spiral arms and an increasingly prominent bar. Small MW spikes at initial pericenter (around 4 Gyr) and much larger ones at merger (around 6 Gyr) are clearly visible.
 
+\todo{comment on M33}
+
 \begin{figure*}[htb!]
+	\epsscale{0.8}
 	\plotone{vel_disp.pdf}
 	\caption{Velocity dispersion of disk particles from each galaxy over time.
 	\label{fig:vel_disp}}
@@ -255,7 +269,7 @@ After second pericenter, the MW and M31 never fully separate and eventually merg
 Refer to Figure \ref{fig:rem_shape}
 
 \begin{figure}[htb!]
-	\epsscale{0.8}
+	\epsscale{1.1}
 	\plotone{remnant_shape.pdf}
 	\caption{Luminous star density of the MW-M31 remnant in three orthogonal projections.
 	\label{fig:rem_shape}}
@@ -269,6 +283,7 @@ Refer to Figure \ref{fig:rem_shape}
 Refer to Figure \ref{fig:rem_phase}
 
 \begin{figure}[htb!]
+	\epsscale{1.12}
 	\plotone{remnant_phase.pdf}
 	\caption{Phase diagrams of the MW-M31 remnant.
 	\label{fig:rem_phase}}
@@ -278,18 +293,10 @@ Refer to Figure \ref{fig:rem_phase}
 
 \subsection{Dark Matter halo}
 
-May need to be split up amongst previous sections
+May need to be split up among previous sections
 
 \todo{what happens during close approach? merger? remanant?}
 
-Hernquist profiles at different stages: \todo{plot of scale radius evolution}
-
-\begin{figure}[htb!]
-%	\epsscale{0.8}
-	\plotone{hernquist_a.pdf}
-	\caption{Hernquist scale radius $a$ for DM halo particles originating from each galaxy, with $1\sigma$ error bars.
-		\label{fig:hernquist_a}}
-\end{figure}
 
 
 \bibliography{project_Leach}{}
