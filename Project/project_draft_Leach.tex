@@ -285,12 +285,25 @@ The different orientations mean that symmetry about the midplane is imperfect, s
 
 \subsubsection{Mass transfer}
 
+Stars are scattered from galaxies even in normal times, and this can be expected to increase significantly during near-misses and collisions. To get a first impression of how many stars and DM particles may end up closer to a different galaxy, we looked at the relative distances of each particle to each of the three galaxy CoMs. It should be emphasized that kinematics is not considered at this stage, so nothing can be said about which particles are gravitationally bound.
+
+\begin{figure}[htb!]
+	\epsscale{0.9}
+	\plotone{transfer_counts_mpl}
+	\caption{Particles closer to a different CoM.
+		\label{fig:trans_count}}
+\end{figure}
+
+Figure \ref{fig:trans_count} shows that some particles are far from their notional galaxy even at the start. This increases somewhat during first pericenter around 4 Gyr, then jumps permanently during the second pericenter and merger. The plot cuts off at 7 Gyr because it becomes meaningless to consider the MW/M31 CoMs as separate points post-merger.
+
 \begin{figure}[htb!]
 	\epsscale{1.1}
 	\plotone{transfer_ptype}
 	\caption{Particles closer to a different CoM.
 		\label{fig:trans_p}}
 \end{figure}
+
+Figure \ref{fig:trans_p} looks at the few timepoints by particle type, showing that the overwhelming majority of these particles are from the DM halo. This is unremarkable, given the prevalence of these particles at large radii and correspondingly weak gravitational binding.
 
 \begin{figure}[htb!]
 	\epsscale{1.1}
@@ -299,12 +312,14 @@ The different orientations mean that symmetry about the midplane is imperfect, s
 		\label{fig:trans_l}}
 \end{figure}
 
+To focus on the baryonic matter, Figure \ref{fig:trans_l} hides the DM halo and expands the $y$-axis to show only bulge and disk particles. There are significant numbers for M31 bulge particles at all timepoints, mostly reflecting the proximity of M33. The last three bars on each panel correspond to first pericenter, apocenter, and second pericenter. M31 disk particle numbers jump at first pericenter but these clearly remain bound to the original galaxy: virtually all return to M31 before apocenter.
+
 
 \subsection{Velocity dispersion}
 
-The changes in velocity dispersion of disk particles originating from each galaxy are shown in \ref{fig:vel_disp}. The small periodic oscillation seen from the start, especially in M31, appears to be caused by deviations from radial symmetry in the disk: spiral arms and an increasingly prominent bar. Small MW spikes at initial pericenter (around 4 Gyr) and much larger ones at merger (around 6 Gyr) are clearly visible.
+The changes in velocity dispersion of disk particles originating from each galaxy are shown in Figure \ref{fig:vel_disp}. The small periodic oscillation seen from the start, especially in M31, appears to be caused by deviations from radial symmetry in the disk: spiral arms and an increasingly prominent bar. Small MW spikes at initial pericenter (around 4 Gyr) and much larger ones at merger (around 6 Gyr) are clearly visible.
 
-\todo{comment on M33}
+M33 is on an irregular, elliptical and decaying orbit about the MW-M31 merger remnant after about 6.5 Gyr. Velocity dispersion appears to peak at intervals. This perhaps corresponds to successive pericenters when M33 experiences maximal tidal disruption, but this will need further analysis.
 
 \begin{figure*}[htb!]
 	\epsscale{0.8}
