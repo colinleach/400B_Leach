@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>galaxy.surfacedensity &#8212; ASTR400B Leach  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for galaxy.surfacedensity</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
+<span class="kn">import</span> <span class="nn">astropy.constants</span> <span class="k">as</span> <span class="nn">c</span>
+
+<span class="kn">from</span> <span class="nn">galaxy.galaxy</span> <span class="kn">import</span> <span class="n">Galaxy</span>
+<span class="kn">from</span> <span class="nn">galaxy.timecourse</span> <span class="kn">import</span> <span class="n">TimeCourse</span>
+<span class="kn">from</span> <span class="nn">galaxy.centerofmass</span> <span class="kn">import</span> <span class="n">CenterOfMass</span>
+
+
+<div class="viewcode-block" id="SurfaceDensityProfile"><a class="viewcode-back" href="../../surfacedensity.html#galaxy.surfacedensity.SurfaceDensityProfile">[docs]</a><span class="k">class</span> <span class="nc">SurfaceDensityProfile</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Calculate the surface density profile of a galaxy at a snapshot.</span>
+<span class="sd">    Modified from code supplied by Rixin Li.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gal</span><span class="p">,</span> <span class="n">snap</span><span class="p">,</span> <span class="n">radii</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">r_step</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">usesql</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; initialization</span>
+<span class="sd">        input:</span>
+<span class="sd">            galaxy (str): </span>
+<span class="sd">                the galaxy name: &#39;MW&#39;, &#39;M31&#39;, &#39;M33&#39;</span>
+<span class="sd">            snap_id (int): </span>
+<span class="sd">                the number of the snapshot of interest</span>
+<span class="sd">            radii (iterable of float): </span>
+<span class="sd">                an array of radii from a near-center point to the outer skirt</span>
+<span class="sd">                default value: np.arange(0.1, 0.95*r_outermost, r_step) kpc</span>
+<span class="sd">            r_step (float):</span>
+<span class="sd">                for defining a list of radii if none is supplied</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    
+        <span class="n">galaxy</span> <span class="o">=</span> <span class="n">Galaxy</span><span class="p">(</span><span class="n">gal</span><span class="p">,</span> <span class="n">snap</span><span class="p">,</span> <span class="n">usesql</span><span class="o">=</span><span class="n">usesql</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">galaxy</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">value</span> <span class="o">/</span> <span class="mi">1000</span> <span class="c1"># elapsed time, Gyr</span>
+        
+        <span class="n">tc</span> <span class="o">=</span> <span class="n">TimeCourse</span><span class="p">()</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">com</span> <span class="o">=</span> <span class="n">CenterOfMass</span><span class="p">(</span><span class="n">galaxy</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">com_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_v</span> <span class="o">=</span> <span class="n">tc</span><span class="o">.</span><span class="n">get_one_com</span><span class="p">(</span><span class="n">gal</span><span class="p">,</span> <span class="n">snap</span><span class="p">)</span> 
+
+        <span class="c1"># rotate the frame to align the disk with angular momentum</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alg_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">alg_v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">rotate_frame</span><span class="p">(</span><span class="n">com_p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">com_r</span><span class="p">,</span> <span class="n">com_v</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">com_v</span><span class="p">)</span>
+
+        <span class="c1"># calculate the radial distances and azimuthal angles in cylindrical coordinates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cyl_r_mag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alg_r</span><span class="p">[:</span><span class="mi">2</span><span class="p">,:]</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cyl_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alg_r</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="bp">self</span><span class="o">.</span><span class="n">alg_r</span><span class="p">[</span><span class="mi">0</span><span class="p">,:])</span>
+
+        <span class="c1"># check if radii is already set</span>
+        <span class="k">if</span> <span class="n">radii</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">radii</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.95</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">cyl_r_mag</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">r_step</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">radii</span> <span class="o">=</span> <span class="n">radii</span>
+            <span class="c1"># can be improved by checking how many elements &quot;radii&quot; has</span>
+
+        <span class="c1"># create the mask to select particles for each radius</span>
+        <span class="n">enc_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cyl_r_mag</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        
+        <span class="c1"># calculate the enclosed masses within each radius</span>
+        <span class="c1"># relevant particles will be selected by enc_mask (i.e., *1)</span>
+        <span class="c1"># outer particles will be ignored (i.e., *0)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m_enc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">m</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">enc_mask</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># use the difference between nearby elements to get mass in each annulus</span>
+        <span class="c1"># N.B.: we ignored the very central tiny circle and a small portion of </span>
+        <span class="c1"># outermost particles</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m_annuli</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m_enc</span><span class="p">)</span> <span class="c1"># this array is one element less then m_enc</span>
+        
+        <span class="c1"># calculate the surface density by dividing the area of the annulus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">m_annuli</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+        
+        <span class="c1"># we use the geometric mean of two consecutive elements in &quot;radii&quot; </span>
+        <span class="c1"># as the radius of each annulus</span>
+        <span class="c1"># this array has the same number of elements as self.Sigma, </span>
+        <span class="c1"># can be used for plotting</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">r_annuli</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">ASTR400B Leach</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../galaxy.html">Galaxy class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../galaxies.html">Galaxies class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../centerofmass.html">CenterOfMass class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../massprofile.html">MassProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../timecourse.html">TimeCourse class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utilities.html">utilities module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../db.html">DB class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../remnant.html">Remnant class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../approaches.html">Approaches class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../surfacedensity.html">SurfaceDensityProfile class</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Colin Leach.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -32,6 +32,7 @@ Steward Observatory, Spring 2020.
     db
     remnant
     approaches
+    surfacedensity
 
 Indices and tables
 ==================

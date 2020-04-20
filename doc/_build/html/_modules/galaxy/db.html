@@ -76,8 +76,18 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span></div>
  
+<div class="viewcode-block" id="DB.get_xyz"><a class="viewcode-back" href="../../db.html#galaxy.db.DB.get_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">get_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gal</span><span class="p">,</span> <span class="n">snap</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">sql</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT pnum, x, y, z </span>
+<span class="s2">        FROM simdata </span>
+<span class="s2">        WHERE galname=&#39;</span><span class="si">{gal}</span><span class="s2">&#39; AND snap=</span><span class="si">{snap}</span><span class="s2"></span>
+<span class="s2">        ORDER BY pnum&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span></div></div>
+
 </pre></div>
 
           </div>
@@ -107,6 +117,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../db.html">DB class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../remnant.html">Remnant class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../approaches.html">Approaches class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../surfacedensity.html">SurfaceDensityProfile class</a></li>
 </ul>
 
 <div class="relations">

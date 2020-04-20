@@ -239,8 +239,9 @@ class MassProfile:
         bulgeI = bulge_mass / (4 * np.pi * R**2)
         bulge_total = np.max(bulge_mass)
         Blow = bulge_total / 2.0
-        Bhigh = bulge_total / 2.0 + bulge_total / 2.0 * 0.05
-        index = np.where((bulge_mass > Blow) & (bulge_mass < Bhigh))
+        # Bhigh = bulge_total / 2.0 + bulge_total / 2.0 * 0.2
+        # index = np.where((bulge_mass > Blow) & (bulge_mass < Bhigh))
+        index = np.where((bulge_mass > Blow))
         Re_bulge = R[index][0]
         
         return Re_bulge, bulge_total, bulgeI

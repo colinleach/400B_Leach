@@ -72,6 +72,10 @@ Boylan-Kolchin, M., Ma, C.-P., \& Quataert, E. 2008, Monthly Notices of the
 Brown, A. G.~A., Vallenari, A., Prusti, T., {et~al.} 2018, Astronomy \&
   Astrophysics, 616, A1, \dodoi{10.1051/0004-6361/201833051}
 
+\bibitem[{de~Vaucouleurs(1948)}]{de_vaucouleurs_recherches_1948}
+de~Vaucouleurs, G. 1948, Annales d'Astrophysique, 11, 247.
+\newblock \url{http://adsabs.harvard.edu/abs/1948AnAp...11..247D}
+
 \bibitem[{Hernquist(1990)}]{hernquist_analytical_1990}
 Hernquist, L. 1990, The Astrophysical Journal, 356, 359, \dodoi{10.1086/168845}
 
@@ -92,6 +96,11 @@ Marel, R. P. v.~d., Fardal, M.~A., Sohn, S.~T., {et~al.} 2019, The
 \bibitem[{Rubin \& Ford(1970)}]{rubin_rotation_1970}
 Rubin, V.~C., \& Ford, Jr., W.~K. 1970, The Astrophysical Journal, 159, 379,
   \dodoi{10.1086/150317}
+
+\bibitem[{Sérsic(1963)}]{sersic_influence_1963}
+Sérsic, J.~L. 1963, Boletin de la Asociacion Argentina de Astronomia La Plata
+  Argentina, 6, 41.
+\newblock \url{http://adsabs.harvard.edu/abs/1963BAAA....6...41S}
 
 \bibitem[{Toomre \& Toomre(1972)}]{toomre_galactic_1972}
 Toomre, A., \& Toomre, J. 1972, The Astrophysical Journal, 178, 623,

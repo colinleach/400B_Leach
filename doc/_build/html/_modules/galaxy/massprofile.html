@@ -33,6 +33,7 @@
   <h1>Source code for galaxy.massprofile</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">curve_fit</span>
 
 <span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
 <span class="kn">from</span> <span class="nn">astropy.constants</span> <span class="kn">import</span> <span class="n">G</span>
@@ -149,8 +150,10 @@
 <span class="sd">        for a given type of particle.</span>
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
-<span class="sd">            radii (array of distances): circular orbit</span>
-<span class="sd">            ptype (int): particle type from (1,2,3), or None for total</span>
+<span class="sd">            radii (array of distances): </span>
+<span class="sd">                circular orbit</span>
+<span class="sd">            ptype (int): </span>
+<span class="sd">                particle type from (1,2,3), or None for total</span>
 <span class="sd">            </span>
 <span class="sd">        Returns:</span>
 <span class="sd">            array of circular speeds, in units of km/s</span>
@@ -168,10 +171,141 @@
         
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">circular_velocity</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span></div>
     
-    <span class="k">def</span> <span class="nf">circular_velocity_hernquist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">M_halo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MassProfile.circular_velocity_hernquist"><a class="viewcode-back" href="../../massprofile.html#galaxy.massprofile.MassProfile.circular_velocity_hernquist">[docs]</a>    <span class="k">def</span> <span class="nf">circular_velocity_hernquist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">M_halo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Theoretical V_circ assuming halo mass follows a Hernquist profile</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            radii (array of distances): </span>
+<span class="sd">                circular orbit</span>
+<span class="sd">            a (Quantity, units of kpc): </span>
+<span class="sd">                scale radius</span>
+<span class="sd">            M_halo (Quantity, units of M_sun): </span>
+<span class="sd">                total DM mass (optional)               </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">central_mass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hernquist_mass</span><span class="p">(</span><span class="n">radii</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">M_halo</span><span class="p">)</span>
         
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">G</span> <span class="o">*</span> <span class="n">central_mass</span> <span class="o">/</span> <span class="n">radii</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">km</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MassProfile.fit_hernquist_a"><a class="viewcode-back" href="../../massprofile.html#galaxy.massprofile.MassProfile.fit_hernquist_a">[docs]</a>    <span class="k">def</span> <span class="nf">fit_hernquist_a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r_inner</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">r_outer</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">get_details</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get `scipy.optimize` to do a non-linear least squares fit to find</span>
+<span class="sd">        the best scale radius `a` for the Hernquist profile.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            r_inner (numeric):</span>
+<span class="sd">                Optional. Minimum radius to consider (implicit kpc). </span>
+<span class="sd">                Avoid values &lt; 1 as they cause numeric problems.</span>
+<span class="sd">            r_outer (numeric):</span>
+<span class="sd">                Optional. Maximum radius to consider (implicit kpc). </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># A function suitable for curve_fit. Units must be removed.</span>
+        <span class="k">def</span> <span class="nf">hq</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+            <span class="n">masses</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hernquist_mass</span><span class="p">(</span><span class="n">r</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">kpc</span><span class="p">,</span> <span class="n">a</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">kpc</span><span class="p">))</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">masses</span><span class="p">)</span>
+
+        <span class="c1"># The fitting has problems inside 1 kpc, so use a more restricted </span>
+        <span class="c1"># range of radii than for the plots</span>
+        <span class="n">radii_outer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">r_inner</span><span class="p">,</span> <span class="n">r_outer</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">kpc</span>
+
+        <span class="c1"># y values to fit to</span>
+        <span class="n">halo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mass_enclosed</span><span class="p">(</span><span class="n">radii_outer</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        
+        <span class="c1"># run the fit and store the optimum a value</span>
+        <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">hq</span><span class="p">,</span> <span class="n">radii_outer</span><span class="p">,</span> <span class="n">halo</span><span class="p">,</span> <span class="p">(</span><span class="mi">60</span><span class="p">,))</span>
+        <span class="n">fitted_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">popt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">kpc</span>
+        <span class="n">perr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">pcov</span><span class="p">))[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">kpc</span>
+
+        <span class="k">if</span> <span class="n">get_details</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">fitted_a</span><span class="p">,</span> <span class="n">perr</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">fitted_a</span></div>
+
+<div class="viewcode-block" id="MassProfile.sersic"><a class="viewcode-back" href="../../massprofile.html#galaxy.massprofile.MassProfile.sersic">[docs]</a>    <span class="k">def</span> <span class="nf">sersic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">Re</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">Mtot</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function that returns Sersic Profile for an Elliptical System</span>
+<span class="sd">        (See in-class lab 6)</span>
+
+<span class="sd">        Input</span>
+<span class="sd">            R:</span>
+<span class="sd">                radius (kpc)</span>
+<span class="sd">            Re:</span>
+<span class="sd">                half mass radius (kpc)</span>
+<span class="sd">            n:</span>
+<span class="sd">                sersic index</span>
+<span class="sd">            Mtot:</span>
+<span class="sd">                total stellar mass</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">            Surface Brightness profile in Lsun/kpc^2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># We are assuming M/L = 1, so the luminosity is:</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">Mtot</span>
+        
+        <span class="c1"># the effective surface brightness is</span>
+        <span class="c1"># Ie = L/7.2/pi/Re**2</span>
+        <span class="n">Ie</span> <span class="o">=</span> <span class="n">L</span> <span class="o">/</span> <span class="p">(</span><span class="mf">7.2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">Re</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            
+        <span class="k">return</span> <span class="n">Ie</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">7.67</span> <span class="o">*</span> <span class="p">((</span><span class="n">R</span><span class="o">/</span><span class="n">Re</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="MassProfile.bulge_Re"><a class="viewcode-back" href="../../massprofile.html#galaxy.massprofile.MassProfile.bulge_Re">[docs]</a>    <span class="k">def</span> <span class="nf">bulge_Re</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">R</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find the radius enclosing half the bulge mass.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            R (array of Quantity):</span>
+<span class="sd">                Radii to consider (kpc)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Re (Quantity) :</span>
+<span class="sd">                Radius enclosing half light/mass (kpc)</span>
+<span class="sd">            bulge_total (numeric):</span>
+<span class="sd">                Mass of entire bulge (M_sun, no units)</span>
+<span class="sd">            bulgeI (array of Quantity):</span>
+<span class="sd">                Surface brightness at radii R (kpc^-2), assuming M/L=1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">bulge_mass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass_enclosed</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">bulgeI</span> <span class="o">=</span> <span class="n">bulge_mass</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">R</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">bulge_total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">bulge_mass</span><span class="p">)</span>
+        <span class="n">Blow</span> <span class="o">=</span> <span class="n">bulge_total</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="c1"># Bhigh = bulge_total / 2.0 + bulge_total / 2.0 * 0.2</span>
+        <span class="c1"># index = np.where((bulge_mass &gt; Blow) &amp; (bulge_mass &lt; Bhigh))</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">bulge_mass</span> <span class="o">&gt;</span> <span class="n">Blow</span><span class="p">))</span>
+        <span class="n">Re_bulge</span> <span class="o">=</span> <span class="n">R</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        
+        <span class="k">return</span> <span class="n">Re_bulge</span><span class="p">,</span> <span class="n">bulge_total</span><span class="p">,</span> <span class="n">bulgeI</span></div>
+
+<div class="viewcode-block" id="MassProfile.fit_sersic_n"><a class="viewcode-back" href="../../massprofile.html#galaxy.massprofile.MassProfile.fit_sersic_n">[docs]</a>    <span class="k">def</span> <span class="nf">fit_sersic_n</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">Re</span><span class="p">,</span> <span class="n">bulge_total</span><span class="p">,</span> <span class="n">bulgeI</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get `scipy.optimize` to do a non-linear least squares fit to find</span>
+<span class="sd">        the best value of `n` for a Sersic profile.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            R (array of quantity):</span>
+<span class="sd">                Radii at which to calculate fit (kpc)</span>
+<span class="sd">            Re (Quantity) :</span>
+<span class="sd">                Radius enclosing half light/mass (kpc)</span>
+<span class="sd">            bulge_total (numeric):</span>
+<span class="sd">                Mass of entire bulge (M_sun, no units)</span>
+<span class="sd">            bulgeI (array of Quantity):</span>
+<span class="sd">                Surface brightness at radii R (kpc^-2)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            best `n` value and error estimate</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># A function suitable for curve_fit. Units must be removed.</span>
+        <span class="k">def</span> <span class="nf">ser</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+            <span class="n">logI</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sersic</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">Re</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">bulge_total</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">logI</span><span class="p">)</span>
+
+        <span class="n">log_bulgeI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">bulgeI</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">ser</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">log_bulgeI</span><span class="p">,</span> <span class="p">(</span><span class="mi">60</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">popt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pcov</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div></div>
 </pre></div>
 
           </div>
@@ -201,6 +335,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../db.html">DB class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../remnant.html">Remnant class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../approaches.html">Approaches class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../surfacedensity.html">SurfaceDensityProfile class</a></li>
 </ul>
 
 <div class="relations">

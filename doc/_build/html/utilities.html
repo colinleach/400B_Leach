@@ -56,7 +56,9 @@
 <dl class="function">
 <dt id="galaxy.utilities.sersic">
 <code class="sig-prename descclassname">galaxy.utilities.</code><code class="sig-name descname">sersic</code><span class="sig-paren">(</span><em class="sig-param">R</em>, <em class="sig-param">Re</em>, <em class="sig-param">n</em>, <em class="sig-param">Mtot</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/utilities.html#sersic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.utilities.sersic" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
+<dd><p>Function that returns Sersic Profile for an Elliptical System
+(See in-class lab 6)</p>
+<dl class="simple">
 <dt>Input</dt><dd><dl class="simple">
 <dt>R:</dt><dd><p>radius (kpc)</p>
 </dd>
@@ -69,6 +71,62 @@
 </dl>
 </dd>
 <dt>Returns</dt><dd><p>Surface Brightness profile in Lsun/kpc^2</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="galaxy.utilities.HernquistM">
+<code class="sig-prename descclassname">galaxy.utilities.</code><code class="sig-name descname">HernquistM</code><span class="sig-paren">(</span><em class="sig-param">r</em>, <em class="sig-param">a=&lt;Quantity 60. kpc&gt;</em>, <em class="sig-param">M_halo=&lt;Quantity 1.97e+12 solMass&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/utilities.html#HernquistM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.utilities.HernquistM" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Args:</dt><dd><p>r (Quantity, units of kpc): distance from center
+a (Quantity, units of kpc): scale radius
+M_halo (Quantity, units of M_sun): total DM mass</p>
+</dd>
+<dt>Returns:</dt><dd><p>Total DM mass enclosed within r (M_sun)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="galaxy.utilities.jacobi_radius">
+<code class="sig-prename descclassname">galaxy.utilities.</code><code class="sig-name descname">jacobi_radius</code><span class="sig-paren">(</span><em class="sig-param">r</em>, <em class="sig-param">M_host</em>, <em class="sig-param">M_sat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/utilities.html#jacobi_radius"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.utilities.jacobi_radius" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Jacobi Radius for a satellite on a circular orbit about an extended host, 
+where the host is assumed to be well modeled as an isothermal sphere halo:</p>
+<p>R_j = r * (M_sat / 2 M_host(&lt;r))}^(1/3)</p>
+<p>For MW/LMC, the Isothermal Sphere approximation is not a bad one within 50 kpc.</p>
+<p>In other contexts, can be called the Roche radius, Roche limit or Hill radius.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>r: </dt><dd><p>distance between stellite and host (kpc)</p>
+</dd>
+<dt>M_host: </dt><dd><p>host mass enclosed within r (M_sun)</p>
+</dd>
+<dt>M_sat: </dt><dd><p>satellite mass (M_sun)</p>
+</dd>
+</dl>
+</dd>
+<dt>returns: </dt><dd><p>Jacobi radius (kpc)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="galaxy.utilities.jacobi_mass">
+<code class="sig-prename descclassname">galaxy.utilities.</code><code class="sig-name descname">jacobi_mass</code><span class="sig-paren">(</span><em class="sig-param">Rj</em>, <em class="sig-param">r</em>, <em class="sig-param">Mhost</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/utilities.html#jacobi_mass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.utilities.jacobi_mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that returns min mass of a satellite given its observed size + distance 
+from a massive host: Msat = (Rj/r)**3 * 2 * Mhost</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>Rj: </dt><dd><p>Jacobi radius (approx as observed size) (kpc)</p>
+</dd>
+<dt>r: </dt><dd><p>distance between stellite and host (kpc)</p>
+</dd>
+<dt>Mhost: </dt><dd><p>mass enclosed within r (M_sun)</p>
+</dd>
+</dl>
+</dd>
+<dt>returns: </dt><dd><p>Minimum mass Msat of a satellite given its current size (M_sun)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -137,6 +195,7 @@ Ref: <a class="reference external" href="https://en.wikipedia.org/wiki/Rodrigues
 <li class="toctree-l1"><a class="reference internal" href="db.html">DB class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="remnant.html">Remnant class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="approaches.html">Approaches class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="surfacedensity.html">SurfaceDensityProfile class</a></li>
 </ul>
 
 <div class="relations">

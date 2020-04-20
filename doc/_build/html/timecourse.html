@@ -165,6 +165,11 @@ sigma as a function of time.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.write_rel_motion">
+<code class="sig-name descname">write_rel_motion</code><span class="sig-paren">(</span><em class="sig-param">start=0</em>, <em class="sig-param">end=801</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.write_rel_motion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.write_rel_motion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="galaxy.timecourse.TimeCourse.read_file">
 <code class="sig-name descname">read_file</code><span class="sig-paren">(</span><em class="sig-param">fullname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>General method for file input. Note that the format is for summary files,
@@ -236,8 +241,23 @@ sigma as a function of time.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.read_relmotion_file">
+<code class="sig-name descname">read_relmotion_file</code><span class="sig-paren">(</span><em class="sig-param">datadir='.'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_relmotion_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_relmotion_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get relative CoM distances/velocities from file.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>datadir (str):</dt><dd><p>path to file</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>np.array with 802 rows, one per snap</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="galaxy.timecourse.TimeCourse.write_db_tables">
-<code class="sig-name descname">write_db_tables</code><span class="sig-paren">(</span><em class="sig-param">datadir='.'</em>, <em class="sig-param">do_com=False</em>, <em class="sig-param">do_angmom=False</em>, <em class="sig-param">do_totalcom=False</em>, <em class="sig-param">do_totalangmom=False</em>, <em class="sig-param">do_normals=False</em>, <em class="sig-param">do_sigmas=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.write_db_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.write_db_tables" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_db_tables</code><span class="sig-paren">(</span><em class="sig-param">datadir='.'</em>, <em class="sig-param">do_com=False</em>, <em class="sig-param">do_angmom=False</em>, <em class="sig-param">do_totalcom=False</em>, <em class="sig-param">do_totalangmom=False</em>, <em class="sig-param">do_normals=False</em>, <em class="sig-param">do_sigmas=False</em>, <em class="sig-param">do_relmotion=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.write_db_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.write_db_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds data to the various tables in the <cite>galaxy</cite> database</p>
 </dd></dl>
 
@@ -322,6 +342,26 @@ in future work.</p>
 <dd><p>Gets the velocity dispersions (km/s) for one galaxy at a range of snaps.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.read_relmotion_db">
+<code class="sig-name descname">read_relmotion_db</code><span class="sig-paren">(</span><em class="sig-param">snaprange=(0</em>, <em class="sig-param">801)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.read_relmotion_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.read_relmotion_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves relative CoM positions and velocities from postgres 
+for a range of snaps.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>snaprange (pair of ints):</dt><dd><p>Optional, defaults to all. First and last snap to include.
+This is NOT the [first, last+1] convention of Python.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.timecourse.TimeCourse.snap2time">
+<code class="sig-name descname">snap2time</code><span class="sig-paren">(</span><em class="sig-param">snap</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/timecourse.html#TimeCourse.snap2time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.timecourse.TimeCourse.snap2time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </div>
@@ -354,6 +394,7 @@ in future work.</p>
 <li class="toctree-l1"><a class="reference internal" href="db.html">DB class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="remnant.html">Remnant class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="approaches.html">Approaches class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="surfacedensity.html">SurfaceDensityProfile class</a></li>
 </ul>
 
 <div class="relations">

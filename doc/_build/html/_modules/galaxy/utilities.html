@@ -46,9 +46,9 @@
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">LogNorm</span>
 
-<span class="kn">from</span> <span class="nn">galaxy.galaxy</span> <span class="kn">import</span> <span class="n">Galaxy</span>
-<span class="kn">from</span> <span class="nn">galaxy.galaxies</span> <span class="kn">import</span> <span class="n">Galaxies</span>
-<span class="kn">from</span> <span class="nn">galaxy.centerofmass</span> <span class="kn">import</span> <span class="n">CenterOfMass</span>
+<span class="c1"># from galaxy.galaxy import Galaxy</span>
+<span class="c1"># from galaxy.galaxies import Galaxies</span>
+<span class="c1"># from galaxy.centerofmass import CenterOfMass</span>
 
 <span class="n">G_val</span> <span class="o">=</span> <span class="mf">4.498768e-6</span> <span class="c1"># units of kpc^3/Gyr^2/Msun</span>
 
@@ -180,11 +180,11 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">M</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">SHMratio</span><span class="p">()</span>
         
 
-<span class="c1">#  Function that returns Sersic Profile for an Elliptical System</span>
-<span class="c1"># See in-class lab 6</span>
-
 <div class="viewcode-block" id="sersic"><a class="viewcode-back" href="../../utilities.html#galaxy.utilities.sersic">[docs]</a><span class="k">def</span> <span class="nf">sersic</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">Re</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">Mtot</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function that returns Sersic Profile for an Elliptical System</span>
+<span class="sd">    (See in-class lab 6)</span>
+
 <span class="sd">    Input</span>
 <span class="sd">        R:</span>
 <span class="sd">            radius (kpc)</span>
@@ -207,6 +207,64 @@
     <span class="n">Ie</span> <span class="o">=</span> <span class="n">L</span> <span class="o">/</span> <span class="p">(</span><span class="mf">7.2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">Re</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
         
     <span class="k">return</span> <span class="n">Ie</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">7.67</span> <span class="o">*</span> <span class="p">((</span><span class="n">R</span><span class="o">/</span><span class="n">Re</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="HernquistM"><a class="viewcode-back" href="../../utilities.html#galaxy.utilities.HernquistM">[docs]</a><span class="k">def</span> <span class="nf">HernquistM</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mi">60</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">kpc</span><span class="p">,</span> <span class="n">M_halo</span><span class="o">=</span><span class="mf">1.97e12</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">M_sun</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Args:</span>
+<span class="sd">        r (Quantity, units of kpc): distance from center</span>
+<span class="sd">        a (Quantity, units of kpc): scale radius</span>
+<span class="sd">        M_halo (Quantity, units of M_sun): total DM mass </span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Total DM mass enclosed within r (M_sun)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">M_halo</span> <span class="o">*</span> <span class="n">r</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="jacobi_radius"><a class="viewcode-back" href="../../utilities.html#galaxy.utilities.jacobi_radius">[docs]</a><span class="k">def</span> <span class="nf">jacobi_radius</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">M_host</span><span class="p">,</span> <span class="n">M_sat</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The Jacobi Radius for a satellite on a circular orbit about an extended host, </span>
+<span class="sd">    where the host is assumed to be well modeled as an isothermal sphere halo:</span>
+
+<span class="sd">    R_j = r * (M_sat / 2 M_host(&lt;r))}^(1/3)</span>
+
+<span class="sd">    For MW/LMC, the Isothermal Sphere approximation is not a bad one within 50 kpc.</span>
+
+<span class="sd">    In other contexts, can be called the Roche radius, Roche limit or Hill radius.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        r: </span>
+<span class="sd">            distance between stellite and host (kpc)</span>
+<span class="sd">        M_host: </span>
+<span class="sd">            host mass enclosed within r (M_sun)</span>
+<span class="sd">        M_sat: </span>
+<span class="sd">            satellite mass (M_sun)</span>
+<span class="sd">    </span>
+<span class="sd">    returns: </span>
+<span class="sd">        Jacobi radius (kpc)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">r</span> <span class="o">*</span> <span class="p">(</span><span class="n">M_sat</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">M_host</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="jacobi_mass"><a class="viewcode-back" href="../../utilities.html#galaxy.utilities.jacobi_mass">[docs]</a><span class="k">def</span> <span class="nf">jacobi_mass</span><span class="p">(</span><span class="n">Rj</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">Mhost</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function that returns min mass of a satellite given its observed size + distance </span>
+<span class="sd">    from a massive host: Msat = (Rj/r)**3 * 2 * Mhost</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        Rj: </span>
+<span class="sd">            Jacobi radius (approx as observed size) (kpc)</span>
+<span class="sd">        r: </span>
+<span class="sd">            distance between stellite and host (kpc)</span>
+<span class="sd">        Mhost: </span>
+<span class="sd">            mass enclosed within r (M_sun)</span>
+<span class="sd">    </span>
+<span class="sd">    returns: </span>
+<span class="sd">        Minimum mass Msat of a satellite given its current size (M_sun)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">return</span> <span class="p">(</span><span class="n">Rj</span><span class="o">/</span><span class="n">r</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">M_host</span></div>
+
 
 <span class="c1"># Some functions to calculate useful 3D rotation matrices</span>
 
@@ -267,6 +325,15 @@
                   <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="mi">0</span><span class="p">],</span>
                   <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
     <span class="k">return</span> <span class="o">-</span><span class="n">R</span></div>
+
+<span class="k">def</span> <span class="nf">is_iterable</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="c1"># a surprising omission from standard Python?</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>       
 </pre></div>
 
           </div>
@@ -296,6 +363,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../db.html">DB class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../remnant.html">Remnant class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../approaches.html">Approaches class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../surfacedensity.html">SurfaceDensityProfile class</a></li>
 </ul>
 
 <div class="relations">

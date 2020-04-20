@@ -17,6 +17,9 @@
 
 \author[0000-0003-3608-1546]{Colin Leach}
 
+\tableofcontents
+
+
 \begin{abstract}
 	
 \color{red}This is a very early draft consisting mostly of placeholders and preliminary ideas. I only pushed it to GitHub so that I wouldn't lose it.\color{black}
@@ -147,6 +150,54 @@ Figure \ref{fig:rotcurve0} shows the rotation curves expected from these mass pr
 
 \todo{set xlim, make y axis log}\ 
 
+\subsection{Galactic Bulge}
+
+A bulge is present in the MW and M31 but not M33. This region of generally older stars extends further above and below the central plane than disk stars. Kinematics of the bulge are more typical of an elliptical galaxy than a spiral disk.
+
+In a study of elliptical galaxies, de Vaucouleurs showed that surface brightness falls off exponential with radius and approximately as the one-fourth power of radius \citep{de_vaucouleurs_recherches_1948}. Later work found that this was too restrictive for a wider population of galaxies, so Sérsic generalized the formula to have the inverse exponential $n$ as an additional free parameter \citep{sersic_influence_1963}:
+
+\[ \log_{10} \left( \frac{I(r)}{I_e} \right) =  -3.3307 \left[ \left( \frac{r}{R_e} \right)^{1/n} - 1 \right] \]
+
+Here $R_e$ is the radius with which half the light is emitted,  $I_e$ is the surface brightness at $R_e$ and $n$ is the Sérsic parameter.
+
+This formula is intended for analyzing photographic images and is in terms of light intensity. We have no brightness data in the current simulation, but for systems with few young blue stars we can assume the mass to light ratio $M/L \sim 1$. This is probably a reasonable approximation for undisturbed bulges and for an elliptical merger remnant long after the collision. $R_e$ is then the radius enclosing half the mass.
+
+We can see from Figure \ref{fig:sersic_Re} that for each galaxy the bulge half-mass radius is fairly stable up to the collision and merger of MW and M31. After a period of disturbance, they again become stable at a higher level. The M31 bulge is more diffuse than the MW bulge throughout, and the ex-bulge stars are clearly not randomized in the merger remnant: ex-M31 stars tend towards larger radii than ex-MW stars.
+
+\begin{figure}[bht!]
+	\epsscale{1}
+	\plotone{sersic_Re}
+	\caption{Half-mass radius for bulge particles.
+		\label{fig:sersic_Re}}
+\end{figure}
+
+The Sérsic parameter $n$ was estimated by a nonlinear least squares fit to the bulge mass profile. As shown in Figure \ref{fig:sersic_n} it is fairly constant around 5.5 for any period with meaningful data. The spikes around 6 Gyr should probably be ignored: many values in this collision period are missing, as the least-squares fit failed, and the available data has substantially larger error bars than during stable epochs.
+
+\begin{figure}[bht!]
+	\epsscale{1}
+	\plotone{sersic_n}
+	\caption{Sersic $n$ for bulge particles, with $1\sigma$ error bars.
+		\label{fig:sersic_n}}
+\end{figure}
+
+The larger half-mass radius of M31 is reflected in the mass density profile, as shown in Figure \ref{fig:bulge_mp}. MW bulge stars have a higher central peak, M31 bulge stars are more numerous at larger radii. This is true both early in the simulation, and in the merger remnant at late times. For both galaxy bulge stars, the central peak is less pronounced post-merger.
+
+\begin{figure}[bht!]
+	\epsscale{0.82}
+	\plotone{bulge_mp}
+	\caption{Bulge mass density profile for both galaxies at the beginning and end of the simulation.
+		\label{fig:bulge_mp}}
+\end{figure}
+
+The Sérsic fit for both galaxy bulges looks reasonable outside the central density peak, as shown for the MW in Figure \ref{fig:MW_bulge_sersic}. The plot for M31 is similar but is not included here.
+
+\begin{figure}[bht!]
+	\epsscale{0.8}
+	\plotone{MW_bulge_sersic}
+	\caption{MW bulge mass density profiles and Sérsic best fits. Time points are the beginning, the pre-merger pericenter, and the end of the simulation
+		\label{fig:MW_bulge_sersic}}
+\end{figure}
+
 \subsection{DM halo}
 
 Figure \ref{fig:rotcurve0} also adds a theoretical curve in which the dark matter halo is fitted by a Hernquist profile \citep{hernquist_analytical_1990}. The cumulative mass out to radius $r$ is given by
@@ -166,15 +217,13 @@ The scale radius for M33 grows inexorably as the original halo is scattered by t
 
 \todo{identify the bar?}\ 
 
-\todo{sersic profiles at various stages?}\ 
-
 \todo{more on spiral arms}
 
 \subsection{MW-M31 Close approach}
 
 \subsubsection{Inclinations}
 
-\todo{Relative rotation axes of disks}\ --  prograde?
+The MW and M31 disks have angular momentum vectors inclined at an angle of $52^\circ$ to each other, making this a prograde approach.
 
 \begin{figure}[ht!]
 	\plotone{inclinations_xy.pdf}
@@ -312,10 +361,10 @@ Refer to Figure \ref{fig:rem_phase}
 
 May need to be split up among previous sections
 
-\todo{what happens during close approach? merger? remanant?}
+\todo{what happens during close approach? merger? remnant?}
 
-
-
+% =====================================
+% Bibliography stuff
 \bibliography{project_Leach}{}
 \bibliographystyle{aasjournal}
 
