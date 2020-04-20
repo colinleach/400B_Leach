@@ -774,3 +774,12 @@ class TimeCourse():
 
         return np.array(result, dtype=dtype)
         
+    def snap2time(self, snap):
+        """
+        """
+
+        query = f"SELECT t from relmotion WHERE snap={snap}"
+        db = DB()
+        time = db.run_query(query)
+        return time[0][0]
+       

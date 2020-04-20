@@ -189,3 +189,86 @@ class MassProfile:
             return fitted_a, perr
         else:
             return fitted_a
+
+    def sersic(self, R, Re, n, Mtot):
+        """
+        Function that returns Sersic Profile for an Elliptical System
+        (See in-class lab 6)
+
+        Input
+            R:
+                radius (kpc)
+            Re:
+                half mass radius (kpc)
+            n:
+                sersic index
+            Mtot:
+                total stellar mass
+
+        Returns
+            Surface Brightness profile in Lsun/kpc^2
+        """
+
+        # We are assuming M/L = 1, so the luminosity is:
+        L = Mtot
+        
+        # the effective surface brightness is
+        # Ie = L/7.2/pi/Re**2
+        Ie = L / (7.2 * np.pi * Re**2)
+            
+        return Ie * np.exp(-7.67 * ((R/Re)**(1.0/n) - 1.0))
+
+    def bulge_Re(self, R):
+        """
+        Find the radius enclosing half the bulge mass.
+
+        Args:
+            R (array of Quantity):
+                Radii to consider (kpc)
+
+        Returns:
+            Re (Quantity) :
+                Radius enclosing half light/mass (kpc)
+            bulge_total (numeric):
+                Mass of entire bulge (M_sun, no units)
+            bulgeI (array of Quantity):
+                Surface brightness at radii R (kpc^-2), assuming M/L=1
+        """
+
+        bulge_mass = self.mass_enclosed(R, 3).value
+        bulgeI = bulge_mass / (4 * np.pi * R**2)
+        bulge_total = np.max(bulge_mass)
+        Blow = bulge_total / 2.0
+        Bhigh = bulge_total / 2.0 + bulge_total / 2.0 * 0.05
+        index = np.where((bulge_mass > Blow) & (bulge_mass < Bhigh))
+        Re_bulge = R[index][0]
+        
+        return Re_bulge, bulge_total, bulgeI
+
+    def fit_sersic_n(self, R, Re, bulge_total, bulgeI):
+        """
+        Get `scipy.optimize` to do a non-linear least squares fit to find
+        the best value of `n` for a Sersic profile.
+
+        Args:
+            R (array of quantity):
+                Radii at which to calculate fit (kpc)
+            Re (Quantity) :
+                Radius enclosing half light/mass (kpc)
+            bulge_total (numeric):
+                Mass of entire bulge (M_sun, no units)
+            bulgeI (array of Quantity):
+                Surface brightness at radii R (kpc^-2)
+
+        Returns:
+            best `n` value and error estimate
+        """
+
+        # A function suitable for curve_fit. Units must be removed.
+        def ser(r, n):
+            logI = self.sersic(r, Re.value, n, bulge_total)
+            return np.log(logI)
+
+        log_bulgeI = np.log(bulgeI.value)
+        popt, pcov = curve_fit(ser, R, log_bulgeI, (60,))
+        return popt[0], pcov[0][0]
