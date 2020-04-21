@@ -17,24 +17,26 @@
 
 \author[0000-0003-3608-1546]{Colin Leach}
 
-\tableofcontents
-
-
 \begin{abstract}
 	
-\color{red}This is a very early draft consisting mostly of placeholders and preliminary ideas. I only pushed it to GitHub so that I wouldn't lose it.\color{black}
+\todo{Add a concise and intelligent summary of the paper, once I get a clearer idea what it will include.}
+	
+%\color{red}This is a very early draft consisting mostly of placeholders and preliminary ideas. I only pushed it to GitHub so that I wouldn't lose it.\color{black}
 
 \end{abstract}
 
 \keywords{Galaxy Merger -- Local Group -- Stellar Disk -- Stellar Bulge -- \textit{and more}}
 
+%\tableofcontents
+
+
 \section{Introduction}
 
 The largest galaxies in our Local Group (LG) are the Milky Way (MW), Andromeda (M31) and Triangulum (M33).  A simulation of MW--M31--M33 orbital evolution was described previously in \citet{marel_m31_2012}, hereafter vdM12. That paper included an extensive analysis of both N-body simulations and semi-analytic orbit integrations. The present study uses data from the same N-body simulation to carry out further computational analysis.
 
-The simulation was based on data in vdM12 suggesting that M31 is approaching the MW directly with little proper motion detected by Hubble Space Telescope (HST) studies. Recent data from Gaia DR2 \citep{brown_gaia_2018} suggest that infall is slightly less radial than previously thought \citep{marel_first_2019}, leading to a slightly later first approach with a larger pericenter distance. However, detailed simulations based on that new data have not yet been carried out.
+The simulation was based on data in \citep{marel_m31_2012-1} suggesting that M31 is approaching the MW directly with little proper motion detected by Hubble Space Telescope (HST) studies. Recent data from Gaia DR2 \citep{brown_gaia_2018} suggest that infall is slightly less radial than previously thought \citep{marel_first_2019}, leading to a slightly later first approach with a larger pericenter distance. However, detailed simulations based on that new data have not yet been carried out.
 
-This paper will review the initial conditions and time evolution for multiple physical parameters of the simulation. Particular attention will be paid to the first MW-M31 close apprach around 4 Gyr, the second approach and merger around 6 Gyr, and the structure and dynamics of the post-merger remnant.
+This paper will review the initial conditions and time evolution for multiple physical parameters of the simulation. Particular attention will be paid to the first MW-M31 close approach around 4 Gyr, the second approach and merger around 6 Gyr, and the structure and dynamics of the post-merger remnant.
 
 Time probably precludes much analysis of the fate of M33, which will need to be the subject of a future paper.
 
@@ -119,7 +121,7 @@ To plot motions of the three galactic CoMs it is convenient to transform to a co
 \end{figure}
 
 
-In vdM12 this is referred to as the X',Y',Z' coordinate system and their figure 2 shows multiple views of how the galaxies move through time. In this paper, Figures \ref{fig:traj_xy} and  \ref{fig:traj_z} show some alternative views in essentially the same coordinates (up to a sign; the $x$ and $z$ axes are flipped). The left panel reproduces the top left panel of vdM12. The right panel shows that MW and M31 remain close to the starting plane while M33 has larger, irregular out-of-plane motions.
+In vdM12 this is referred to as the X',Y',Z' coordinate system and their figure 2 shows multiple views of how the galaxies move through time. In this paper, Figures \ref{fig:traj_xy} and  \ref{fig:traj_z} show some alternative views in essentially the same coordinates (up to a sign; the $x$ and $z$ axes are flipped). Figure \ref{fig:traj_xy} reproduces the top left panel of vdM12. Figure \ref{fig:traj_z} shows that MW and M31 remain close to the starting plane while M33 has larger, irregular out-of-plane motions.
 
 Relative motions of the CoMs are shown against time in Figures \ref{fig:rel_sep} and \ref{fig:rel_vel}, equivalent to figures 3 and 4 in vdM12.
 
@@ -138,7 +140,6 @@ Figure \ref{fig:massprof0} shows the cumulative mass profile, by particle type a
 		\label{fig:massprof0}}
 \end{figure}
 
-
 Figure \ref{fig:rotcurve0} shows the rotation curves expected from these mass profiles. Without the DM halo the circular velocity would peak within a few kpc of the CoM then fall steadily at larger radii. With the more diffuse DM halo added, we see the relatively flat overall rotation curves which attracted the attention of astronomers including \citet{zwicky_rotverschiebung_1933} and \citet{rubin_rotation_1970}
 
 \begin{figure}[bht!]
@@ -149,6 +150,51 @@ Figure \ref{fig:rotcurve0} shows the rotation curves expected from these mass pr
 \end{figure}
 
 \todo{set xlim, make y axis log}\ 
+
+\subsection{Disk particles}
+
+\subsubsection{Structure}
+
+\todo{identify the bar?}\ 
+
+\todo{more on spiral arms}
+
+\subsubsection{Inclinations}
+
+Galactic disks have a well-defined angular momentum vector which is relatively easy to calculate in this type of simulation. Figure \ref{fig:inclinations_xy} shows the angle each makes to the X'-Y' plane over time.
+
+\begin{figure}[ht!]
+	\plotone{inclinations_xy.pdf}
+	\caption{Angular momentum inclination angle to the X',Y' plane for each set of galactic disk particles.
+		\label{fig:inclinations_xy}}
+\end{figure}
+
+The mutual angle between galactic disks can have a significant impact on how tidal disruption and merger dynamics play out \todo{ref?}. This can be calculated from the vector dot products:
+
+\[ \theta = \arccos (\hat{L}_1 \cdot \hat{L}_2 ) \]
+
+Results for the MW-M31 and M33-M31 pairs are shown in Figure \ref{fig:inclinations_mutual}. For MW-M31, the angle is largely stable until near first pericenter, when tidal forces bring the two disks closer to alignment. This trend continues slowly until near second pericenter. Surprisingly, the angle increases after merger, suggesting some partitioning of particles of different origin within the remnant. \todo{CHECK THIS AGAIN!}
+
+\begin{figure}[ht!]
+	\plotone{inclinations_mutual.pdf}
+	\caption{Angular momentum angles between pairs of galaxies.
+		\label{fig:inclinations_mutual}}
+\end{figure}
+
+The large variations in M33-M31 angles are indicative of the extensive tidal disruption of the much smaller M33 galaxy. Details are outside the scope of the present paper.
+
+\subsubsection{Velocity dispersion}
+
+The changes in velocity dispersion of disk particles originating from each galaxy are shown in Figure \ref{fig:vel_disp}. The small periodic oscillation seen from the start, especially in M31, appears to be caused by deviations from radial symmetry in the disk: spiral arms and an increasingly prominent bar. Small MW spikes at initial pericenter (around 4 Gyr) and much larger ones at merger (around 6 Gyr) are clearly visible.
+
+M33 is on an irregular, elliptical and decaying orbit about the MW-M31 merger remnant after about 6.5 Gyr. Velocity dispersion appears to peak at intervals. This perhaps corresponds to successive pericenters when M33 experiences maximal tidal disruption, but this will need further analysis.
+
+\begin{figure*}[htb!]
+	\epsscale{0.8}
+	\plotone{vel_disp.pdf}
+	\caption{Velocity dispersion of disk particles from each galaxy over time.
+		\label{fig:vel_disp}}
+\end{figure*}
 
 \subsection{Galactic Bulge}
 
@@ -189,7 +235,7 @@ The larger half-mass radius of M31 is reflected in the mass density profile, as 
 		\label{fig:bulge_mp}}
 \end{figure}
 
-The Sérsic fit for both galaxy bulges looks reasonable outside the central density peak, as shown for the MW in Figure \ref{fig:MW_bulge_sersic}. The plot for M31 is similar but is not included here.
+The Sérsic fit for both galaxy bulges looks reasonable outside the central density peak, as shown for the MW in Figure \ref{fig:MW_bulge_sersic}. The plot for M31 (not included here) is very  similar.
 
 \begin{figure}[bht!]
 	\epsscale{0.8}
@@ -202,7 +248,7 @@ The Sérsic fit for both galaxy bulges looks reasonable outside the central dens
 
 Figure \ref{fig:rotcurve0} also adds a theoretical curve in which the dark matter halo is fitted by a Hernquist profile \citep{hernquist_analytical_1990}. The cumulative mass out to radius $r$ is given by
 \[ M(r) = M_h \frac{r^2}{(a+r)^2} \]
-where $M_h$ is the total mass of halo particles (see Table 2) and $a$ is a scale radius. Non-linear least squares fitting gave scale radii of 61.1 kpc for MW and M31, 24.3 kpc for M33 at $t=0$.
+where $M_h$ is the total mass of halo particles (see Table 2) and $a$ is a scale radius. Non-linear least squares fitting, similar to that used for Sérsic profiles in a previous section, gave scale radii of 61.1 kpc for MW and M31, 24.3 kpc for M33 at $t=0$.
 
 Time evolution of the scale radius $a$ is shown in Figure \ref{fig:hernquist_a}. The MW and M31 remain very similar through first pericenter, then start to diverge with MW particles tending to a larger radius than M31. This becomes most pronounced during and after merger. The dissimilar distribution in the merger remnant will be discussed in a later section.  
 
@@ -215,27 +261,13 @@ Time evolution of the scale radius $a$ is shown in Figure \ref{fig:hernquist_a}.
 
 The scale radius for M33 grows inexorably as the original halo is scattered by tidal forces. Figure \ref{fig:hernquist_a} also shows the increasingly wide error bars for M33: halo particles for this galaxy are no longer well fitted by a Hernquist profile.
 
-\todo{identify the bar?}\ 
-
-\todo{more on spiral arms}
-
 \subsection{MW-M31 Close approach}
 
 \subsubsection{Inclinations}
 
-The MW and M31 disks have angular momentum vectors inclined at an angle of $52^\circ$ to each other, making this a prograde approach.
+The MW and M31 disks have angular momentum vectors inclined at an angle of $52^\circ$ to each other shortly before pericenter, making this a prograde approach.
 
-\begin{figure}[ht!]
-	\plotone{inclinations_xy.pdf}
-	\caption{Angular momentum inclination angle to the X',Y' plane for each set of galactic disk particles.
-		\label{fig:inclinations_xy}}
-\end{figure}
 
-\begin{figure}[ht!]
-	\plotone{inclinations_mutual.pdf}
-	\caption{Angular momentum angles between pairs of galaxies.
-		\label{fig:inclinations_mutual}}
-\end{figure}
 
 \subsubsection{Tidal tails and bridges}
 
@@ -303,7 +335,7 @@ Figure \ref{fig:trans_count} shows that some particles are far from their notion
 		\label{fig:trans_p}}
 \end{figure}
 
-Figure \ref{fig:trans_p} looks at the few timepoints by particle type, showing that the overwhelming majority of these particles are from the DM halo. This is unremarkable, given the prevalence of these particles at large radii and correspondingly weak gravitational binding.
+Figure \ref{fig:trans_p} looks at a few timepoints by particle type, showing that the overwhelming majority of these particles are from the DM halo. This is unremarkable, given the prevalence of these particles at large radii and their correspondingly weak gravitational binding.
 
 \begin{figure}[htb!]
 	\epsscale{1.1}
@@ -312,40 +344,28 @@ Figure \ref{fig:trans_p} looks at the few timepoints by particle type, showing t
 		\label{fig:trans_l}}
 \end{figure}
 
-To focus on the baryonic matter, Figure \ref{fig:trans_l} hides the DM halo and expands the $y$-axis to show only bulge and disk particles. There are significant numbers for M31 bulge particles at all timepoints, mostly reflecting the proximity of M33. The last three bars on each panel correspond to first pericenter, apocenter, and second pericenter. M31 disk particle numbers jump at first pericenter but these clearly remain bound to the original galaxy: virtually all return to M31 before apocenter.
+To focus on the baryonic matter, Figure \ref{fig:trans_l} hides the DM halo and expands the $y$-axis to show only bulge and disk particles. There are significant numbers of M31 bulge particles at all timepoints, mostly reflecting the proximity of M33. The last three bars on each panel correspond to first pericenter, apocenter, and second pericenter. M31 disk particle numbers jump at first pericenter but these apparently remain bound to the original galaxy: virtually all return to M31 before apocenter.
 
-
-\subsection{Velocity dispersion}
-
-The changes in velocity dispersion of disk particles originating from each galaxy are shown in Figure \ref{fig:vel_disp}. The small periodic oscillation seen from the start, especially in M31, appears to be caused by deviations from radial symmetry in the disk: spiral arms and an increasingly prominent bar. Small MW spikes at initial pericenter (around 4 Gyr) and much larger ones at merger (around 6 Gyr) are clearly visible.
-
-M33 is on an irregular, elliptical and decaying orbit about the MW-M31 merger remnant after about 6.5 Gyr. Velocity dispersion appears to peak at intervals. This perhaps corresponds to successive pericenters when M33 experiences maximal tidal disruption, but this will need further analysis.
-
-\begin{figure*}[htb!]
-	\epsscale{0.8}
-	\plotone{vel_disp.pdf}
-	\caption{Velocity dispersion of disk particles from each galaxy over time.
-	\label{fig:vel_disp}}
-\end{figure*}
 
 \subsection{MW-M31 merger}
 
 After second pericenter, the MW and M31 never fully separate and eventually merge. Their mass ratio is 1:1.6 for stellar matter and 1:1 when the DM halo is included. This is thus a `major merger' in the terminology of \todo{ref?}. A 1:1 mass ratio has been reported \citep{boylan-kolchin_dynamical_2008, ji_lifetime_2014} to lead to the shortest coalescence time.
 
+\todo{expanded 3D trajectories}
+
+\todo{changes in mass profile}
+
 \subsubsection{Inclinations}
 
 \todo{Relative rotation axes of disks}\ -- prograde?
 
-\todo{expanded 3D trajectories}
-
-\todo{changes in velocity dispersion}
-
-\todo{changes in mass profile}
 
 
 \subsection{MW-M31 merger remnant}
 
-\todo{shape - how to get principal axes? boxiness?}
+\subsubsection{Shape}
+
+\todo{how to get principal axes? boxiness?}
 
 Refer to Figure \ref{fig:rem_shape}
 
@@ -372,9 +392,9 @@ Refer to Figure \ref{fig:rem_phase}
 
 \todo{alignment between particles of different origin?}
 
-\subsection{Dark Matter halo}
+\subsubsection{Dark Matter halo}
 
-May need to be split up among previous sections
+\todo{alignment between particles of different origin?}
 
 \todo{what happens during close approach? merger? remnant?}
 

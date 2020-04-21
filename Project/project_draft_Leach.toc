@@ -5,16 +5,20 @@
 \contentsline {subsection}{\numberline {1.2}Software}{2}{subsection.1.2}% 
 \contentsline {section}{\numberline {2}Results}{2}{section.2}% 
 \contentsline {subsection}{\numberline {2.1}Trajectories}{2}{subsection.2.1}% 
-\contentsline {subsection}{\numberline {2.2}Mass profiles and rotation curves}{2}{subsection.2.2}% 
-\contentsline {subsection}{\numberline {2.3}Galactic Bulge}{3}{subsection.2.3}% 
-\contentsline {subsection}{\numberline {2.4}DM halo}{4}{subsection.2.4}% 
-\contentsline {subsection}{\numberline {2.5}MW-M31 Close approach}{5}{subsection.2.5}% 
-\contentsline {subsubsection}{\numberline {2.5.1}Inclinations}{5}{subsubsection.2.5.1}% 
-\contentsline {subsubsection}{\numberline {2.5.2}Tidal tails and bridges}{5}{subsubsection.2.5.2}% 
-\contentsline {subsubsection}{\numberline {2.5.3}Mass transfer}{6}{subsubsection.2.5.3}% 
-\contentsline {subsection}{\numberline {2.6}Velocity dispersion}{7}{subsection.2.6}% 
-\contentsline {subsection}{\numberline {2.7}MW-M31 merger}{7}{subsection.2.7}% 
-\contentsline {subsubsection}{\numberline {2.7.1}Inclinations}{7}{subsubsection.2.7.1}% 
-\contentsline {subsection}{\numberline {2.8}MW-M31 merger remnant}{7}{subsection.2.8}% 
-\contentsline {subsubsection}{\numberline {2.8.1}Rotation}{7}{subsubsection.2.8.1}% 
-\contentsline {subsection}{\numberline {2.9}Dark Matter halo}{7}{subsection.2.9}% 
+\contentsline {subsection}{\numberline {2.2}Mass profiles and rotation curves}{3}{subsection.2.2}% 
+\contentsline {subsection}{\numberline {2.3}Disk particles}{3}{subsection.2.3}% 
+\contentsline {subsubsection}{\numberline {2.3.1}Structure}{3}{subsubsection.2.3.1}% 
+\contentsline {subsubsection}{\numberline {2.3.2}Inclinations}{3}{subsubsection.2.3.2}% 
+\contentsline {subsubsection}{\numberline {2.3.3}Velocity dispersion}{4}{subsubsection.2.3.3}% 
+\contentsline {subsection}{\numberline {2.4}Galactic Bulge}{4}{subsection.2.4}% 
+\contentsline {subsection}{\numberline {2.5}DM halo}{5}{subsection.2.5}% 
+\contentsline {subsection}{\numberline {2.6}MW-M31 Close approach}{6}{subsection.2.6}% 
+\contentsline {subsubsection}{\numberline {2.6.1}Inclinations}{6}{subsubsection.2.6.1}% 
+\contentsline {subsubsection}{\numberline {2.6.2}Tidal tails and bridges}{6}{subsubsection.2.6.2}% 
+\contentsline {subsubsection}{\numberline {2.6.3}Mass transfer}{6}{subsubsection.2.6.3}% 
+\contentsline {subsection}{\numberline {2.7}MW-M31 merger}{8}{subsection.2.7}% 
+\contentsline {subsubsection}{\numberline {2.7.1}Inclinations}{8}{subsubsection.2.7.1}% 
+\contentsline {subsection}{\numberline {2.8}MW-M31 merger remnant}{8}{subsection.2.8}% 
+\contentsline {subsubsection}{\numberline {2.8.1}Shape}{8}{subsubsection.2.8.1}% 
+\contentsline {subsubsection}{\numberline {2.8.2}Rotation}{8}{subsubsection.2.8.2}% 
+\contentsline {subsubsection}{\numberline {2.8.3}Dark Matter halo}{8}{subsubsection.2.8.3}% 

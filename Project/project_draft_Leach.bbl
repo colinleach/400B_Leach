@@ -83,10 +83,16 @@ Hernquist, L. 1990, The Astrophysical Journal, 356, 359, \dodoi{10.1086/168845}
 Ji, I., Peirani, S., \& Yi, S.~K. 2014, Astronomy \& Astrophysics, 566, A97,
   \dodoi{10.1051/0004-6361/201423530}
 
-\bibitem[{Marel {et~al.}(2012)Marel, Besla, Cox, Sohn, \&
+\bibitem[{Marel {et~al.}(2012{\natexlab{a}})Marel, Besla, Cox, Sohn, \&
   Anderson}]{marel_m31_2012}
-Marel, R. P. v.~d., Besla, G., Cox, T.~J., Sohn, S.~T., \& Anderson, J. 2012,
-  The Astrophysical Journal, 753, 9, \dodoi{10.1088/0004-637X/753/1/9}
+Marel, R. P. v.~d., Besla, G., Cox, T.~J., Sohn, S.~T., \& Anderson, J.
+  2012{\natexlab{a}}, The Astrophysical Journal, 753, 9,
+  \dodoi{10.1088/0004-637X/753/1/9}
+
+\bibitem[{Marel {et~al.}(2012{\natexlab{b}})Marel, Fardal, Besla, Beaton, Sohn,
+  Anderson, Brown, \& Guhathakurta}]{marel_m31_2012-1}
+Marel, R. P. v.~d., Fardal, M., Besla, G., {et~al.} 2012{\natexlab{b}}, The
+  Astrophysical Journal, 753, 8, \dodoi{10.1088/0004-637X/753/1/8}
 
 \bibitem[{Marel {et~al.}(2019)Marel, Fardal, Sohn, Patel, Besla, Pino,
   Sahlmann, \& Watkins}]{marel_first_2019}
