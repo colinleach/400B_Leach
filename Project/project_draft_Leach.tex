@@ -3,6 +3,7 @@
 \usepackage{natbib}
 \usepackage{booktabs} % helps with pandas to_latex() output
 \usepackage{multirow}
+\usepackage{amsmath}
 
 \graphicspath{{img/}}
 
@@ -21,8 +22,6 @@
 	
 \todo{Add a concise and intelligent summary of the paper, once I get a clearer idea what it will include.}
 	
-%\color{red}This is a very early draft consisting mostly of placeholders and preliminary ideas. I only pushed it to GitHub so that I wouldn't lose it.\color{black}
-
 \end{abstract}
 
 \keywords{Galaxy Merger -- Local Group -- Stellar Disk -- Stellar Bulge -- \textit{and more}}
@@ -189,12 +188,12 @@ The changes in velocity dispersion of disk particles originating from each galax
 
 M33 is on an irregular, elliptical and decaying orbit about the MW-M31 merger remnant after about 6.5 Gyr. Velocity dispersion appears to peak at intervals. This perhaps corresponds to successive pericenters when M33 experiences maximal tidal disruption, but this will need further analysis.
 
-\begin{figure*}[htb!]
-	\epsscale{0.8}
+\begin{figure}[htb!]
+	\epsscale{1.1}
 	\plotone{vel_disp.pdf}
 	\caption{Velocity dispersion of disk particles from each galaxy over time.
 		\label{fig:vel_disp}}
-\end{figure*}
+\end{figure}
 
 \subsection{Galactic Bulge}
 
@@ -208,8 +207,6 @@ Here $R_e$ is the radius with which half the light is emitted,  $I_e$ is the sur
 
 This formula is intended for analyzing photographic images and is in terms of light intensity. We have no brightness data in the current simulation, but for systems with few young blue stars we can assume the mass to light ratio $M/L \sim 1$. This is probably a reasonable approximation for undisturbed bulges and for an elliptical merger remnant long after the collision. $R_e$ is then the radius enclosing half the mass.
 
-We can see from Figure \ref{fig:sersic_Re} that for each galaxy the bulge half-mass radius is fairly stable up to the collision and merger of MW and M31. After a period of disturbance, they again become stable at a higher level. The M31 bulge is more diffuse than the MW bulge throughout, and the ex-bulge stars are clearly not randomized in the merger remnant: ex-M31 stars tend towards larger radii than ex-MW stars.
-
 \begin{figure}[bht!]
 	\epsscale{1}
 	\plotone{sersic_Re}
@@ -217,7 +214,7 @@ We can see from Figure \ref{fig:sersic_Re} that for each galaxy the bulge half-m
 		\label{fig:sersic_Re}}
 \end{figure}
 
-The Sérsic parameter $n$ was estimated by a nonlinear least squares fit to the bulge mass profile. As shown in Figure \ref{fig:sersic_n} it is fairly constant around 5.5 for any period with meaningful data. The spikes around 6 Gyr should probably be ignored: many values in this collision period are missing, as the least-squares fit failed, and the available data has substantially larger error bars than during stable epochs.
+We can see from Figure \ref{fig:sersic_Re} that for each galaxy the bulge half-mass radius is fairly stable up to the collision and merger of MW and M31. After a period of disturbance, they again become stable at a higher level. The M31 bulge is more diffuse than the MW bulge throughout, and the ex-bulge stars are clearly not randomized in the merger remnant: ex-M31 stars tend towards larger radii than ex-MW stars.
 
 \begin{figure}[bht!]
 	\epsscale{1}
@@ -225,6 +222,8 @@ The Sérsic parameter $n$ was estimated by a nonlinear least squares fit to the 
 	\caption{Sersic $n$ for bulge particles, with $1\sigma$ error bars.
 		\label{fig:sersic_n}}
 \end{figure}
+
+The Sérsic parameter $n$ was estimated by a nonlinear least squares fit to the bulge mass profile. As shown in Figure \ref{fig:sersic_n} it is fairly constant around 5.5 for any period with meaningful data. The spikes around 6 Gyr should probably be ignored: many values in this collision period are missing, as the least-squares fit failed, and the available data has substantially larger error bars than during stable epochs.
 
 The larger half-mass radius of M31 is reflected in the mass density profile, as shown in Figure \ref{fig:bulge_mp}. MW bulge stars have a higher central peak, M31 bulge stars are more numerous at larger radii. This is true both early in the simulation, and in the merger remnant at late times. For both galaxy bulge stars, the central peak is less pronounced post-merger.
 
@@ -250,14 +249,14 @@ Figure \ref{fig:rotcurve0} also adds a theoretical curve in which the dark matte
 \[ M(r) = M_h \frac{r^2}{(a+r)^2} \]
 where $M_h$ is the total mass of halo particles (see Table 2) and $a$ is a scale radius. Non-linear least squares fitting, similar to that used for Sérsic profiles in a previous section, gave scale radii of 61.1 kpc for MW and M31, 24.3 kpc for M33 at $t=0$.
 
-Time evolution of the scale radius $a$ is shown in Figure \ref{fig:hernquist_a}. The MW and M31 remain very similar through first pericenter, then start to diverge with MW particles tending to a larger radius than M31. This becomes most pronounced during and after merger. The dissimilar distribution in the merger remnant will be discussed in a later section.  
-
 \begin{figure}[htb!]
 	%	\epsscale{0.8}
 	\plotone{hernquist_a.pdf}
 	\caption{Hernquist scale radius $a$ for DM halo particles originating from each galaxy, with $1\sigma$ error bars.
 		\label{fig:hernquist_a}}
 \end{figure}
+
+Time evolution of the scale radius $a$ is shown in Figure \ref{fig:hernquist_a}. The MW and M31 remain very similar through first pericenter, then start to diverge with MW particles tending to a larger radius than M31. This becomes most pronounced during and after merger. The dissimilar distribution in the merger remnant will be discussed in a later section.  
 
 The scale radius for M33 grows inexorably as the original halo is scattered by tidal forces. Figure \ref{fig:hernquist_a} also shows the increasingly wide error bars for M33: halo particles for this galaxy are no longer well fitted by a Hernquist profile.
 
@@ -271,6 +270,31 @@ The MW and M31 disks have angular momentum vectors inclined at an angle of $52^\
 
 \subsubsection{Tidal tails and bridges}
 
+%Galaxy Merger Sequence: MW and M31 tidal tail evolution and/or evolution of stellar
+%bar Sean Cunningham, Steven Zhou-Wright
+%1. How can you identify Tidal tails and bridges throughout the MW-M31 interaction
+%sequence?
+%2. How can you identify the bar? or pseudo-bulge (disk stars kicked up in the x-shape
+%pattern by the bar) ? How do those structures evolve?
+%3. Where do the tidal tails come from? Can you select the tail and trace them back
+%to the undisturbed systems?
+%4. What are the kinematics of the tidal tails over time? Do they change in velocity
+%dispersion and energy?
+%5. What is the morphological change of the tidal tails over time? Do they grow in
+%size?
+%6. are the tidal tails unbound? Do the tails return to their original galaxies?
+%7. How long lived are the tidal tails? For how long might we observe the system with
+%extended tails? What does this mean for our ability to identify merging galaxies?
+%8. What is the mass transfer between the two galaxies? Do they exchange material?
+%If so, where does this exchanged material end up? Does it rotate in the plane of
+%the disk? What is the mass exchange between the MW nad M31 over time?
+%59. What is the structure of the tidal tails? Are there any clumps or is it smooth?
+%Toomre A., Toomre J. 1972, ApJ, 178, 623
+%Barnes+2004 MNRAS 350 (model of an example major merger: Mice . Also look
+%up ”antennae galaxies”)
+%Privon+2013, ApJ 771
+%Ji et al. 2014 A&A 566
+
 The presence of long, symmetrical tails giving some galaxies a distinct `S'-shape has been described at least as far back as \citet{zwicky_novel_1955}. Some astronomers postulated that these were the result of tidal forces during close, glancing encounters, but this was often contested until a detailed computational study by \citet{toomre_galactic_1972}.
 
 In our simulation, both MW and M31 disks remain near-circular during much of the close approach, but conspicuous tails develop as the centers then move further apart. We also see a more sparsely-populated bridge forming between the galaxies.
@@ -278,12 +302,12 @@ In our simulation, both MW and M31 disks remain near-circular during much of the
 To determine the nature and origin of stars in this region, a manual selection was performed as in Figure \ref{fig:bridge}. Stars within the yellow rectangle (left panel) are shown with velocity vectors (center panel) and origin (right panel). Velocities are mostly moderate (mean 195 km/s, range 19-586 km/s), with relatively few stars having high kinetic energy. 
 
 
-\begin{figure*}[ht!]
+\begin{figure}[ht!]
 	\epsscale{1.12}
 	\plotone{selected.pdf}
-	\caption{Manual selection of bridge particles at 0.33 Gyr after the first MW-M31 pericenter. The left panel shows stellar surface density and the selected region. The center panel shows velocity vectors for these stars and the right panel shows origin by galaxy and particle type. Orientation is with MW top, M31 bottom and M33 lower left.
+	\caption{Manual selection of bridge particles at 0.33 Gyr after the first MW-M31 pericenter. The left panel shows stellar surface density and the selected region. The center panel shows velocity vectors for these stars and the right panel shows origin by galaxy and particle type. Orientation is with MW top, M31 bottom and M33 lower left. \todo{\textit{make this page-width in final layout}}
 	\label{fig:bridge}}
-\end{figure*}
+\end{figure}
 
 It appears from the right panel that stars in the tail regions originate in the corresponding disk. The bridge region is more mixed and appears to have a high proportion of former bulge stars. To study this further the coordinate system was transformed to place the large galaxy CoMs on the $x$-axis at $\pm 64$ kpc, as in Figure \ref{fig:bridge2}. It is clear in this view that one MW tail is oriented approximately towards the center of M31. 
 
@@ -349,9 +373,40 @@ To focus on the baryonic matter, Figure \ref{fig:trans_l} hides the DM halo and 
 
 \subsection{MW-M31 merger}
 
+%Galaxy Merger Sequence: Evolution of the MW/M31 Main Stellar Body (Disk, Bulge)
+%throughout the Merger Sequence (prior to final coalescence)
+%1. What is the density profile of the disk/bulge in the remnant? Does it follow a
+%sersic profile? is it more or less concentrated than before the merger?
+%2. What is the shape of the disk/bulge: bulge - does it look spherical or more
+%ellipsoidal? disk - how do the spiral arms evolve?
+%3. How does the velocity dispersion of both disks evolve over time? How does the
+%rotation curve evolve over time? What is the ratio Vrot/σ as a function of time?
+%4. How are galaxy interactions relevant for the star formation histories of galaxies?
+%5. How do galaxy interactions impact the morphological classification of galaxies?
+%6. How do galaxy interactions impact the growth of black holes?
+%Relevant papers:
+%Brooks & Christensen 2016, ASSL 418
+%Querejeta + 2015 A&A 573 (connection to S0 galaxies)
+%Hopkins+2008 ApJS 175
+
 After second pericenter, the MW and M31 never fully separate and eventually merge. Their mass ratio is 1:1.6 for stellar matter and 1:1 when the DM halo is included. This is thus a `major merger' in the terminology of \todo{ref?}. A 1:1 mass ratio has been reported \citep{boylan-kolchin_dynamical_2008, ji_lifetime_2014} to lead to the shortest coalescence time.
 
-\todo{expanded 3D trajectories}
+\begin{figure}[htb!]
+	\epsscale{1.0}
+	\plotone{MW_M31_traj_time}
+	\caption{Approach and merger in a MW-centric coordinate frame. Points are spaced at 14.3 Myr intervals.).
+		\label{fig:MW_M31_traj_time}}
+\end{figure}
+
+The 3D trajectories are complex, but Figures \ref{fig:MW_M31_traj_time} and \ref{fig:MW_M31_traj_sep} are snapshots which attempts to show this. The MW CoM is always at the origin and the points show the M31 CoM at regular 14.3 Myr intervals. First pericenter is at upper left (outer), apocenter at the bottom, second pericenter in the tight reversal at upper left. The path is smooth up to 6.1 Gyr then becomes more chaotic.
+
+\begin{figure}[htb!]
+	\epsscale{1.0}
+	\plotone{MW_M31_traj_sep}
+	\caption{Approach and merger. Similar to Figure \ref{fig:MW_M31_traj_time} except the color coding is by separation.
+		\label{fig:MW_M31_traj_sep}}
+\end{figure}
+
 
 \todo{changes in mass profile}
 
@@ -363,21 +418,88 @@ After second pericenter, the MW and M31 never fully separate and eventually merg
 
 \subsection{MW-M31 merger remnant}
 
+%MW+M31 Stellar Major Merger Remnant: Stellar disk particle distribution/morphology
+%1. Identify the snapshots that correspond to the merged system.
+%2. What is the final stellar density profile for the combined system ? Is it well fit by
+%a sersic profile? Does it agree with predictions for elliptical galaxies?
+%3. What is the role of ”dry” galaxy mergers between spirals in the formation of
+%elliptical galaxies?
+%4. What is the distribution of stellar particles from M31 vs the MW? Are the profiles
+%different?
+%5. Is the 3D distribution of stars perfectly spheroidal or better fit by ellipsoids?
+%6. Do you conclude that ”dry” mergers create ellipticals? or is the remnant close to
+%a lenticular ?
+%Relevant papers:
+%Barnes, J. E., Hernquist, L. E.,1992, ApJL, 30, 705
+%Duc+2013, ASPC, 447
+%Querejeta + 2015 A&A 573 (connection to S0 galaxies)
+%Hopkins+2008 ApJS 175
+
 \subsubsection{Shape}
 
 \todo{how to get principal axes? boxiness?}
 
-Refer to Figure \ref{fig:rem_shape}
+We can expect the remnant to settle over time into a triaxial ellipsoid \todo{ref?}. These are superficially rather featureless, as in Figure \ref{fig:rem_shape}. 
 
 \begin{figure}[htb!]
 	\epsscale{1.1}
 	\plotone{remnant_shape.pdf}
 	\caption{Luminous star density of the MW-M31 remnant in three orthogonal projections.
-	\label{fig:rem_shape}}
+		\label{fig:rem_shape}}
 \end{figure}
 
+In observational astronomy it would be usual to fit parameters to surface brightness contours. That would also be possible for the simulation, but for a highly-determined system for which we know the mass and position of every particle there are other options.
+
+If we combine all the baryonic matter (disk and bulge) from both MW and M31, there are $1.12 \time 10^6$ particles to consider. In the original coordinates, the moment of inertia tensor is symmetrical, $3 \times 3$:
+
+
+\[ I = \begin{bmatrix}
+			I_{xx} & I_{xy} & I_{xz}\\
+			I_{yx} & I_{yy} & I_{yz}\\
+			I_{zx} & I_{zy} & I_{zz} 
+		\end{bmatrix} \]
+		
+\[  I_{total} \approx \begin{bmatrix}
+		2.44e+04 & 2.55e+02 & 1.43e+03\\
+		2.55e+02 & 1.91e+04 & -1.71e+01\\
+		1.43e+03 & -1.71e+01 & 2.22e+04 
+	\end{bmatrix} \]\vspace{5mm}
+		
+The orientation is arbitrary at this stage. To get principal axes we need the eigenvalues and eigenvectors of $I$. 
+
+The eigenvalues give the relative dimensions, in arbitrary units scaled such that $a=1$:
+\[ a=1.0, b= 0.85, c=0.79 \]
+The luminous ellipsoid is thus triaxial (low symmetry) but not grossly divergent from spherical.
+
+The eigenvectors give an orthonormal coordinate system oriented along the principal axes:
+\[ v_a = \left< -0.904, -0.042, -0.426 \right> \]
+\[ v_b = \left< -0.423, -0.075,  0.903 \right> \]
+\[ v_c = \left< 0.070, -0.996 , -0.050 \right> \]
+
+\todo{redo this for various radii cutoffs}
 
 \subsubsection{Rotation}
+
+%MW/M31 Galaxy Major Merger Remnant: Stellar disk particle kinematics
+%1. Is the stellar MW/M31 merged remnant rotating ? (create a phase diagram:
+%velocity vs radius). Is it a fast or slow rotator?
+%2. What is the contribution of the MW vs. M31 to the kinematics of the remnant?
+%3. What is the velocity dispersion of the remnant as a function of radius
+%4. Does the virial theorem work to return the total mass (stars + dark matter) of the
+%remnant? Recall Lab 5 (dwarf vs. globular cluster based on velocity dispersion)
+%5. Does the remnant sit on the fundamental plane?
+%6. What is the specific angular momentum of the stellar remnant? does it line up
+%with the dark matter halo specific angular momentum?
+%7. Look at several snapshots at different points in time after the system has coalesced
+%to see if the results change over time.
+%8. Can ”dry” mergers create ellipticals? or is the remnant closer to a lenticular,
+%(large bulge with rotating disk component) ?
+%9. Could the major merger remnant be an S0 type galaxy?
+%Relevant papers:
+%Romanowsky+2003, Science 301, 1696
+%Cox + 2006, ApJ 650
+%Querejeta + 2015 A&A 573 (connection to S0 galaxies)
+%Hopkins+2008 ApJS 175
 
 \todo{phase diagram}
 
@@ -393,6 +515,24 @@ Refer to Figure \ref{fig:rem_phase}
 \todo{alignment between particles of different origin?}
 
 \subsubsection{Dark Matter halo}
+
+%MW/M31 Halo Major Merger Remnant: Dark matter halo evolution (density / kinematics)
+%1. What is the final density profile ? Is it well fit by a Hernquist profile ? Is it more
+%or less concentrated than the MW or M31 before they merged?
+%2. Is the 3D dark matter distribution spheroidal? or elongated like an ellipsoid?
+%What do terms like prolate, oblate, or triaxial halos mean? https://astronomy.com/news/2010/
+%01/astronomers-map-the-shape-of-galactic-dark-matter
+%3. What are the kinematics of the dark matter halo - is it rotating? what is the
+%dispersion - does the virial theorem give you the right mass?
+%4. What is the distribution of dark matter particles from the M31 vs the MW? Are
+%they different? are the kinematics different?
+%5. what is the average specific angular momentum? Is it the same or different than
+%the halos of either galaxy before they merged.
+%6. What is the escape speed of the remnant as a function of radius?
+%7. Where is the ”end” of the halo? How might we define this?
+%Relevant Papers:
+%Frenk & White 2012 Annalen der Physik 524, 507 Review article
+%Abadi + 20 MNRAS, 2010 407
 
 \todo{alignment between particles of different origin?}
 
