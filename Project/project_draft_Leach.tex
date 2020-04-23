@@ -467,14 +467,18 @@ If we combine all the baryonic matter (disk and bulge) from both MW and M31, the
 		
 The orientation is arbitrary at this stage. To get principal axes we need the eigenvalues and eigenvectors of $I$. 
 
-The eigenvalues give the relative dimensions, in arbitrary units scaled such that $a=1$:
+The eigenvalues give the moments of inertial about the principal axes, in arbitrary units scaled such that $A=1$:
 \[ a=1.0, b= 0.85, c=0.79 \]
-The luminous ellipsoid is thus triaxial (low symmetry) but not grossly divergent from spherical.
+The luminous ellipsoid is thus triaxial (low symmetry).
 
 The eigenvectors give an orthonormal coordinate system oriented along the principal axes:
 \[ v_a = \left< -0.904, -0.042, -0.426 \right> \]
 \[ v_b = \left< -0.423, -0.075,  0.903 \right> \]
 \[ v_c = \left< 0.070, -0.996 , -0.050 \right> \]
+
+The moment of inertia of an ellipsoid with semi-major axes $a, b, c$ is $A = k(b^2 + c^2)$ where $k$ is a constant that depends on total mass. Other axes have the same form by symmetry. Solving for $a, b, c$ and normalizing gives:
+\[ a = 1.0,\quad b = 0.94,\quad c = 0.77 \]
+So the minor axis is significantly smaller than the other two: the ellipsoid is approximately prolate.
 
 \todo{redo this for various radii cutoffs}
 
@@ -501,9 +505,7 @@ The eigenvectors give an orthonormal coordinate system oriented along the princi
 %Querejeta + 2015 A&A 573 (connection to S0 galaxies)
 %Hopkins+2008 ApJS 175
 
-\todo{phase diagram}
-
-Refer to Figure \ref{fig:rem_phase}
+Baryonic particles in the merger remnant have a small net angular momentum, and we can rotate the coordinate system to align this vector with the $z$-axis. However, the phase diagrams in Figure \ref{fig:rem_phase} show that velocities are mostly randomly distributed and few of the particles show much assymetry.
 
 \begin{figure}[htb!]
 	\epsscale{1.12}
@@ -535,8 +537,6 @@ Refer to Figure \ref{fig:rem_phase}
 %Abadi + 20 MNRAS, 2010 407
 
 \todo{alignment between particles of different origin?}
-
-\todo{what happens during close approach? merger? remnant?}
 
 % =====================================
 % Bibliography stuff

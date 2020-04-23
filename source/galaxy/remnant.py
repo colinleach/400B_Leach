@@ -38,14 +38,16 @@ class Remnant(Galaxy):
         self.snap = snap
 
         if usesql:
-            self.read_db(stride)
+            self.read_db_baryonic(stride)
         else:
             raise NotImplementedError
 
-    def read_db(self, stride):
+    def read_db_baryonic(self, stride):
         """
         Get relevant data from a PostgreSQL database and format it to be 
-        identical to that read from test files.
+        identical to that read from test files. 
+
+        Ex-disk and ex-bulge particles are included, not DM particles.
 
         Args:
             stride (int):
@@ -91,6 +93,45 @@ class Remnant(Galaxy):
         cur.execute(sql_d)
         self.data = np.array(cur.fetchall(), dtype=dtype)
         self.particle_count = len(self.data)
+        
+    def read_db_dm(self, stride):
+        """
+        Get relevant DM halo data from a PostgreSQL database. 
+
+        Only DM particles are included.
+
+        Args:
+            stride (int):
+                Optional. For stride=n, get every nth row in the table.
+
+        Changes:
+            `self.data_dm` is set.
+
+        Returns: nothing
+        """
+
+        from galaxy.db import DB
+
+        db = DB()
+        cur = db.get_cursor()
+
+        colheads = ','.join(['galname','type','m','x','y','z','vx','vy','vz'])
+        if stride > 1:
+            sql_d = f"SELECT {colheads}, ROW_NUMBER() OVER () as rn from simdata"
+        else:
+            sql_d = f"SELECT {colheads} from simdata"
+        sql_d += f"  where galname in ('MW', 'M31') and snap={self.snap}"
+        sql_d += f" and type=1"
+        sql_d += " ORDER BY galname, pnum"
+        if stride > 1:
+            sql_d = f"SELECT {colheads} from ( {sql_d} ) as t where rn % {stride} = 0" 
+
+        dtype=[('galname', 'U3'), ('type', 'uint8'), ('m', '<f4'), 
+                ('x', '<f4'), ('y', '<f4'), ('z', '<f4'), 
+                ('vx', '<f4'), ('vy', '<f4'), ('vz', '<f4')]
+
+        cur.execute(sql_d)
+        self.data_dm = np.array(cur.fetchall(), dtype=dtype)
         
     def xyz(self):
         """
