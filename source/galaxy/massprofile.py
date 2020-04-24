@@ -273,3 +273,4 @@ class MassProfile:
         log_bulgeI = np.log(bulgeI.value)
         popt, pcov = curve_fit(ser, R, log_bulgeI, (60,))
         return popt[0], pcov[0][0]
+        

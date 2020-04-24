@@ -7,6 +7,7 @@ from numpy.linalg import norm
 import astropy.units as u
 
 from galaxy.galaxy import Galaxy
+from galaxy.utilities import is_iterable
 
 
 class Remnant(Galaxy):
@@ -26,23 +27,26 @@ class Remnant(Galaxy):
         stride (int):
             Optional. For stride=n, get every nth row in the table.
             Only valid with usesql=True.
+        ptype (int or iterable of int):
+            Particle type: 1, 2, 3 or a combination of these
 
     Class attributes:
         data (np.ndarray):
             type, mass, position_xyz, velocity_xyz for each particle
     """
 
-    def __init__(self, snap=801, datadir=None, usesql=False, stride=1):
+    def __init__(self, snap=801, datadir=None, usesql=False, stride=1, ptype=(2,3)):
         "Initial setup. Currently it calls read_file(), but this may change."
 
         self.snap = snap
+        self.ptype = ptype
 
         if usesql:
-            self.read_db_baryonic(stride)
+            self.read_db(stride)
         else:
             raise NotImplementedError
 
-    def read_db_baryonic(self, stride):
+    def read_db(self, stride):
         """
         Get relevant data from a PostgreSQL database and format it to be 
         identical to that read from test files. 
@@ -81,7 +85,10 @@ class Remnant(Galaxy):
         else:
             sql_d = f"SELECT {colheads} from simdata"
         sql_d += f"  where galname in ('MW', 'M31') and snap={self.snap}"
-        sql_d += f" and type in (2,3)"
+        if is_iterable(self.ptype):
+            sql_d += f" and type in {self.ptype}"
+        else:
+            sql_d += f" and type={self.ptype}"
         sql_d += " ORDER BY galname, pnum"
         if stride > 1:
             sql_d = f"SELECT {colheads} from ( {sql_d} ) as t where rn % {stride} = 0" 
@@ -93,45 +100,6 @@ class Remnant(Galaxy):
         cur.execute(sql_d)
         self.data = np.array(cur.fetchall(), dtype=dtype)
         self.particle_count = len(self.data)
-        
-    def read_db_dm(self, stride):
-        """
-        Get relevant DM halo data from a PostgreSQL database. 
-
-        Only DM particles are included.
-
-        Args:
-            stride (int):
-                Optional. For stride=n, get every nth row in the table.
-
-        Changes:
-            `self.data_dm` is set.
-
-        Returns: nothing
-        """
-
-        from galaxy.db import DB
-
-        db = DB()
-        cur = db.get_cursor()
-
-        colheads = ','.join(['galname','type','m','x','y','z','vx','vy','vz'])
-        if stride > 1:
-            sql_d = f"SELECT {colheads}, ROW_NUMBER() OVER () as rn from simdata"
-        else:
-            sql_d = f"SELECT {colheads} from simdata"
-        sql_d += f"  where galname in ('MW', 'M31') and snap={self.snap}"
-        sql_d += f" and type=1"
-        sql_d += " ORDER BY galname, pnum"
-        if stride > 1:
-            sql_d = f"SELECT {colheads} from ( {sql_d} ) as t where rn % {stride} = 0" 
-
-        dtype=[('galname', 'U3'), ('type', 'uint8'), ('m', '<f4'), 
-                ('x', '<f4'), ('y', '<f4'), ('z', '<f4'), 
-                ('vx', '<f4'), ('vy', '<f4'), ('vz', '<f4')]
-
-        cur.execute(sql_d)
-        self.data_dm = np.array(cur.fetchall(), dtype=dtype)
         
     def xyz(self):
         """
