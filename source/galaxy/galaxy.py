@@ -332,7 +332,7 @@ class Galaxy():
     def all_component_counts(self):
         """
         Returns: list:
-                The aggregate masses of particles of each type in the galaxy
+                The number of particles of each type in the galaxy
                 Ordered as [halo, disk, bulge]
         """
 

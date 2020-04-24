@@ -14,7 +14,7 @@
 
 \begin{document}
 	
-\title{Future Dynamics of the Local Group}
+\title{Future Dynamics of the Local Group. I. MW-M31 Interactions}
 
 \author[0000-0003-3608-1546]{Colin Leach}
 
@@ -44,7 +44,7 @@ Time probably precludes much analysis of the fate of M33, which will need to be 
 Data from one N-body simulation in vdM12 was supplied in text-file format by one of the original authors. This included position and velocity data for each particle at the current epoch ($t=0$) and 800 future time steps. For ease of analysis, this was all transferred to the open source database PostgreSQL\footnote{\url{http://www.postgresql.org}} (approximately 1.35 billion records). The same database was used to store computed summary data during the analysis.
 
 \begin{deluxetable}{crrrr}[htb!]
-	\tablenum{1}
+%	\tablenum{1}
 	\tablecaption{Particle counts}
 	\tablewidth{0pt}
 	\tablehead{
@@ -63,7 +63,7 @@ Data from one N-body simulation in vdM12 was supplied in text-file format by one
 Particle counts for each time point are shown in Table 1 and total masses in Table 2. We can see that total mass is the same for MW/M31 but our galaxy has more luminous stars (higher baryon fraction) and M31 has more dark matter (lower baryon fraction). M33 is about 10-fold lighter than either.
 
 \begin{deluxetable}{crrrr}[htb!]
-	\tablenum{2}
+%	\tablenum{2}
 	\tablecaption{Aggregate masses ($M_\Sun \times 10^{12}$)}
 	\tablewidth{0pt}
 	\tablehead{
@@ -480,6 +480,60 @@ The moment of inertia of an ellipsoid with semi-major axes $a, b, c$ is $A = k(b
 \[ a = 1.0,\quad b = 0.94,\quad c = 0.77 \]
 So the minor axis is significantly smaller than the other two: the ellipsoid is approximately prolate.
 
+This was repeated for each subgroup by particle origin. The are the numbers involved are shown in Table 3.
+
+\begin{deluxetable}{crrr}[htb!]
+	%	\tablenum{1}
+	\tablecaption{Counts of particles by origin (thousands)}
+	\tablewidth{0pt}
+	\tablehead{
+		\colhead{Galaxy} & \colhead{Bulge} & \colhead{Disk} & \colhead{All}
+	} 
+	\startdata
+	M31 &   95.0 &  600.0 &   695.0 \\
+	MW  &   50.0 &  375.0 &   425.0 \\
+	All &  145.0 &  975.0 &  1120.0 \\
+	\enddata
+\end{deluxetable}
+
+The relative axis lengths are shown in Table 4. All subgroups are triaxial, but ex-MW disk particles are distinctive in retaining a particularly flattened distribution.
+
+\begin{deluxetable}{crrr}[htb!]
+	%	\tablenum{1}
+	\tablecaption{Relative size of axes by particle origin}
+	\tablewidth{0pt}
+	\tablehead{
+		\colhead{Galaxy} & \colhead{a} & \colhead{b} & \colhead{c} 
+	}
+	\startdata
+	total &  1.0 &  0.94 &  0.77 \\
+	MW disk &  1.0 &  0.90 &  0.53 \\
+	MW bulge &  1.0 &  0.89 &  0.76 \\
+	M31 disk &  1.0 &  0.88 &  0.71 \\
+	M31 bulge &  1.0 &  0.78 &  0.71 \\
+	\enddata
+\end{deluxetable}
+
+The mutual inclination angles of the major axes are shown in Table 5. Again, the former disk particles are seen to retain a distinctive structure. Clearly this collision and merger is not sufficient to randomize stars within the remnant.
+
+\begin{deluxetable}{crrrrr}[htb!]
+%	\tablenum{1}
+	\tablecaption{Mutual inclination angles of major axis by particle origin (degrees)}
+	\tablewidth{0pt}
+	\tablehead{
+		\colhead{} & \colhead{Total} & \colhead{MWd} & \colhead{MWb} & \colhead{M31d} & \colhead{M31b} 
+		%\colhead{Name} & \colhead{Count} & \colhead{Count} & \colhead{Count} & \colhead{}
+	}
+	\startdata
+	total &  -- &  32.9 &  21.1 &  23.1 &  21.4 \\
+	MWd &   32.9 &   -- &  16.2 &  30.8 &  24.4 \\
+	MWb &   21.1 &  16.2 &   -- &  15.2 &   8.7 \\
+	M31d &   23.1 &  30.8 &  15.2 &   -- &   6.5 \\
+	M31b &   21.4 &  24.4 &   8.7 &   6.5 &   -- \\
+	\enddata
+\end{deluxetable}
+
+
 \todo{redo this for various radii cutoffs}
 
 \subsubsection{Rotation}
@@ -537,6 +591,12 @@ Baryonic particles in the merger remnant have a small net angular momentum, and 
 %Abadi + 20 MNRAS, 2010 407
 
 \todo{alignment between particles of different origin?}
+
+\section{Discussion}
+
+\todo{add some!}
+
+
 
 % =====================================
 % Bibliography stuff
