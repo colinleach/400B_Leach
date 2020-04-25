@@ -9,7 +9,7 @@
 
 \newcommand{\todo}{\color{red}{TODO}\color{black}\hspace{2mm}}
 
-\shorttitle{ASTR400B report}
+\shorttitle{MW-M31 Interactions}
 \shortauthors{Colin Leach}
 
 \begin{document}
@@ -472,9 +472,11 @@ The eigenvalues give the moments of inertial about the principal axes, in arbitr
 The luminous ellipsoid is thus triaxial (low symmetry).
 
 The eigenvectors give an orthonormal coordinate system oriented along the principal axes:
-\[ v_a = \left< -0.904, -0.042, -0.426 \right> \]
-\[ v_b = \left< -0.423, -0.075,  0.903 \right> \]
-\[ v_c = \left< 0.070, -0.996 , -0.050 \right> \]
+\begin{align*}
+	v_a &= \left< +0.070, -0.996 , -0.050 \right> \\
+	v_b &= \left< -0.423, -0.075,  +0.903 \right> \\
+	v_c &= \left< -0.904, -0.042, -0.426 \right>
+\end{align*}
 
 The moment of inertia of an ellipsoid with semi-major axes $a, b, c$ is $A = k(b^2 + c^2)$ where $k$ is a constant that depends on total mass. Other axes have the same form by symmetry. Solving for $a, b, c$ and normalizing gives:
 \[ a = 1.0,\quad b = 0.94,\quad c = 0.77 \]
@@ -518,18 +520,18 @@ The mutual inclination angles of the major axes are shown in Table 5. Again, the
 
 \begin{deluxetable}{crrrrr}[htb!]
 %	\tablenum{1}
-	\tablecaption{Mutual inclination angles of major axis by particle origin (degrees)}
+	\tablecaption{Mutual inclination angles of major axis by particle origin (degrees). Suffix indicates source: \textbf{d}isk/\textbf{b}ulge.}
 	\tablewidth{0pt}
 	\tablehead{
 		\colhead{} & \colhead{Total} & \colhead{MWd} & \colhead{MWb} & \colhead{M31d} & \colhead{M31b} 
 		%\colhead{Name} & \colhead{Count} & \colhead{Count} & \colhead{Count} & \colhead{}
 	}
 	\startdata
-	total &  -- &  32.9 &  21.1 &  23.1 &  21.4 \\
-	MWd &   32.9 &   -- &  16.2 &  30.8 &  24.4 \\
-	MWb &   21.1 &  16.2 &   -- &  15.2 &   8.7 \\
-	M31d &   23.1 &  30.8 &  15.2 &   -- &   6.5 \\
-	M31b &   21.4 &  24.4 &   8.7 &   6.5 &   -- \\
+	total &  -- &  45.9 &  15.0 &  83.2 &  19.4 \\
+	MWd &   45.9 &   -- &  46.7 &  41.4 &  60.6 \\
+	MWb &   15.0 &  46.7 &   -- &  87.6 &  32.4 \\
+	M31d &   83.2 &  41.4 &  87.6 &   -- &  89.0 \\
+	M31b &   19.4 &  60.6 &  32.4 &  89.0 &   -- \\
 	\enddata
 \end{deluxetable}
 
@@ -564,7 +566,7 @@ Baryonic particles in the merger remnant have a small net angular momentum, and 
 \begin{figure}[htb!]
 	\epsscale{1.12}
 	\plotone{remnant_phase.pdf}
-	\caption{Phase diagrams of the MW-M31 remnant.
+	\caption{Phase diagrams of the MW-M31 remnant, orthogonal views.
 	\label{fig:rem_phase}}
 \end{figure}
 
