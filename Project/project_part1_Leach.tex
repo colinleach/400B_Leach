@@ -556,12 +556,36 @@ The mutual inclination angles of the major axes are shown in Table 5. Again, the
 		\label{fig:rem_mp_type}}
 \end{figure}
 
+The mass profile for each type of particle and overall is shown in Table \ref{fig:rem_mp_type}. This is similar to Figure \ref{fig:massprof0}, except that the radius now extends out to 100 kpc.
+
 \begin{figure}[htb!]
 	\epsscale{0.8}
 	\plotone{remnant_mp_origins.pdf}
 	\caption{Mass profiles of the remnant by origin.
 	\label{fig:rem_mp_origin}}
 \end{figure}
+
+Previous sections have shown that MW and M31 particles remain somewhat distinct after merger. Figure \ref{fig:rem_mp_origin} compares their mass profiles. For baryonic particles, ex-M31 masses are higher than ex-MW at most radii, reflecting the higher baryonic mass fraction in M31. The opposite effect might be expected for the DM halo, whose total mass was significantly higher in the MW (Table \ref{tbl:aggmass}), but this is not seen out to 100 kpc. \todo{where is it?}
+
+\todo{Sersic profiles for disk/bulge}
+
+The mass profile of DM particles in the remnant halo is well fit by a Hernquist profile, but there are some differences depending on origin as shown in Table \ref{tbl:remn_hq}
+
+\begin{deluxetable}{cc}[htb!]
+	\tablecaption{Best-fit Hernquist $a$ for remnant halo
+		\label{tbl:remn_hq}}
+	\tablewidth{0pt}
+	\tablehead{
+		\colhead{Origin} & \colhead{$a$ $\pm$ err (kpc)}  
+	}
+	\startdata
+	total &  $84.5 \pm 0.5$  \\
+	ex-MW &   $95.2 \pm 1.4$  \\
+	ex-M31 &   $82.3 \pm 0.9$
+	\enddata
+\end{deluxetable}
+
+For comparison, the values at $t=0$ were $61.6 \pm 0.5$ kpc for the MW and $61.4 \pm 0.2$ kpc for M31. The overall time-dependence of Hernquist radii was shown in Figure \ref{fig:hernquist_a}.
 
 
 \subsubsection{Remnant rotational kinematics}
@@ -618,25 +642,7 @@ Baryonic particles in the merger remnant have a small net angular momentum, and 
 %Frenk & White 2012 Annalen der Physik 524, 507 Review article
 %Abadi + 20 MNRAS, 2010 407
 
-\todo{alignment between particles of different origin?}
 
-The mass profile of DM particles in the remnant halo is well fit by a Hernquist profile, but there are some differences depending on origin as shown in Table \ref{tbl:remn_hq}
-
-\begin{deluxetable}{cc}[htb!]
-	\tablecaption{Best-fit Hernquist $a$ for remnant halo
-		\label{tbl:remn_hq}}
-	\tablewidth{0pt}
-	\tablehead{
-		\colhead{Origin} & \colhead{$a$ $\pm$ err (kpc)}  
-	}
-	\startdata
-	total &  $84.5 \pm 0.5$  \\
-	ex-MW &   $95.2 \pm 1.4$  \\
-	ex-M31 &   $82.3 \pm 0.9$
-	\enddata
-\end{deluxetable}
-
-For comparison, the values at $t=0$ were $61.6 \pm 0.5$ kpc for the MW and $61.4 \pm 0.2$ kpc for M31. The overall time-dependence of Hernquist radii was shown in Figure \ref{fig:hernquist_a}.
 
 \section{Discussion}
 
