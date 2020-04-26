@@ -5,6 +5,16 @@
 \providecommand{\doeprint}[1]{\href{http://ascl.net/#1}{\nolinkurl{http://ascl.net/#1}}}
 \providecommand{\doarXiv}[1]{\href{https://arxiv.org/abs/#1}{\nolinkurl{https://arxiv.org/abs/#1}}}
 
+\bibitem[{Barnes \& Hernquist(1992)}]{barnes_dynamics_1992}
+Barnes, J.~E., \& Hernquist, L. 1992, Annual Review of Astronomy and
+  Astrophysics, 30, 705, \dodoi{10.1146/annurev.aa.30.090192.003421}
+
+\bibitem[{Binney \& Tremaine(2008)}]{binney_galactic_2008}
+Binney, J., \& Tremaine, S. 2008, Galactic Dynamics: Second Edition, by James
+  Binney and Scott Tremaine. ISBN 978-0-691-13026-2 (HB). Published by
+  Princeton University Press, Princeton, NJ USA, 2008.
+\newblock \url{http://adsabs.harvard.edu/abs/2008gady.book.....B}
+
 \bibitem[{Boylan-Kolchin {et~al.}(2008)Boylan-Kolchin, Ma, \&
   Quataert}]{boylan-kolchin_dynamical_2008}
 Boylan-Kolchin, M., Ma, C.-P., \& Quataert, E. 2008, Monthly Notices of the

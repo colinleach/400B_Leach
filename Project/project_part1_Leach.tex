@@ -20,7 +20,7 @@
 
 \begin{abstract}
 	
-\todo{Add a concise and intelligent summary of the paper, once I get a clearer idea what it will include.}
+\todo{Add a concise and intelligent summary of the paper, once I get a clearer idea what it will include (and how to seem intelligent).}
 	
 \end{abstract}
 
@@ -30,6 +30,14 @@
 
 
 \section{Introduction}
+
+The currently-accepted model of galaxy formation involves baryonic matter (gas and dust) falling into gravitational potential wells created by local over-densities in the Dark Matter (DM). Further gravitational collapse and Jeans fragmentation can then lead to creation of galaxies and stars. \todo{refs?}
+
+However, decades of observational and theoretical studies tell us that, firstly, this does not account for the wide range of galaxy morphology seen at all epochs; secondly, there is no reason to suppose that galaxies continue in serene isolation after their formation.
+
+Attempts to model interactions and mergers between galaxies with numerical simulations goes back at least to \citet{toomre_galactic_1972}. This field continues to develop, with improvements in both hardware and algorithms allowing larger particle numbers in N-body simulations  \todo{ref?} and more sophisticated treatment of gas hydrodyamics, magnetic fields and other factors.
+
+As with all theoretical studies, it is vital to stay connected to the best experimental data as this constantly evolves, constantly comparing models against observations. Checking simulations against high-redshift galaxies is useful but inevitably approximate. A perhaps more rigorous test is to model the galaxies for which we have the most precise and detailed observational measurements: those which are (by far) closest to us. 
 
 The largest galaxies in our Local Group (LG) are the Milky Way (MW), Andromeda (M31) and Triangulum (M33).  A simulation of MW--M31--M33 orbital evolution was described previously in \citet{marel_m31_2012}, hereafter vdM12. That paper included an extensive analysis of both N-body simulations and semi-analytic orbit integrations. The present study uses data from the same N-body simulation to carry out further computational analysis.
 
@@ -44,8 +52,8 @@ Time probably precludes much analysis of the fate of M33, which will need to be 
 Data from one N-body simulation in vdM12 was supplied in text-file format by one of the original authors. This included position and velocity data for each particle at the current epoch ($t=0$) and 800 future time steps. For ease of analysis, this was all transferred to the open source database PostgreSQL\footnote{\url{http://www.postgresql.org}} (approximately 1.35 billion records). The same database was used to store computed summary data during the analysis.
 
 \begin{deluxetable}{crrrr}[htb!]
-%	\tablenum{1}
-	\tablecaption{Particle counts}
+	\tablecaption{Particle counts
+		\label{tbl:counts}}
 	\tablewidth{0pt}
 	\tablehead{
 		\colhead{Galaxy} & \colhead{DM Halo} & \colhead{Disk} & \colhead{Bulge} & \colhead{Total} 
@@ -60,11 +68,11 @@ Data from one N-body simulation in vdM12 was supplied in text-file format by one
 	\enddata
 \end{deluxetable}
 
-Particle counts for each time point are shown in Table 1 and total masses in Table 2. We can see that total mass is the same for MW/M31 but our galaxy has more luminous stars (higher baryon fraction) and M31 has more dark matter (lower baryon fraction). M33 is about 10-fold lighter than either.
+Particle counts for each time point are shown in Table \ref{tbl:counts} and total masses in Table \ref{tbl:aggmass}. We can see that total mass is the same for MW/M31 but our galaxy has more luminous stars (higher baryon fraction) and M31 has more dark matter (lower baryon fraction). M33 is about 10-fold lighter than either.
 
 \begin{deluxetable}{crrrr}[htb!]
-%	\tablenum{2}
-	\tablecaption{Aggregate masses ($M_\Sun \times 10^{12}$)}
+	\tablecaption{Aggregate masses ($M_\Sun \times 10^{12}$)
+	\label{tbl:aggmass}}
 	\tablewidth{0pt}
 	\tablehead{
 		\colhead{Galaxy} & \colhead{DM Halo} & \colhead{Disk} & \colhead{Bulge} & \colhead{Total}
@@ -243,9 +251,9 @@ The Sérsic fit for both galaxy bulges looks reasonable outside the central dens
 		\label{fig:MW_bulge_sersic}}
 \end{figure}
 
-\subsection{DM halo}
+\subsection{Dark Matter halo}
 
-Figure \ref{fig:rotcurve0} also adds a theoretical curve in which the dark matter halo is fitted by a Hernquist profile \citep{hernquist_analytical_1990}. The cumulative mass out to radius $r$ is given by
+Figure \ref{fig:rotcurve0} also adds a theoretical curve in which the DM halo is fitted by a Hernquist profile \citep{hernquist_analytical_1990}. The cumulative mass out to radius $r$ is given by
 \[ M(r) = M_h \frac{r^2}{(a+r)^2} \]
 where $M_h$ is the total mass of halo particles (see Table 2) and $a$ is a scale radius. Non-linear least squares fitting, similar to that used for Sérsic profiles in a previous section, gave scale radii of 61.1 kpc for MW and M31, 24.3 kpc for M33 at $t=0$.
 
@@ -297,7 +305,7 @@ The MW and M31 disks have angular momentum vectors inclined at an angle of $52^\
 
 The presence of long, symmetrical tails giving some galaxies a distinct `S'-shape has been described at least as far back as \citet{zwicky_novel_1955}. Some astronomers postulated that these were the result of tidal forces during close, glancing encounters, but this was often contested until a detailed computational study by \citet{toomre_galactic_1972}.
 
-In our simulation, both MW and M31 disks remain near-circular during much of the close approach, but conspicuous tails develop as the centers then move further apart. We also see a more sparsely-populated bridge forming between the galaxies.
+Reviewing a broad range of N-body simulations, \citet{barnes_dynamics_1992} noted that ``such features are clearly \textit{relics} of recent collisions rather than ongoing interactions.'' In our simulation, both MW and M31 disks remain near-circular during much of the close approach, but conspicuous tails develop as the centers then move further apart. We also see a more sparsely-populated bridge forming between the galaxies.
 
 To determine the nature and origin of stars in this region, a manual selection was performed as in Figure \ref{fig:bridge}. Stars within the yellow rectangle (left panel) are shown with velocity vectors (center panel) and origin (right panel). Velocities are mostly moderate (mean 195 km/s, range 19-586 km/s), with relatively few stars having high kinetic energy. 
 
@@ -320,7 +328,8 @@ It appears from the right panel that stars in the tail regions originate in the 
 
 \begin{deluxetable}{crrr}[ht!]
 	\tablenum{3}
-	\tablecaption{Particle counts close to the midplane}
+	\tablecaption{Particle counts close to the midplane 
+		\label{tbl:pcounts}}
 	\tablewidth{0pt}
 	\tablehead{
 		\colhead{} & \colhead{Bulge} & \colhead{Disk} & \colhead{Total}
@@ -333,7 +342,7 @@ It appears from the right panel that stars in the tail regions originate in the 
 	\enddata
 \end{deluxetable}
 
-The different orientations mean that symmetry about the midplane is imperfect, so the ``bridge'' region was taken as $-20 < x < 30$ kpc. A count of stars in this region is shown in Table 3. This confirms that the largest populations are MW disk stars (mostly in a relatively dense tail) and M31 bulge stars (more widely dispersed).
+The different orientations mean that symmetry about the midplane is imperfect, so the ``bridge'' region was taken as $-20 < x < 30$ kpc. A count of stars in this region is shown in Table \ref{tbl:pcounts}. This confirms that the largest populations are MW disk stars (mostly in a relatively dense tail) and M31 bulge stars (more widely dispersed).
 
 \todo{identify, trace history, trace fate}\ 
 
@@ -435,7 +444,7 @@ The 3D trajectories are complex, but Figures \ref{fig:MW_M31_traj_time} and \ref
 %Querejeta + 2015 A&A 573 (connection to S0 galaxies)
 %Hopkins+2008 ApJS 175
 
-\subsubsection{Shape}
+\subsubsection{Remnant shape}
 
 \todo{how to get principal axes? boxiness?}
 
@@ -516,7 +525,7 @@ The relative axis lengths are shown in Table 4. All subgroups are triaxial, but 
 	\enddata
 \end{deluxetable}
 
-The mutual inclination angles of the major axes are shown in Table 5. Again, the former disk particles are seen to retain a distinctive structure. Clearly this collision and merger is not sufficient to randomize stars within the remnant.
+The mutual inclination angles of the major axes are shown in Table 5. Again, the former disk particles are seen to retain a distinctive structure. Clearly this collision and a single merger is not sufficient to randomize stars within the remnant. Also, this is consistent with the understanding that relaxation times are very long in collisionless systems on the scale of elliptical galaxies \citep[Section 1.2]{binney_galactic_2008}
 
 \begin{deluxetable}{crrrrr}[htb!]
 %	\tablenum{1}
@@ -538,7 +547,7 @@ The mutual inclination angles of the major axes are shown in Table 5. Again, the
 
 \todo{redo this for various radii cutoffs}
 
-\subsubsection{Rotation}
+\subsubsection{Remnant rotational kinematics}
 
 %MW/M31 Galaxy Major Merger Remnant: Stellar disk particle kinematics
 %1. Is the stellar MW/M31 merged remnant rotating ? (create a phase diagram:
@@ -572,7 +581,7 @@ Baryonic particles in the merger remnant have a small net angular momentum, and 
 
 \todo{alignment between particles of different origin?}
 
-\subsubsection{Dark Matter halo}
+\subsubsection{Remnant DM halo}
 
 %MW/M31 Halo Major Merger Remnant: Dark matter halo evolution (density / kinematics)
 %1. What is the final density profile ? Is it well fit by a Hernquist profile ? Is it more
