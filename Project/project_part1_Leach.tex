@@ -547,6 +547,23 @@ The mutual inclination angles of the major axes are shown in Table 5. Again, the
 
 \todo{redo this for various radii cutoffs}
 
+\subsubsection{Remnant mass distribution}
+
+\begin{figure}[htb!]
+	\epsscale{0.8}
+	\plotone{remnant_mp_types.pdf}
+	\caption{Mass profiles of the remnant by particle type.
+		\label{fig:rem_mp_type}}
+\end{figure}
+
+\begin{figure}[htb!]
+	\epsscale{0.8}
+	\plotone{remnant_mp_origins.pdf}
+	\caption{Mass profiles of the remnant by origin.
+	\label{fig:rem_mp_origin}}
+\end{figure}
+
+
 \subsubsection{Remnant rotational kinematics}
 
 %MW/M31 Galaxy Major Merger Remnant: Stellar disk particle kinematics
@@ -573,7 +590,7 @@ The mutual inclination angles of the major axes are shown in Table 5. Again, the
 Baryonic particles in the merger remnant have a small net angular momentum, and we can rotate the coordinate system to align this vector with the $z$-axis. However, the phase diagrams in Figure \ref{fig:rem_phase} show that velocities are mostly randomly distributed and few of the particles show much assymetry.
 
 \begin{figure}[htb!]
-	\epsscale{1.12}
+	\epsscale{1.1}
 	\plotone{remnant_phase.pdf}
 	\caption{Phase diagrams of the MW-M31 remnant, orthogonal views.
 	\label{fig:rem_phase}}
@@ -602,6 +619,24 @@ Baryonic particles in the merger remnant have a small net angular momentum, and 
 %Abadi + 20 MNRAS, 2010 407
 
 \todo{alignment between particles of different origin?}
+
+The mass profile of DM particles in the remnant halo is well fit by a Hernquist profile, but there are some differences depending on origin as shown in Table \ref{tbl:remn_hq}
+
+\begin{deluxetable}{cc}[htb!]
+	\tablecaption{Best-fit Hernquist $a$ for remnant halo
+		\label{tbl:remn_hq}}
+	\tablewidth{0pt}
+	\tablehead{
+		\colhead{Origin} & \colhead{$a$ $\pm$ err (kpc)}  
+	}
+	\startdata
+	total &  $84.5 \pm 0.5$  \\
+	ex-MW &   $95.2 \pm 1.4$  \\
+	ex-M31 &   $82.3 \pm 0.9$
+	\enddata
+\end{deluxetable}
+
+For comparison, the values at $t=0$ were $61.6 \pm 0.5$ kpc for the MW and $61.4 \pm 0.2$ kpc for M31. The overall time-dependence of Hernquist radii was shown in Figure \ref{fig:hernquist_a}.
 
 \section{Discussion}
 
