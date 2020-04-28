@@ -236,7 +236,7 @@ class MassProfile:
         """
 
         bulge_mass = self.mass_enclosed(R, 3).value
-        bulgeI = bulge_mass / (4 * np.pi * R**2)
+        bulgeI = bulge_mass / (4 * np.pi * R**2) # divisor is area of sphere
         bulge_total = np.max(bulge_mass)
         Blow = bulge_total / 2.0
         # Bhigh = bulge_total / 2.0 + bulge_total / 2.0 * 0.2
@@ -273,4 +273,3 @@ class MassProfile:
         log_bulgeI = np.log(bulgeI.value)
         popt, pcov = curve_fit(ser, R, log_bulgeI, (60,))
         return popt[0], pcov[0][0]
-        

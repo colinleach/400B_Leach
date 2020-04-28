@@ -255,7 +255,7 @@ The Sérsic fit for both galaxy bulges looks reasonable outside the central dens
 
 Figure \ref{fig:rotcurve0} also adds a theoretical curve in which the DM halo is fitted by a Hernquist profile \citep{hernquist_analytical_1990}. The cumulative mass out to radius $r$ is given by
 \[ M(r) = M_h \frac{r^2}{(a+r)^2} \]
-where $M_h$ is the total mass of halo particles (see Table 2) and $a$ is a scale radius. Non-linear least squares fitting, similar to that used for Sérsic profiles in a previous section, gave scale radii of 61.1 kpc for MW and M31, 24.3 kpc for M33 at $t=0$.
+where $M_h$ is the total mass of halo particles (see Table 2) and $a$ is a scale radius which encloses a quarter of the halo mass. Non-linear least squares fitting, similar to that used for Sérsic profiles in a previous section, gave scale radii of 61.1 kpc for MW and M31, 24.3 kpc for M33 at $t=0$.
 
 \begin{figure}[htb!]
 	%	\epsscale{0.8}
@@ -565,9 +565,25 @@ The mass profile for each type of particle and overall is shown in Table \ref{fi
 	\label{fig:rem_mp_origin}}
 \end{figure}
 
-Previous sections have shown that MW and M31 particles remain somewhat distinct after merger. Figure \ref{fig:rem_mp_origin} compares their mass profiles. For baryonic particles, ex-M31 masses are higher than ex-MW at most radii, reflecting the higher baryonic mass fraction in M31. The opposite effect might be expected for the DM halo, whose total mass was significantly higher in the MW (Table \ref{tbl:aggmass}), but this is not seen out to 100 kpc. \todo{where is it?}
+\begin{figure}[htb!]
+	\epsscale{0.8}
+	\plotone{remnant_mp_halo.pdf}
+	\caption{Mass profiles of the outer part of the remnant halo.
+		\label{fig:rem_mp_halo}}
+\end{figure}
 
-\todo{Sersic profiles for disk/bulge}
+Previous sections have shown that MW and M31 particles remain somewhat distinct after merger. Figure \ref{fig:rem_mp_origin} compares their mass profiles. For baryonic particles, ex-M31 masses are higher than ex-MW at most radii, reflecting the higher baryonic mass fraction in M31. The opposite effect might be expected for the DM halo, whose total mass was significantly higher in the MW (Table \ref{tbl:aggmass}), but this is not seen out to 100 kpc. Figure \ref{fig:rem_mp_halo} suggests we have to go almost 1 Mpc out before MW particles become the largest halo component.
+
+\todo{Would be better to plot $\rho(r)$
+
+\begin{figure}[htb!]
+	\epsscale{0.9}
+	\plotone{remnant_sersic_origins.pdf}
+	\caption{Surface brightness profiles of the remnant by origin.
+		\label{fig:rem_sersic_origin}}
+\end{figure}
+
+Figure \ref{fig:rem_sersic_origin} shows Sérsic fits to the surface brightness profile (assuming $M/L \sim 1$).
 
 The mass profile of DM particles in the remnant halo is well fit by a Hernquist profile, but there are some differences depending on origin as shown in Table \ref{tbl:remn_hq}
 
