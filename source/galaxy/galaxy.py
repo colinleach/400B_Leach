@@ -410,5 +410,5 @@ class Galaxy():
         Returns velocity as a (3,N) array
         """
 
-        return np.array([self.data[vxi] for xi in ('vx','vy','vz')])
+        return np.array([self.data[vxi] for vxi in ('vx','vy','vz')])
         
