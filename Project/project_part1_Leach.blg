@@ -3,45 +3,49 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: project_part1_Leach.aux
 The style file: aasjournal.bst
 Database file #1: project_Leach.bib
+Warning--entry type for "reback2020pandas" isn't style-file defined
+--line 294 of file project_Leach.bib
+Warning--I didn't find a database entry for ""
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
-You've used 16 entries,
+You've used 24 entries,
             3168 wiz_defined-function locations,
-            773 strings with 16474 characters,
-and the built_in function-call counts, 12440 in all, are:
-= -- 582
-> -- 1776
-< -- 9
-+ -- 595
-- -- 601
-* -- 1448
-:= -- 2574
-add.period$ -- 21
-call.type$ -- 16
-change.case$ -- 92
-chr.to.int$ -- 15
-cite$ -- 16
-duplicate$ -- 260
-empty$ -- 423
-format.name$ -- 625
-if$ -- 2229
+            834 strings with 19906 characters,
+and the built_in function-call counts, 16841 in all, are:
+= -- 878
+> -- 2211
+< -- 13
++ -- 737
+- -- 747
+* -- 1881
+:= -- 3412
+add.period$ -- 29
+call.type$ -- 24
+change.case$ -- 127
+chr.to.int$ -- 23
+cite$ -- 24
+duplicate$ -- 411
+empty$ -- 668
+format.name$ -- 784
+if$ -- 3094
 int.to.chr$ -- 2
 int.to.str$ -- 0
-missing$ -- 16
-newline$ -- 61
-num.names$ -- 64
-pop$ -- 91
+missing$ -- 21
+newline$ -- 85
+num.names$ -- 98
+pop$ -- 135
 preamble$ -- 1
-purify$ -- 92
+purify$ -- 127
 quote$ -- 0
-skip$ -- 210
+skip$ -- 338
 stack$ -- 0
-substring$ -- 228
-swap$ -- 2
+substring$ -- 371
+swap$ -- 18
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 144
+type$ -- 216
 warning$ -- 0
-while$ -- 61
+while$ -- 92
 width$ -- 0
-write$ -- 186
+write$ -- 274
+(There were 2 warnings)

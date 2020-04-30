@@ -24,7 +24,7 @@
 	
 \end{abstract}
 
-\keywords{Galaxy Merger -- Local Group -- Stellar Disk -- Stellar Bulge -- \textit{and more}}
+\keywords{Galaxy Merger -- Local Group -- Stellar Disk -- Stellar Bulge -- Dark Matter Halo -- Hernquist Profile -- Merger Remnant}
 
 %\tableofcontents
 
@@ -33,15 +33,15 @@
 
 The currently-accepted model of galaxy formation involves baryonic matter (gas and dust) falling into gravitational potential wells created by local over-densities in the Dark Matter (DM). Further gravitational collapse and Jeans fragmentation can then lead to creation of galaxies and stars \citep{mo_galaxy_2010}.
 
-However, decades of observational and theoretical studies tell us that, firstly, this does not account for the wide range of galaxy morphologies seen at all epochs; secondly, there is no reason to suppose that galaxies continue in serene isolation after their formation.
+However, decades of observational and theoretical studies tell us that, firstly, this by itself does not account for the wide range of galaxy morphologies seen at all epochs; secondly, there is no reason to suppose that galaxies continue in serene isolation after their formation.
 
 Attempts to model interactions and mergers between galaxies with numerical simulations goes back at least to \citet{toomre_galactic_1972}. This field continues to develop, with improvements in both hardware and algorithms allowing larger particle numbers in N-body simulations \todo{refs?} and more sophisticated treatment of gas hydrodyamics, magnetic fields and other factors.
 
-As with all theoretical studies, it is vital to stay connected to the best experimental data as this constantly evolves, constantly comparing models against observations. Checking simulations against high-redshift galaxies is useful but inevitably approximate. A perhaps more rigorous test is to model the galaxies for which we have the most precise and detailed observational measurements: those which are (by far) closest to us. 
+As with all theoretical studies, it is vital to stay connected to the best experimental data as this constantly evolves, constantly comparing models against observations. Checking simulations against high-redshift galaxies is necessary but inevitably approximate. A perhaps more rigorous test is to model the galaxies for which we have the most precise and detailed observational measurements: those which are (by far) closest to us. 
 
 The largest galaxies in our Local Group (LG) are the Milky Way (MW), Andromeda (M31) and Triangulum (M33).  A simulation of MW--M31--M33 orbital evolution was described previously in \citet{marel_m31_2012}, hereafter vdM12. That paper included an extensive analysis of both N-body simulations and semi-analytic orbit integrations. The present study uses data from the same N-body simulation to carry out further computational analysis.
 
-The simulation was based on data in \citep{marel_m31_2012-1} suggesting that M31 is approaching the MW directly with little proper motion detected by Hubble Space Telescope (HST) studies. Recent data from Gaia DR2 \citep{brown_gaia_2018} suggest that infall is slightly less radial than previously thought \citep{marel_first_2019}, leading to a slightly later first approach with a larger pericenter distance. However, detailed simulations based on that new data have not yet been carried out.
+The simulation was based on data in \citep{marel_m31_2012-1} suggesting that M31 is approaching the MW directly with little proper motion detected by Hubble Space Telescope studies. Recent data from Gaia DR2 \citep{brown_gaia_2018} suggest that infall is slightly less radial than previously thought \citep{marel_first_2019}, leading to a slightly later first approach with a larger pericenter distance. However, detailed simulations based on that new data have not yet been carried out.
 
 This paper will review the initial conditions and time evolution for multiple physical parameters of the simulation. Particular attention will be paid to the first MW-M31 close approach around 4 Gyr, the second approach and merger around 6 Gyr, and the structure and dynamics of the post-merger remnant.
 
@@ -86,7 +86,7 @@ Particle counts for each time point are shown in Table \ref{tbl:counts} and tota
 	\enddata
 \end{deluxetable}
 
-The coordinate system is approximately centered on the Milky Way at $t=0$. The center of mass (CoM) of all particles in the system is not fixed over time, moving at an average of $\left< 35.9, -26.7, 27.5 \right>$ km/s with some minor fluctuations due to numerical approximations. In contrast, the total angular momentum of the system is very small at all time points.
+The coordinate system is approximately centered on the Milky Way at $t=0$. The center of mass (CoM) of all particles in the system is not fixed over time, moving at an average of $\vec{v} = \left< 35.9, -26.7, 27.5 \right>$ km/s with some minor fluctuations due to numerical approximations. In contrast, the total angular momentum of the system is very small at all time points.
 
 \subsection{Software}
 
@@ -133,7 +133,7 @@ In vdM12 this is referred to as the X',Y',Z' coordinate system and their figure 
 Relative motions of the CoMs are shown against time in Figures \ref{fig:rel_sep} and \ref{fig:rel_vel}, equivalent to figures 3 and 4 in vdM12.
 
 
-There is a MW-M31 close approach with first pericenter at 3.96 Gyr with a minimum separation of 35.1 kpc, then a separation to 173 kpc and finally a convergence to 7.8 kpc at second pericenter and merger between 5.9 - 6.5 Gyr. Relative velocities spike sharply during these approaches, as potential energy is converted to kinetic energy, before declining to essentially zero.
+There is a MW-M31 close approach with first pericenter at 3.96 Gyr with a minimum separation of 35.1 kpc, then a separation to 173 kpc at apocenter and finally a convergence to 7.8 kpc at second pericenter and merger between 5.9 - 6.5 Gyr. Relative velocities spike sharply during these approaches, as potential energy is converted to kinetic energy, before declining to essentially zero.
 
 Meanwhile, in this simulation run M33 remains separate throughout, albeit on a decaying orbit. In vdM12 the authors investigate the effect of small changes in initial conditions and estimate a 9\% chance of an M33-MW collision at first pericenter, before the M31-MW merger.
 
@@ -253,6 +253,8 @@ The Sérsic fit for both galaxy bulges looks reasonable outside the central dens
 
 \subsection{Dark Matter halo}
 
+\subsubsection{Halo mass profile}
+
 Figure \ref{fig:rotcurve0} also adds a theoretical curve in which the DM halo is fitted by a Hernquist profile \citep{hernquist_analytical_1990}. The cumulative mass out to radius $r$ is given by
 \[ M(r) = M_h \frac{r^2}{(a+r)^2} \]
 where $M_h$ is the total mass of halo particles (see Table 2) and $a$ is a scale radius which encloses a quarter of the halo mass. Non-linear least squares fitting, similar to that used for Sérsic profiles in a previous section, gave scale radii of 61.1 kpc for MW and M31, 24.3 kpc for M33 at $t=0$.
@@ -267,6 +269,15 @@ where $M_h$ is the total mass of halo particles (see Table 2) and $a$ is a scale
 Time evolution of the scale radius $a$ is shown in Figure \ref{fig:hernquist_a}. The MW and M31 remain very similar through first pericenter, then start to diverge with MW particles tending to a larger radius than M31. This becomes most pronounced during and after merger. The dissimilar distribution in the merger remnant will be discussed in a later section.  
 
 The scale radius for M33 grows inexorably as the original halo is scattered by tidal forces. Figure \ref{fig:hernquist_a} also shows the increasingly wide error bars for M33: halo particles for this galaxy are no longer well fitted by a Hernquist profile.
+
+\subsubsection{Halo rotation}
+
+The specific angular momentum $\vec{h}$ can be calculated from
+\[ \vec{h} = \frac{\sum_i{\vec{r_i} \times m_i \vec{v}_i}}{\sum_i{m_i}} \]
+
+The specific angular momentum of each galaxy is shown in Figure ??.
+
+\todo{add this graph}
 
 \subsection{MW-M31 Close approach}
 
@@ -459,7 +470,7 @@ We can expect the remnant to settle over time into a triaxial ellipsoid \todo{re
 
 In observational astronomy it would be usual to fit parameters to surface brightness contours. That would also be possible for the simulation, but for a highly-determined system for which we know the mass and position of every particle there are other options.
 
-If we combine all the baryonic matter (disk and bulge) from both MW and M31, there are $1.12 \time 10^6$ particles to consider. In the original coordinates, the moment of inertia tensor is symmetrical, $3 \times 3$:
+If we combine all the baryonic matter (disk and bulge) from both MW and M31, there are $1.12 \times 10^6$ particles to consider. In the original coordinates, the moment of inertia tensor is symmetrical, $3 \times 3$:
 
 
 \[ I = \begin{bmatrix}
@@ -482,16 +493,16 @@ The luminous ellipsoid is thus triaxial (low symmetry).
 
 The eigenvectors give an orthonormal coordinate system oriented along the principal axes:
 \begin{align*}
-	v_a &= \left< +0.070, -0.996 , -0.050 \right> \\
-	v_b &= \left< -0.423, -0.075,  +0.903 \right> \\
-	v_c &= \left< -0.904, -0.042, -0.426 \right>
+	\hat{v}_a &= \left< +0.070, -0.996 , -0.050 \right> \\
+	\hat{v}_b &= \left< -0.423, -0.075,  +0.903 \right> \\
+	\hat{v}_c &= \left< -0.904, -0.042, -0.426 \right>
 \end{align*}
 
 The moment of inertia of an ellipsoid with semi-major axes $a, b, c$ is $A = k(b^2 + c^2)$ where $k$ is a constant that depends on total mass. Other axes have the same form by symmetry. Solving for $a, b, c$ and normalizing gives:
 \[ a = 1.0,\quad b = 0.94,\quad c = 0.77 \]
 So the minor axis is significantly smaller than the other two: the ellipsoid is approximately prolate.
 
-This was repeated for each subgroup by particle origin. The are the numbers involved are shown in Table 3.
+This was repeated for each subgroup by particle origin. The numbers involved are shown in Table 3.
 
 \begin{deluxetable}{crrr}[htb!]
 	\tablecaption{Counts of particles by origin (thousands)
@@ -501,9 +512,9 @@ This was repeated for each subgroup by particle origin. The are the numbers invo
 		\colhead{Galaxy} & \colhead{Bulge} & \colhead{Disk} & \colhead{All}
 	} 
 	\startdata
-	M31 &   95.0 &  600.0 &   695.0 \\
-	MW  &   50.0 &  375.0 &   425.0 \\
-	All &  145.0 &  975.0 &  1120.0 \\
+	M31 &   95 &  600 &   695 \\
+	MW  &   50 &  375 &   425 \\
+	All &  145 &  975 &  1120 \\
 	\enddata
 \end{deluxetable}
 
@@ -525,7 +536,7 @@ The relative axis lengths are shown in Table 4. All subgroups are triaxial, but 
 	\enddata
 \end{deluxetable}
 
-The mutual inclination angles of the major axes are shown in Table 5. Again, the former disk particles are seen to retain a distinctive structure. Clearly this collision and a single merger is not sufficient to randomize stars within the remnant. Also, this is consistent with the understanding that relaxation times are very long in collisionless systems on the scale of elliptical galaxies \citep[Section 1.2]{binney_galactic_2008}
+The mutual inclination angles of the major axes are shown in Table 5. Again, the former disk particles are seen to retain a distinctive structure. Clearly this collision and a single merger is not sufficient to randomize stars within the remnant \todo{refs?}. Also, this is consistent with the understanding that relaxation times are very long in collisionless systems on the scale of elliptical galaxies \citep[Section 1.2]{binney_galactic_2008}
 
 \begin{deluxetable}{crrrrr}[htb!]
 	\tablecaption{Mutual inclination angles of major axis by particle origin (degrees). Suffix indicates source: \textbf{d}isk/\textbf{b}ulge.
@@ -556,7 +567,7 @@ The mutual inclination angles of the major axes are shown in Table 5. Again, the
 		\label{fig:rem_mp_type}}
 \end{figure}
 
-The mass profile for each type of particle and overall is shown in Table \ref{fig:rem_mp_type}. This is similar to Figure \ref{fig:massprof0}, except that the radius now extends out to 100 kpc.
+The mass profile for each type of particle and overall is shown in Figure \ref{fig:rem_mp_type}. This is similar to Figure \ref{fig:massprof0}, except that the radius now extends out to 100 kpc.
 
 \begin{figure}[htb!]
 	\epsscale{0.8}
@@ -586,7 +597,7 @@ Previous sections have shown that MW and M31 particles remain somewhat distinct 
 \begin{figure}[htb!]
 	\epsscale{0.9}
 	\plotone{remnant_DM_rho.pdf}
-	\caption{Spherically-averaged density profiles of the remnant halo by origin.
+	\caption{Spherically-averaged density profiles of the remnant halo by origin. Note the expanded $x$-axis relative to Figure \ref{fig:rem_lum_rho}
 		\label{fig:rem_DM_rho}}
 \end{figure}
 
@@ -641,10 +652,7 @@ For comparison, the values at $t=0$ were $61.6 \pm 0.5$ kpc for the MW and $61.4
 %Querejeta + 2015 A&A 573 (connection to S0 galaxies)
 %Hopkins+2008 ApJS 175
 
-The specific angular momentum $\vec{h}$ can be calculated from
-\[ \vec{h} = \frac{\sum_i{\vec{r_i} \times m_i \vec{v}_i}}{\sum_i{m_i}} \]
-
-This was carried out for all the particles in the merger remnant and various subsets, as show in Table \ref{tbl:remn_h}
+The specific angular momentum $\vec{h}$ was calculated for all the particles in the merger remnant and various subsets, as show in Table \ref{tbl:remn_h}
 
 \begin{deluxetable}{lrrrr}[htb!]
 	\tablecaption{Specific angular momentum components for the merger remnant at t=11.44 Gyr (kpc$^2$ / Myr)
@@ -680,9 +688,18 @@ A previous section showed that the remnant is elliptical and particles of differ
 	MWb &    4.5 &   5.4 &  11.0 &   -- &   4.5 &   8.7 &   2.4 \\
 	M31d &    8.9 &   3.2 &   7.0 &   4.5 &   -- &  13.1 &   2.7 \\
 	MWh &    4.2 &  12.7 &  19.7 &   8.7 &  13.1 &   -- &  11.1 \\
-	M31d &    6.9 &   4.9 &   8.7 &   2.4 &   2.7 &  11.1 &   -- \\
+	M31h &    6.9 &   4.9 &   8.7 &   2.4 &   2.7 &  11.1 &   -- \\
 	\enddata
 \end{deluxetable}
+
+\todo{Is it a fast or slow rotator?}
+
+For the aggregate of all DM particles in the remnant at this time, the angular momentum vector has orientation $\hat{h} = \left< 0.64 ,  0.03, -0.76 \right>$, almost identical to the total for all particles (baryonic + DM) in the remnant. The magnitude $|h| = 13.15$ kpc$^2$/Myr is more than two orders of magnitude higher than the values for the individual galaxies about their respective CoM at the current epoch. 
+
+\todo{refer to time plot of this}
+
+
+
 
 Baryonic particles in the merger remnant have a small net angular momentum, and we can rotate the coordinate system to align this vector with the $z$-axis. However, the phase diagrams in Figure \ref{fig:rem_phase} show that velocities are mostly randomly distributed and few of the particles show much assymetry.
 
@@ -693,9 +710,8 @@ Baryonic particles in the merger remnant have a small net angular momentum, and 
 	\label{fig:rem_phase}}
 \end{figure}
 
-\todo{alignment between particles of different origin?}
 
-\subsubsection{Remnant DM halo}
+%\subsubsection{Remnant DM halo}
 
 %MW/M31 Halo Major Merger Remnant: Dark matter halo evolution (density / kinematics)
 %1. What is the final density profile ? Is it well fit by a Hernquist profile ? Is it more
@@ -717,9 +733,31 @@ Baryonic particles in the merger remnant have a small net angular momentum, and 
 
 
 
-\section{Discussion}
+\section{Discussion and Conclusions}
 
 \todo{add some!}
+
+
+
+\section{Acknowledgments}
+
+The author is grateful to Prof. Gurtina Besla for teaching the class which this paper is based on, as well as providing all the raw data from the earlier simulation. Also to Rixin Li for valuable coding advice.
+
+This work relied on a range of open-source software packages, many of them sponsored by NumFOCUS\footnote{https://numfocus.org/} to the benefit of us all: 
+
+\begin{itemize}
+	\item NumPy \citep{van_der_walt_numpy_2011}
+	\item Matplotlib \citep{hunter_matplotlib_2007}
+	\item pandas \citep{reback2020pandas, mckinney-proc-scipy-2010}
+	\item Astropy \citep{astropy:2013}
+	\item SciPy \citep{2020SciPy-NMeth}
+	\item IPython \citep{perez_ipython_2007}
+	\item Jupyter \citep{Kluyver:2016aa}
+	\item conda-forge\footnote{https://conda-forge.org/}
+\end{itemize}
+
+ Additionally, mpl-scatter-density\footnote{https://github.com/astrofrog/mpl-scatter-density} and Plotly\footnote{https://plotly.com/python/} were used in preparing the figures.
+
 
 
 
