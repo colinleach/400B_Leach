@@ -477,7 +477,7 @@ We can expect the remnant to settle over time into a triaxial ellipsoid \todo{re
 
 In observational astronomy it would be usual to fit parameters to surface brightness contours. That would also be possible for the simulation, but for a highly-determined system for which we know the mass and position of every particle there are other options.
 
-If we combine all the baryonic matter (disk and bulge) from both MW and M31, there are $1.12 \times 10^6$ particles to consider. In the original coordinates, the moment of inertia tensor is symmetrical, $3 \times 3$:
+If we combine all the baryonic matter (disk and bulge) from both MW and M31, there are $1.12 \times 10^6$ particles to consider. In the original coordinates, the moment of inertia tensor is symmetrical ($I_{ij} = I_{ji}$), $3 \times 3$:
 
 
 \[ I = \begin{bmatrix}
@@ -487,16 +487,15 @@ If we combine all the baryonic matter (disk and bulge) from both MW and M31, the
 		\end{bmatrix} \]
 		
 \[  I_{total} \approx \begin{bmatrix}
-		2.44e+04 & 2.55e+02 & 1.43e+03\\
-		2.55e+02 & 1.91e+04 & -1.71e+01\\
-		1.43e+03 & -1.71e+01 & 2.22e+04 
+		2.44 \times 10^4 & 2.55 \times 10^2 & 1.43 \times 10^3\\
+		2.55 \times 10^2 & 1.91 \times 10^4 & -1.71 \times 10^1\\
+		1.43 \times 10^3 & -1.71 \times 10^1 & 2.22 \times 10^4 
 	\end{bmatrix} \]\vspace{5mm}
 		
 The orientation is arbitrary at this stage. To get principal axes we need the eigenvalues and eigenvectors of $I$. 
 
 The eigenvalues give the moments of inertial about the principal axes, in arbitrary units scaled such that $A=1$:
-\[ a=1.0, b= 0.85, c=0.79 \]
-The luminous ellipsoid is thus triaxial (low symmetry).
+\[ A=1.0,\quad B= 0.85,\quad C=0.79 \]
 
 The eigenvectors give an orthonormal coordinate system oriented along the principal axes:
 \begin{align*}
@@ -507,7 +506,7 @@ The eigenvectors give an orthonormal coordinate system oriented along the princi
 
 The moment of inertia of an ellipsoid with semi-major axes $a, b, c$ is $A = k(b^2 + c^2)$ where $k$ is a constant that depends on total mass. Other axes have the same form by symmetry. Solving for $a, b, c$ and normalizing gives:
 \[ a = 1.0,\quad b = 0.94,\quad c = 0.77 \]
-So the minor axis is significantly smaller than the other two: the ellipsoid is approximately prolate.
+So remnant is triaxial (low-symmetry, with $a \ne b \ne c$). However, the minor axis $c$ is significantly smaller than the other two: the ellipsoid is approximately prolate.
 
 This was repeated for each subgroup by particle origin. The numbers involved are shown in Table 3.
 
@@ -525,7 +524,7 @@ This was repeated for each subgroup by particle origin. The numbers involved are
 	\enddata
 \end{deluxetable}
 
-The relative axis lengths are shown in Table 4. All subgroups are triaxial, but ex-MW disk particles are distinctive in retaining a particularly flattened distribution.
+The relative axis lengths are shown in Table 4. All subgroups are triaxial (low-symmetry, with $a \ne b \ne c$), but ex-MW disk particles are distinctive in retaining a particularly flattened distribution.
 
 \begin{deluxetable}{crrr}[htb!]
 	\tablecaption{Relative size of axes by particle origin
@@ -633,7 +632,12 @@ The mass profile of DM particles in the remnant halo is well fit by a Hernquist 
 	\enddata
 \end{deluxetable}
 
-For comparison, the values at $t=0$ were $61.6 \pm 0.5$ kpc for the MW and $61.4 \pm 0.2$ kpc for M31. The overall time-dependence of Hernquist radii was shown in Figure \ref{fig:hernquist_a}.
+For comparison, the values at $t=0$ were 
+\begin{align*}
+	\text{MW} &= 61.6 \pm 0.5\ kpc\\
+	\text{M31} &= 61.4 \pm 0.2\ kpc
+\end{align*}
+The overall time-dependence of Hernquist radii was shown in Figure \ref{fig:hernquist_a}.
 
 
 \subsubsection{Remnant rotational kinematics}
