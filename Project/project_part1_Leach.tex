@@ -275,9 +275,16 @@ The scale radius for M33 grows inexorably as the original halo is scattered by t
 The specific angular momentum $\vec{h}$ can be calculated from
 \[ \vec{h} = \frac{\sum_i{\vec{r_i} \times m_i \vec{v}_i}}{\sum_i{m_i}} \]
 
-The specific angular momentum of each galaxy is shown in Figure ??.
+The specific angular momentum for each large galaxy is shown in Figure \ref{fig:halo_h}. It appears that both are barely rotating at the current epoch, but spin up rapidly during first pericenter and again around the time of merger, as tidal forces convert orbit angular momentum into spin angular momentum. Differences in the remnant will be discussed in a later section
 
-\todo{add this graph}
+\begin{figure}[htb!]
+	%	\epsscale{0.8}
+	\plotone{halo_h.pdf}
+	\caption{Specific angular momentum for halo particles of each galaxy about its CoM (kpc$^2$/Myr).
+		\label{fig:halo_h}}
+\end{figure}
+
+Data for M33 is omitted from Figure \ref{fig:halo_h} for clarity. The spin-up is much more dramatic for this minor galaxy, with peaks approaching 140 kpc$^2$/Myr, making it unsuitable to plot on the same axes.
 
 \subsection{MW-M31 Close approach}
 
@@ -617,7 +624,7 @@ The mass profile of DM particles in the remnant halo is well fit by a Hernquist 
 		\label{tbl:remn_hq}}
 	\tablewidth{0pt}
 	\tablehead{
-		\colhead{Origin} & \colhead{$a$ $\pm$ err (kpc)}  
+		\colhead{Origin} & \colhead{$a$ $\pm$ StdDev (kpc)}  
 	}
 	\startdata
 	total &  $84.5 \pm 0.5$  \\
@@ -696,10 +703,9 @@ A previous section showed that the remnant is elliptical and particles of differ
 
 For the aggregate of all DM particles in the remnant at this time, the angular momentum vector has orientation $\hat{h} = \left< 0.64 ,  0.03, -0.76 \right>$, almost identical to the total for all particles (baryonic + DM) in the remnant. The magnitude $|h| = 13.15$ kpc$^2$/Myr is more than two orders of magnitude higher than the values for the individual galaxies about their respective CoM at the current epoch. 
 
-\todo{refer to time plot of this}
+We showed in Figure \ref{fig:halo_h} that halo angular momentum mostly arises from tidal forces during close approach and merger, and in Figure \ref{fig:hernquist_a} that MW halo particles subsequently have a significantly larger scale radius that M31 halo particles. As specific angular momentum is a product of radius and tangential velocity, it seems reasonable that we see a higher value for ex-MW Dark Matter when it tends to be at larger radius.
 
-
-
+\todo{fix section on phase diagrams}
 
 Baryonic particles in the merger remnant have a small net angular momentum, and we can rotate the coordinate system to align this vector with the $z$-axis. However, the phase diagrams in Figure \ref{fig:rem_phase} show that velocities are mostly randomly distributed and few of the particles show much assymetry.
 
@@ -741,11 +747,12 @@ Baryonic particles in the merger remnant have a small net angular momentum, and 
 
 \section{Acknowledgments}
 
-The author is grateful to Prof. Gurtina Besla for teaching the class which this paper is based on, as well as providing all the raw data from the earlier simulation. Also to Rixin Li for valuable coding advice.
+The author is grateful to Prof. Gurtina Besla for teaching the class which this paper is based on and allowing this rather geriatric student to participate, as well as providing all the raw data from the earlier simulation. Also to Rixin Li for valuable coding advice.
 
-This work relied on a range of open-source software packages, many of them sponsored by NumFOCUS\footnote{https://numfocus.org/} to the benefit of us all: 
+This work relied on a range of open-source software packages, many of them sponsored by NumFOCUS\footnote{https://numfocus.org/} for the benefit of us all: 
 
 \begin{itemize}
+  \setlength\itemsep{-1mm}
 	\item NumPy \citep{van_der_walt_numpy_2011}
 	\item Matplotlib \citep{hunter_matplotlib_2007}
 	\item pandas \citep{reback2020pandas, mckinney-proc-scipy-2010}
