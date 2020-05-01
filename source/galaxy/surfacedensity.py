@@ -1,5 +1,8 @@
 import numpy as np
 
+import matplotlib.pyplot as plt
+from matplotlib import rcParams
+
 import astropy.units as u
 import astropy.constants as c
 
@@ -14,7 +17,7 @@ class SurfaceDensityProfile:
     Modified from code supplied by Rixin Li.
     """
     
-    def __init__(self, gal, snap, radii=None, r_step=0.5, usesql=False):
+    def __init__(self, gal, snap, radii=None, r_step=0.5, ptype=2, usesql=False):
         """ initialization
         input:
             galaxy (str): 
@@ -28,11 +31,14 @@ class SurfaceDensityProfile:
                 for defining a list of radii if none is supplied
         """
     
-        galaxy = Galaxy(gal, snap, usesql=usesql)
-        self.t = galaxy.time.value / 1000 # elapsed time, Gyr
+        galaxy = Galaxy(gal, snap, ptype=ptype, usesql=usesql)
+        self.ptype = galaxy.data['type']
         
         tc = TimeCourse()
-        
+        self.t = tc.snap2time(snap) * u.Gyr
+        self.gal = gal
+        self.snap = snap
+
         self.com = CenterOfMass(galaxy, 2)
         self.com_r, self.com_v = tc.get_one_com(gal, snap) 
 
@@ -41,7 +47,7 @@ class SurfaceDensityProfile:
 
         # calculate the radial distances and azimuthal angles in cylindrical coordinates
         self.cyl_r_mag = np.sqrt(np.sum(self.alg_r[:2,:]**2, axis=0))
-        self.cyl_theta = np.arctan2(self.alg_r[1,:], self.alg_r[0,:])
+        self.cyl_theta = np.arctan2(self.alg_r[1,:], self.alg_r[0,:]) * 180/np.pi
 
         # check if radii is already set
         if radii is None:
@@ -71,3 +77,57 @@ class SurfaceDensityProfile:
         # this array has the same number of elements as self.Sigma, 
         # can be used for plotting
         self.r_annuli = np.sqrt(self.radii[1:] * self.radii[:-1])
+
+    def plot_xy(self, figsize=(8,8), xlim=(0,60), ylim=(0,60), 
+                pfc='b', ngout=False, fname=None):
+        """
+
+        """
+
+        fig, ax = plt.subplots(figsize=(8, 8))
+        ax.scatter(self.alg_r[0,:], self.alg_r[1,:], ec="None", fc=fc, s=0.25)
+
+        ax.set_xlabel('x (kpc)', fontsize=22)
+        ax.set_ylabel("y (kpc)", fontsize=22)
+        # ax.set_aspect=1.0
+        ax.set_title(f"{self.gal} Stellar Disk (t={self.t:.2f})", fontsize=22)
+
+        #set axis limits
+        ax.set_xlim(xlim[0], xlim[1])
+        ax.set_ylim(ylim[0], ylim[1])
+
+        #adjust tick label font size
+        label_size = 22
+        rcParams['xtick.labelsize'] = label_size 
+        rcParams['ytick.labelsize'] = label_size
+
+        fig.tight_layout()
+
+        # Save file
+        if pngout:
+            plt.savefig(fname, dpi='figure');   
+
+    def plot_r_theta_scaled(self, figsize=(8,8), xlim=(0,60), ylim=(-180,180), 
+                fc='b', pngout=False, fname=None):
+        fig, ax = plt.subplots(figsize=(8, 8))
+        ax.scatter(self.cyl_r_mag, self.cyl_theta, ec="None", fc=fc, 
+                s=0.1*np.log(self.cyl_r_mag**2))
+        
+        ax.set_xlabel('r (kpc)', fontsize=22)
+        ax.set_ylabel(r"$\theta$ (deg)", fontsize=22)
+        ax.set_title(f"{self.gal} Stellar Disk (t={self.t:.2f})", fontsize=22)
+
+        #set axis limits
+        ax.set_xlim(xlim[0], xlim[1])
+        ax.set_ylim(ylim[0], ylim[1])
+
+        #adjust tick label font size
+        label_size = 22
+        rcParams['xtick.labelsize'] = label_size 
+        rcParams['ytick.labelsize'] = label_size
+
+        fig.tight_layout()
+
+        # Save file
+        if pngout:
+            plt.savefig(fname, dpi='figure');   

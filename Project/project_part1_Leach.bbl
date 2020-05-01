@@ -26,6 +26,12 @@ Binney, J., \& Tremaine, S. 2008, Galactic Dynamics: Second Edition, by James
   Princeton University Press, Princeton, NJ USA, 2008.
 \newblock \url{http://adsabs.harvard.edu/abs/2008gady.book.....B}
 
+\bibitem[{Bodenheimer {et~al.}(2007)Bodenheimer, Laughlin, Rózyczka, \&
+  Yorke}]{bodenheimer_numerical_2007}
+Bodenheimer, P., Laughlin, G.~P., Rózyczka, M., \& Yorke, H.~W. 2007,
+  Numerical {Methods} in {Astrophysics}: {An} {Introduction} (CRC Press).
+\newblock \url{http://adsabs.harvard.edu/abs/2007nmai.conf.....B}
+
 \bibitem[{Boylan-Kolchin {et~al.}(2008)Boylan-Kolchin, Ma, \&
   Quataert}]{boylan-kolchin_dynamical_2008}
 Boylan-Kolchin, M., Ma, C.-P., \& Quataert, E. 2008, Monthly Notices of the
@@ -131,15 +137,16 @@ Marel, R. P. v.~d., Fardal, M., Besla, G., {et~al.} 2012{\natexlab{b}}, The
 Marel, R. P. v.~d., Fardal, M.~A., Sohn, S.~T., {et~al.} 2019, The
   Astrophysical Journal, 872, 24, \dodoi{10.3847/1538-4357/ab001b}
 
+\bibitem[{{M}c{K}inney(2010)}]{mckinney-proc-scipy-2010}
+{M}c{K}inney, W. 2010, in {P}roceedings of the 9th {P}ython in {S}cience
+  {C}onference, ed. {S}t\'efan van~der {W}alt \& {J}arrod {M}illman, 56 -- 61,
+  \dodoi{10.25080/Majora-92bf1922-00a}
+
 \bibitem[{Mo {et~al.}(2010)Mo, van~den Bosch, \& White}]{mo_galaxy_2010}
 Mo, H., van~den Bosch, F.~C., \& White, S. 2010, Galaxy Formation and
   Evolution, by Houjun Mo , Frank van den Bosch , Simon White, Cambridge, UK:
   Cambridge University Press, 2010.
 \newblock \url{http://adsabs.harvard.edu/abs/2010gfe..book.....M}
-
-\bibitem[{pandas~development team(2020)}]{reback2020pandas}
-pandas~development team, T. 2020, pandas-dev/pandas: Pandas, latest,  Zenodo,
-  \dodoi{10.5281/zenodo.3509134}
 
 \bibitem[{Perez \& Granger(2007)}]{perez_ipython_2007}
 Perez, F., \& Granger, B.~E. 2007, Computing in Science \& Engineering, 9, 21,
@@ -172,11 +179,6 @@ van~der Walt, S., Colbert, S.~C., \& Varoquaux, G. 2011, Computing in Science
   {Contributors}}]{2020SciPy-NMeth}
 {Virtanen}, P., {Gommers}, R., {Oliphant}, T.~E., {et~al.} 2020, Nature
   Methods, \dodoi{https://doi.org/10.1038/s41592-019-0686-2}
-
-\bibitem[{{W}es {M}c{K}inney(2010)}]{mckinney-proc-scipy-2010}
-{W}es {M}c{K}inney. 2010, in {P}roceedings of the 9th {P}ython in {S}cience
-  {C}onference, ed. {S}t\'efan van~der {W}alt \& {J}arrod {M}illman, 56 -- 61,
-  \dodoi{10.25080/Majora-92bf1922-00a}
 
 \bibitem[{Zwicky(1933)}]{zwicky_rotverschiebung_1933}
 Zwicky, F. 1933, Helvetica Physica Acta, 6, 110.

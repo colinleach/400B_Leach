@@ -10,6 +10,7 @@ from astropy.table import QTable
 
 import pandas as pd
 
+from galaxy.utilities import is_iterable
 
 class Galaxy():
     """
@@ -26,7 +27,7 @@ class Galaxy():
         usesql (bool):
             If True, data will be taken from a PostgreSQL database instead of
             text files.
-        ptype (int):
+        ptype (int or list):
             Optional. Restrict data to this particle type, for speed. 
             Only valid with usesql=True.
         stride (int):
@@ -47,6 +48,7 @@ class Galaxy():
 
         self.name = name
         self.snap = snap
+        self.ptype = ptype
 
         if usesql:
             self.read_db(ptype, stride)
@@ -97,7 +99,12 @@ class Galaxy():
             sql_d = f"SELECT {colheads} from simdata"
         sql_d += f"  where galname='{self.name}' and snap={self.snap}"
         if ptype:
-            sql_d += f" and type={ptype} ORDER BY pnum"
+            # sql_d += f" and type={ptype} ORDER BY pnum"
+            if is_iterable(ptype):
+                sql_d += f" and type in {ptype}"
+            else:
+                sql_d += f" and type={ptype}"
+        sql_d += " ORDER BY pnum"
         if stride > 1:
             sql_d = f"SELECT {colheads} from ( {sql_d} ) as t where rn % {stride} = 0" 
 

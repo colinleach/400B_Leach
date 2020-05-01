@@ -35,7 +35,7 @@ The currently-accepted model of galaxy formation involves baryonic matter (gas a
 
 However, decades of observational and theoretical studies tell us that, firstly, this by itself does not account for the wide range of galaxy morphologies seen at all epochs; secondly, there is no reason to suppose that galaxies continue in serene isolation after their formation.
 
-Attempts to model interactions and mergers between galaxies with numerical simulations goes back at least to \citet{toomre_galactic_1972}. This field continues to develop, with improvements in both hardware and algorithms allowing larger particle numbers in N-body simulations \todo{refs?} and more sophisticated treatment of gas hydrodyamics, magnetic fields and other factors.
+Attempts to model interactions and mergers between galaxies with numerical simulations goes back at least to \citet{toomre_galactic_1972}. This field continues to develop, with improvements in both hardware and algorithms allowing larger particle numbers in N-body simulations and more sophisticated treatment of gas hydrodyamics, magnetic fields and other factors \citep{bodenheimer_numerical_2007}.
 
 As with all theoretical studies, it is vital to stay connected to the best experimental data as this constantly evolves, constantly comparing models against observations. Checking simulations against high-redshift galaxies is necessary but inevitably approximate. A perhaps more rigorous test is to model the galaxies for which we have the most precise and detailed observational measurements: those which are (by far) closest to us. 
 
@@ -180,7 +180,9 @@ The mutual angle between galactic disks can have a significant impact on how tid
 
 \[ \theta = \arccos (\hat{L}_1 \cdot \hat{L}_2 ) \]
 
-Results for the MW-M31 and M33-M31 pairs are shown in Figure \ref{fig:inclinations_mutual}. For MW-M31, the angle is largely stable until near first pericenter, when tidal forces bring the two disks closer to alignment. This trend continues slowly until near second pericenter. Surprisingly, the angle increases after merger, suggesting some partitioning of particles of different origin within the remnant. \todo{CHECK THIS AGAIN!}
+Results for the MW-M31 and M33-M31 pairs are shown in Figure \ref{fig:inclinations_mutual}. For MW-M31, the angle is largely stable until near first pericenter, when tidal forces bring the two disks closer to alignment. This trend continues slowly until near second pericenter. Surprisingly, the angle increases after merger, suggesting some partitioning of particles of different origin within the remnant.
+
+\todo{\textbf{CHECK THIS AGAIN!}}
 
 \begin{figure}[ht!]
 	\plotone{inclinations_mutual.pdf}
@@ -560,7 +562,7 @@ The mutual inclination angles of the major axes are shown in Table 5. Again, the
 	\enddata
 \end{deluxetable}
 
-\todo{\textbf{Overlay this on contour fit to check it}}
+\todo{\textbf{\textbf{Overlay this on contour fit to check it}}}
 
 \todo{redo this for various radii cutoffs}
 
@@ -591,7 +593,7 @@ The mass profile for each type of particle and overall is shown in Figure \ref{f
 
 Previous sections have shown that MW and M31 particles remain somewhat distinct after merger. Figure \ref{fig:rem_mp_origin} compares their mass profiles. For baryonic particles, ex-M31 masses are higher than ex-MW at most radii, reflecting the higher baryonic mass fraction in M31. The opposite effect might be expected for the DM halo, whose total mass was significantly higher in the MW (Table \ref{tbl:aggmass}), but this is not seen out to 100 kpc. Figure \ref{fig:rem_mp_halo} suggests we have to go almost 1 Mpc out before MW particles become the largest halo component.
 
-\todo{Would be better to plot $\rho(r)$
+\todo{Would be better to plot $\rho(r)$}
 
 \begin{figure}[htb!]
 	\epsscale{0.9}
@@ -703,7 +705,7 @@ A previous section showed that the remnant is elliptical and particles of differ
 	\enddata
 \end{deluxetable}
 
-\todo{Is it a fast or slow rotator?}
+\todo{\textbf{Is it a fast or slow rotator?}}
 
 For the aggregate of all DM particles in the remnant at this time, the angular momentum vector has orientation $\hat{h} = \left< 0.64 ,  0.03, -0.76 \right>$, almost identical to the total for all particles (baryonic + DM) in the remnant. The magnitude $|h| = 13.15$ kpc$^2$/Myr is more than two orders of magnitude higher than the values for the individual galaxies about their respective CoM at the current epoch. 
 
@@ -759,7 +761,7 @@ This work relied on a range of open-source software packages, many of them spons
   \setlength\itemsep{-1mm}
 	\item NumPy \citep{van_der_walt_numpy_2011}
 	\item Matplotlib \citep{hunter_matplotlib_2007}
-	\item pandas \citep{reback2020pandas, mckinney-proc-scipy-2010}
+	\item pandas \citep{mckinney-proc-scipy-2010}
 	\item Astropy \citep{astropy:2013}
 	\item SciPy \citep{2020SciPy-NMeth}
 	\item IPython \citep{perez_ipython_2007}
