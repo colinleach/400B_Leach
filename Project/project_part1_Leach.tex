@@ -128,12 +128,33 @@ To plot motions of the three galactic CoMs it is convenient to transform to a co
 \end{figure}
 
 
+\begin{figure*}
+	\gridline{\fig{cyl_MW_000.png}{0.3\textwidth}{}
+		\fig{cyl_MW_278.png}{0.3\textwidth}{}
+		\fig{cyl_MW_300.png}{0.3\textwidth}{}}
+	\gridline{\fig{cyl_M31_000.png}{0.3\textwidth}{Start}
+		\fig{cyl_M31_278.png}{0.3\textwidth}{First pericenter}
+		\fig{cyl_M31_300.png}{0.3\textwidth}{Near apocenter}}
+	\caption{Disk particles from MW (top) and M31 (bottom) at three timepoints; cylindrical coordinates.
+		\label{fig:6cyl}}
+\end{figure*}
+
 In vdM12 this is referred to as the X',Y',Z' coordinate system and their figure 2 shows multiple views of how the galaxies move through time. In this paper, Figures \ref{fig:traj_xy} and  \ref{fig:traj_z} show some alternative views in essentially the same coordinates (up to a sign; the $x$ and $z$ axes are flipped). Figure \ref{fig:traj_xy} reproduces the top left panel of vdM12. Figure \ref{fig:traj_z} shows that MW and M31 remain close to the starting plane while M33 has larger, irregular out-of-plane motions.
 
 Relative motions of the CoMs are shown against time in Figures \ref{fig:rel_sep} and \ref{fig:rel_vel}, equivalent to figures 3 and 4 in vdM12.
 
 
 There is a MW-M31 close approach with first pericenter at 3.96 Gyr with a minimum separation of 35.1 kpc, then a separation to 173 kpc at apocenter and finally a convergence to 7.8 kpc at second pericenter and merger between 5.9 - 6.5 Gyr. Relative velocities spike sharply during these approaches, as potential energy is converted to kinetic energy, before declining to essentially zero.
+
+\begin{figure}[hbt!]
+	\epsscale{0.9}
+	\plotone{collision_278}
+	\caption{Orthogonal views of the three galaxies (disk particles only) at first apocenter. \todo{improve this visually!}
+		\label{fig:3view_first_apo}}
+\end{figure}
+
+Figure \ref{fig:3view_first_apo}
+
 
 Meanwhile, in this simulation run M33 remains separate throughout, albeit on a decaying orbit. In vdM12 the authors investigate the effect of small changes in initial conditions and estimate a 9\% chance of an M33-MW collision at first pericenter, before the M31-MW merger.
 
@@ -165,6 +186,8 @@ Figure \ref{fig:rotcurve0} shows the rotation curves expected from these mass pr
 \todo{identify the bar?}\ 
 
 \todo{more on spiral arms}
+
+
 
 \subsubsection{Inclinations}
 
@@ -418,7 +441,7 @@ To focus on the baryonic matter, Figure \ref{fig:trans_l} hides the DM halo and 
 %Querejeta + 2015 A&A 573 (connection to S0 galaxies)
 %Hopkins+2008 ApJS 175
 
-After second pericenter, the MW and M31 never fully separate and eventually merge. Their mass ratio is 1:1.6 for stellar matter and 1:1 when the DM halo is included. This is thus a `major merger' in the terminology of \todo{ref?}. A 1:1 mass ratio has been reported \citep{boylan-kolchin_dynamical_2008, ji_lifetime_2014} to lead to the shortest coalescence time.
+After second pericenter, the MW and M31 never fully separate and eventually merge. Their mass ratio is 1:1.6 for stellar matter and 1:1 when the DM halo is included. This is thus a `major merger', which is generally taken to mean closer than 1:4 luminosity ratio (or mass ratio as a proxy). A 1:1 mass ratio has been reported \citep{boylan-kolchin_dynamical_2008, ji_lifetime_2014} to lead to the shortest coalescence time.
 
 \begin{figure}[htb!]
 	\epsscale{1.0}

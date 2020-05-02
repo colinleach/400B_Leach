@@ -782,4 +782,19 @@ class TimeCourse():
         db = DB()
         time = db.run_query(query)
         return time[0][0]
-       
+
+    def time2snap(self, time):
+        """
+        Arg:
+            time (float): value in Gyr
+        Returns:
+            List of closest values, often but not reliably just one.
+        """
+
+        query = f"""
+        SELECT snap, t from relmotion 
+        WHERE t BETWEEN {time}-0.005 AND {time}+0.005"""
+        db = DB()
+        result = db.run_query(query)
+        return result
+             
