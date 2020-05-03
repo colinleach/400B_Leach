@@ -4,6 +4,7 @@
 \usepackage{booktabs} % helps with pandas to_latex() output
 \usepackage{multirow}
 \usepackage{amsmath}
+%\usepackage{dblfloatfix}    % To enable figures at the bottom of page
 
 \graphicspath{{img/}}
 
@@ -128,16 +129,6 @@ To plot motions of the three galactic CoMs it is convenient to transform to a co
 \end{figure}
 
 
-\begin{figure*}
-	\gridline{\fig{cyl_MW_000.png}{0.3\textwidth}{}
-		\fig{cyl_MW_278.png}{0.3\textwidth}{}
-		\fig{cyl_MW_300.png}{0.3\textwidth}{}}
-	\gridline{\fig{cyl_M31_000.png}{0.3\textwidth}{Start}
-		\fig{cyl_M31_278.png}{0.3\textwidth}{First pericenter}
-		\fig{cyl_M31_300.png}{0.3\textwidth}{Near apocenter}}
-	\caption{Disk particles from MW (top) and M31 (bottom) at three timepoints; cylindrical coordinates.
-		\label{fig:6cyl}}
-\end{figure*}
 
 In vdM12 this is referred to as the X',Y',Z' coordinate system and their figure 2 shows multiple views of how the galaxies move through time. In this paper, Figures \ref{fig:traj_xy} and  \ref{fig:traj_z} show some alternative views in essentially the same coordinates (up to a sign; the $x$ and $z$ axes are flipped). Figure \ref{fig:traj_xy} reproduces the top left panel of vdM12. Figure \ref{fig:traj_z} shows that MW and M31 remain close to the starting plane while M33 has larger, irregular out-of-plane motions.
 
@@ -147,13 +138,13 @@ Relative motions of the CoMs are shown against time in Figures \ref{fig:rel_sep}
 There is a MW-M31 close approach with first pericenter at 3.96 Gyr with a minimum separation of 35.1 kpc, then a separation to 173 kpc at apocenter and finally a convergence to 7.8 kpc at second pericenter and merger between 5.9 - 6.5 Gyr. Relative velocities spike sharply during these approaches, as potential energy is converted to kinetic energy, before declining to essentially zero.
 
 \begin{figure}[hbt!]
-	\epsscale{0.9}
+	\epsscale{1.1}
 	\plotone{collision_278}
 	\caption{Orthogonal views of the three galaxies (disk particles only) at first apocenter. \todo{improve this visually!}
 		\label{fig:3view_first_apo}}
 \end{figure}
 
-Figure \ref{fig:3view_first_apo}
+Figure \ref{fig:3view_first_apo} shows a view of first apocenter as a disk density plot from three orthogonal directions. The full animation is available online\footnote{\url{https://github.com/colinleach/400B_Leach/blob/master/animations/collisions_disk.mp4}}
 
 
 Meanwhile, in this simulation run M33 remains separate throughout, albeit on a decaying orbit. In vdM12 the authors investigate the effect of small changes in initial conditions and estimate a 9\% chance of an M33-MW collision at first pericenter, before the M31-MW merger.
@@ -170,7 +161,7 @@ Figure \ref{fig:massprof0} shows the cumulative mass profile, by particle type a
 
 Figure \ref{fig:rotcurve0} shows the rotation curves expected from these mass profiles. Without the DM halo the circular velocity would peak within a few kpc of the CoM then fall steadily at larger radii. With the more diffuse DM halo added, we see the relatively flat overall rotation curves which attracted the attention of astronomers including \citet{zwicky_rotverschiebung_1933} and \citet{rubin_rotation_1970}
 
-\begin{figure}[bht!]
+\begin{figure}[!bht!]
 	\epsscale{1.2}
 	\plotone{rotcurve_000}
 	\caption{Rotation curves for each galaxy at the current epoch.
@@ -179,6 +170,17 @@ Figure \ref{fig:rotcurve0} shows the rotation curves expected from these mass pr
 
 \todo{set xlim, make y axis log}\ 
 
+%\begin{figure*}[!bht]
+%	\gridline{\fig{cyl_MW_000.png}{0.3\textwidth}{}
+%		\fig{cyl_MW_278.png}{0.3\textwidth}{}
+%		\fig{cyl_MW_300.png}{0.3\textwidth}{}}
+%	\gridline{\fig{cyl_M31_000.png}{0.3\textwidth}{Start}
+%		\fig{cyl_M31_278.png}{0.3\textwidth}{First pericenter}
+%		\fig{cyl_M31_300.png}{0.3\textwidth}{Near apocenter}}
+%	\caption{Disk particles from MW (top) and M31 (bottom) at three timepoints; cylindrical coordinates.
+%		\label{fig:6cyl}}
+%\end{figure*}
+
 \subsection{Disk particles}
 
 \subsubsection{Structure}
@@ -186,6 +188,17 @@ Figure \ref{fig:rotcurve0} shows the rotation curves expected from these mass pr
 \todo{identify the bar?}\ 
 
 \todo{more on spiral arms}
+
+
+\begin{figure}[!bht!]
+	\epsscale{1.2}
+	\plotone{6cyl_grab}
+	\caption{Disk particles from MW (top) and M31 (bottom) at three timepoints; cylindrical coordinates.
+		\label{fig:6cyl}}
+\end{figure}
+
+Disk structure and evolution may be easier to visualize if we transform to cylindrical coordinates (with the angular momentum vector along the $z$-axis) and use $r-\theta$ plots. Figure \ref{fig:6cyl} shows this for the two large galaxies at several timepoints (as labelled).  Spiral arms show up in both early in the simulation. First pericenter has, if anything, a smoothing effect, but 0.3 Gyr later we see highly prominent tidal tails. These images are taken from a full animation for each galaxy, available online\footnote{\url{https://github.com/colinleach/400B_Leach/tree/master/animations}, files cyl\_M*\_disk.mp4 }
+
 
 
 
