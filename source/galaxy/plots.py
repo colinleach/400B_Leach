@@ -192,7 +192,7 @@ class Plots():
             plt.savefig(fname, dpi='figure');   
             
     def plot_phase(self, rn, vn, R, Vcirc, galname, t, xlim=20, ylim=200, 
-                    bins=500, pngout=False, fname=None):
+                    bins=500, colorbar=True, pngout=False, fname=None):
         """
         """
 
@@ -208,7 +208,8 @@ class Plots():
         # looking at galaxy edge on along x axis, vy is line of sight velocity
 
         plt.hist2d(rn[0,:], vn[1,:], bins=bins, norm=LogNorm())
-        plt.colorbar()
+        if colorbar:
+            plt.colorbar()
 
         # Add the circular velocity
         plt.plot(R, Vcirc, color="red")
@@ -220,6 +221,8 @@ class Plots():
 
         plt.xlim(-xlim, xlim)
         plt.ylim(-ylim, ylim)
+
+        plt.title(f'{galname}, t = {t:5.2f} Gyr', fontsize=26, weight='bold')  
 
         # Save file
         if pngout:

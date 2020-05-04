@@ -5,6 +5,7 @@
 \usepackage{multirow}
 \usepackage{amsmath}
 %\usepackage{dblfloatfix}    % To enable figures at the bottom of page
+\usepackage{lipsum}
 
 \graphicspath{{img/}}
 
@@ -21,7 +22,9 @@
 
 \begin{abstract}
 	
-\todo{Add a concise and intelligent summary of the paper, once I get a clearer idea what it will include (and how to seem intelligent).}
+\todo{Add a concise and intelligent summary of the paper, once I get a clearer idea what it will include (and how to seem intelligent).}\vspace{5mm}
+
+\lipsum[1-1]
 	
 \end{abstract}
 
@@ -42,7 +45,7 @@ As with all theoretical studies, it is vital to stay connected to the best exper
 
 The largest galaxies in our Local Group (LG) are the Milky Way (MW), Andromeda (M31) and Triangulum (M33).  A simulation of MW--M31--M33 orbital evolution was described previously in \citet{marel_m31_2012}, hereafter vdM12. That paper included an extensive analysis of both N-body simulations and semi-analytic orbit integrations. The present study uses data from the same N-body simulation to carry out further computational analysis.
 
-The simulation was based on data in \citep{marel_m31_2012-1} suggesting that M31 is approaching the MW directly with little proper motion detected by Hubble Space Telescope studies. Recent data from Gaia DR2 \citep{brown_gaia_2018} suggest that infall is slightly less radial than previously thought \citep{marel_first_2019}, leading to a slightly later first approach with a larger pericenter distance. However, detailed simulations based on that new data have not yet been carried out.
+The simulation was based on data in \citet{marel_m31_2012-1} suggesting that M31 is approaching the MW directly with little proper motion detected by Hubble Space Telescope studies. Recent data from Gaia DR2 \citep{brown_gaia_2018} suggest that infall is slightly less radial than previously thought \citep{marel_first_2019}, leading to a slightly later first approach with a larger pericenter distance. However, detailed simulations based on that new data have not yet been carried out.
 
 This paper will review the initial conditions and time evolution for multiple physical parameters of the simulation. Particular attention will be paid to the first MW-M31 close approach around 4 Gyr, the second approach and merger around 6 Gyr, and the structure and dynamics of the post-merger remnant.
 
@@ -159,7 +162,7 @@ Figure \ref{fig:massprof0} shows the cumulative mass profile, by particle type a
 		\label{fig:massprof0}}
 \end{figure}
 
-Figure \ref{fig:rotcurve0} shows the rotation curves expected from these mass profiles. Without the DM halo the circular velocity would peak within a few kpc of the CoM then fall steadily at larger radii. With the more diffuse DM halo added, we see the relatively flat overall rotation curves which attracted the attention of astronomers including \citet{zwicky_rotverschiebung_1933} and \citet{rubin_rotation_1970}
+Figure \ref{fig:rotcurve0} shows the rotation curves expected from these mass profiles. Without the DM halo the circular velocity would peak within a few kpc of the CoM then fall steadily at larger radii. With the more diffuse DM halo added, we see the relatively flat overall rotation curves which attracted the attention of 20th century astronomers including \citet{zwicky_rotverschiebung_1933} and \citet{rubin_rotation_1970}
 
 \begin{figure}[!bht!]
 	\epsscale{1.2}
@@ -167,8 +170,6 @@ Figure \ref{fig:rotcurve0} shows the rotation curves expected from these mass pr
 	\caption{Rotation curves for each galaxy at the current epoch.
 		\label{fig:rotcurve0}}
 \end{figure}
-
-\todo{set xlim, make y axis log}\ 
 
 %\begin{figure*}[!bht]
 %	\gridline{\fig{cyl_MW_000.png}{0.3\textwidth}{}
@@ -181,7 +182,7 @@ Figure \ref{fig:rotcurve0} shows the rotation curves expected from these mass pr
 %		\label{fig:6cyl}}
 %\end{figure*}
 
-\subsection{Disk particles}
+\subsection{Stellar disk}
 
 \subsubsection{Structure}
 
@@ -197,10 +198,7 @@ Figure \ref{fig:rotcurve0} shows the rotation curves expected from these mass pr
 		\label{fig:6cyl}}
 \end{figure}
 
-Disk structure and evolution may be easier to visualize if we transform to cylindrical coordinates (with the angular momentum vector along the $z$-axis) and use $r-\theta$ plots. Figure \ref{fig:6cyl} shows this for the two large galaxies at several timepoints (as labelled).  Spiral arms show up in both early in the simulation. First pericenter has, if anything, a smoothing effect, but 0.3 Gyr later we see highly prominent tidal tails. These images are taken from a full animation for each galaxy, available online\footnote{\url{https://github.com/colinleach/400B_Leach/tree/master/animations}, files cyl\_M*\_disk.mp4 }
-
-
-
+Disk structure and evolution may be easier to visualize if we transform to cylindrical coordinates (with the angular momentum vector along the $z$-axis) and use $r-\theta$ plots. Figure \ref{fig:6cyl} shows this for the two large galaxies at several timepoints (as labelled).  Spiral arms show up in both early in the simulation. First pericenter has, if little effect, but 0.3 Gyr later we see highly prominent tidal tails. These images are taken from a full animation for each galaxy, available online\footnote{\url{https://github.com/colinleach/400B_Leach/tree/master/animations}, files cyl\_M*\_disk.mp4 }
 
 \subsubsection{Inclinations}
 
@@ -241,17 +239,19 @@ M33 is on an irregular, elliptical and decaying orbit about the MW-M31 merger re
 		\label{fig:vel_disp}}
 \end{figure}
 
-\subsection{Galactic Bulge}
+\todo{disk rotation curve, $V_{rot}/\sigma$}
+
+\subsection{Stellar Bulge}
 
 A bulge is present in the MW and M31 but not M33. This region of generally older stars extends further above and below the central plane than disk stars. Kinematics of the bulge are more typical of an elliptical galaxy than a spiral disk.
 
-In a study of elliptical galaxies, de Vaucouleurs showed that surface brightness falls off exponential with radius and approximately as the one-fourth power of radius \citep{de_vaucouleurs_recherches_1948}. Later work found that this was too restrictive for a wider population of galaxies, so Sérsic generalized the formula to have the inverse exponential $n$ as an additional free parameter \citep{sersic_influence_1963}:
+In a study of elliptical galaxies, de Vaucouleurs showed that surface brightness falls off exponentially from the center and approximately as the one-fourth power of radius \citep{de_vaucouleurs_recherches_1948}. Later work found that this was too restrictive for a wider population of galaxies, so Sérsic generalized the formula to have the inverse exponential $n$ as an additional free parameter \citep{sersic_influence_1963}:
 
 \[ \log_{10} \left( \frac{I(r)}{I_e} \right) =  -3.3307 \left[ \left( \frac{r}{R_e} \right)^{1/n} - 1 \right] \]
 
 Here $R_e$ is the radius with which half the light is emitted,  $I_e$ is the surface brightness at $R_e$ and $n$ is the Sérsic parameter.
 
-This formula is intended for analyzing photographic images and is in terms of light intensity. We have no brightness data in the current simulation, but for systems with few young blue stars we can assume the mass to light ratio $M/L \sim 1$. This is probably a reasonable approximation for undisturbed bulges and for an elliptical merger remnant long after the collision. $R_e$ is then the radius enclosing half the mass.
+This formula is intended for analyzing photographic images and is in terms of light intensity. We have no brightness data in the current simulation, but for systems with few young blue stars we can assume the mass to light ratio $\Upsilon \equiv M/L \sim 1$. This is probably a reasonable approximation for undisturbed bulges and for an elliptical merger remnant long after the collision. $R_e$ is then the radius enclosing half the mass.
 
 \begin{figure}[bht!]
 	\epsscale{1}
@@ -271,19 +271,19 @@ We can see from Figure \ref{fig:sersic_Re} that for each galaxy the bulge half-m
 
 The Sérsic parameter $n$ was estimated by a nonlinear least squares fit to the bulge mass profile. As shown in Figure \ref{fig:sersic_n} it is fairly constant around 5.5 for any period with meaningful data. The spikes around 6 Gyr should probably be ignored: many values in this collision period are missing, as the least-squares fit failed, and the available data has substantially larger error bars than during stable epochs.
 
-The larger half-mass radius of M31 is reflected in the mass density profile, as shown in Figure \ref{fig:bulge_mp}. MW bulge stars have a higher central peak, M31 bulge stars are more numerous at larger radii. This is true both early in the simulation, and in the merger remnant at late times. For both galaxy bulge stars, the central peak is less pronounced post-merger.
-
 \begin{figure}[bht!]
-	\epsscale{0.82}
+	\epsscale{1.0}
 	\plotone{bulge_mp}
 	\caption{Bulge mass density profile for both galaxies at the beginning and end of the simulation.
 		\label{fig:bulge_mp}}
 \end{figure}
 
+The larger half-mass radius of M31 is reflected in the mass density profile, as shown in Figure \ref{fig:bulge_mp}. MW bulge stars have a higher central peak, M31 bulge stars are more numerous at larger radii. This is true both early in the simulation, and in the merger remnant at late times. For both galaxy bulge stars, the central peak is less pronounced post-merger.
+
 The Sérsic fit for both galaxy bulges looks reasonable outside the central density peak, as shown for the MW in Figure \ref{fig:MW_bulge_sersic}. The plot for M31 (not included here) is very  similar.
 
 \begin{figure}[bht!]
-	\epsscale{0.8}
+	\epsscale{1.0}
 	\plotone{MW_bulge_sersic}
 	\caption{MW bulge mass density profiles and Sérsic best fits. Time points are the beginning, the pre-merger pericenter, and the end of the simulation
 		\label{fig:MW_bulge_sersic}}
@@ -313,7 +313,7 @@ The scale radius for M33 grows inexorably as the original halo is scattered by t
 The specific angular momentum $\vec{h}$ can be calculated from
 \[ \vec{h} = \frac{\sum_i{\vec{r_i} \times m_i \vec{v}_i}}{\sum_i{m_i}} \]
 
-The specific angular momentum for each large galaxy is shown in Figure \ref{fig:halo_h}. It appears that both are barely rotating at the current epoch, but spin up rapidly during first pericenter and again around the time of merger, as tidal forces convert orbit angular momentum into spin angular momentum. Differences in the remnant will be discussed in a later section
+The halo specific angular momentum for each large galaxy is shown in Figure \ref{fig:halo_h}. It appears that both are barely rotating at the current epoch, but spin up rapidly during first pericenter and again around the time of merger, as tidal forces convert orbit angular momentum into spin angular momentum. Differences in the remnant will be discussed in a later section
 
 \begin{figure}[htb!]
 	%	\epsscale{0.8}
@@ -330,7 +330,7 @@ Data for M33 is omitted from Figure \ref{fig:halo_h} for clarity. The spin-up is
 
 The MW and M31 disks have angular momentum vectors inclined at an angle of $52^\circ$ to each other shortly before pericenter, making this a prograde approach.
 
-
+\todo{Clarify this!}
 
 \subsubsection{Tidal tails and bridges}
 
@@ -361,7 +361,7 @@ The MW and M31 disks have angular momentum vectors inclined at an angle of $52^\
 
 The presence of long, symmetrical tails giving some galaxies a distinct `S'-shape has been described at least as far back as \citet{zwicky_novel_1955}. Some astronomers postulated that these were the result of tidal forces during close, glancing encounters, but this was often contested until a detailed computational study by \citet{toomre_galactic_1972}.
 
-Reviewing a broad range of N-body simulations, \citet{barnes_dynamics_1992} noted that ``such features are clearly \textit{relics} of recent collisions rather than ongoing interactions.'' In our simulation, both MW and M31 disks remain near-circular during much of the close approach, but conspicuous tails develop as the centers then move further apart. We also see a more sparsely-populated bridge forming between the galaxies.
+Reviewing a broad range of N-body simulations, \citet{barnes_dynamics_1992} noted that ``such features are clearly \textit{relics} of recent collisions rather than ongoing interactions.'' In our simulation, both MW and M31 disks remain near-circular during much of the close approach, but conspicuous tails develop as the centers then move further apart: see Figure \ref{fig:6cyl} and the animations referred to in Footnote 3. We also see a more sparsely-populated bridge forming between the galaxies.
 
 To determine the nature and origin of stars in this region, a manual selection was performed as in Figure \ref{fig:bridge}. Stars within the yellow rectangle (left panel) are shown with velocity vectors (center panel) and origin (right panel). Velocities are mostly moderate (mean 195 km/s, range 19-586 km/s), with relatively few stars having high kinetic energy. 
 
@@ -369,7 +369,8 @@ To determine the nature and origin of stars in this region, a manual selection w
 \begin{figure}[ht!]
 	\epsscale{1.12}
 	\plotone{selected.pdf}
-	\caption{Manual selection of bridge particles at 0.33 Gyr after the first MW-M31 pericenter. The left panel shows stellar surface density and the selected region. The center panel shows velocity vectors for these stars and the right panel shows origin by galaxy and particle type. Orientation is with MW top, M31 bottom and M33 lower left. \todo{\textit{make this page-width in final layout}}
+	\caption{Manual selection of bridge particles at 0.33 Gyr after the first MW-M31 pericenter. The left panel shows stellar surface density and the selected region. The center panel shows velocity vectors for these stars and the right panel shows origin by galaxy and particle type. Orientation is with MW top, M31 bottom and M33 lower left. \\
+		\todo{\textit{make this page-width in final layout}}
 	\label{fig:bridge}}
 \end{figure}
 
@@ -403,6 +404,12 @@ The different orientations mean that symmetry about the midplane is imperfect, s
 \todo{identify, trace history, trace fate}\ 
 
 \todo{Jacobi radius}\ 
+
+\todo{Tail kinematics: $\sigma$, energy}\ 
+
+\todo{Lifetime of tails}\ 
+
+
 
 \subsubsection{Mass transfer}
 
@@ -502,7 +509,7 @@ The 3D trajectories are complex, but Figures \ref{fig:MW_M31_traj_time} and \ref
 
 \subsubsection{Remnant shape}
 
-\todo{how to get principal axes? boxiness?}
+\todo{boxiness?}
 
 We can expect the remnant to settle over time into a triaxial ellipsoid \todo{ref?}. These are superficially rather featureless, as in Figure \ref{fig:rem_shape}. 
 
@@ -513,7 +520,7 @@ We can expect the remnant to settle over time into a triaxial ellipsoid \todo{re
 		\label{fig:rem_shape}}
 \end{figure}
 
-In observational astronomy it would be usual to fit parameters to surface brightness contours. That would also be possible for the simulation, but for a highly-determined system for which we know the mass and position of every particle there are other options.
+In observational astronomy it would be usual to fit ellipses to surface brightness contours. That is also possible for the simulation, but for a highly-determined system for which we know the mass and position of every particle there are other options.
 
 If we combine all the baryonic matter (disk and bulge) from both MW and M31, there are $1.12 \times 10^6$ particles to consider. In the original coordinates, the moment of inertia tensor is symmetrical ($I_{ij} = I_{ji}$), $3 \times 3$:
 
@@ -532,7 +539,7 @@ If we combine all the baryonic matter (disk and bulge) from both MW and M31, the
 		
 The orientation is arbitrary at this stage. To get principal axes we need the eigenvalues and eigenvectors of $I$. 
 
-The eigenvalues give the moments of inertial about the principal axes, in arbitrary units scaled such that $A=1$:
+The eigenvalues give the moments of inertia about the principal axes, in arbitrary units scaled such that $A=1$:
 \[ A=1.0,\quad B= 0.85,\quad C=0.79 \]
 
 The eigenvectors give an orthonormal coordinate system oriented along the principal axes:
@@ -544,7 +551,7 @@ The eigenvectors give an orthonormal coordinate system oriented along the princi
 
 The moment of inertia of an ellipsoid with semi-major axes $a, b, c$ is $A = k(b^2 + c^2)$ where $k$ is a constant that depends on total mass. Other axes have the same form by symmetry. Solving for $a, b, c$ and normalizing gives:
 \[ a = 1.0,\quad b = 0.94,\quad c = 0.77 \]
-So remnant is triaxial (low-symmetry, with $a \ne b \ne c$). However, the minor axis $c$ is significantly smaller than the other two: the ellipsoid is approximately prolate.
+So the remnant is triaxial (low-symmetry, with $a \ne b \ne c$). However, the minor axis $c$ is significantly smaller than the other two: the ellipsoid is approximately prolate ($a \approx b > c$).
 
 This was repeated for each subgroup by particle origin. The numbers involved are shown in Table 3.
 
@@ -631,6 +638,8 @@ Previous sections have shown that MW and M31 particles remain somewhat distinct 
 
 \todo{Would be better to plot $\rho(r)$}
 
+\todo{\textbf{Does stellar density profile agree with predictions for elliptical galaxies?}}
+
 \begin{figure}[htb!]
 	\epsscale{0.9}
 	\plotone{remnant_lum_rho.pdf}
@@ -670,7 +679,7 @@ The mass profile of DM particles in the remnant halo is well fit by a Hernquist 
 	\enddata
 \end{deluxetable}
 
-For comparison, the values at $t=0$ were 
+For comparison, the $a$ values at $t=0$ were 
 \begin{align*}
 	\text{MW} &= 61.6 \pm 0.5\ kpc\\
 	\text{M31} &= 61.4 \pm 0.2\ kpc
@@ -701,7 +710,9 @@ The overall time-dependence of Hernquist radii was shown in Figure \ref{fig:hern
 %Querejeta + 2015 A&A 573 (connection to S0 galaxies)
 %Hopkins+2008 ApJS 175
 
-The specific angular momentum $\vec{h}$ was calculated for all the particles in the merger remnant and various subsets, as show in Table \ref{tbl:remn_h}
+The specific angular momentum $\vec{h}$ was calculated for all the particles in the merger remnant and various subsets, as shown in Table \ref{tbl:remn_h}. Differences tend to be small for stellar particles regardless of origin, larger for the ex-M31 halo and much larger for the ex-MW halo.
+
+We showed in Figure \ref{fig:halo_h} that halo angular momentum mostly arises from tidal forces during close approach and merger, and in Figure \ref{fig:hernquist_a} that MW halo particles subsequently have a significantly larger scale radius than M31 halo particles. As specific angular momentum is a product of radius and tangential velocity, it seems reasonable that we see a higher value for ex-MW Dark Matter when it tends to be at larger radius.
 
 \begin{deluxetable}{lrrrr}[htb!]
 	\tablecaption{Specific angular momentum components for the merger remnant at t=11.44 Gyr (kpc$^2$ / Myr)
@@ -743,6 +754,10 @@ A previous section showed that the remnant is elliptical and particles of differ
 
 \todo{\textbf{Is it a fast or slow rotator?}}
 
+\todo{\textbf{Velocity dispersion of the stellar remnant as a function of radius}}
+
+\todo{\textbf{Does the virial theorem work to return the total baryonic mass?}}
+
 For the aggregate of all DM particles in the remnant at this time, the angular momentum vector has orientation $\hat{h} = \left< 0.64 ,  0.03, -0.76 \right>$, almost identical to the total for all particles (baryonic + DM) in the remnant. The magnitude $|h| = 13.15$ kpc$^2$/Myr is more than two orders of magnitude higher than the values for the individual galaxies about their respective CoM at the current epoch. 
 
 We showed in Figure \ref{fig:halo_h} that halo angular momentum mostly arises from tidal forces during close approach and merger, and in Figure \ref{fig:hernquist_a} that MW halo particles subsequently have a significantly larger scale radius that M31 halo particles. As specific angular momentum is a product of radius and tangential velocity, it seems reasonable that we see a higher value for ex-MW Dark Matter when it tends to be at larger radius.
@@ -758,6 +773,11 @@ Baryonic particles in the merger remnant have a small net angular momentum, and 
 	\label{fig:rem_phase}}
 \end{figure}
 
+\todo{\textbf{remnant DM $\sigma$, virial mass}}
+
+\todo{\textbf{$V_{esc}(r)$}}
+
+\todo{\textbf{$r_{200}$}}
 
 %\subsubsection{Remnant DM halo}
 
@@ -783,13 +803,13 @@ Baryonic particles in the merger remnant have a small net angular momentum, and 
 
 \section{Discussion and Conclusions}
 
-\todo{add some!}
+\todo{\textbf{\textit{add some!}}}
 
 
 
 \section{Acknowledgments}
 
-The author is grateful to Prof. Gurtina Besla for teaching the class which this paper is based on and allowing this rather geriatric student to participate, as well as providing all the raw data from the earlier simulation. Also to Rixin Li for valuable coding advice.
+The author is grateful to Prof. Gurtina Besla for teaching the class on which this paper is based and for allowing this rather geriatric student to participate, as well as providing all the raw data from the earlier simulation described in vdM12. Also to Rixin Li for valuable coding advice.
 
 This work relied on a range of open-source software packages, many of them sponsored by NumFOCUS\footnote{https://numfocus.org/} for the benefit of us all: 
 
