@@ -171,13 +171,15 @@ Figure \ref{fig:rotcurve0} shows the rotation curves expected from these mass pr
 		\label{fig:rotcurve0}}
 \end{figure}
 
+% The next bit is commented out for performance reasons. These pdf files are so complicated to render that it's much quicker to make it once, take a screen grab and then use that png file
+
 %\begin{figure*}[!bht]
-%	\gridline{\fig{cyl_MW_000.png}{0.3\textwidth}{}
-%		\fig{cyl_MW_278.png}{0.3\textwidth}{}
-%		\fig{cyl_MW_300.png}{0.3\textwidth}{}}
-%	\gridline{\fig{cyl_M31_000.png}{0.3\textwidth}{Start}
-%		\fig{cyl_M31_278.png}{0.3\textwidth}{First pericenter}
-%		\fig{cyl_M31_300.png}{0.3\textwidth}{Near apocenter}}
+%	\gridline{\fig{cyl_MW_000.pdf}{0.3\textwidth}{}
+%		\fig{cyl_MW_278.pdf}{0.3\textwidth}{}
+%		\fig{cyl_MW_300.pdf}{0.3\textwidth}{}}
+%	\gridline{\fig{cyl_M31_000.pdf}{0.3\textwidth}{Start}
+%		\fig{cyl_M31_278.pdf}{0.3\textwidth}{First pericenter}
+%		\fig{cyl_M31_300.pdf}{0.3\textwidth}{Near apocenter}}
 %	\caption{Disk particles from MW (top) and M31 (bottom) at three timepoints; cylindrical coordinates.
 %		\label{fig:6cyl}}
 %\end{figure*}
@@ -777,8 +779,6 @@ Baryonic particles in the merger remnant have a small net angular momentum, and 
 
 \todo{\textbf{$V_{esc}(r)$}}
 
-\todo{\textbf{$r_{200}$}}
-
 %\subsubsection{Remnant DM halo}
 
 %MW/M31 Halo Major Merger Remnant: Dark matter halo evolution (density / kinematics)
@@ -799,7 +799,24 @@ Baryonic particles in the merger remnant have a small net angular momentum, and 
 %Frenk & White 2012 Annalen der Physik 524, 507 Review article
 %Abadi + 20 MNRAS, 2010 407
 
+\subsubsection{Virial radius}
 
+The DM halo obviously has no sharp outer edge, it just gradually fades into the inter-galactic medium. One popular convention is to use the $r_{200}$ or ``virial radius'' as a limit: the radius at which the density is $200\times$ the cosmological critical density $\rho_c$.
+
+For a flat LambdaCDM cosmology, we can calculate the critical density from
+\[ \rho_c(t) = \frac{3 H^2(t)}{8 \pi G} \] 
+Currently \citep{planck_collaboration_planck_2016} we have \\
+$H(0) \equiv H_0 = 67.74$ km/s/Mpc \\
+$\rho_{c,0} = 127.35\ M_\sun/\text{kpc}^3$
+
+The simulation ends more than 11 Gyr in the future, so we need a different value for $H(t)$. By then the universe will be well into a Dark Energy-dominated epoch with near-exponential expansion. Then $\dot{H}(t) \approx 0$ and $H(t)$ asymptotically approaches its final value of $H_{\infty} \approx 57$ km/s/Mpc.
+
+This gives us a value of $\rho_{c,\infty} \approx 90\ M_\sun/\text{kpc}^3$. Then $r_{200}$ is the radius at which the spherically-averaged remnant density falls below $1.8 \times 10^4\ M_\sun/\text{kpc}^3$. At the final timepoint, this is 
+\[ r_{200} \approx 170\ \text{kpc} \]
+
+The virial mass, enclosed within the virial radius, is $1.7 \times 10^{12}\ M_\Sun$, of which 87\% is Dark Matter.
+
+\todo{Some discussion would be useful!}
 
 \section{Discussion and Conclusions}
 
