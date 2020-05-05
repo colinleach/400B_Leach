@@ -5,7 +5,7 @@
 \usepackage{multirow}
 \usepackage{amsmath}
 %\usepackage{dblfloatfix}    % To enable figures at the bottom of page
-\usepackage{lipsum}
+\usepackage{lipsum} % insert nonsense text as placeholder
 
 \graphicspath{{img/}}
 
@@ -23,6 +23,8 @@
 \begin{abstract}
 	
 \todo{Add a concise and intelligent summary of the paper, once I get a clearer idea what it will include (and how to seem intelligent).}\vspace{5mm}
+
+Meanwhile, here is some nonsense:
 
 \lipsum[1-1]
 	
@@ -775,7 +777,7 @@ Baryonic particles in the merger remnant have a small net angular momentum, and 
 	\label{fig:rem_phase}}
 \end{figure}
 
-\todo{\textbf{remnant DM $\sigma$, virial mass}}
+\todo{\textbf{remnant DM $\sigma$}}
 
 \todo{\textbf{$V_{esc}(r)$}}
 
@@ -805,13 +807,13 @@ The DM halo obviously has no sharp outer edge, it just gradually fades into the 
 
 For a flat LambdaCDM cosmology, we can calculate the critical density from
 \[ \rho_c(t) = \frac{3 H^2(t)}{8 \pi G} \] 
-Currently \citep{planck_collaboration_planck_2016} we have \\
+Currently \citep{planck_collaboration_planck_2016} we have\footnote{Wendy Freedman might disagree (very eloquently), but let's go with these values for now.} \\
 $H(0) \equiv H_0 = 67.74$ km/s/Mpc \\
 $\rho_{c,0} = 127.35\ M_\sun/\text{kpc}^3$
 
 The simulation ends more than 11 Gyr in the future, so we need a different value for $H(t)$. By then the universe will be well into a Dark Energy-dominated epoch with near-exponential expansion. Then $\dot{H}(t) \approx 0$ and $H(t)$ asymptotically approaches its final value of $H_{\infty} \approx 57$ km/s/Mpc.
 
-This gives us a value of $\rho_{c,\infty} \approx 90\ M_\sun/\text{kpc}^3$. Then $r_{200}$ is the radius at which the spherically-averaged remnant density falls below $1.8 \times 10^4\ M_\sun/\text{kpc}^3$. At the final timepoint, this is 
+This gives us a value of $\rho_{c,\infty} \approx 90\ M_\sun/\text{kpc}^3$. Then $r_{200}$ is the radius at which the spherically-averaged remnant halo density falls below $1.8 \times 10^4\ M_\sun/\text{kpc}^3$. At the final timepoint, this is 
 \[ r_{200} \approx 170\ \text{kpc} \]
 
 The virial mass, enclosed within the virial radius, is $1.7 \times 10^{12}\ M_\Sun$, of which 87\% is Dark Matter.
@@ -846,7 +848,7 @@ This work relied on a range of open-source software packages, many of them spons
 
 
 
-
+\newpage
 % =====================================
 % Bibliography stuff
 \bibliography{project_Leach}{}

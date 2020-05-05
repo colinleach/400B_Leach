@@ -133,8 +133,8 @@ dmypy.json
 *.aux
 *.out
 *.gz
-*.bbl
-*.blg
+.bbl
+.blg
 
 # just messing about
 experimental/
@@ -144,6 +144,7 @@ Untitled*.ipynb
 # too many files
 png_files/
 animations/*.png
+notebooks/*.pdf
 
 # recorded lectures
 Lectures/*.mp4
