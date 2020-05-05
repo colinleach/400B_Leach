@@ -155,3 +155,6 @@ ASTR400B*.mp4
 Project/img/massprof_000.pdf.old
 Project/notebooks/sersic.txt
 Project/notebooks/sersic_partial.txt
+*.bbl
+*.blg
+*.pkl
