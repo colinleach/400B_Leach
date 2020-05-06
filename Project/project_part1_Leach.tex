@@ -255,7 +255,7 @@ In a study of elliptical galaxies, de Vaucouleurs showed that surface brightness
 
 Here $R_e$ is the radius with which half the light is emitted,  $I_e$ is the surface brightness at $R_e$ and $n$ is the Sérsic parameter.
 
-This formula is intended for analyzing photographic images and is in terms of light intensity. We have no brightness data in the current simulation, but for systems with few young blue stars we can assume the mass to light ratio $\Upsilon \equiv M/L \sim 1$. This is probably a reasonable approximation for undisturbed bulges and for an elliptical merger remnant long after the collision. $R_e$ is then the radius enclosing half the mass.
+This formula is intended for analyzing photographic images and is in terms of light intensity. We have no brightness data in the current simulation, but for systems with few young blue stars we can assume the stellar mass to light ratio $M_\star/L \sim 1$. This is probably a reasonable approximation for undisturbed bulges and for an elliptical merger remnant long after the collision. $R_e$ is then the radius enclosing half the mass.
 
 \begin{figure}[bht!]
 	\epsscale{1}
@@ -665,7 +665,7 @@ Previous sections have shown that MW and M31 particles remain somewhat distinct 
 		\label{fig:rem_sersic_origin}}
 \end{figure}
 
-Figure \ref{fig:rem_sersic_origin} shows Sérsic fits to the surface brightness profile (assuming $M/L \sim 1$).
+Figure \ref{fig:rem_sersic_origin} shows Sérsic fits to the surface brightness profile (assuming $M_\star/L \sim 1$).
 
 The mass profile of DM particles in the remnant halo is well fit by a Hernquist profile, but there are some differences depending on origin as shown in Table \ref{tbl:remn_hq}
 
@@ -690,8 +690,29 @@ For comparison, the $a$ values at $t=0$ were
 \end{align*}
 The overall time-dependence of Hernquist radii was shown in Figure \ref{fig:hernquist_a}.
 
+\subsubsection{Virial radius}
 
-\subsubsection{Remnant rotational kinematics}
+The DM halo obviously has no sharp outer edge, it just gradually fades into the inter-galactic medium (IGM). One popular convention is to use the $r_{200}$ or ``virial radius'' as a limit: the radius at which the density is $200\times$ the cosmological critical density $\rho_c$.
+
+For a flat LambdaCDM cosmology, we can calculate the critical density from
+\[ \rho_c(t) = \frac{3 H^2(t)}{8 \pi G} \] 
+Currently \citep{planck_collaboration_planck_2016} we have\footnote{Wendy Freedman might disagree (very eloquently), but let's go with these values for now.} \\
+$H(0) \equiv H_0 = 67.74$ km/s/Mpc \\
+$\rho_{c,0} = 127.35\ M_\sun/\text{kpc}^3$
+
+The simulation ends more than 11 Gyr in the future, so we need a different value for $H(t)$. By then the universe will be well into a Dark Energy-dominated epoch with near-exponential expansion. Then $\dot{H}(t) \approx 0$ and $H(t)$ asymptotically approaches its final value of $H_{\infty} \approx 57$ km/s/Mpc.
+
+This gives us a value of $\rho_{c,\infty} \approx 90\ M_\sun/\text{kpc}^3$. Then $r_{200}$ is the radius at which the spherically-averaged remnant halo density falls below $1.8 \times 10^4\ M_\sun/\text{kpc}^3$. At the final timepoint, this is 
+\[ r_{200} \approx 168\ \text{kpc} \]
+
+The virial mass, enclosed within the virial radius, is $1.7 \times 10^{12}\ M_\Sun$, of which 87\% is Dark Matter.
+
+For comparison, if we used the current value $\rho_{c,0}$ throughout, the virial radius at the final timepoint would be about 172 kpc, essentially unchanged for our purposes, and the virial mass remains about $1.7 \times 10^{12}\ M_\Sun$.
+
+\todo{Some discussion would be useful!}
+
+
+\subsubsection{Remnant angular momentum}
 
 %MW/M31 Galaxy Major Merger Remnant: Stellar disk particle kinematics
 %1. Is the stellar MW/M31 merged remnant rotating ? (create a phase diagram:
@@ -756,19 +777,24 @@ A previous section showed that the remnant is elliptical and particles of differ
 	\enddata
 \end{deluxetable}
 
+For the aggregate of all DM particles in the remnant at this time, the angular momentum vector has orientation $\hat{h} = \left< 0.64 ,  0.03, -0.76 \right>$, almost identical to the total for all particles (baryonic + DM) in the remnant. The magnitude $|h| = 13.15$ kpc$^2$/Myr is more than two orders of magnitude higher than the values for the individual galaxies about their respective CoM at the current epoch. 
+
+We showed in Figure \ref{fig:halo_h} that halo angular momentum mostly arises from tidal forces during close approach and merger, and in Figure \ref{fig:hernquist_a} that MW halo particles subsequently have a significantly larger scale radius that M31 halo particles. As specific angular momentum is a product of radius and tangential velocity, it seems reasonable that we see a higher value for ex-MW Dark Matter when it tends to be at larger radius.
+
+\subsubsection{Remnant stellar kinematics}
+
+It was shown in \citep{cox_kinematic_2006} that simulated mergers lead to substantially different rotational kinematics if the galaxies are gas-poor (``dry'') and the collision is dissipationless versus gas-rich, dissipational collisions. 
+
+
 \todo{\textbf{Is it a fast or slow rotator?}}
 
 \todo{\textbf{Velocity dispersion of the stellar remnant as a function of radius}}
 
 \todo{\textbf{Does the virial theorem work to return the total baryonic mass?}}
 
-For the aggregate of all DM particles in the remnant at this time, the angular momentum vector has orientation $\hat{h} = \left< 0.64 ,  0.03, -0.76 \right>$, almost identical to the total for all particles (baryonic + DM) in the remnant. The magnitude $|h| = 13.15$ kpc$^2$/Myr is more than two orders of magnitude higher than the values for the individual galaxies about their respective CoM at the current epoch. 
-
-We showed in Figure \ref{fig:halo_h} that halo angular momentum mostly arises from tidal forces during close approach and merger, and in Figure \ref{fig:hernquist_a} that MW halo particles subsequently have a significantly larger scale radius that M31 halo particles. As specific angular momentum is a product of radius and tangential velocity, it seems reasonable that we see a higher value for ex-MW Dark Matter when it tends to be at larger radius.
-
 \todo{fix section on phase diagrams}
 
-Baryonic particles in the merger remnant have a small net angular momentum, and we can rotate the coordinate system to align this vector with the $z$-axis. However, the phase diagrams in Figure \ref{fig:rem_phase} show that velocities are mostly randomly distributed and few of the particles show much assymetry.
+Baryonic particles in the merger remnant have a small net angular momentum, and we can rotate the coordinate system to align this vector with the $z$-axis. However, the phase diagrams in Figure \ref{fig:rem_phase} show that velocities are mostly randomly distributed and few of the particles show much asymmetry.
 
 \begin{figure}[htb!]
 	\epsscale{1.1}
@@ -781,7 +807,13 @@ Baryonic particles in the merger remnant have a small net angular momentum, and 
 
 \todo{\textbf{$V_{esc}(r)$}}
 
-%\subsubsection{Remnant DM halo}
+\subsubsection{Remnant halo kinematics}
+
+The literature consensus is that halo shapes are supported by anisotropic velocity dispersions, not spin \citep{frenk_dark_2012}. They can acquire angular momentum through tidal torques, as we already saw for each galaxy in Figure \ref{fig:halo_h}. This is often characterized by a dimensionless spin parameter:
+\[ \lambda = \frac{J |E|^{1/2}}{G M^{5/2}} \]
+where $J$ is the magnitude of the angular momentum vector, $E$ is the total energy and $M$ is the halo mass. Often, these are taken as the values inside the virial radius, ignoring DM particles lost to the IGM.
+
+\todo{Calculate at least final values, preferably a timecourse}
 
 %MW/M31 Halo Major Merger Remnant: Dark matter halo evolution (density / kinematics)
 %1. What is the final density profile ? Is it well fit by a Hernquist profile ? Is it more
@@ -800,25 +832,6 @@ Baryonic particles in the merger remnant have a small net angular momentum, and 
 %Relevant Papers:
 %Frenk & White 2012 Annalen der Physik 524, 507 Review article
 %Abadi + 20 MNRAS, 2010 407
-
-\subsubsection{Virial radius}
-
-The DM halo obviously has no sharp outer edge, it just gradually fades into the inter-galactic medium. One popular convention is to use the $r_{200}$ or ``virial radius'' as a limit: the radius at which the density is $200\times$ the cosmological critical density $\rho_c$.
-
-For a flat LambdaCDM cosmology, we can calculate the critical density from
-\[ \rho_c(t) = \frac{3 H^2(t)}{8 \pi G} \] 
-Currently \citep{planck_collaboration_planck_2016} we have\footnote{Wendy Freedman might disagree (very eloquently), but let's go with these values for now.} \\
-$H(0) \equiv H_0 = 67.74$ km/s/Mpc \\
-$\rho_{c,0} = 127.35\ M_\sun/\text{kpc}^3$
-
-The simulation ends more than 11 Gyr in the future, so we need a different value for $H(t)$. By then the universe will be well into a Dark Energy-dominated epoch with near-exponential expansion. Then $\dot{H}(t) \approx 0$ and $H(t)$ asymptotically approaches its final value of $H_{\infty} \approx 57$ km/s/Mpc.
-
-This gives us a value of $\rho_{c,\infty} \approx 90\ M_\sun/\text{kpc}^3$. Then $r_{200}$ is the radius at which the spherically-averaged remnant halo density falls below $1.8 \times 10^4\ M_\sun/\text{kpc}^3$. At the final timepoint, this is 
-\[ r_{200} \approx 170\ \text{kpc} \]
-
-The virial mass, enclosed within the virial radius, is $1.7 \times 10^{12}\ M_\Sun$, of which 87\% is Dark Matter.
-
-\todo{Some discussion would be useful!}
 
 \section{Discussion and Conclusions}
 

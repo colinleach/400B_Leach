@@ -99,9 +99,18 @@ Boylan-Kolchin, M., Ma, C.-P., \& Quataert, E. 2008, Monthly Notices of the
 Brown, A. G.~A., Vallenari, A., Prusti, T., {et~al.} 2018, Astronomy \&
   Astrophysics, 616, A1, \dodoi{10.1051/0004-6361/201833051}
 
+\bibitem[{Cox {et~al.}(2006)Cox, Dutta, Di~Matteo, Hernquist, Hopkins,
+  Robertson, \& Springel}]{cox_kinematic_2006}
+Cox, T.~J., Dutta, S.~N., Di~Matteo, T., {et~al.} 2006, The Astrophysical
+  Journal, 650, 791, \dodoi{10.1086/507474}
+
 \bibitem[{de~Vaucouleurs(1948)}]{de_vaucouleurs_recherches_1948}
 de~Vaucouleurs, G. 1948, Annales d'Astrophysique, 11, 247.
 \newblock \url{http://adsabs.harvard.edu/abs/1948AnAp...11..247D}
+
+\bibitem[{Frenk \& White(2012)}]{frenk_dark_2012}
+Frenk, C.~S., \& White, S. D.~M. 2012, Annalen der Physik, 524, 507,
+  \dodoi{10.1002/andp.201200212}
 
 \bibitem[{Hernquist(1990)}]{hernquist_analytical_1990}
 Hernquist, L. 1990, The Astrophysical Journal, 356, 359, \dodoi{10.1086/168845}
