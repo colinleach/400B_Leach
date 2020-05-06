@@ -707,7 +707,7 @@ This gives us a value of $\rho_{c,\infty} \approx 90\ M_\sun/\text{kpc}^3$. Then
 
 The virial mass, enclosed within the virial radius, is $1.7 \times 10^{12}\ M_\Sun$, of which 87\% is Dark Matter.
 
-For comparison, if we used the current value $\rho_{c,0}$ throughout, the virial radius at the final timepoint would be about 172 kpc, essentially unchanged for our purposes, and the virial mass remains about $1.7 \times 10^{12}\ M_\Sun$.
+For comparison, if we used the current value $\rho_{c,0}$ throughout, the virial radius at the final timepoint would be about 142 kpc and the virial mass falls to about $1.5 \times 10^{12}\ M_\Sun$.
 
 \todo{Some discussion would be useful!}
 
@@ -813,6 +813,14 @@ The literature consensus is that halo shapes are supported by anisotropic veloci
 \[ \lambda = \frac{J |E|^{1/2}}{G M^{5/2}} \]
 where $J$ is the magnitude of the angular momentum vector, $E$ is the total energy and $M$ is the halo mass. Often, these are taken as the values inside the virial radius, ignoring DM particles lost to the IGM.
 
+idx, nearest = find\_nearest(rho.value, 200*rho\_lim.value)
+r\_200 = r\_annuli[idx]
+r\_200, nearestotal energy $E$ is the sum of kinetic energy $K$ and potential energy $W$. We have the mass and velocity of every particle so 
+\[ K = \sum_i \frac{1}{2} m_i v_i^2 \]
+Potential energy is more challenging to calculate. In general \citep[section 2.1]{binney_galactic_2008}:
+\[ W = \frac{1}{2} \int d^3\, \mathbf{x}\, \rho(\mathbf{x})\, \Phi(\mathbf{x}) \]
+We would need this to calculate the highly-disrupted situation shortly after collision and merger \citep[section 8.2]{binney_galactic_2008}. For simplicity, we concentrate here on the final timepoint about 5 Gyr after merger, and assume that the remnant halo is by then close to virial equilibrium. Then $E \approx -K$ and the calculation is very much easier.
+
 \todo{Calculate at least final values, preferably a timecourse}
 
 %MW/M31 Halo Major Merger Remnant: Dark matter halo evolution (density / kinematics)
@@ -841,7 +849,7 @@ where $J$ is the magnitude of the angular momentum vector, $E$ is the total ener
 
 \section{Acknowledgments}
 
-The author is grateful to Prof. Gurtina Besla for teaching the class on which this paper is based and for allowing this rather geriatric student to participate, as well as providing all the raw data from the earlier simulation described in vdM12. Also to Rixin Li for valuable coding advice.
+The author is grateful to Professor Gurtina Besla for teaching the class on which this paper is based and for allowing this rather geriatric student to participate, as well as providing all the raw data from the earlier simulation described in vdM12. Also to Rixin Li for valuable coding advice.
 
 This work relied on a range of open-source software packages, many of them sponsored by NumFOCUS\footnote{https://numfocus.org/} for the benefit of us all: 
 

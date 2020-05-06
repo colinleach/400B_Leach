@@ -6,6 +6,7 @@ import astropy.units as u
 from astropy.constants import G
 
 from galaxy.centerofmass import CenterOfMass
+from galaxy.utilities import find_nearest
 
 
 class MassProfile:
@@ -273,3 +274,78 @@ class MassProfile:
         log_bulgeI = np.log(bulgeI.value)
         popt, pcov = curve_fit(ser, R, log_bulgeI, (60,))
         return popt[0], pcov[0][0]
+
+    def density_profile(self, radii, m, xyz):
+        """
+        Calculates mass density in successive spherical shells
+
+        Arg:
+            radii (array of float):
+                boundary values beteen shells (implicit kpc, no units)
+            m (shape (N,) array of float):
+                particle masses (implicit Msun, no units)
+            xyz ((3,N) array of float):
+                particle cartesian coordinates
+
+        Returns:
+            r_annuli: geometric mean of boundaries 
+                (array is one shorter than input radii)
+            rho: densities (Msun/kpc^3)
+                (same length as r_annuli)
+        """
+
+        r = norm(xyz, axis=0)
+        enc_mask = r[:, np.newaxis] < np.asarray(radii).flatten()
+        m_enc = np.sum(m[:, np.newaxis] * enc_mask, axis=0)
+        m_annuli = np.diff(m_enc) * 1e10 * u.M_sun
+        rho = 3/(4*np.pi) * m_annuli / (radii[1:]**3 - radii[:-1]**3)
+        r_annuli = np.sqrt(radii[1:] * radii[:-1])
+        return r_annuli, rho
+
+    def virial_radius(self, r_min=20, r_max=300, rho_c=None):
+        """
+        Calculates radius where DM density falls to 200x critical density
+        for the universe.
+
+        Args:
+            r_min, r_max (floats)
+                optional, limits for search (implicit kpc, no units)
+            rho_c (float or Quantity)
+                optional, critical density for chosen cosmology
+
+        Returns:
+            r_200 (float): virial radius, implicit kpc
+        """
+
+        if rho_c is None:
+            rho_c = 127.35344 # Msun/kpc^3
+        else:
+            try:
+                rho_c = rho_c.to(u.Msun/u.kpc**3).value
+            except:
+                pass # already has no units
+
+        radii = np.linspace(r_min, r_max, 200)
+
+        m = self.gal.data['m']
+        DM = np.where(self.gal.data['type']==1)
+        m_dm = m[DM]
+
+        com = CenterOfMass(self.gal, ptype=None)
+        xyz, _ = com.center_com()
+        xyz_dm = (xyz.T[DM]).T
+        r_annuli, rho = self.density_profile(radii, m_dm, xyz_dm)
+
+        idx, nearest = find_nearest(rho.value, 200*rho_c)
+        r_200 = r_annuli[idx]
+        return r_200
+
+    def virial_mass(self, r_200=None, ptype=None):
+        """
+        Mass enclosed by the virial radius
+        """
+
+        if r_200 is None:
+            r_200 = self.virial_radius()
+
+        return self.mass_enclosed([r_200*u.kpc,], ptype=ptype)

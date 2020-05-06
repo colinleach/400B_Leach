@@ -301,3 +301,15 @@ def is_iterable(x):
         return False
     else:
         return True       
+
+def find_nearest(array, value):
+    """
+    Find the entry in `array` which is closest to `value`
+    Modified from https://stackoverflow.com/questions/2566412/find-nearest-value-in-numpy-array
+    
+    Returns: index and corresponding value
+    """
+    
+    array = np.asarray(array)
+    idx = (np.abs(array - value)).argmin()
+    return idx, array[idx]
