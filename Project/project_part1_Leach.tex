@@ -813,15 +813,31 @@ The literature consensus is that halo shapes are supported by anisotropic veloci
 \[ \lambda = \frac{J |E|^{1/2}}{G M^{5/2}} \]
 where $J$ is the magnitude of the angular momentum vector, $E$ is the total energy and $M$ is the halo mass. Often, these are taken as the values inside the virial radius, ignoring DM particles lost to the IGM.
 
-idx, nearest = find\_nearest(rho.value, 200*rho\_lim.value)
-r\_200 = r\_annuli[idx]
-r\_200, nearestotal energy $E$ is the sum of kinetic energy $K$ and potential energy $W$. We have the mass and velocity of every particle so 
+Total energy $E$ is the sum of kinetic energy $K$ and potential energy $W$. We have the mass and velocity of every particle so 
 \[ K = \sum_i \frac{1}{2} m_i v_i^2 \]
 Potential energy is more challenging to calculate. In general \citep[section 2.1]{binney_galactic_2008}:
 \[ W = \frac{1}{2} \int d^3\, \mathbf{x}\, \rho(\mathbf{x})\, \Phi(\mathbf{x}) \]
 We would need this to calculate the highly-disrupted situation shortly after collision and merger \citep[section 8.2]{binney_galactic_2008}. For simplicity, we concentrate here on the final timepoint about 5 Gyr after merger, and assume that the remnant halo is by then close to virial equilibrium. Then $E \approx -K$ and the calculation is very much easier.
 
-\todo{Calculate at least final values, preferably a timecourse}
+Other than potential energy, relevant values for the remnant halo vary little over time. Figure \ref{fig:rem_data} shows that angular momentum, kinetic energy and virial mass remain within $\pm 20\%$ of their final value.
+
+\begin{figure}[htb!]
+	\epsscale{1.1}
+	\plotone{halo_data.pdf}
+	\caption{Relative values for the remnant halo over time; final timepoint = 1.
+		\label{fig:rem_data}}
+\end{figure}
+
+The final timepoint of the simulation gives these results:
+\begin{align*}
+	J &= 2.9 \times 10^{12}\ M_\Sun kpc^2 / Myr\\
+	K &= 1.5 \times 10^{65}\ \text{erg}\\
+	M &= 1.3 \times 10^{12}\ M_\Sun
+\end{align*}
+
+Unfortunately, this gives a spin parameter $\lambda \approx 30$, about 2 orders of magnitude higher than expected.
+
+\todo{\textbf{Figure out what went wrong!}}
 
 %MW/M31 Halo Major Merger Remnant: Dark matter halo evolution (density / kinematics)
 %1. What is the final density profile ? Is it well fit by a Hernquist profile ? Is it more
