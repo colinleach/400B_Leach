@@ -332,3 +332,4 @@ class Remnant(Galaxy):
         log_subI = np.log(subI.value)
         popt, pcov = curve_fit(ser, R, log_subI, (60,))
         return popt[0], pcov[0][0]
+
