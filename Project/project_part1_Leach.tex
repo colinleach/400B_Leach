@@ -515,16 +515,7 @@ The 3D trajectories are complex, but Figures \ref{fig:MW_M31_traj_time} and \ref
 
 \todo{boxiness?}
 
-We can expect the remnant to settle over time into a triaxial ellipsoid \todo{ref?}. These are superficially rather featureless, as in Figure \ref{fig:rem_shape}. 
-
-\begin{figure}[htb!]
-	\epsscale{1.1}
-	\plotone{remnant_shape.pdf}
-	\caption{Luminous star density of the MW-M31 remnant in three orthogonal projections.
-		\label{fig:rem_shape}}
-\end{figure}
-
-In observational astronomy it would be usual to fit ellipses to surface brightness contours. That is also possible for the simulation, but for a highly-determined system for which we know the mass and position of every particle there are other options.
+We can expect the remnant to settle over time into a triaxial ellipsoid \todo{ref?}. In observational astronomy it would be usual to determine the shape by fitting ellipses to surface brightness contours. That is also possible for the simulation, but for a highly-determined system for which we know the mass and position of every particle there are other options.
 
 If we combine all the baryonic matter (disk and bulge) from both MW and M31, there are $1.12 \times 10^6$ particles to consider. In the original coordinates, the moment of inertia tensor is symmetrical ($I_{ij} = I_{ji}$), $3 \times 3$:
 
@@ -785,16 +776,22 @@ We showed in Figure \ref{fig:halo_h} that halo angular momentum mostly arises fr
 
 It was shown in \citep{cox_kinematic_2006} that simulated mergers lead to substantially different rotational kinematics if the galaxies are gas-poor (``dry'') and the collision is dissipationless versus gas-rich, dissipational collisions. 
 
+Initially, the stellar particles (from all origins) were used to calculate an angular momentum vector $\hat{L}$, then the coordinate system was rotated to place this along the $z$-axis. We might have expected the principal axes of the ellipsoid to correspond in some simple way to this projection, but this was found to be far from the case.
+
+More intuitive results were obtained once the $\hat{L}$ calculation was limited to stars within a limited radius of the CoM.  Figure \ref{fig:rem_shape} uses a 50 kpc limit and shows that the major axis is approximately parallel to the rotation axis.
+
+\begin{figure}[htb!]
+	\epsscale{1.1}
+	\plotone{remnant_shape.pdf}
+	\caption{Luminous star density of the MW-M31 remnant in three orthogonal projections. Left panel looks down the $\hat{L}$ axis, mid/right panels have this vertical.
+		\label{fig:rem_shape}}
+\end{figure}
 
 \todo{\textbf{Is it a fast or slow rotator?}}
 
-\todo{\textbf{Velocity dispersion of the stellar remnant as a function of radius}}
-
 \todo{\textbf{Does the virial theorem work to return the total baryonic mass?}}
 
-\todo{fix section on phase diagrams}
-
-Baryonic particles in the merger remnant have a small net angular momentum, and we can rotate the coordinate system to align this vector with the $z$-axis. However, the phase diagrams in Figure \ref{fig:rem_phase} show that velocities are mostly randomly distributed and few of the particles show much asymmetry.
+Figure \ref{fig:rem_phase} shows phase diagrams in various orientations. There is a fairly clear velocity asymmetry along the $x$- and $y$-axes, perpendicular to $\hat{L}$, but not along the $z$-axis.
 
 \begin{figure}[htb!]
 	\epsscale{1.1}
@@ -803,9 +800,23 @@ Baryonic particles in the merger remnant have a small net angular momentum, and 
 	\label{fig:rem_phase}}
 \end{figure}
 
-\todo{\textbf{remnant DM $\sigma$}}
+Mean radial velocities $\bar{v}$ and velocity dispersions $\sigma$ were calculated by binning along the $y$-axis (Figure \ref{fig:rem_disp_y}) and the $z$-axis (Figure \ref{fig:rem_disp_z}). The results are not entirely simple and regular, but the former shows clear rotation with $v_{\text{max}} \approx 83$ km/s. As expected, the latter has smaller and more random velocities with a somewhat higher dispersion.
 
-\todo{\textbf{$V_{esc}(r)$}}
+\begin{figure}[htb!]
+	\epsscale{0.9}
+	\plotone{remnant_stellar_disp_y.pdf}
+	\caption{Velocity (red circles) and dispersion (blue +) by radius, $y$-axis: perpendicular to the angular momentum vector.
+		\label{fig:rem_disp_y}}
+\end{figure}
+
+\begin{figure}[htb!]
+	\epsscale{0.9}
+	\plotone{remnant_stellar_disp_z.pdf}
+	\caption{Velocity and dispersion by radius, $z$-axis: along the angular momentum vector.
+		\label{fig:rem_disp_z}}
+\end{figure}
+
+
 
 \subsubsection{Remnant halo kinematics}
 
@@ -838,6 +849,12 @@ The final timepoint of the simulation gives these results:
 Unfortunately, this gives a spin parameter $\lambda \approx 30$, about 2 orders of magnitude higher than expected.
 
 \todo{\textbf{Figure out what went wrong!}}
+
+\todo{\textbf{remnant DM $\sigma$}}
+
+\todo{\textbf{$V_{esc}(r)$}}
+
+
 
 %MW/M31 Halo Major Merger Remnant: Dark matter halo evolution (density / kinematics)
 %1. What is the final density profile ? Is it well fit by a Hernquist profile ? Is it more

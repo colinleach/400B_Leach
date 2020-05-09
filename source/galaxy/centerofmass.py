@@ -195,7 +195,7 @@ class CenterOfMass:
         return xyzD, vxyzD
 
 
-    def angular_momentum(self, com_p=None, com_v=None):
+    def angular_momentum(self, com_p=None, com_v=None, r_lim=None):
         """
         Returns: 
             L : 3-vector as array
@@ -203,6 +203,8 @@ class CenterOfMass:
                 summed over all disk particles
             pos, v : arrays with shape (3, N)
                 Position and velocity for each particle
+            r_lim : float
+                Radius to include in calculation (implicit kpc, no units)
         """
 
         # ignore masses, these are all the same for disk particles
@@ -210,12 +212,18 @@ class CenterOfMass:
         pos, v = self.center_com(com_p, com_v)
         # p = m * v # linear momentum
 
+        if r_lim is not None:
+            r = norm(pos, axis=0)
+            central = np.where(r < r_lim)
+            pos = (pos.T[central]).T
+            v = (v.T[central]).T
+
         # angular momentum of each particle; use first dimension of each array
         L_i = np.cross(pos, v, 0, 0) 
 
         return np.sum(L_i, axis=0), pos, v
 
-    def rotate_frame(self, to_axis=None, com_p=None, com_v=None):
+    def rotate_frame(self, to_axis=None, com_p=None, com_v=None, r_lim=None):
         """
         Arg: to_axis (3-vector)
                 Angular momentum vector will be aligned to this (default z-hat)
@@ -232,7 +240,7 @@ class CenterOfMass:
         else:
             to_axis /= norm(to_axis) # we need a unit vector
 
-        L, pos, v = self.angular_momentum(com_p, com_v)
+        L, pos, v = self.angular_momentum(com_p, com_v, r_lim)
         L /= norm(L) # we need a unit vector
 
         # cross product between L and new axis
