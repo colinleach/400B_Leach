@@ -202,7 +202,7 @@ Figure \ref{fig:rotcurve0} shows the rotation curves expected from these mass pr
 		\label{fig:6cyl}}
 \end{figure}
 
-Disk structure and evolution may be easier to visualize if we transform to cylindrical coordinates (with the angular momentum vector along the $z$-axis) and use $r-\theta$ plots. Figure \ref{fig:6cyl} shows this for the two large galaxies at several timepoints (as labelled).  Spiral arms show up in both early in the simulation. First pericenter has, if little effect, but 0.3 Gyr later we see highly prominent tidal tails. These images are taken from a full animation for each galaxy, available online\footnote{\url{https://github.com/colinleach/400B_Leach/tree/master/animations}, files cyl\_M*\_disk.mp4 }
+Disk structure and evolution may be easier to visualize if we transform to cylindrical coordinates (with the angular momentum vector along the $z$-axis) and use $r-\theta$ plots. Figure \ref{fig:6cyl} shows this for the two large galaxies at several timepoints (as labelled).  Spiral arms show up in both early in the simulation. First pericenter has little effect, but 0.3 Gyr later we see highly prominent tidal tails. These images are taken from a full animation for each galaxy, available online\footnote{\url{https://github.com/colinleach/400B_Leach/tree/master/animations}, files cyl\_M*\_disk.mp4 }
 
 \subsubsection{Inclinations}
 
@@ -221,6 +221,8 @@ The mutual angle between galactic disks can have a significant impact on how tid
 Results for the MW-M31 and M33-M31 pairs are shown in Figure \ref{fig:inclinations_mutual}. For MW-M31, the angle is largely stable until near first pericenter, when tidal forces bring the two disks closer to alignment. This trend continues slowly until near second pericenter. Surprisingly, the angle increases after merger, suggesting some partitioning of particles of different origin within the remnant.
 
 \todo{\textbf{CHECK THIS AGAIN!}}
+
+\todo{\textbf{Limit radius}}
 
 \begin{figure}[ht!]
 	\plotone{inclinations_mutual.pdf}
@@ -282,7 +284,7 @@ The Sérsic parameter $n$ was estimated by a nonlinear least squares fit to the 
 		\label{fig:bulge_mp}}
 \end{figure}
 
-The larger half-mass radius of M31 is reflected in the mass density profile, as shown in Figure \ref{fig:bulge_mp}. MW bulge stars have a higher central peak, M31 bulge stars are more numerous at larger radii. This is true both early in the simulation, and in the merger remnant at late times. For both galaxy bulge stars, the central peak is less pronounced post-merger.
+The larger half-mass radius of M31 is reflected in the mass density profile, as shown in Figure \ref{fig:bulge_mp}. MW bulge stars have a higher central peak, M31 bulge stars are more numerous at larger radii. This is true both early in the simulation and in the merger remnant at late times. For both galaxy bulge stars, the central peak is less pronounced post-merger.
 
 The Sérsic fit for both galaxy bulges looks reasonable outside the central density peak, as shown for the MW in Figure \ref{fig:MW_bulge_sersic}. The plot for M31 (not included here) is very  similar.
 
@@ -297,7 +299,7 @@ The Sérsic fit for both galaxy bulges looks reasonable outside the central dens
 
 \subsubsection{Halo mass profile}
 
-Figure \ref{fig:rotcurve0} also adds a theoretical curve in which the DM halo is fitted by a Hernquist profile \citep{hernquist_analytical_1990}. The cumulative mass out to radius $r$ is given by
+Figure \ref{fig:rotcurve0} also added a theoretical curve in which the DM halo is fitted by a Hernquist profile \citep{hernquist_analytical_1990}. The cumulative mass out to radius $r$ is given by
 \[ M(r) = M_h \frac{r^2}{(a+r)^2} \]
 where $M_h$ is the total mass of halo particles (see Table 2) and $a$ is a scale radius which encloses a quarter of the halo mass. Non-linear least squares fitting, similar to that used for Sérsic profiles in a previous section, gave scale radii of 61.1 kpc for MW and M31, 24.3 kpc for M33 at $t=0$.
 
@@ -328,13 +330,15 @@ The halo specific angular momentum for each large galaxy is shown in Figure \ref
 
 Data for M33 is omitted from Figure \ref{fig:halo_h} for clarity. The spin-up is much more dramatic for this minor galaxy, with peaks approaching 140 kpc$^2$/Myr, making it unsuitable to plot on the same axes.
 
+\todo{effect of radius}
+
 \subsection{MW-M31 Close approach}
 
 \subsubsection{Inclinations}
 
-The MW and M31 disks have angular momentum vectors inclined at an angle of $52^\circ$ to each other shortly before pericenter, making this a prograde approach.
+The MW and M31 disks have angular momentum vectors inclined at an angle of $52^\circ$ to each other shortly before pericenter.
 
-\todo{Clarify this!}
+\todo{Clarify prograde/retrograde!}
 
 \subsubsection{Tidal tails and bridges}
 
@@ -367,7 +371,7 @@ The presence of long, symmetrical tails giving some galaxies a distinct `S'-shap
 
 Reviewing a broad range of N-body simulations, \citet{barnes_dynamics_1992} noted that ``such features are clearly \textit{relics} of recent collisions rather than ongoing interactions.'' In our simulation, both MW and M31 disks remain near-circular during much of the close approach, but conspicuous tails develop as the centers then move further apart: see Figure \ref{fig:6cyl} and the animations referred to in Footnote 3. We also see a more sparsely-populated bridge forming between the galaxies.
 
-To determine the nature and origin of stars in this region, a manual selection was performed as in Figure \ref{fig:bridge}. Stars within the yellow rectangle (left panel) are shown with velocity vectors (center panel) and origin (right panel). Velocities are mostly moderate (mean 195 km/s, range 19-586 km/s), with relatively few stars having high kinetic energy. 
+To determine the nature and origin of stars in this region, a manual selection was performed as in Figure \ref{fig:bridge}. Stars within the yellow rectangle (left panel) are shown with velocity vectors (center panel) and origin (right panel). Velocities are diverse: mean 195 km/s, range 19-586 km/s. 
 
 
 \begin{figure}[ht!]
@@ -527,11 +531,11 @@ In the original coordinates, the moment of inertia tensor is symmetrical ($I_{ij
 			I_{zx} & I_{zy} & I_{zz} 
 		\end{bmatrix} \]
 		
-\[  I_{total} \approx \begin{bmatrix}
-		2.44 \times 10^4 & 2.55 \times 10^2 & 1.43 \times 10^3\\
-		2.55 \times 10^2 & 1.91 \times 10^4 & -1.71 \times 10^1\\
-		1.43 \times 10^3 & -1.71 \times 10^1 & 2.22 \times 10^4 
-	\end{bmatrix} \]\vspace{5mm}
+\[  I_{\text{stellar}} \approx 10^3 \times \begin{bmatrix}
+		3.26 & 0.181 & 0.152\\
+		0.181 & 2.97 & 0.138\\
+		0.153 & 0.138 & 2.80
+	\end{bmatrix} \] %\vspace{2mm}
 		
 The orientation is arbitrary at this stage. To get principal axes we need the eigenvalues and eigenvectors of $I$. 
 
@@ -540,16 +544,18 @@ The eigenvalues give the moments of inertia about the principal axes, in arbitra
 
 The eigenvectors give an orthonormal coordinate system oriented along the principal axes:
 \begin{align*}
-	\hat{v}_a &= \left< -0.114, -0.416 , +0.902 \right> \\
+	\hat{v}_a &= \left< -0.844, -0.438, -0.309 \right> \\
 	\hat{v}_b &= \left< -0.524, +0.797,  +0.302 \right> \\
-	\hat{v}_c &= \left< -0.844, -0.438, -0.309 \right>
+	\hat{v}_c &= \left< -0.114, -0.416 , +0.902 \right>
 \end{align*}
 
 The moment of inertia of an ellipsoid with semi-major axes $a, b, c$ is $A = k(b^2 + c^2)$ where $k$ is a constant that depends on total mass. Other axes have the same form by symmetry. Solving for $a, b, c$ and normalizing gives:
 \[ a = 1.0,\quad b = 0.94,\quad c = 0.77 \]
 So the remnant is triaxial (low-symmetry, with $a \ne b \ne c$). However, the minor axis $c$ is significantly smaller than the other two: the ellipsoid is approximately prolate ($a \approx b > c$).
 
-This was repeated for each subgroup by particle origin. The numbers involved are shown in Table 3.
+This was repeated for each subgroup by particle origin. The numbers involved are shown in Table 3. 
+
+\todo{needs recalc within radius cutoff}
 
 \begin{deluxetable}{crrr}[htb!]
 	\tablecaption{Counts of particles by origin (thousands)
@@ -583,7 +589,7 @@ The relative axis lengths are shown in Table 4. All subgroups are triaxial (low-
 	\enddata
 \end{deluxetable}
 
-The mutual inclination angles of the major axes are shown in Table 5. Again, the former disk particles are seen to retain a distinctive structure. Clearly this collision and a single merger is not sufficient to randomize stars within the remnant \todo{refs?}. Also, this is consistent with the understanding that relaxation times are very long in collisionless systems on the scale of elliptical galaxies \citep[Section 1.2]{binney_galactic_2008}
+The mutual inclination angles of the major axes are shown in Table 5. Again, the former disk particles are seen to retain a distinct memory of their origin. Clearly this collision and a single merger is not sufficient to randomize stars within the remnant \todo{refs?}. Also, this is consistent with the understanding that relaxation times are very long in collisionless systems on the scale of elliptical galaxies \citep[Section 1.2]{binney_galactic_2008}
 
 \begin{deluxetable}{crrrrr}[htb!]
 	\tablecaption{Mutual inclination angles of major axis by particle origin (degrees). Suffix indicates source: \textbf{d}isk/\textbf{b}ulge.
@@ -631,8 +637,6 @@ The mass profile for each type of particle and overall is shown in Figure \ref{f
 \end{figure}
 
 Previous sections have shown that MW and M31 particles remain somewhat distinct after merger. Figure \ref{fig:rem_mp_origin} compares their mass profiles. For baryonic particles, ex-M31 masses are higher than ex-MW at most radii, reflecting the higher baryonic mass fraction in M31. The opposite effect might be expected for the DM halo, whose total mass was significantly higher in the MW (Table \ref{tbl:aggmass}), but this is not seen out to 100 kpc. Figure \ref{fig:rem_mp_halo} suggests we have to go almost 1 Mpc out before MW particles become the largest halo component.
-
-\todo{Would be better to plot $\rho(r)$}
 
 \todo{\textbf{Does stellar density profile agree with predictions for elliptical galaxies?}}
 
@@ -731,6 +735,8 @@ The specific angular momentum $\vec{h}$ was calculated for all the particles in 
 
 We showed in Figure \ref{fig:halo_h} that halo angular momentum mostly arises from tidal forces during close approach and merger, and in Figure \ref{fig:hernquist_a} that MW halo particles subsequently have a significantly larger scale radius than M31 halo particles. As specific angular momentum is a product of radius and tangential velocity, it seems reasonable that we see a higher value for ex-MW Dark Matter when it tends to be at larger radius.
 
+\todo{effect of radius?}
+
 \begin{deluxetable}{lrrrr}[htb!]
 	\tablecaption{Specific angular momentum components for the merger remnant at t=11.44 Gyr (kpc$^2$ / Myr)
 		\label{tbl:remn_h}}
@@ -749,7 +755,7 @@ We showed in Figure \ref{fig:halo_h} that halo angular momentum mostly arises fr
 	\enddata
 \end{deluxetable}
 
-A previous section showed that the remnant is elliptical and particles of different orientation are oriented very differently (Table \ref{tbl:remn_axis_angles}). When this analysis is repeated for the angular momentum vectors the mutual inclination angles are non-zero but generally quite small, as shown in Table \ref{tbl:remn_rot_angle}.
+A previous section showed that the remnant is elliptical and particles of different orientation are oriented differently (Table \ref{tbl:remn_axis_angles}). When this analysis is repeated for the angular momentum vectors the mutual inclination angles are non-zero but generally quite small, as shown in Table \ref{tbl:remn_rot_angle}.
 
 \begin{deluxetable}{lrrrrrrr}[htb!]
 	\tablecaption{Mutual inclination angles for rotation vectors in the merger remnant at t=11.44 Gyr (degrees)
@@ -801,7 +807,7 @@ Figure \ref{fig:rem_phase} shows phase diagrams in various orientations. There i
 	\label{fig:rem_phase}}
 \end{figure}
 
-Mean radial velocities $\bar{v}$ and velocity dispersions $\sigma$ were calculated by binning along the $y$-axis (Figure \ref{fig:rem_disp_y}) and the $z$-axis (Figure \ref{fig:rem_disp_z}). The results are not entirely simple and regular, but the former shows clear rotation with $v_{\text{max}} \approx 83$ km/s. As expected, the latter has smaller and more random velocities with a somewhat higher dispersion.
+Mean radial velocities $\bar{v}$ and velocity dispersions $\sigma$ were calculated by binning along the $y$-axis (Figure \ref{fig:rem_disp_y}) and the $z$-axis (Figure \ref{fig:rem_disp_z}). The results are not entirely simple and regular, but the variation perpendicular to $\hat{L}$ shows clear rotation with $v_{\text{max}} \approx 83$ km/s. As expected, along $\hat{L}$ we see smaller and more random velocities with a somewhat higher dispersion.
 
 \begin{figure}[htb!]
 	\epsscale{0.9}
@@ -822,6 +828,8 @@ Central velocity dispersion is about 153 km/s, so the ration $v_{\text{max}} / \
 For oblate isotropic rotators with ellipticity $\epsilon$, there is a relation \todo{Binney78 ref}
 \[ (V/\sigma) = \sqrt{\epsilon / (1 - \epsilon)} \]
 For the stellar remnant we have $\epsilon \approx 0.5$, so $(V/\sigma) \approx 1$.
+
+\todo{Finish discussion}
 
 \subsubsection{Remnant halo kinematics}
 
@@ -887,7 +895,7 @@ Unfortunately, this gives a spin parameter $\lambda \approx 30$, about 2 orders 
 
 \section{Acknowledgments}
 
-The author is grateful to Professor Gurtina Besla for teaching the class on which this paper is based and for allowing this rather geriatric student to participate, as well as providing all the raw data from the earlier simulation described in vdM12. Also to Rixin Li for valuable coding advice.
+The author is grateful to Professor Gurtina Besla for teaching the class on which this paper is based and for allowing this rather geriatric student to participate, as well as providing all the raw data from the earlier simulation described in vdM12. Also to Rixin Li for valuable coding advice. Final, the Astronomy majors deserve my thanks for patient and supportive interactions with a fellow student older than their parents, during the past four semesters. I wish them every success in the future!
 
 This work relied on a range of open-source software packages, many of them sponsored by NumFOCUS\footnote{https://numfocus.org/} for the benefit of us all: 
 
@@ -906,8 +914,6 @@ This work relied on a range of open-source software packages, many of them spons
  Additionally, mpl-scatter-density\footnote{https://github.com/astrofrog/mpl-scatter-density} and Plotly\footnote{https://plotly.com/python/} were used in preparing the figures.
 
 
-
-\newpage
 % =====================================
 % Bibliography stuff
 \bibliography{project_Leach}{}
