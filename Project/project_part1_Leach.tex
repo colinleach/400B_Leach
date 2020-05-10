@@ -517,8 +517,9 @@ The 3D trajectories are complex, but Figures \ref{fig:MW_M31_traj_time} and \ref
 
 We can expect the remnant to settle over time into a triaxial ellipsoid \todo{ref?}. In observational astronomy it would be usual to determine the shape by fitting ellipses to surface brightness contours. That is also possible for the simulation, but for a highly-determined system for which we know the mass and position of every particle there are other options.
 
-If we combine all the baryonic matter (disk and bulge) from both MW and M31, there are $1.12 \times 10^6$ particles to consider. In the original coordinates, the moment of inertia tensor is symmetrical ($I_{ij} = I_{ji}$), $3 \times 3$:
+If we combine all the baryonic matter (disk and bulge) from both MW and M31, there are $1.12 \times 10^6$ particles to consider. Some of these have been ejected to large radius where they have an exaggerated effect on the moment of inertia, so only those within 40 kpc of the CoM were used in the calculation.
 
+In the original coordinates, the moment of inertia tensor is symmetrical ($I_{ij} = I_{ji}$), $3 \times 3$:
 
 \[ I = \begin{bmatrix}
 			I_{xx} & I_{xy} & I_{xz}\\
@@ -535,13 +536,13 @@ If we combine all the baryonic matter (disk and bulge) from both MW and M31, the
 The orientation is arbitrary at this stage. To get principal axes we need the eigenvalues and eigenvectors of $I$. 
 
 The eigenvalues give the moments of inertia about the principal axes, in arbitrary units scaled such that $A=1$:
-\[ A=1.0,\quad B= 0.85,\quad C=0.79 \]
+\[ A=1.0,\quad B= 0.85,\quad C=0.80 \]
 
 The eigenvectors give an orthonormal coordinate system oriented along the principal axes:
 \begin{align*}
-	\hat{v}_a &= \left< +0.070, -0.996 , -0.050 \right> \\
-	\hat{v}_b &= \left< -0.423, -0.075,  +0.903 \right> \\
-	\hat{v}_c &= \left< -0.904, -0.042, -0.426 \right>
+	\hat{v}_a &= \left< -0.114, -0.416 , +0.902 \right> \\
+	\hat{v}_b &= \left< -0.524, +0.797,  +0.302 \right> \\
+	\hat{v}_c &= \left< -0.844, -0.438, -0.309 \right>
 \end{align*}
 
 The moment of inertia of an ellipsoid with semi-major axes $a, b, c$ is $A = k(b^2 + c^2)$ where $k$ is a constant that depends on total mass. Other axes have the same form by symmetry. Solving for $a, b, c$ and normalizing gives:
@@ -574,11 +575,11 @@ The relative axis lengths are shown in Table 4. All subgroups are triaxial (low-
 		\colhead{Galaxy} & \colhead{a} & \colhead{b} & \colhead{c} 
 	}
 	\startdata
-	total &  1.0 &  0.94 &  0.77 \\
-	MW disk &  1.0 &  0.90 &  0.53 \\
-	MW bulge &  1.0 &  0.89 &  0.76 \\
-	M31 disk &  1.0 &  0.88 &  0.71 \\
-	M31 bulge &  1.0 &  0.78 &  0.71 \\
+	total &  1.0 &  0.95 &  0.78 \\
+	MW disk &  1.0 &  0.95 &  0.64 \\
+	MW bulge &  1.0 &  0.96 &  0.71 \\
+	M31 disk &  1.0 &  0.91 &  0.82 \\
+	M31 bulge &  1.0 &  0.95 &  0.83 \\
 	\enddata
 \end{deluxetable}
 
@@ -592,11 +593,11 @@ The mutual inclination angles of the major axes are shown in Table 5. Again, the
 		\colhead{} & \colhead{Total} & \colhead{MWd} & \colhead{MWb} & \colhead{M31d} & \colhead{M31b} 
 	}
 	\startdata
-	total &  -- &  45.9 &  15.0 &  83.2 &  19.4 \\
-	MWd &   45.9 &   -- &  46.7 &  41.4 &  60.6 \\
-	MWb &   15.0 &  46.7 &   -- &  87.6 &  32.4 \\
-	M31d &   83.2 &  41.4 &  87.6 &   -- &  89.0 \\
-	M31b &   19.4 &  60.6 &  32.4 &  89.0 &   -- \\
+	total &  -- &  39.9 &  26.5 &  13.7 &  21.6 \\
+	MWd &   39.9 &   -- &  15.7 &  50.7 &  19.9 \\
+	MWb &   26.5 &  15.7 &   -- &  39.2 &   4.9 \\
+	M31d &   13.7 &  50.7 &  39.2 &   -- &  34.4 \\
+	M31b &   21.6 &  19.9 &   4.9 &  34.4 &  -- \\
 	\enddata
 \end{deluxetable}
 
@@ -778,7 +779,7 @@ It was shown in \citep{cox_kinematic_2006} that simulated mergers lead to substa
 
 Initially, the stellar particles (from all origins) were used to calculate an angular momentum vector $\hat{L}$, then the coordinate system was rotated to place this along the $z$-axis. We might have expected the principal axes of the ellipsoid to correspond in some simple way to this projection, but this was found to be far from the case.
 
-More intuitive results were obtained once the $\hat{L}$ calculation was limited to stars within a limited radius of the CoM.  Figure \ref{fig:rem_shape} uses a 50 kpc limit and shows that the major axis is approximately parallel to the rotation axis.
+More intuitive results were obtained once the $\hat{L}$ calculation was limited to stars within a limited radius of the CoM.  Figure \ref{fig:rem_shape} uses a 50 kpc limit and shows that the major axis is approximately parallel to the rotation axis. Centering is clearly not perfect \todo{can this be improved?}
 
 \begin{figure}[htb!]
 	\epsscale{1.1}
@@ -816,7 +817,11 @@ Mean radial velocities $\bar{v}$ and velocity dispersions $\sigma$ were calculat
 		\label{fig:rem_disp_z}}
 \end{figure}
 
+Central velocity dispersion is about 153 km/s, so the ration $v_{\text{max}} / \sigma$ is 0.54.
 
+For oblate isotropic rotators with ellipticity $\epsilon$, there is a relation \todo{Binney78 ref}
+\[ (V/\sigma) = \sqrt{\epsilon / (1 - \epsilon)} \]
+For the stellar remnant we have $\epsilon \approx 0.5$, so $(V/\sigma) \approx 1$.
 
 \subsubsection{Remnant halo kinematics}
 

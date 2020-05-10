@@ -145,16 +145,26 @@ class Remnant(Galaxy):
                     [Izx, Izy, Izz]])
         return I
 
-    def ellipsoid_axes(self, m, x, y, z):
+    def ellipsoid_axes(self, m, x, y, z, r_lim=None):
         """
         Args:
             m, x, y, z:
                 1-D arrays with mass and coordinates (no units)
+            r_lim : float
+                Radius to include in calculation (implicit kpc, no units)
                 
         Returns:
             Two 3-tuples: relative semimajor axes and principal axis vectors
         """
-        
+
+        if r_lim is not None:
+            r = np.sqrt(x**2 + y**2 + z**2)
+            central = np.where(r < r_lim)
+            x = x[central]
+            y = y[central]
+            z = z[central]
+            m = m[central]
+
         # get moment-of-inertia tensor and eigenvalues/vectors
         I = self.I_tensor(m,x,y,z)
         w, v = eigh(I)
