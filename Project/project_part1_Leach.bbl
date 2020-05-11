@@ -123,12 +123,22 @@ Hunter, J.~D. 2007, Computing in Science \& Engineering, 9, 90,
 Ji, I., Peirani, S., \& Yi, S.~K. 2014, Astronomy \& Astrophysics, 566, A97,
   \dodoi{10.1051/0004-6361/201423530}
 
+\bibitem[{Jing \& Suto(2002)}]{jing_triaxial_2002}
+Jing, Y.~P., \& Suto, Y. 2002, The Astrophysical Journal, 574, 538,
+  \dodoi{10.1086/341065}
+
 \bibitem[{Kluyver {et~al.}(2016)Kluyver, Ragan-Kelley, P{\'e}rez, Granger,
   Bussonnier, Frederic, Kelley, Hamrick, Grout, Corlay, Ivanov, Avila, Abdalla,
   \& Willing}]{Kluyver:2016aa}
 Kluyver, T., Ragan-Kelley, B., P{\'e}rez, F., {et~al.} 2016, in Positioning and
   Power in Academic Publishing: Players, Agents and Agendas, ed. F.~Loizides \&
   B.~Schmidt, IOS Press, 87 -- 90
+
+\bibitem[{Macciò {et~al.}(2007)Macciò, Dutton, van~den Bosch, Moore, Potter,
+  \& Stadel}]{maccio_concentration_2007}
+Macciò, A.~V., Dutton, A.~A., van~den Bosch, F.~C., {et~al.} 2007, Monthly
+  Notices of the Royal Astronomical Society, 378, 55,
+  \dodoi{10.1111/j.1365-2966.2007.11720.x}
 
 \bibitem[{Marel {et~al.}(2012{\natexlab{a}})Marel, Besla, Cox, Sohn, \&
   Anderson}]{marel_m31_2012}
