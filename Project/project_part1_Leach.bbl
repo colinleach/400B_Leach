@@ -167,6 +167,11 @@ Mo, H., van~den Bosch, F.~C., \& White, S. 2010, Galaxy Formation and
   Cambridge University Press, 2010.
 \newblock \url{http://adsabs.harvard.edu/abs/2010gfe..book.....M}
 
+\bibitem[{Napolitano {et~al.}(2002)Napolitano, Arnaboldi, \&
+  Capaccioli}]{napolitano_ngc_2002}
+Napolitano, N.~R., Arnaboldi, M., \& Capaccioli, M. 2002, Astronomy \&
+  Astrophysics, 383, 791, \dodoi{10.1051/0004-6361:20011795}
+
 \bibitem[{Perez \& Granger(2007)}]{perez_ipython_2007}
 Perez, F., \& Granger, B.~E. 2007, Computing in Science \& Engineering, 9, 21,
   \dodoi{10.1109/MCSE.2007.53}
