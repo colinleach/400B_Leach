@@ -24,9 +24,9 @@
 	
 \todo{Add a concise and intelligent summary of the paper, once I get a clearer idea what it will include (and how to seem intelligent).}\vspace{5mm}
 
-Meanwhile, here is some nonsense:
-
-\lipsum[1-1]
+%Meanwhile, here is some nonsense:
+%
+%\lipsum[1-1]
 	
 \end{abstract}
 
@@ -742,8 +742,6 @@ The specific angular momentum $\vec{h}$ was calculated for all the particles in 
 
 We showed in Figure \ref{fig:halo_h} that halo angular momentum mostly arises from tidal forces during close approach and merger, and in Figure \ref{fig:hernquist_a} that MW halo particles subsequently have a significantly larger scale radius than M31 halo particles. As specific angular momentum is a product of radius and tangential velocity, it seems reasonable that we see a higher value for ex-MW Dark Matter when it tends to be at larger radius.
 
-\todo{effect of radius?}
-
 \begin{deluxetable}{lrrrr}[htb!]
 	\tablecaption{Specific angular momentum components for the merger remnant at t=11.44 Gyr (kpc$^2$ / Myr)
 		\label{tbl:remn_h}}
@@ -762,7 +760,9 @@ We showed in Figure \ref{fig:halo_h} that halo angular momentum mostly arises fr
 	\enddata
 \end{deluxetable}
 
-A previous section showed that the remnant is elliptical and particles of different orientation are oriented differently (Table \ref{tbl:remn_axis_angles}). When this analysis is repeated for the angular momentum vectors the mutual inclination angles are non-zero but generally quite small, as shown in Table \ref{tbl:remn_rot_angle}.
+A previous section suggested that the remnant is elliptical but it is complex to define a precise shape from the mass distribution. An analysis of the angular momentum vector may provide an alternative approach.
+
+Looking at subgroups of particle by origin, the mutual inclination angles are non-zero but generally quite small, as shown in Table \ref{tbl:remn_rot_angle}.
 
 \begin{deluxetable}{lrrrrrrr}[htb!]
 	\tablecaption{Mutual inclination angles for rotation vectors in the merger remnant at t=11.44 Gyr (degrees)
@@ -782,9 +782,44 @@ A previous section showed that the remnant is elliptical and particles of differ
 	\enddata
 \end{deluxetable}
 
+\begin{figure}[htb!]
+	\epsscale{0.9}
+	\plotone{rem_h_r.pdf}
+	\caption{Ex-disk star specific angular momentum of the MW-M31 remnant within various radii ($h$ has arbitrary units).
+		\label{fig:rem_h_r}}
+\end{figure}
+
+That analysis used all particles origination from the MW and M31, regardless of distance from the CoM. To check the validity of this, we calculated how specific angular momentum varies with radius, Attempting to do this for thin spherical shells gave surprisingly noisy results with no clear interpretation. Instead, Figure \ref{fig:rem_h_r} shows values for all ex-disk stars within various radii of the CoM. The profile is unexpectedly complex, with stars inside 50 kpc apparently quite distinct from those outside 70 kpc.
+
+\begin{figure}[htb!]
+	\epsscale{0.9}
+	\plotone{rem_phi_theta.pdf}
+	\caption{Ex-disk star angular momentum orientation of the MW-M31 remnant within various radii (spherical coordinates).
+		\label{fig:rem_phi_theta}}
+\end{figure}
+
+To investigate this further, Figure \ref{fig:rem_phi_theta} shows the orientation of $\hat{L}(r)$ in spherical coordinates, where $\phi$ is the azimuthal angle in the $x,y$ plane and $\theta$ is the polar angle downwards from the positive $z$-axis, as in Figure \ref{fig:sph_coord}. Again, we see a break in the 50-70 kpc radius range. With the major caveat that we are looking at spherically-averaged values for a structure which probably has substantial (but at this point undefined) ellipticity, the remnant is clearly far from equilibrium and has a complex structure and kinematics  
+
+\begin{figure}[htb!]
+	\epsscale{0.7}
+	\plotone{240px-3D_Spherical.png}
+	\caption{Spherical coordinate convention.
+		\label{fig:sph_coord}}
+\end{figure}
+
+\todo{Include bulge particles}
+
+\todo{distinguish by origin}
+
+
+
+% DM stuff
+
 For the aggregate of all DM particles in the remnant at this time, the angular momentum vector has orientation $\hat{h} = \left< 0.64 ,  0.03, -0.76 \right>$, almost identical to the total for all particles (baryonic + DM) in the remnant. The magnitude $|h| = 13.15$ kpc$^2$/Myr is more than two orders of magnitude higher than the values for the individual galaxies about their respective CoM at the current epoch. 
 
 We showed in Figure \ref{fig:halo_h} that halo angular momentum mostly arises from tidal forces during close approach and merger, and in Figure \ref{fig:hernquist_a} that MW halo particles subsequently have a significantly larger scale radius that M31 halo particles. As specific angular momentum is a product of radius and tangential velocity, it seems reasonable that we see a higher value for ex-MW Dark Matter when it tends to be at larger radius.
+
+\todo{effect of radius?}
 
 \subsubsection{Remnant stellar kinematics}
 
