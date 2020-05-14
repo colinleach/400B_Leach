@@ -142,12 +142,12 @@ Relative motions of the CoMs are shown against time in Figures \ref{fig:rel_sep}
 
 There is a MW-M31 close approach with first pericenter at 3.96 Gyr with a minimum separation of 35.1 kpc, then a separation to 173 kpc at apocenter and finally a convergence to 7.8 kpc at second pericenter and merger between 5.9 - 6.5 Gyr. Relative velocities spike sharply during these approaches, as potential energy is converted to kinetic energy, before declining to essentially zero.
 
-\begin{figure}[hbt!]
-	\epsscale{1.1}
+\begin{figure*}[hbt!]
+	\epsscale{0.9}
 	\plotone{collision_278}
 	\caption{Orthogonal views of the three galaxies (disk particles only) at first apocenter. \todo{improve this visually!}
 		\label{fig:3view_first_apo}}
-\end{figure}
+\end{figure*}
 
 Figure \ref{fig:3view_first_apo} shows a view of first apocenter as a disk density plot from three orthogonal directions. The full animation is available online\footnote{\url{https://github.com/colinleach/400B_Leach/blob/master/animations/collisions_disk.mp4}}
 
@@ -195,12 +195,12 @@ Figure \ref{fig:rotcurve0} shows the rotation curves expected from these mass pr
 \todo{more on spiral arms}
 
 
-\begin{figure}[!bht!]
-	\epsscale{1.2}
+\begin{figure*}[!bht!]
+	\epsscale{0.8}
 	\plotone{6cyl_grab}
 	\caption{Disk particles from MW (top) and M31 (bottom) at three timepoints; cylindrical coordinates.
 		\label{fig:6cyl}}
-\end{figure}
+\end{figure*}
 
 Disk structure and evolution may be easier to visualize if we transform to cylindrical coordinates (with the angular momentum vector along the $z$-axis) and use $r-\theta$ plots. Figure \ref{fig:6cyl} shows this for the two large galaxies at several timepoints (as labelled).  Spiral arms show up in both early in the simulation. First pericenter has little effect, but 0.3 Gyr later we see highly prominent tidal tails. These images are taken from a full animation for each galaxy, available online\footnote{\url{https://github.com/colinleach/400B_Leach/tree/master/animations}, files cyl\_M*\_disk.mp4 }
 
@@ -368,13 +368,13 @@ Reviewing a broad range of N-body simulations, \citet{barnes_dynamics_1992} note
 To determine the nature and origin of stars in this region, a manual selection was performed as in Figure \ref{fig:bridge}. Stars within the yellow rectangle (left panel) are shown with velocity vectors (center panel) and origin (right panel). Velocities are diverse: mean 195 km/s, range 19-586 km/s. 
 
 
-\begin{figure}[ht!]
+\begin{figure*}[ht!]
 	\epsscale{1.12}
 	\plotone{selected.pdf}
 	\caption{Manual selection of bridge particles at 0.33 Gyr after the first MW-M31 pericenter. The left panel shows stellar surface density and the selected region. The center panel shows velocity vectors for these stars and the right panel shows origin by galaxy and particle type. Orientation is with MW top, M31 bottom and M33 lower left. \\
 		\todo{\textit{make this page-width in final layout}}
 	\label{fig:bridge}}
-\end{figure}
+\end{figure*}
 
 It appears from the right panel that stars in the tail regions originate in the corresponding disk. The bridge region is more mixed and appears to have a high proportion of former bulge stars. To study this further the coordinate system was transformed to place the large galaxy CoMs on the $x$-axis at $\pm 64$ kpc, as in Figure \ref{fig:bridge2}. It is clear in this view that one MW tail is oriented approximately towards the center of M31. 
 
@@ -791,12 +791,12 @@ It was shown in \citep{cox_kinematic_2006} that simulated mergers lead to substa
 
 Initially, the stellar particles (from all origins) were used to calculate an angular momentum vector $\hat{L}$, then the coordinate system was rotated to place this along the $z$-axis. We might have expected the principal axes of the ellipsoid to correspond in some simple way to this projection, but this was found to be far from the case.
 
-More intuitive results were obtained once the $\hat{L}$ calculation was limited to stars within a limited radius of the CoM.  Figure \ref{fig:rem_shape} uses a 50 kpc limit and shows that the major axis is approximately parallel to the rotation axis. Centering is clearly not perfect \todo{can this be improved?}
+More intuitive results were obtained once the $\hat{L}$ calculation was limited to stars within a limited radius of the CoM.  Figure \ref{fig:rem_shape} uses a 40 kpc limit and shows that the major axis is approximately parallel to the rotation axis. In this inner region the stellar remnant is near-prolate
 
 \begin{figure}[htb!]
-	\epsscale{1.1}
+	\epsscale{1.2}
 	\plotone{remnant_shape.pdf}
-	\caption{Luminous star density of the MW-M31 remnant in three orthogonal projections. Left panel looks down the $\hat{L}$ axis, mid/right panels have this vertical.
+	\caption{Luminous star density of the MW-M31 remnant in three orthogonal projections. Left panel looks down the $\hat{L}$ axis, mid/right panels have this vertical. Contours enclose 50\% (orange) and 75\% (red) of the stars.
 		\label{fig:rem_shape}}
 \end{figure}
 
@@ -813,7 +813,7 @@ Figure \ref{fig:rem_phase} shows phase diagrams in various orientations. There i
 	\label{fig:rem_phase}}
 \end{figure}
 
-Mean radial velocities $\bar{v}$ and velocity dispersions $\sigma$ were calculated by binning along the $y$-axis (Figure \ref{fig:rem_disp_y}) and the $z$-axis (Figure \ref{fig:rem_disp_z}). The results are not entirely simple and regular, but the variation perpendicular to $\hat{L}$ shows clear rotation with $v_{\text{max}} \approx 83$ km/s. As expected, along $\hat{L}$ we see smaller and more random velocities with a somewhat higher dispersion.
+Mean radial velocities $\bar{v}$ and velocity dispersions $\sigma$ were calculated by binning along the $y$-axis (Figure \ref{fig:rem_disp_y}) and the $z$-axis (Figure \ref{fig:rem_disp_z}). The variation perpendicular to $\hat{L}$ shows clear rotation with $v_{\text{max}} \approx 68$ km/s, with some asymmetry. As expected, along $\hat{L}$ we see smaller and more random velocities with dispersion falling off more slowly from the center.
 
 \begin{figure}[htb!]
 	\epsscale{0.9}
@@ -852,7 +852,7 @@ We showed in Figure \ref{fig:halo_h} that halo angular momentum mostly arises fr
 		\label{fig:rem_dm_h_r}}
 \end{figure}
 
-The radial dependency of angular momentum for stellar matter was previously shown to be complex (Figures \ref{fig:rem_h_r} and \ref{fig:rem_phi_theta}). The analysis was repeated for the DM halo. Figures \ref{fig:rem_dm_h_r} and \ref{fig:rem_dm_phi_theta} show that any complexity is confined within about 60 kpc, where there is dense stellar matter. Outide this the profile is smooth to at least 1 Mpc.
+The radial dependency of angular momentum for stellar matter was previously shown to be complex (Figures \ref{fig:rem_h_r} and \ref{fig:rem_phi_theta}). The analysis was repeated for the DM halo. Figures \ref{fig:rem_dm_h_r} and \ref{fig:rem_dm_phi_theta} show that the irregularities are confined within about 60 kpc, where there is dense stellar matter. Outside this the profile is smooth to at least 1 Mpc.
 	
 \begin{figure}[htb!]
 	\epsscale{0.9}
