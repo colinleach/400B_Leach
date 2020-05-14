@@ -22,11 +22,10 @@
 
 \begin{abstract}
 	
-\todo{Add a concise and intelligent summary of the paper, once I get a clearer idea what it will include (and how to seem intelligent).}\vspace{5mm}
+Existing data from an N-body simulation of the local group is reanalyzed. Future trajectories of the Milky Way (MW), M31 and M33 are presented, with emphasis on the structural and kinematic effects of a MW-M31 close approach to 35 kpc just before 4 Gyr, then final approach and merger around 6 Gyr. The final state of the merger remnant is examined in some detail, showing that stellar material is by no means fully relaxed at the end is the simulation (11.44 Gyr). The central region is approximately prolate, with significant rotation about its long axis. At larger radii, baryonic matter appears kinematically distinct from the central region with a different rotation axis. \vspace{5mm}
+	
+\todo{Add further concise and intelligent summary of the paper, once I get a clearer idea what it will include (and how to seem intelligent).}\vspace{5mm}
 
-%Meanwhile, here is some nonsense:
-%
-%\lipsum[1-1]
 	
 \end{abstract}
 
@@ -145,7 +144,7 @@ There is a MW-M31 close approach with first pericenter at 3.96 Gyr with a minimu
 \begin{figure*}[hbt!]
 	\epsscale{0.9}
 	\plotone{collision_278}
-	\caption{Orthogonal views of the three galaxies (disk particles only) at first apocenter. \todo{improve this visually!}
+	\caption{Orthogonal views of the three galaxies (disk particles only) at first apocenter.
 		\label{fig:3view_first_apo}}
 \end{figure*}
 
@@ -791,7 +790,7 @@ It was shown in \citep{cox_kinematic_2006} that simulated mergers lead to substa
 
 Initially, the stellar particles (from all origins) were used to calculate an angular momentum vector $\hat{L}$, then the coordinate system was rotated to place this along the $z$-axis. We might have expected the principal axes of the ellipsoid to correspond in some simple way to this projection, but this was found to be far from the case.
 
-More intuitive results were obtained once the $\hat{L}$ calculation was limited to stars within a limited radius of the CoM.  Figure \ref{fig:rem_shape} uses a 40 kpc limit and shows that the major axis is approximately parallel to the rotation axis. In this inner region the stellar remnant is near-prolate
+More intuitive results were obtained once the $\hat{L}$ calculation was limited to stars within a limited radius of the CoM.  Figure \ref{fig:rem_shape} uses a 40 kpc limit and shows that the major axis is approximately parallel to the rotation axis.
 
 \begin{figure}[htb!]
 	\epsscale{1.2}
@@ -799,6 +798,26 @@ More intuitive results were obtained once the $\hat{L}$ calculation was limited 
 	\caption{Luminous star density of the MW-M31 remnant in three orthogonal projections. Left panel looks down the $\hat{L}$ axis, mid/right panels have this vertical. Contours enclose 50\% (orange) and 75\% (red) of the stars.
 		\label{fig:rem_shape}}
 \end{figure}
+
+In this inner region the stellar remnant is near-prolate. Figure \ref{fig:isophote_xy} shows the contour points from the left panel of Figure \ref{fig:rem_shape}, overlaid with an ellipse (solid line) that is an approximate best fit. Ellipticity is low in this midplane, around 0.15.
+
+\begin{figure}[htb!]
+	\epsscale{1.2}
+	\plotone{isophote_xy.pdf}
+	\caption{Contour fitting, plane perpendicular to $\hat{L}$ (left panel of Figure \ref{fig:rem_shape}).
+		\label{fig:isophote_xy}}
+\end{figure}
+
+Figure \ref{fig:isophote_xy} shows a similar fit for the mid panel of Figure \ref{fig:rem_shape}. Ellipticity is much higher, around 0.5. The inner contour is also waisted and somewhat boxy; the outer contour appears more regular, but a more detailed statistical analysis is needed.
+
+\begin{figure}[htb!]
+	\epsscale{1.2}
+	\plotone{isophote_xz.pdf}
+	\caption{Contour fitting, plane parallel to $\hat{L}$ (mid panel of Figure \ref{fig:rem_shape}).
+		\label{fig:isophote_xz}}
+\end{figure}
+
+
 
 \todo{\textbf{Is it a fast or slow rotator?}}
 
@@ -943,7 +962,7 @@ Unfortunately, this gives a spin parameter $\lambda \approx 30$, about 2 orders 
 \section{Discussion and Conclusions}
 
 \todo{\textbf{\textit{add some!}}}
-
+\vspace{30mm}
 
 
 \section{Acknowledgments}
