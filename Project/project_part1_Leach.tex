@@ -22,7 +22,7 @@
 
 \begin{abstract}
 	
-Existing data from an N-body simulation of the local group is reanalyzed. Future trajectories of the Milky Way (MW), M31 and M33 are presented, with emphasis on the structural and kinematic effects of a MW-M31 close approach to 35 kpc just before 4 Gyr, then final approach and merger around 6 Gyr. The final state of the merger remnant is examined in some detail, showing that stellar material is by no means fully relaxed at the end is the simulation (11.44 Gyr). The central region is approximately prolate, with significant rotation about its long axis. At larger radii, baryonic matter appears kinematically distinct from the central region with a different rotation axis. \vspace{5mm}
+Existing data from an N-body simulation of the local group is reanalyzed. Future trajectories of the Milky Way (MW), M31 and M33 are presented, with emphasis on the structural and kinematic effects of a MW-M31 close approach to 35 kpc just before 4 Gyr, then final approach and merger around 6 Gyr. The final state of the merger remnant is examined in some detail, showing that stellar material is by no means fully relaxed at the end of the simulation (11.44 Gyr). The central region is approximately prolate, with significant rotation about its long axis. At larger radii, baryonic matter appears kinematically distinct from the central region with a different rotation axis. \vspace{5mm}
 	
 \todo{Add further concise and intelligent summary of the paper, once I get a clearer idea what it will include (and how to seem intelligent).}\vspace{5mm}
 
@@ -640,7 +640,7 @@ This topic will be revisited after the discussion of angular momentum in a later
 		\label{fig:rem_mp_type}}
 \end{figure}
 
-The mass profile for each type of particle and overall is shown in Figure \ref{fig:rem_mp_type}. This is similar to Figure \ref{fig:massprof0}, except that the radius now extends out to 100 kpc.
+The mass profile for each type of particle and overall is shown in Figure \ref{fig:rem_mp_type}. This is similar to Figure \ref{fig:massprof0}, which showed the precursor galaxies, except that the radius now extends out to 100 kpc to capture the more dispersed stellar distribution in the remnant.
 
 \begin{figure}[htb!]
 	\epsscale{0.8}
@@ -681,7 +681,7 @@ Previous sections have shown that MW and M31 particles remain somewhat distinct 
 		\label{fig:rem_sersic_origin}}
 \end{figure}
 
-Figure \ref{fig:rem_sersic_origin} shows Sérsic fits to the surface brightness profile (assuming $M_\star/L \sim 1$).
+Figure \ref{fig:rem_sersic_origin} shows Sérsic fits to the surface brightness profile (assuming $M_\star/L \sim 1$). \todo{comment!}
 
 The mass profile of DM particles in the remnant halo is well fit by a Hernquist profile, but there are some differences depending on origin as shown in Table \ref{tbl:remn_hq}
 
@@ -699,7 +699,7 @@ The mass profile of DM particles in the remnant halo is well fit by a Hernquist 
 	\enddata
 \end{deluxetable}
 
-For comparison, the $a$ values at $t=0$ were 
+For comparison, the $a$ values for precursor galaxies at $t=0$ were substantially smaller:
 \begin{align*}
 	\text{MW} &= 61.6 \pm 0.5\ kpc\\
 	\text{M31} &= 61.4 \pm 0.2\ kpc
@@ -731,8 +731,6 @@ The overall time-dependence of Hernquist radii was shown in Figure \ref{fig:hern
 %Hopkins+2008 ApJS 175
 
 The specific angular momentum $\vec{h}$ was calculated for all the particles in the merger remnant and various subsets, as shown in Table \ref{tbl:remn_h}. Differences tend to be small for stellar particles regardless of origin, larger for the ex-M31 halo and much larger for the ex-MW halo.
-
-We showed in Figure \ref{fig:halo_h} that halo angular momentum mostly arises from tidal forces during close approach and merger, and in Figure \ref{fig:hernquist_a} that MW halo particles subsequently have a significantly larger scale radius than M31 halo particles. As specific angular momentum is a product of radius and tangential velocity, it seems reasonable that we see a higher value for ex-MW Dark Matter when it tends to be at larger radius.
 
 \begin{deluxetable}{lrrrr}[htb!]
 	\tablecaption{Specific angular momentum components for the merger remnant at t=11.44 Gyr (kpc$^2$ / Myr)
@@ -781,7 +779,7 @@ Looking at subgroups of particle by origin, the mutual inclination angles are no
 		\label{fig:rem_h_r}}
 \end{figure}
 
-That analysis used all particles origination from the MW and M31, regardless of distance from the CoM. To check the validity of this, we calculated how specific angular momentum varies with radius, Attempting to do this for thin spherical shells gave surprisingly noisy results with no clear interpretation. Instead, Figure \ref{fig:rem_h_r} shows values for all stars within various radii of the CoM. The profile is unexpectedly complex, with an apparent separation between inner and outer regions.
+That analysis used all particles originating from the MW and M31, regardless of distance from the CoM. To check the validity of this, we calculated how specific angular momentum varies with radius. Attempting to do this for thin spherical shells gave surprisingly noisy results with no clear interpretation. Instead, Figure \ref{fig:rem_h_r} shows values for all stars within various radii of the CoM. The profile is unexpectedly complex, with an apparent separation between inner and outer regions.
 
 \begin{figure}[htb!]
 	\epsscale{0.9}
@@ -790,10 +788,12 @@ That analysis used all particles origination from the MW and M31, regardless of 
 		\label{fig:rem_phi_theta}}
 \end{figure}
 
-To investigate this further, Figure \ref{fig:rem_phi_theta} shows the orientation of $\hat{L}(r)$ in spherical coordinates, where $\phi$ is the azimuthal angle in the $x,y$ plane and $\theta$ is the polar angle downwards from the positive $z$-axis, as in Figure \ref{fig:sph_coord}.\footnote{\url{https://en.wikipedia.org/wiki/Spherical\_coordinate\_system\#/media/File:3D\_Spherical.svg}} Again, we see a substantial variation by radius: the remnant is not rotating as a solid body. With the major caveat that we are looking at spherically-averaged values for a structure which probably has substantial (but at this point undefined) ellipticity, the remnant is clearly far from equilibrium and has a complex structure and kinematics.
+To investigate this further, Figure \ref{fig:rem_phi_theta} shows the orientation of $\hat{L}(r)$ in spherical coordinates, where $\phi$ is the azimuthal angle in the $x,y$ plane and $\theta$ is the polar angle downwards from the positive $z$-axis, as in Figure \ref{fig:sph_coord}.\footnote{\url{https://en.wikipedia.org/wiki/Spherical\_coordinate\_system\#/media/File:3D\_Spherical.svg}} 
+
+Again, we see a substantial variation by radius: the remnant is not rotating as a solid body. With the major caveat that we are looking at spherically-averaged values for a structure which probably has substantial (but at this point undefined) ellipticity, the remnant is clearly far from equilibrium and has a complex structure and kinematics.
 
 \begin{figure}[htb!]
-	\epsscale{0.7}
+	\epsscale{0.6}
 	\plotone{240px-3D_Spherical.png}
 	\caption{Spherical coordinate convention.
 		\label{fig:sph_coord}}
@@ -806,11 +806,11 @@ This collision and a single merger is not sufficient to randomize stars within t
 
 \subsubsection{Remnant stellar kinematics}
 
-It was shown in \citep{cox_kinematic_2006} that simulated mergers lead to substantially different rotational kinematics if the galaxies are gas-poor (``dry'') and the collision is dissipationless versus gas-rich, dissipational collisions. 
+It was shown in \citep{cox_kinematic_2006} that simulated mergers lead to substantially different rotational kinematics if the galaxies are gas-poor (``dry'') and the collision is dissipationless versus gas-rich, dissipational collisions. \todo{expand!}
 
 Initially, the stellar particles (from all origins) were used to calculate an angular momentum vector $\hat{L}$, then the coordinate system was rotated to place this along the $z$-axis. We might have expected the principal axes of the ellipsoid to correspond in some simple way to this projection, but this was found to be far from the case.
 
-More intuitive results were obtained once the $\hat{L}$ calculation was limited to stars within a limited radius of the CoM.  Figure \ref{fig:rem_shape} uses a 40 kpc limit and shows that the major axis is approximately parallel to the rotation axis.
+More intuitive results were obtained once the $\hat{L}$ calculation was limited to stars within a constrained radius of the CoM.  Figure \ref{fig:rem_shape} uses a 40 kpc limit and shows that the major axis is approximately parallel to the rotation axis.
 
 \begin{figure}[htb!]
 	\epsscale{1.2}
@@ -819,7 +819,7 @@ More intuitive results were obtained once the $\hat{L}$ calculation was limited 
 		\label{fig:rem_shape}}
 \end{figure}
 
-In this inner region the stellar remnant is near-prolate. Figure \ref{fig:isophote_xy} shows the contour points from the left panel of Figure \ref{fig:rem_shape}, overlaid with an ellipse (solid line) that is an approximate best fit. Ellipticity is low in this midplane, around 0.15.
+In this inner region the stellar remnant is near-prolate. Figure \ref{fig:isophote_xy} shows the contour points from the left panel of Figure \ref{fig:rem_shape}, overlaid with an ellipse (solid line) that is an approximate best fit. Ellipticity $\epsilon$ is low in this midplane, around 0.15.
 
 \begin{figure}[htb!]
 	\epsscale{1.2}
@@ -828,7 +828,9 @@ In this inner region the stellar remnant is near-prolate. Figure \ref{fig:isopho
 		\label{fig:isophote_xy}}
 \end{figure}
 
-Figure \ref{fig:isophote_xy} shows a similar fit for the mid panel of Figure \ref{fig:rem_shape}. Ellipticity is much higher, around 0.5. The inner contour is also waisted and somewhat boxy; the outer contour appears more regular, but a more detailed statistical analysis is needed.
+Figure \ref{fig:isophote_xy} shows a similar fit for the mid panel of Figure \ref{fig:rem_shape}. Ellipticity is much higher, around 0.5. The inner contour is also waisted and somewhat boxy; the outer contour appears more regular, but further statistical analysis is needed.
+
+Within the inner few kpc, the stellar remnant thus has an axis ratio of $1:0.55:0.47$. \todo{does it become more circular further out?}
 
 \begin{figure}[htb!]
 	\epsscale{1.2}
@@ -852,7 +854,7 @@ Figure \ref{fig:rem_phase} shows phase diagrams in various orientations. There i
 	\label{fig:rem_phase}}
 \end{figure}
 
-Mean radial velocities $\bar{v}$ and velocity dispersions $\sigma$ were calculated by binning along the $y$-axis (Figure \ref{fig:rem_disp_y}) and the $z$-axis (Figure \ref{fig:rem_disp_z}). The variation perpendicular to $\hat{L}$ shows clear rotation with $v_{\text{max}} \approx 68$ km/s, with some asymmetry. As expected, along $\hat{L}$ we see smaller and more random velocities with dispersion falling off more slowly from the center.
+Mean radial velocities $\bar{v}$ and velocity dispersions $\sigma$ were calculated by binning along the $y$-axis (Figure \ref{fig:rem_disp_y}) and the $z$-axis (Figure \ref{fig:rem_disp_z}). The variation perpendicular to $\hat{L}$ shows clear rotation with $v_{\text{max}} \approx 68$ km/s, somewhat asymmetric. As expected, along $\hat{L}$ we see smaller and more random velocities with dispersion falling off more slowly from the center.
 
 \begin{figure}[htb!]
 	\epsscale{0.9}
@@ -868,19 +870,19 @@ Mean radial velocities $\bar{v}$ and velocity dispersions $\sigma$ were calculat
 		\label{fig:rem_disp_z}}
 \end{figure}
 
-Central velocity dispersion is about 153 km/s, so the ration $v_{\text{max}} / \sigma$ is 0.54.
+Central velocity dispersion is about 153 km/s, so the ratio $v_{\text{max}} / \sigma$ is 0.54.
 
 For oblate isotropic rotators with ellipticity $\epsilon$, there is a relation \todo{Binney78 ref}
 \[ (V/\sigma) = \sqrt{\epsilon / (1 - \epsilon)} \]
 For the stellar remnant we have $\epsilon \approx 0.5$, so $(V/\sigma) \approx 1$.
 
-\todo{Finish discussion}
+\todo{Finish discussion - this is NOT oblate}
 
 \subsection{Merger DM halo remnant}
 
 \subsubsection{Angular momentum}
 
-For the aggregate of all DM particles in the remnant at this time, the angular momentum vector has orientation $\hat{h} = \left< 0.64 ,  0.03, -0.76 \right>$, almost identical to the total for all particles (baryonic + DM) in the remnant. The magnitude $|h| = 13.15$ kpc$^2$/Myr is more than two orders of magnitude higher than the values for the individual galaxies about their respective CoM at the current epoch. 
+For the aggregate of all DM particles in the remnant at this time, the angular momentum vector has orientation $\hat{h} = \left< 0.64 ,  0.03, -0.76 \right>$, almost identical to the total for all particles (baryonic + DM) in the remnant. The magnitude $|h| = 13.1$ kpc$^2$/Myr is more than two orders of magnitude higher than the values for the individual galaxies about their respective CoM at the current epoch. 
 
 We showed in Figure \ref{fig:halo_h} that halo angular momentum mostly arises from tidal forces during close approach and merger, and in Figure \ref{fig:hernquist_a} that MW halo particles subsequently have a significantly larger scale radius that M31 halo particles. As specific angular momentum is a product of radius and tangential velocity, it seems reasonable that we see a higher value for ex-MW Dark Matter when it tends to be at larger radius.
 
@@ -900,7 +902,7 @@ The radial dependency of angular momentum for stellar matter was previously show
 		\label{fig:rem_dm_phi_theta}}
 \end{figure}
 	
-	
+\todo{DM density, shape, ellipse fitting}	
 
 \subsubsection{Virial radius}
 
@@ -919,9 +921,10 @@ This gives us a value of $\rho_{c,\infty} \approx 90\ M_\sun/\text{kpc}^3$. Then
 
 The total virial mass, enclosed within the virial radius, is $1.7 \times 10^{12}\ M_\Sun$, of which 87\% is Dark Matter.
 
-For comparison, if we used the current value $\rho_{c,0}$ throughout, the virial radius at the final timepoint would be about 142 kpc and the virial mass falls to about $1.5 \times 10^{12}\ M_\Sun$.
+For comparison, if we used the current value $\rho_{c,0}$ throughout, the virial radius at the final timepoint would be about 142 kpc and the virial mass falls to about $1.5 \times 10^{12}\ M_\Sun$. \todo{what fraction of precursor galaxies?}
 
 \todo{Some discussion would be useful!}
+
 
 \subsubsection{Remnant halo kinematics}
 
