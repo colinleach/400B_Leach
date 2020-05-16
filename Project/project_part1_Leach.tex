@@ -810,41 +810,48 @@ It was shown in \citep{cox_kinematic_2006} that simulated mergers lead to substa
 
 Initially, the stellar particles (from all origins) were used to calculate an angular momentum vector $\hat{L}$, then the coordinate system was rotated to place this along the $z$-axis. We might have expected the principal axes of the ellipsoid to correspond in some simple way to this projection, but this was found to be far from the case.
 
-More intuitive results were obtained once the $\hat{L}$ calculation was limited to stars within a constrained radius of the CoM.  Figure \ref{fig:rem_shape} uses a 40 kpc limit and shows that the major axis is approximately parallel to the rotation axis.
+More intuitive results were obtained once the $\hat{L}$ calculation was limited to stars within a constrained radius of the CoM.  Figure \ref{fig:rem_shape_10} uses a 10 kpc limit and shows that the major axis is approximately parallel to the rotation axis.
 
 \begin{figure}[htb!]
 	\epsscale{1.2}
-	\plotone{remnant_shape.pdf}
+	\plotone{remnant_shape_10.pdf}
 	\caption{Luminous star density of the MW-M31 remnant in three orthogonal projections. Left panel looks down the $\hat{L}$ axis, mid/right panels have this vertical. Contours enclose 50\% (orange) and 75\% (red) of the stars.
-		\label{fig:rem_shape}}
+		\label{fig:rem_shape_10}}
 \end{figure}
 
-In this inner region the stellar remnant is near-prolate. Figure \ref{fig:isophote_xy} shows the contour points from the left panel of Figure \ref{fig:rem_shape}, overlaid with an ellipse (solid line) that is an approximate best fit. Ellipticity $\epsilon$ is low in this midplane, around 0.15.
+In this inner region the stellar remnant is near-prolate. Figure \ref{fig:isophote_xy} shows the contour points from the left panel of Figure \ref{fig:rem_shape_10}, overlaid with an ellipse (solid line) that is an approximate best fit. Ellipticity $\epsilon$ is low in this midplane, around 0.15.
 
 \begin{figure}[htb!]
-	\epsscale{1.2}
+	\epsscale{1.0}
 	\plotone{isophote_xy.pdf}
 	\caption{Contour fitting, plane perpendicular to $\hat{L}$ (left panel of Figure \ref{fig:rem_shape}).
 		\label{fig:isophote_xy}}
 \end{figure}
 
-Figure \ref{fig:isophote_xy} shows a similar fit for the mid panel of Figure \ref{fig:rem_shape}. Ellipticity is much higher, around 0.5. The inner contour is also waisted and somewhat boxy; the outer contour appears more regular, but further statistical analysis is needed.
-
-Within the inner few kpc, the stellar remnant thus has an axis ratio of $1:0.55:0.47$, with the long axis along $\hat{z}$. 
+Figure \ref{fig:isophote_xy} shows a similar fit for the mid panel of Figure \ref{fig:rem_shape_10}. Ellipticity is much higher, around 0.5. The inner contour is also waisted and somewhat boxy; the outer contour appears more regular, but further statistical analysis is needed.
 
 \begin{figure}[htb!]
-	\epsscale{1.2}
+	\epsscale{1.0}
 	\plotone{isophote_xz.pdf}
 	\caption{Contour fitting, plane parallel to $\hat{L}$ (mid panel of Figure \ref{fig:rem_shape}).
 		\label{fig:isophote_xz}}
 \end{figure}
 
-There may be a trend for the ellipticity to fall between the 50\% and 75\% contours, but the data so far is not convincing. If we add a 90\% contour (not shown in Figure \ref{fig:rem_shape}), the picture changes significantly. Out at radii of 20-30 kpc, the overall shape is more oblate, with the short axis closer to $\hat{x}$ as shown in Figure \ref{fig:isophotes_90}. 
+Within the inner few kpc, the stellar remnant thus has an axis ratio of $1:0.55:0.47$, with the long axis along $\hat{z}$. 
+
+\begin{figure}[htb!]
+	\epsscale{1.2}
+	\plotone{remnant_shape_40.pdf}
+	\caption{Luminous star density of the MW-M31 remnant, extending Figure \ref{fig:rem_shape_10} to larger radii with the same orientation.
+		\label{fig:rem_shape_40}}
+\end{figure}
+
+There may be a trend for the ellipticity to fall between the 50\% and 75\% contours, but the data so far is not convincing. If we extend the analysis to stars within 40 kpc of the CoM and add a 90\% contour as in Figure \ref{fig:rem_shape_40}, the picture changes significantly. Out at radii of 20-30 kpc, the overall shape is more oblate, with the short axis closer to $\hat{x}$ as shown in Figure \ref{fig:isophotes_90}. 
 
 \begin{figure}[htb!]
 	\epsscale{1.2}
 	\plotone{isophotes_90.pdf}
-	\caption{Contour fitting for the 90\% contour. Coordinates as in Figures \ref{fig:rem_shape} to \ref{fig:isophote_xz}.
+	\caption{Contour fitting for the 90\% contour.
 		\label{fig:isophotes_90}}
 \end{figure}
 
@@ -857,7 +864,7 @@ There may be a trend for the ellipticity to fall between the 50\% and 75\% conto
 Figure \ref{fig:rem_phase} shows phase diagrams in various orientations. There is a fairly clear velocity asymmetry along the $x$- and $y$-axes, perpendicular to $\hat{L}$, but not along the $z$-axis.
 
 \begin{figure}[htb!]
-	\epsscale{1.1}
+	\epsscale{1.2}
 	\plotone{remnant_phase.pdf}
 	\caption{Phase diagrams of the MW-M31 remnant, orthogonal views.
 	\label{fig:rem_phase}}
@@ -910,6 +917,8 @@ The radial dependency of angular momentum for stellar matter was previously show
 	\caption{Halo angular momentum orientation of the MW-M31 remnant within various radii (spherical coordinates).
 		\label{fig:rem_dm_phi_theta}}
 \end{figure}
+
+The coordinate system in Figure \ref{fig:rem_dm_phi_theta} is the same is that used for stellar particles in Figure \ref{fig:rem_phi_theta}. The range of values is strikingly different: in the remnant, the DM halo is \textit{not} co-rotating with the stars.
 	
 \todo{DM density, shape, ellipse fitting}	
 
