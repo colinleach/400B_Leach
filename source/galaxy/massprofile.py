@@ -275,7 +275,7 @@ class MassProfile:
         popt, pcov = curve_fit(ser, R, log_bulgeI, (60,))
         return popt[0], pcov[0][0]
 
-    def density_profile(self, radii, m, xyz):
+    def density_profile_shell(self, radii, m, xyz):
         """
         Calculates mass density in successive spherical shells
 
@@ -302,7 +302,30 @@ class MassProfile:
         r_annuli = np.sqrt(radii[1:] * radii[:-1])
         return r_annuli, rho
 
-    def virial_radius(self, r_min=20, r_max=300, rho_c=None):
+    def density_profile_sphere(self, radii, m, xyz):
+        """
+        Calculates average mass density within successive spherical radii
+
+        Arg:
+            radii (array of float):
+                boundary values beteen shells (implicit kpc, no units)
+            m (shape (N,) array of float):
+                particle masses (implicit Msun, no units)
+            xyz ((3,N) array of float):
+                particle cartesian coordinates
+
+        Returns:
+            rho: densities (Msun/kpc^3)
+                (same length as radii)
+        """
+
+        r = norm(xyz, axis=0)
+        enc_mask = r[:, np.newaxis] < np.asarray(radii).flatten()
+        m_enc = np.sum(m[:, np.newaxis] * enc_mask, axis=0)
+        rho = 3/(4*np.pi) * m_enc / (radii**3)
+        return rho
+
+    def virial_radius(self, r_min=20, r_max=1000, rho_c=None):
         """
         Calculates radius where DM density falls to 200x critical density
         for the universe.
@@ -327,17 +350,17 @@ class MassProfile:
 
         radii = np.linspace(r_min, r_max, 200)
 
-        m = self.gal.data['m']
+        m = self.gal.data['m'] * 1e10 # in Msun
         DM = np.where(self.gal.data['type']==1)
         m_dm = m[DM]
 
         com = CenterOfMass(self.gal, ptype=None)
         xyz, _ = com.center_com()
         xyz_dm = (xyz.T[DM]).T
-        r_annuli, rho = self.density_profile(radii, m_dm, xyz_dm)
+        rho_av = self.density_profile_sphere(radii, m_dm, xyz_dm)
 
-        idx, nearest = find_nearest(rho.value, 200*rho_c)
-        r_200 = r_annuli[idx]
+        idx, nearest = find_nearest(rho_av, 200*rho_c)
+        r_200 = radii[idx]
         return r_200
 
     def virial_mass(self, r_200=None, ptype=None):

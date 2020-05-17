@@ -924,7 +924,7 @@ The coordinate system in Figure \ref{fig:rem_dm_phi_theta} is the same is that u
 
 \subsubsection{Virial radius}
 
-The DM halo obviously has no sharp outer edge, it just gradually fades into the inter-galactic medium (IGM). One popular convention is to use the $r_{200}$ or ``virial radius'' as a limit: the radius at which the density is $200\times$ the cosmological critical density $\rho_c$.
+The DM halo has no sharp outer edge, it just gradually fades into the inter-galactic medium (IGM). One popular convention is to use the $r_{200}$ or ``virial radius'' as a limit: the radius within which the average density is $200\times$ the cosmological critical density $\rho_c$.
 
 For a flat LambdaCDM cosmology, we can calculate the critical density from
 \[ \rho_c(t) = \frac{3 H^2(t)}{8 \pi G} \] 
@@ -934,14 +934,16 @@ $\rho_{c,0} = 127.35\ M_\sun/\text{kpc}^3$
 
 The simulation ends more than 11 Gyr in the future, so we need a different value for $H(t)$. By then the universe will be well into a Dark Energy-dominated epoch with near-exponential expansion. Then $\dot{H}(t) \approx 0$ and $H(t)$ asymptotically approaches its final value of $H_{\infty} \approx 57$ km/s/Mpc.
 
-This gives us a value of $\rho_{c,\infty} \approx 90\ M_\sun/\text{kpc}^3$. Then $r_{200}$ is the radius at which the spherically-averaged remnant halo density falls below $1.8 \times 10^4\ M_\sun/\text{kpc}^3$. At the final timepoint, this is 
-\[ r_{200} \approx 168\ \text{kpc} \]
+This gives us a lower bound for $\rho_{c,\infty} \approx 90\ M_\sun/\text{kpc}^3$. Then $r_{200}$ is the radius within which the averaged remnant halo density falls below $1.8 \times 10^4\ M_\sun/\text{kpc}^3$. At the final timepoint, this is 
+\[ r_{200} \approx 266\ \text{kpc} \]
 
-The total virial mass, enclosed within the virial radius, is $1.7 \times 10^{12}\ M_\Sun$, of which 87\% is Dark Matter.
+The total virial mass, enclosed within the virial radius, is $2.4 \times 10^{12}\ M_\Sun$, of which 91\% is Dark Matter. This is only about 53\% of the precursor mass of the two galaxies. We can see from Figure \ref{fig:rem_mp_halo} that halo mass enclosed continues to rise to at least 2 Mpc radius, suggesting that the virial radius is quite a conservative limit.
 
-For comparison, if we used the current value $\rho_{c,0}$ throughout, the virial radius at the final timepoint would be about 142 kpc and the virial mass falls to about $1.5 \times 10^{12}\ M_\Sun$. \todo{what fraction of precursor galaxies?}
+For comparison, if we used the current value $\rho_{c,0}$ throughout, the virial radius at the final timepoint would be about 266 kpc and the virial mass falls to about $2.3 \times 10^{12}\ M_\Sun$. 
 
-\todo{Some discussion would be useful!}
+The precursor galaxies have, as expected, somewhat lower virial radii: 227 kpc for MW and 222 kpc for M31 at the current epoch (based on $\rho_{c,0}$), broadly in line with literature values, e.g. \citep{dehnen_velocity_2006}. Both have virial mass around $1.3 \times 10^{12}\ M_\Sun$, so the remnant ends up at about 88\% of the combined virial mass of the precursors.
+
+\todo{Some more discussion would be useful!}
 
 
 \subsubsection{Remnant halo kinematics}
@@ -967,12 +969,12 @@ Other than potential energy, relevant values for the remnant halo vary little ov
 
 The final timepoint of the simulation gives these results:
 \begin{align*}
-	J &= 2.9 \times 10^{12}\ M_\Sun kpc^2 / Myr\\
-	K &= 1.5 \times 10^{65}\ \text{erg}\\
-	M &= 1.3 \times 10^{12}\ M_\Sun
+	J &= 7.7 \times 10^{12}\ M_\Sun kpc^2 / Myr\\
+	K &= 3.0 \times 10^{65}\ \text{erg}\\
+	M &= 2.0 \times 10^{12}\ M_\Sun
 \end{align*}
 
-Unfortunately, this gives a spin parameter $\lambda \approx 30$, about 2 orders of magnitude higher than expected.
+Unfortunately, this gives a spin parameter $\lambda \approx 37$, about 2 orders of magnitude higher than expected.
 
 \todo{\textbf{Figure out what went wrong!}}
 
