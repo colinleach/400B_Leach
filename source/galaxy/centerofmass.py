@@ -261,3 +261,105 @@ class CenterOfMass:
 
         return pos, vel
 
+    def shell_h(self, radii, m, xyz, vxyz):
+        """
+        Calculate specific angular momentum of spherical shells.
+
+        Args:
+            radii ((M,0) array of float):
+                boundaries of shells (implicit kpc from center)
+            m ((N,) array of float):
+                masses (implicit Msun)
+            xyz, vxyz ((3,N) arrays of float):
+                positions and velocities (implicit kpc, km/s)
+        Returns:
+            rad ((M-1,) array): 
+                midpoints of shells (implicit kpc)
+            L ((M-1,3) array of float):
+                total angular momentum 
+            h ((M-1,3) array of float):
+                specific angular momentum, i.e. L/m
+        """
+
+        shell_count = len(radii) - 1
+        L = np.zeros((shell_count,3))
+        h = np.zeros((shell_count,3))
+        rad = np.zeros(shell_count)
+        
+        r = norm(xyz, axis=0)
+        for i in range(shell_count):
+            shell = np.where((r > radii[i]) & (r < radii[i+1]))
+            m_shell = m[shell]
+            xyz_shell = (xyz.T[shell]).T
+            vxyz_shell = (vxyz.T[shell]).T
+            L[i] = np.sum(np.cross(xyz_shell, m_shell*vxyz_shell, axis=0), axis=1)
+            h[i] = L[i] / np.sum(m_shell)
+            rad[i] = np.sqrt(radii[i] * radii[i+1])
+            
+        return rad, L, h
+
+    def sphere_h(self, radii, m, xyz, vxyz):
+        """
+        Calculate specific angular momentum within spheres.
+
+        Args:
+            radii ((M,0) array of float):
+                boundaries of shells (implicit kpc from center)
+            m ((N,) array of float):
+                masses (implicit Msun)
+            xyz, vxyz ((3,N) arrays of float):
+                positions and velocities (implicit kpc, km/s)
+        Returns:
+            L ((M,3) array of float):
+                total angular momentum 
+            h ((M,3) array of float):
+                specific angular momentum, i.e. L/m
+        """
+
+        r_count = len(radii)
+        L = np.zeros((r_count,3))
+        h = np.zeros((r_count,3))
+        rad = np.zeros(r_count)
+        
+        r = norm(xyz, axis=0)
+        for i in range(r_count):
+            sphere = np.where(r < radii[i])
+            m_sphere = m[sphere]
+            xyz_sphere = (xyz.T[sphere]).T
+            vxyz_sphere = (vxyz.T[sphere]).T
+            L[i] = np.sum(np.cross(xyz_sphere, m_sphere*vxyz_sphere, axis=0), axis=1)
+            h[i] = L[i] / np.sum(m_sphere)
+            
+        return L, h
+
+    def disp_by_radius(self, x, vy, xbins, binwidth=None):
+        """
+        Calculate mean velocity and dispersion sigma for a set of radius bins
+
+        Args:
+            x (array of float):
+                lateral distance from CoM 
+            vy (array of float):
+                radial velocity
+            xbins (array of float)
+                midpoints of equally-spaced bins
+            binwidth (float):
+                optional and probably useless
+        """
+        
+        if binwidth is None:
+            binwidth = xbins[1] - xbins[0]
+        
+        means = np.zeros(len(xbins))
+        sigmas = np.zeros(len(xbins))
+        
+        for i, xi in enumerate(xbins):
+            filt = np.where((x > xi - binwidth/2) & (x < xi + binwidth/2))
+            vel = vy[filt]
+            
+            if len(vel) > 0:
+                means[i] = np.mean(vel)
+                sigmas[i] = np.std(vel - means[i])
+            # else remain zero
+        
+        return means, sigmas

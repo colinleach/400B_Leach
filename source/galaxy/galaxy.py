@@ -418,4 +418,11 @@ class Galaxy():
         """
 
         return np.array([self.data[vxi] for vxi in ('vx','vy','vz')])
+
+    def m(self):
+        """
+        Conventience method to return array of masses
+        """
+
+        return self.data['m']
         

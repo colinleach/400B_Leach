@@ -1,6 +1,6 @@
 # import modules
 import numpy as np
-# from numpy.linalg import norm
+from numpy.linalg import norm
 import scipy.optimize as so
 
 # import plotting modules
@@ -336,4 +336,77 @@ class Plots():
         if pngout:
             plt.savefig(fname, dpi='figure');   
 
- 
+    def plot_h_r(self, radii, h, xmax=350, figsize=(8,6), ylabel='$h$ within radius',
+                pngout=False, fname=None):
+        fontsize = 24
+        fig = plt.figure(figsize=figsize)
+        plt.plot(radii, norm(h, axis=1), 'b-', lw=3)
+        plt.xlabel('r (kpc)', fontsize=fontsize)
+        plt.ylabel(ylabel, fontsize=fontsize)
+        plt.xlim(0, xmax),
+        # plt.ylim(0, 3000)
+
+        label_size = 16
+        matplotlib.rcParams['xtick.labelsize'] = label_size 
+        matplotlib.rcParams['ytick.labelsize'] = label_size
+
+        plt.tight_layout()
+        if pngout:
+            plt.savefig(fname, rasterized=True, dpi=350);
+
+    def plot_theta_phi(self, radii, theta, phi, xmax=350, figsize=(8,6),
+                pngout=False, fname=None):
+        fontsize = 24
+        fig = plt.figure(figsize=figsize)
+        plt.plot(radii, theta, 'r:', lw=3, label=r'$\theta$ (polar)')
+        plt.plot(radii, phi, 'b-', lw=3, label=r'$\phi$ (azimuthal)')
+        plt.xlabel('r (kpc)', fontsize=fontsize)
+        plt.ylabel('$\hat{L}$ angles (deg)', fontsize=fontsize)
+        plt.xlim(0, xmax)
+        # plt.ylim(40, 90)
+
+        label_size = 16
+        matplotlib.rcParams['xtick.labelsize'] = label_size 
+        matplotlib.rcParams['ytick.labelsize'] = label_size
+
+        plt.legend(fontsize='xx-large', shadow=True)
+        plt.tight_layout()
+        if pngout:
+            plt.savefig(fname, rasterized=True, dpi=350);
+
+    def plot_v_sigma(self, xbins, means, sigmas, xlim=None, ylim1=None, ylim2=None, 
+                figsize=(8,6), pngout=False, fname=None):
+        
+        fig, ax1 = plt.subplots(figsize=figsize)
+
+        color = 'red'
+        ax1.plot(xbins, means, 'r.', label='radial velocity')
+
+        fontsize = 24
+        ax1.set_xlabel('y (kpc)', fontsize=fontsize)
+        ax1.set_ylabel('Mean radial velocity (km/s)', color=color, fontsize=fontsize)
+        ax1.tick_params(axis='y', labelcolor=color)
+        if xlim is not None:
+            ax1.set_xlim(xlim[0], xlim[1])
+        if ylim1 is not None:
+            ax1.set_ylim(ylim1[0], ylim1[1])
+
+        ax2 = ax1.twinx()  # shares the same x-axis as ax1
+
+        color = 'blue'
+        ax2.plot(xbins, sigmas, 'b+', label='velocity dispersion')
+        ax2.set_ylabel('Velocity dispersion (km/s)', color=color, fontsize=fontsize)
+        ax2.tick_params(axis='y', labelcolor=color)
+        if ylim2 is not None:
+            ax2.set_ylim(ylim2[0], ylim2[1])
+
+        # plt.legend()
+
+        #adjust tick label font size
+        label_size = 18
+        rcParams['xtick.labelsize'] = label_size 
+        rcParams['ytick.labelsize'] = label_size
+
+        fig.tight_layout()  
+        if pngout:
+            plt.savefig(fname, rasterized=True, dpi=350);
