@@ -375,15 +375,18 @@ class Plots():
             plt.savefig(fname, rasterized=True, dpi=350);
 
     def plot_v_sigma(self, xbins, means, sigmas, xlim=None, ylim1=None, ylim2=None, 
-                figsize=(8,6), pngout=False, fname=None):
+                xlabel=None, title=None, figsize=(8,6), pngout=False, fname=None):
         
+        if xlabel is None:
+            clabel = 'y (kpc)'
+
         fig, ax1 = plt.subplots(figsize=figsize)
 
         color = 'red'
         ax1.plot(xbins, means, 'r.', label='radial velocity')
 
         fontsize = 24
-        ax1.set_xlabel('y (kpc)', fontsize=fontsize)
+        ax1.set_xlabel(xlabel, fontsize=fontsize)
         ax1.set_ylabel('Mean radial velocity (km/s)', color=color, fontsize=fontsize)
         ax1.tick_params(axis='y', labelcolor=color)
         if xlim is not None:
@@ -401,6 +404,9 @@ class Plots():
             ax2.set_ylim(ylim2[0], ylim2[1])
 
         # plt.legend()
+
+        if title is not None:
+            ax1.set_title(title, fontsize=24)
 
         #adjust tick label font size
         label_size = 18
