@@ -39,6 +39,7 @@
 <span class="kn">from</span> <span class="nn">astropy.constants</span> <span class="kn">import</span> <span class="n">G</span>
 
 <span class="kn">from</span> <span class="nn">galaxy.centerofmass</span> <span class="kn">import</span> <span class="n">CenterOfMass</span>
+<span class="kn">from</span> <span class="nn">galaxy.utilities</span> <span class="kn">import</span> <span class="n">find_nearest</span>
 
 
 <div class="viewcode-block" id="MassProfile"><a class="viewcode-back" href="../../massprofile.html#galaxy.massprofile.MassProfile">[docs]</a><span class="k">class</span> <span class="nc">MassProfile</span><span class="p">:</span>
@@ -269,7 +270,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">bulge_mass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass_enclosed</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
-        <span class="n">bulgeI</span> <span class="o">=</span> <span class="n">bulge_mass</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">R</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">bulgeI</span> <span class="o">=</span> <span class="n">bulge_mass</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">R</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># divisor is area of sphere</span>
         <span class="n">bulge_total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">bulge_mass</span><span class="p">)</span>
         <span class="n">Blow</span> <span class="o">=</span> <span class="n">bulge_total</span> <span class="o">/</span> <span class="mf">2.0</span>
         <span class="c1"># Bhigh = bulge_total / 2.0 + bulge_total / 2.0 * 0.2</span>
@@ -305,7 +306,105 @@
 
         <span class="n">log_bulgeI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">bulgeI</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
         <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">ser</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">log_bulgeI</span><span class="p">,</span> <span class="p">(</span><span class="mi">60</span><span class="p">,))</span>
-        <span class="k">return</span> <span class="n">popt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pcov</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div></div>
+        <span class="k">return</span> <span class="n">popt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pcov</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="MassProfile.density_profile_shell"><a class="viewcode-back" href="../../massprofile.html#galaxy.massprofile.MassProfile.density_profile_shell">[docs]</a>    <span class="k">def</span> <span class="nf">density_profile_shell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">xyz</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates mass density in successive spherical shells</span>
+
+<span class="sd">        Arg:</span>
+<span class="sd">            radii (array of float):</span>
+<span class="sd">                boundary values beteen shells (implicit kpc, no units)</span>
+<span class="sd">            m (shape (N,) array of float):</span>
+<span class="sd">                particle masses (implicit Msun, no units)</span>
+<span class="sd">            xyz ((3,N) array of float):</span>
+<span class="sd">                particle cartesian coordinates</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            r_annuli: geometric mean of boundaries </span>
+<span class="sd">                (array is one shorter than input radii)</span>
+<span class="sd">            rho: densities (Msun/kpc^3)</span>
+<span class="sd">                (same length as r_annuli)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">enc_mask</span> <span class="o">=</span> <span class="n">r</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">m_enc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">m</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">enc_mask</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">m_annuli</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">m_enc</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">M_sun</span>
+        <span class="n">rho</span> <span class="o">=</span> <span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_annuli</span> <span class="o">/</span> <span class="p">(</span><span class="n">radii</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span> <span class="n">radii</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">r_annuli</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">radii</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">*</span> <span class="n">radii</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">r_annuli</span><span class="p">,</span> <span class="n">rho</span></div>
+
+<div class="viewcode-block" id="MassProfile.density_profile_sphere"><a class="viewcode-back" href="../../massprofile.html#galaxy.massprofile.MassProfile.density_profile_sphere">[docs]</a>    <span class="k">def</span> <span class="nf">density_profile_sphere</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">xyz</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates average mass density within successive spherical radii</span>
+
+<span class="sd">        Arg:</span>
+<span class="sd">            radii (array of float):</span>
+<span class="sd">                boundary values beteen shells (implicit kpc, no units)</span>
+<span class="sd">            m (shape (N,) array of float):</span>
+<span class="sd">                particle masses (implicit Msun, no units)</span>
+<span class="sd">            xyz ((3,N) array of float):</span>
+<span class="sd">                particle cartesian coordinates</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            rho: densities (Msun/kpc^3)</span>
+<span class="sd">                (same length as radii)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">enc_mask</span> <span class="o">=</span> <span class="n">r</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">m_enc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">m</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">enc_mask</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">rho</span> <span class="o">=</span> <span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_enc</span> <span class="o">/</span> <span class="p">(</span><span class="n">radii</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rho</span></div>
+
+<div class="viewcode-block" id="MassProfile.virial_radius"><a class="viewcode-back" href="../../massprofile.html#galaxy.massprofile.MassProfile.virial_radius">[docs]</a>    <span class="k">def</span> <span class="nf">virial_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r_min</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">r_max</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">rho_c</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates radius where DM density falls to 200x critical density</span>
+<span class="sd">        for the universe.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            r_min, r_max (floats)</span>
+<span class="sd">                optional, limits for search (implicit kpc, no units)</span>
+<span class="sd">            rho_c (float or Quantity)</span>
+<span class="sd">                optional, critical density for chosen cosmology</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            r_200 (float): virial radius, implicit kpc</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">rho_c</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rho_c</span> <span class="o">=</span> <span class="mf">127.35344</span> <span class="c1"># Msun/kpc^3</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">rho_c</span> <span class="o">=</span> <span class="n">rho_c</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">Msun</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">kpc</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span> <span class="c1"># already has no units</span>
+
+        <span class="n">radii</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">r_min</span><span class="p">,</span> <span class="n">r_max</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gal</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1e10</span> <span class="c1"># in Msun</span>
+        <span class="n">DM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gal</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">m_dm</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="n">DM</span><span class="p">]</span>
+
+        <span class="n">com</span> <span class="o">=</span> <span class="n">CenterOfMass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gal</span><span class="p">,</span> <span class="n">ptype</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">xyz</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="n">center_com</span><span class="p">()</span>
+        <span class="n">xyz_dm</span> <span class="o">=</span> <span class="p">(</span><span class="n">xyz</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">DM</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">rho_av</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">density_profile_sphere</span><span class="p">(</span><span class="n">radii</span><span class="p">,</span> <span class="n">m_dm</span><span class="p">,</span> <span class="n">xyz_dm</span><span class="p">)</span>
+
+        <span class="n">idx</span><span class="p">,</span> <span class="n">nearest</span> <span class="o">=</span> <span class="n">find_nearest</span><span class="p">(</span><span class="n">rho_av</span><span class="p">,</span> <span class="mi">200</span><span class="o">*</span><span class="n">rho_c</span><span class="p">)</span>
+        <span class="n">r_200</span> <span class="o">=</span> <span class="n">radii</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">r_200</span></div>
+
+<div class="viewcode-block" id="MassProfile.virial_mass"><a class="viewcode-back" href="../../massprofile.html#galaxy.massprofile.MassProfile.virial_mass">[docs]</a>    <span class="k">def</span> <span class="nf">virial_mass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r_200</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ptype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Mass enclosed by the virial radius</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">r_200</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">r_200</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">virial_radius</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass_enclosed</span><span class="p">([</span><span class="n">r_200</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">kpc</span><span class="p">,],</span> <span class="n">ptype</span><span class="o">=</span><span class="n">ptype</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -336,6 +435,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../remnant.html">Remnant class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../approaches.html">Approaches class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../surfacedensity.html">SurfaceDensityProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../remvdisp.html">Vdisp class</a></li>
 </ul>
 
 <div class="relations">

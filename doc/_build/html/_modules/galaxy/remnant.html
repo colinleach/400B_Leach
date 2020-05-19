@@ -36,10 +36,12 @@
 
 <span class="c1"># scientific package imports</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">norm</span><span class="p">,</span> <span class="n">eigh</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">curve_fit</span>
 <span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
 
 <span class="kn">from</span> <span class="nn">galaxy.galaxy</span> <span class="kn">import</span> <span class="n">Galaxy</span>
+<span class="kn">from</span> <span class="nn">galaxy.utilities</span> <span class="kn">import</span> <span class="n">is_iterable</span>
 
 
 <div class="viewcode-block" id="Remnant"><a class="viewcode-back" href="../../remnant.html#galaxy.remnant.Remnant">[docs]</a><span class="k">class</span> <span class="nc">Remnant</span><span class="p">(</span><span class="n">Galaxy</span><span class="p">):</span>
@@ -59,16 +61,19 @@
 <span class="sd">        stride (int):</span>
 <span class="sd">            Optional. For stride=n, get every nth row in the table.</span>
 <span class="sd">            Only valid with usesql=True.</span>
+<span class="sd">        ptype (int or iterable of int):</span>
+<span class="sd">            Particle type: 1, 2, 3 or a combination of these</span>
 
 <span class="sd">    Class attributes:</span>
 <span class="sd">        data (np.ndarray):</span>
 <span class="sd">            type, mass, position_xyz, velocity_xyz for each particle</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snap</span><span class="o">=</span><span class="mi">801</span><span class="p">,</span> <span class="n">datadir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">usesql</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snap</span><span class="o">=</span><span class="mi">801</span><span class="p">,</span> <span class="n">datadir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">usesql</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ptype</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)):</span>
         <span class="s2">&quot;Initial setup. Currently it calls read_file(), but this may change.&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">snap</span> <span class="o">=</span> <span class="n">snap</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ptype</span> <span class="o">=</span> <span class="n">ptype</span>
 
         <span class="k">if</span> <span class="n">usesql</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">read_db</span><span class="p">(</span><span class="n">stride</span><span class="p">)</span>
@@ -78,7 +83,9 @@
 <div class="viewcode-block" id="Remnant.read_db"><a class="viewcode-back" href="../../remnant.html#galaxy.remnant.Remnant.read_db">[docs]</a>    <span class="k">def</span> <span class="nf">read_db</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stride</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get relevant data from a PostgreSQL database and format it to be </span>
-<span class="sd">        identical to that read from test files.</span>
+<span class="sd">        identical to that read from test files. </span>
+
+<span class="sd">        Ex-disk and ex-bulge particles are included, not DM particles.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            stride (int):</span>
@@ -112,7 +119,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">sql_d</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT </span><span class="si">{colheads}</span><span class="s2"> from simdata&quot;</span>
         <span class="n">sql_d</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  where galname in (&#39;MW&#39;, &#39;M31&#39;) and snap=</span><span class="si">{self.snap}</span><span class="s2">&quot;</span>
-        <span class="n">sql_d</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; and type in (2,3)&quot;</span>
+        <span class="k">if</span> <span class="n">is_iterable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ptype</span><span class="p">):</span>
+            <span class="n">sql_d</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; and type in </span><span class="si">{self.ptype}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sql_d</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; and type=</span><span class="si">{self.ptype}</span><span class="s2">&quot;</span>
         <span class="n">sql_d</span> <span class="o">+=</span> <span class="s2">&quot; ORDER BY galname, pnum&quot;</span>
         <span class="k">if</span> <span class="n">stride</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">sql_d</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT </span><span class="si">{colheads}</span><span class="s2"> from ( </span><span class="si">{sql_d}</span><span class="s2"> ) as t where rn % </span><span class="si">{stride}</span><span class="s2"> = 0&quot;</span> 
@@ -137,9 +147,235 @@
 <span class="sd">        Convenience method to get velocities as a np.array of shape (3,N)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">vxi</span><span class="p">]</span> <span class="k">for</span> <span class="n">vxi</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;vx&#39;</span><span class="p">,</span><span class="s1">&#39;vy&#39;</span><span class="p">,</span><span class="s1">&#39;vz&#39;</span><span class="p">)])</span></div></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">vxi</span><span class="p">]</span> <span class="k">for</span> <span class="n">vxi</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;vx&#39;</span><span class="p">,</span><span class="s1">&#39;vy&#39;</span><span class="p">,</span><span class="s1">&#39;vz&#39;</span><span class="p">)])</span></div>
 
+    <span class="c1">#</span>
+    <span class="c1"># Methods to extimate ellipsoid principal axes</span>
+    <span class="c1">#</span>
+<div class="viewcode-block" id="Remnant.I_tensor"><a class="viewcode-back" href="../../remnant.html#galaxy.remnant.Remnant.I_tensor">[docs]</a>    <span class="k">def</span> <span class="nf">I_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            m, x, y, z:</span>
+<span class="sd">                1-D arrays with mass and coordinates (no units)</span>
+<span class="sd">                </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            3x3 array representing the moment of inertia tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         
+        <span class="c1"># 3 moments of inertia for the diagonal</span>
+        <span class="n">Ixx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">m</span><span class="o">*</span><span class="p">(</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">Iyy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">m</span><span class="o">*</span><span class="p">(</span><span class="n">z</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">Izz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">m</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+        
+        <span class="c1"># 3 products of inertia for symmetric off-diagonals</span>
+        <span class="n">Ixy</span> <span class="o">=</span> <span class="n">Iyx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">m</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">Ixz</span> <span class="o">=</span> <span class="n">Izx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">m</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">Iyz</span> <span class="o">=</span> <span class="n">Izy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">m</span><span class="o">*</span><span class="n">y</span><span class="o">*</span><span class="n">z</span><span class="p">)</span>
+
+        <span class="c1"># assemble the tensor and return it</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">Ixx</span><span class="p">,</span> <span class="n">Ixy</span><span class="p">,</span> <span class="n">Ixz</span><span class="p">],</span>
+                    <span class="p">[</span><span class="n">Iyx</span><span class="p">,</span> <span class="n">Iyy</span><span class="p">,</span> <span class="n">Iyz</span><span class="p">],</span>
+                    <span class="p">[</span><span class="n">Izx</span><span class="p">,</span> <span class="n">Izy</span><span class="p">,</span> <span class="n">Izz</span><span class="p">]])</span>
+        <span class="k">return</span> <span class="n">I</span></div>
+
+<div class="viewcode-block" id="Remnant.ellipsoid_axes"><a class="viewcode-back" href="../../remnant.html#galaxy.remnant.Remnant.ellipsoid_axes">[docs]</a>    <span class="k">def</span> <span class="nf">ellipsoid_axes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">r_lim</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            m, x, y, z:</span>
+<span class="sd">                1-D arrays with mass and coordinates (no units)</span>
+<span class="sd">            r_lim : float</span>
+<span class="sd">                Radius to include in calculation (implicit kpc, no units)</span>
+<span class="sd">                </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Two 3-tuples: relative semimajor axes and principal axis vectors</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">r_lim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">central</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">r</span> <span class="o">&lt;</span> <span class="n">r_lim</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">central</span><span class="p">]</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">central</span><span class="p">]</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="n">central</span><span class="p">]</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="n">central</span><span class="p">]</span>
+
+        <span class="c1"># get moment-of-inertia tensor and eigenvalues/vectors</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">I_tensor</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">eigh</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
+
+        <span class="c1"># moments of intertia around principal axes:</span>
+        <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="n">w</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+
+        <span class="c1"># principal axis units vectors are in columns of eigenvalues `v`</span>
+        <span class="n">vA</span><span class="p">,</span> <span class="n">vB</span><span class="p">,</span> <span class="n">vC</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="c1"># solve for semi-major axes of ellipsoid and normalize</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">B</span><span class="o">-</span><span class="n">A</span><span class="o">+</span><span class="n">C</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">C</span><span class="o">-</span><span class="n">B</span><span class="o">+</span><span class="n">A</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">A</span><span class="o">-</span><span class="n">C</span><span class="o">+</span><span class="n">B</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span><span class="o">/</span><span class="n">a</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="p">(</span><span class="n">vA</span><span class="p">,</span> <span class="n">vB</span><span class="p">,</span> <span class="n">vC</span><span class="p">)</span></div>
+
+    <span class="c1">#</span>
+    <span class="c1"># Methods work with mass profiles, given CoM-centered coordinates</span>
+    <span class="c1">#</span>
+<div class="viewcode-block" id="Remnant.sub_mass_enclosed"><a class="viewcode-back" href="../../remnant.html#galaxy.remnant.Remnant.sub_mass_enclosed">[docs]</a>    <span class="k">def</span> <span class="nf">sub_mass_enclosed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">xyz</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the mass within a given radius of the origin.</span>
+<span class="sd">        Based on code in MassProfile, but this version assumes</span>
+<span class="sd">        CoM-centric coordinates are supplied.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            radii (array of distances): spheres to integrate over</span>
+<span class="sd">            m (array of masses): shape (N,)</span>
+<span class="sd">            xyz (array of Cartesian coordinates): shape (3,N)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            array of masses, in units of M_sun</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># distances from CoM:</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">kpc</span>
+
+        <span class="n">within_r</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="n">dist</span> <span class="o">&lt;</span> <span class="n">r</span><span class="p">])</span>
+        <span class="n">masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">within_r</span><span class="p">(</span><span class="n">ri</span><span class="p">)</span> <span class="k">for</span> <span class="n">ri</span> <span class="ow">in</span> <span class="n">radii</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1e10</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">M_sun</span>
+
+        <span class="k">return</span> <span class="n">masses</span>   </div>
+
+<div class="viewcode-block" id="Remnant.hernquist_mass"><a class="viewcode-back" href="../../remnant.html#galaxy.remnant.Remnant.hernquist_mass">[docs]</a>    <span class="k">def</span> <span class="nf">hernquist_mass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">M_halo</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the mass enclosed for a theoretical profile</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            r (Quantity, units of kpc): </span>
+<span class="sd">                distance from center</span>
+<span class="sd">            a (Quantity, units of kpc): </span>
+<span class="sd">                scale radius</span>
+<span class="sd">            M_halo (Quantity, units of M_sun): </span>
+<span class="sd">                total DM mass</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Total DM mass enclosed within r (M_sun)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">M_halo</span> <span class="o">*</span> <span class="n">r</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>    </div>
+
+<div class="viewcode-block" id="Remnant.fit_hernquist_a"><a class="viewcode-back" href="../../remnant.html#galaxy.remnant.Remnant.fit_hernquist_a">[docs]</a>    <span class="k">def</span> <span class="nf">fit_hernquist_a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">r_inner</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">r_outer</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get `scipy.optimize` to do a non-linear least squares fit to find</span>
+<span class="sd">        the best scale radius `a` for the Hernquist profile.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            r_inner (numeric):</span>
+<span class="sd">                Optional. Minimum radius to consider (implicit kpc). </span>
+<span class="sd">                Avoid values &lt; 1 as they cause numeric problems.</span>
+<span class="sd">            r_outer (numeric):</span>
+<span class="sd">                Optional. Maximum radius to consider (implicit kpc). </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># A function suitable for curve_fit. Units must be removed.</span>
+        <span class="k">def</span> <span class="nf">hq</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+            <span class="n">masses</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hernquist_mass</span><span class="p">(</span><span class="n">r</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">kpc</span><span class="p">,</span> <span class="n">a</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">kpc</span><span class="p">,</span> <span class="n">M_halo</span><span class="p">))</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">masses</span><span class="p">)</span>
+
+        <span class="c1"># The fitting has problems inside 1 kpc, so use a more restricted </span>
+        <span class="c1"># range of radii than for the plots</span>
+        <span class="n">radii_outer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">r_inner</span><span class="p">,</span> <span class="n">r_outer</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">kpc</span>
+        
+        <span class="n">M_halo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e10</span>
+
+        <span class="c1"># y values to fit to</span>
+        <span class="n">halo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sub_mass_enclosed</span><span class="p">(</span><span class="n">radii_outer</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">xyz</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="c1"># run the fit and store the optimum a value</span>
+        <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">hq</span><span class="p">,</span> <span class="n">radii_outer</span><span class="p">,</span> <span class="n">halo</span><span class="p">,</span> <span class="p">(</span><span class="mi">60</span><span class="p">,))</span>
+        <span class="n">fitted_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">popt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">kpc</span>
+        <span class="n">perr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">pcov</span><span class="p">))[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">kpc</span>
+
+        <span class="k">return</span> <span class="n">fitted_a</span><span class="p">,</span> <span class="n">perr</span></div>
+
+<div class="viewcode-block" id="Remnant.sersic"><a class="viewcode-back" href="../../remnant.html#galaxy.remnant.Remnant.sersic">[docs]</a>    <span class="k">def</span> <span class="nf">sersic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">Re</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">Mtot</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function that returns Sersic Profile for an Elliptical System</span>
+<span class="sd">        (See in-class lab 6)</span>
+
+<span class="sd">        Input</span>
+<span class="sd">            R:</span>
+<span class="sd">                radius (kpc)</span>
+<span class="sd">            Re:</span>
+<span class="sd">                half mass radius (kpc)</span>
+<span class="sd">            n:</span>
+<span class="sd">                sersic index</span>
+<span class="sd">            Mtot:</span>
+<span class="sd">                total stellar mass</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">            Surface Brightness profile in Lsun/kpc^2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># We are assuming M/L = 1, so the luminosity is:</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">Mtot</span>
+
+        <span class="c1"># the effective surface brightness is</span>
+        <span class="c1"># Ie = L/7.2/pi/Re**2</span>
+        <span class="n">Ie</span> <span class="o">=</span> <span class="n">L</span> <span class="o">/</span> <span class="p">(</span><span class="mf">7.2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">Re</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Ie</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">7.67</span> <span class="o">*</span> <span class="p">((</span><span class="n">R</span><span class="o">/</span><span class="n">Re</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Remnant.Re"><a class="viewcode-back" href="../../remnant.html#galaxy.remnant.Remnant.Re">[docs]</a>    <span class="k">def</span> <span class="nf">Re</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">xyz</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find the radius enclosing half the mass.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            R (array of Quantity):</span>
+<span class="sd">                Radii to consider (kpc)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Re (Quantity) :</span>
+<span class="sd">                Radius enclosing half light/mass (kpc)</span>
+<span class="sd">            bulge_total (numeric):</span>
+<span class="sd">                Mass of entire bulge (M_sun, no units)</span>
+<span class="sd">            bulgeI (array of Quantity):</span>
+<span class="sd">                Surface brightness at radii R (kpc^-2), assuming M/L=1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">sub_mass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub_mass_enclosed</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">xyz</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">subI</span> <span class="o">=</span> <span class="n">sub_mass</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">R</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">sub_total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">sub_mass</span><span class="p">)</span>
+        <span class="n">Blow</span> <span class="o">=</span> <span class="n">sub_total</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">sub_mass</span> <span class="o">&gt;</span> <span class="n">Blow</span><span class="p">))</span>
+        <span class="n">sub_Re</span> <span class="o">=</span> <span class="n">R</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">sub_Re</span><span class="p">,</span> <span class="n">sub_total</span><span class="p">,</span> <span class="n">subI</span></div>
+
+<div class="viewcode-block" id="Remnant.fit_sersic_n"><a class="viewcode-back" href="../../remnant.html#galaxy.remnant.Remnant.fit_sersic_n">[docs]</a>    <span class="k">def</span> <span class="nf">fit_sersic_n</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">sub_Re</span><span class="p">,</span> <span class="n">sub_total</span><span class="p">,</span> <span class="n">subI</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get `scipy.optimize` to do a non-linear least squares fit to find</span>
+<span class="sd">        the best value of `n` for a Sersic profile.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            R (array of quantity):</span>
+<span class="sd">                Radii at which to calculate fit (kpc)</span>
+<span class="sd">            Re (Quantity) :</span>
+<span class="sd">                Radius enclosing half light/mass (kpc)</span>
+<span class="sd">            bulge_total (numeric):</span>
+<span class="sd">                Mass of entire bulge (M_sun, no units)</span>
+<span class="sd">            bulgeI (array of Quantity):</span>
+<span class="sd">                Surface brightness at radii R (kpc^-2)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            best `n` value and error estimate</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># A function suitable for curve_fit. Units must be removed.</span>
+        <span class="k">def</span> <span class="nf">ser</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+            <span class="n">logI</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sersic</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">sub_Re</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">sub_total</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">logI</span><span class="p">)</span>
+
+        <span class="n">log_subI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">subI</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">ser</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">log_subI</span><span class="p">,</span> <span class="p">(</span><span class="mi">60</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">popt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pcov</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div></div>
+
 </pre></div>
 
           </div>
@@ -170,6 +406,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../remnant.html">Remnant class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../approaches.html">Approaches class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../surfacedensity.html">SurfaceDensityProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../remvdisp.html">Vdisp class</a></li>
 </ul>
 
 <div class="relations">

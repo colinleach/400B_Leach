@@ -334,6 +334,18 @@
         <span class="k">return</span> <span class="kc">False</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>       
+
+<div class="viewcode-block" id="find_nearest"><a class="viewcode-back" href="../../utilities.html#galaxy.utilities.find_nearest">[docs]</a><span class="k">def</span> <span class="nf">find_nearest</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find the entry in `array` which is closest to `value`</span>
+<span class="sd">    Modified from https://stackoverflow.com/questions/2566412/find-nearest-value-in-numpy-array</span>
+<span class="sd">    </span>
+<span class="sd">    Returns: index and corresponding value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">array</span> <span class="o">-</span> <span class="n">value</span><span class="p">))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">idx</span><span class="p">,</span> <span class="n">array</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span></div>
 </pre></div>
 
           </div>
@@ -364,6 +376,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../remnant.html">Remnant class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../approaches.html">Approaches class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../surfacedensity.html">SurfaceDensityProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../remvdisp.html">Vdisp class</a></li>
 </ul>
 
 <div class="relations">

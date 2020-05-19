@@ -228,7 +228,7 @@
         <span class="k">return</span> <span class="n">xyzD</span><span class="p">,</span> <span class="n">vxyzD</span></div>
 
 
-<div class="viewcode-block" id="CenterOfMass.angular_momentum"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.angular_momentum">[docs]</a>    <span class="k">def</span> <span class="nf">angular_momentum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">com_p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">com_v</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CenterOfMass.angular_momentum"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.angular_momentum">[docs]</a>    <span class="k">def</span> <span class="nf">angular_momentum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">com_p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">com_v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">r_lim</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns: </span>
 <span class="sd">            L : 3-vector as array</span>
@@ -236,6 +236,8 @@
 <span class="sd">                summed over all disk particles</span>
 <span class="sd">            pos, v : arrays with shape (3, N)</span>
 <span class="sd">                Position and velocity for each particle</span>
+<span class="sd">            r_lim : float</span>
+<span class="sd">                Radius to include in calculation (implicit kpc, no units)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># ignore masses, these are all the same for disk particles</span>
@@ -243,12 +245,18 @@
         <span class="n">pos</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">center_com</span><span class="p">(</span><span class="n">com_p</span><span class="p">,</span> <span class="n">com_v</span><span class="p">)</span>
         <span class="c1"># p = m * v # linear momentum</span>
 
+        <span class="k">if</span> <span class="n">r_lim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">central</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">r</span> <span class="o">&lt;</span> <span class="n">r_lim</span><span class="p">)</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">pos</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">central</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">central</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+
         <span class="c1"># angular momentum of each particle; use first dimension of each array</span>
         <span class="n">L_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> 
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">L_i</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">pos</span><span class="p">,</span> <span class="n">v</span></div>
 
-<div class="viewcode-block" id="CenterOfMass.rotate_frame"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.rotate_frame">[docs]</a>    <span class="k">def</span> <span class="nf">rotate_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">com_p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">com_v</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="CenterOfMass.rotate_frame"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.rotate_frame">[docs]</a>    <span class="k">def</span> <span class="nf">rotate_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">com_p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">com_v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">r_lim</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Arg: to_axis (3-vector)</span>
 <span class="sd">                Angular momentum vector will be aligned to this (default z-hat)</span>
@@ -265,7 +273,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">to_axis</span> <span class="o">/=</span> <span class="n">norm</span><span class="p">(</span><span class="n">to_axis</span><span class="p">)</span> <span class="c1"># we need a unit vector</span>
 
-        <span class="n">L</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular_momentum</span><span class="p">(</span><span class="n">com_p</span><span class="p">,</span> <span class="n">com_v</span><span class="p">)</span>
+        <span class="n">L</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angular_momentum</span><span class="p">(</span><span class="n">com_p</span><span class="p">,</span> <span class="n">com_v</span><span class="p">,</span> <span class="n">r_lim</span><span class="p">)</span>
         <span class="n">L</span> <span class="o">/=</span> <span class="n">norm</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="c1"># we need a unit vector</span>
 
         <span class="c1"># cross product between L and new axis</span>
@@ -284,8 +292,110 @@
         <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
         <span class="n">vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">pos</span><span class="p">,</span> <span class="n">vel</span></div></div>
+        <span class="k">return</span> <span class="n">pos</span><span class="p">,</span> <span class="n">vel</span></div>
 
+<div class="viewcode-block" id="CenterOfMass.shell_h"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.shell_h">[docs]</a>    <span class="k">def</span> <span class="nf">shell_h</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">vxyz</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate specific angular momentum of spherical shells.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            radii ((M,0) array of float):</span>
+<span class="sd">                boundaries of shells (implicit kpc from center)</span>
+<span class="sd">            m ((N,) array of float):</span>
+<span class="sd">                masses (implicit Msun)</span>
+<span class="sd">            xyz, vxyz ((3,N) arrays of float):</span>
+<span class="sd">                positions and velocities (implicit kpc, km/s)</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            rad ((M-1,) array): </span>
+<span class="sd">                midpoints of shells (implicit kpc)</span>
+<span class="sd">            L ((M-1,3) array of float):</span>
+<span class="sd">                total angular momentum </span>
+<span class="sd">            h ((M-1,3) array of float):</span>
+<span class="sd">                specific angular momentum, i.e. L/m</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">shell_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">shell_count</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">shell_count</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+        <span class="n">rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shell_count</span><span class="p">)</span>
+        
+        <span class="n">r</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">shell_count</span><span class="p">):</span>
+            <span class="n">shell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">r</span> <span class="o">&gt;</span> <span class="n">radii</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">r</span> <span class="o">&lt;</span> <span class="n">radii</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">m_shell</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="n">shell</span><span class="p">]</span>
+            <span class="n">xyz_shell</span> <span class="o">=</span> <span class="p">(</span><span class="n">xyz</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">shell</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">vxyz_shell</span> <span class="o">=</span> <span class="p">(</span><span class="n">vxyz</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">shell</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">xyz_shell</span><span class="p">,</span> <span class="n">m_shell</span><span class="o">*</span><span class="n">vxyz_shell</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">m_shell</span><span class="p">)</span>
+            <span class="n">rad</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">radii</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">radii</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+            
+        <span class="k">return</span> <span class="n">rad</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">h</span></div>
+
+<div class="viewcode-block" id="CenterOfMass.sphere_h"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.sphere_h">[docs]</a>    <span class="k">def</span> <span class="nf">sphere_h</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radii</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">vxyz</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate specific angular momentum within spheres.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            radii ((M,0) array of float):</span>
+<span class="sd">                boundaries of shells (implicit kpc from center)</span>
+<span class="sd">            m ((N,) array of float):</span>
+<span class="sd">                masses (implicit Msun)</span>
+<span class="sd">            xyz, vxyz ((3,N) arrays of float):</span>
+<span class="sd">                positions and velocities (implicit kpc, km/s)</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            L ((M,3) array of float):</span>
+<span class="sd">                total angular momentum </span>
+<span class="sd">            h ((M,3) array of float):</span>
+<span class="sd">                specific angular momentum, i.e. L/m</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">r_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">r_count</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">r_count</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+        <span class="n">rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">r_count</span><span class="p">)</span>
+        
+        <span class="n">r</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r_count</span><span class="p">):</span>
+            <span class="n">sphere</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">r</span> <span class="o">&lt;</span> <span class="n">radii</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">m_sphere</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="n">sphere</span><span class="p">]</span>
+            <span class="n">xyz_sphere</span> <span class="o">=</span> <span class="p">(</span><span class="n">xyz</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">sphere</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">vxyz_sphere</span> <span class="o">=</span> <span class="p">(</span><span class="n">vxyz</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">sphere</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">xyz_sphere</span><span class="p">,</span> <span class="n">m_sphere</span><span class="o">*</span><span class="n">vxyz_sphere</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">m_sphere</span><span class="p">)</span>
+            
+        <span class="k">return</span> <span class="n">L</span><span class="p">,</span> <span class="n">h</span></div>
+
+<div class="viewcode-block" id="CenterOfMass.disp_by_radius"><a class="viewcode-back" href="../../centerofmass.html#galaxy.centerofmass.CenterOfMass.disp_by_radius">[docs]</a>    <span class="k">def</span> <span class="nf">disp_by_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">vy</span><span class="p">,</span> <span class="n">xbins</span><span class="p">,</span> <span class="n">binwidth</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate mean velocity and dispersion sigma for a set of radius bins</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x (array of float):</span>
+<span class="sd">                lateral distance from CoM </span>
+<span class="sd">            vy (array of float):</span>
+<span class="sd">                radial velocity</span>
+<span class="sd">            xbins (array of float)</span>
+<span class="sd">                midpoints of equally-spaced bins</span>
+<span class="sd">            binwidth (float):</span>
+<span class="sd">                optional and probably useless</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="n">binwidth</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">binwidth</span> <span class="o">=</span> <span class="n">xbins</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">xbins</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        
+        <span class="n">means</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xbins</span><span class="p">))</span>
+        <span class="n">sigmas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xbins</span><span class="p">))</span>
+        
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">xi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xbins</span><span class="p">):</span>
+            <span class="n">filt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">xi</span> <span class="o">-</span> <span class="n">binwidth</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">xi</span> <span class="o">+</span> <span class="n">binwidth</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+            <span class="n">vel</span> <span class="o">=</span> <span class="n">vy</span><span class="p">[</span><span class="n">filt</span><span class="p">]</span>
+            
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vel</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">means</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vel</span><span class="p">)</span>
+                <span class="n">sigmas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">vel</span> <span class="o">-</span> <span class="n">means</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="c1"># else remain zero</span>
+        
+        <span class="k">return</span> <span class="n">means</span><span class="p">,</span> <span class="n">sigmas</span></div></div>
 </pre></div>
 
           </div>
@@ -316,6 +426,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../remnant.html">Remnant class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../approaches.html">Approaches class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../surfacedensity.html">SurfaceDensityProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../remvdisp.html">Vdisp class</a></li>
 </ul>
 
 <div class="relations">

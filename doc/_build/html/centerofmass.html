@@ -104,13 +104,15 @@ and simulation snapshot</p>
 
 <dl class="method">
 <dt id="galaxy.centerofmass.CenterOfMass.angular_momentum">
-<code class="sig-name descname">angular_momentum</code><span class="sig-paren">(</span><em class="sig-param">com_p=None</em>, <em class="sig-param">com_v=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/centerofmass.html#CenterOfMass.angular_momentum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.centerofmass.CenterOfMass.angular_momentum" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">angular_momentum</code><span class="sig-paren">(</span><em class="sig-param">com_p=None</em>, <em class="sig-param">com_v=None</em>, <em class="sig-param">r_lim=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/centerofmass.html#CenterOfMass.angular_momentum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.centerofmass.CenterOfMass.angular_momentum" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Returns: </dt><dd><dl class="simple">
 <dt>L<span class="classifier">3-vector as array</span></dt><dd><p>The (x,y,x) components of the angular momentum vector about the CoM,
 summed over all disk particles</p>
 </dd>
 <dt>pos, v<span class="classifier">arrays with shape (3, N)</span></dt><dd><p>Position and velocity for each particle</p>
+</dd>
+<dt>r_lim<span class="classifier">float</span></dt><dd><p>Radius to include in calculation (implicit kpc, no units)</p>
 </dd>
 </dl>
 </dd>
@@ -119,7 +121,7 @@ summed over all disk particles</p>
 
 <dl class="method">
 <dt id="galaxy.centerofmass.CenterOfMass.rotate_frame">
-<code class="sig-name descname">rotate_frame</code><span class="sig-paren">(</span><em class="sig-param">to_axis=None</em>, <em class="sig-param">com_p=None</em>, <em class="sig-param">com_v=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/centerofmass.html#CenterOfMass.rotate_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.centerofmass.CenterOfMass.rotate_frame" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">rotate_frame</code><span class="sig-paren">(</span><em class="sig-param">to_axis=None</em>, <em class="sig-param">com_p=None</em>, <em class="sig-param">com_v=None</em>, <em class="sig-param">r_lim=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/centerofmass.html#CenterOfMass.rotate_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.centerofmass.CenterOfMass.rotate_frame" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Arg: to_axis (3-vector)</dt><dd><p>Angular momentum vector will be aligned to this (default z-hat)</p>
 </dd>
@@ -128,6 +130,75 @@ summed over all disk particles</p>
 </dl>
 <p>Based on Rodrigues’ rotation formula
 Ref: <a class="reference external" href="https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula">https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula</a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.centerofmass.CenterOfMass.shell_h">
+<code class="sig-name descname">shell_h</code><span class="sig-paren">(</span><em class="sig-param">radii</em>, <em class="sig-param">m</em>, <em class="sig-param">xyz</em>, <em class="sig-param">vxyz</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/centerofmass.html#CenterOfMass.shell_h"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.centerofmass.CenterOfMass.shell_h" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate specific angular momentum of spherical shells.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>radii ((M,0) array of float):</dt><dd><p>boundaries of shells (implicit kpc from center)</p>
+</dd>
+<dt>m ((N,) array of float):</dt><dd><p>masses (implicit Msun)</p>
+</dd>
+<dt>xyz, vxyz ((3,N) arrays of float):</dt><dd><p>positions and velocities (implicit kpc, km/s)</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>rad ((M-1,) array): </dt><dd><p>midpoints of shells (implicit kpc)</p>
+</dd>
+<dt>L ((M-1,3) array of float):</dt><dd><p>total angular momentum</p>
+</dd>
+<dt>h ((M-1,3) array of float):</dt><dd><p>specific angular momentum, i.e. L/m</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.centerofmass.CenterOfMass.sphere_h">
+<code class="sig-name descname">sphere_h</code><span class="sig-paren">(</span><em class="sig-param">radii</em>, <em class="sig-param">m</em>, <em class="sig-param">xyz</em>, <em class="sig-param">vxyz</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/centerofmass.html#CenterOfMass.sphere_h"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.centerofmass.CenterOfMass.sphere_h" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate specific angular momentum within spheres.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>radii ((M,0) array of float):</dt><dd><p>boundaries of shells (implicit kpc from center)</p>
+</dd>
+<dt>m ((N,) array of float):</dt><dd><p>masses (implicit Msun)</p>
+</dd>
+<dt>xyz, vxyz ((3,N) arrays of float):</dt><dd><p>positions and velocities (implicit kpc, km/s)</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>L ((M,3) array of float):</dt><dd><p>total angular momentum</p>
+</dd>
+<dt>h ((M,3) array of float):</dt><dd><p>specific angular momentum, i.e. L/m</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.centerofmass.CenterOfMass.disp_by_radius">
+<code class="sig-name descname">disp_by_radius</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">vy</em>, <em class="sig-param">xbins</em>, <em class="sig-param">binwidth=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/centerofmass.html#CenterOfMass.disp_by_radius"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.centerofmass.CenterOfMass.disp_by_radius" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate mean velocity and dispersion sigma for a set of radius bins</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>x (array of float):</dt><dd><p>lateral distance from CoM</p>
+</dd>
+<dt>vy (array of float):</dt><dd><p>radial velocity</p>
+</dd>
+<dt>xbins (array of float)</dt><dd><p>midpoints of equally-spaced bins</p>
+</dd>
+<dt>binwidth (float):</dt><dd><p>optional and probably useless</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -162,6 +233,8 @@ Ref: <a class="reference external" href="https://en.wikipedia.org/wiki/Rodrigues
 <li class="toctree-l1"><a class="reference internal" href="db.html">DB class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="remnant.html">Remnant class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="approaches.html">Approaches class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="surfacedensity.html">SurfaceDensityProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remvdisp.html">Vdisp class</a></li>
 </ul>
 
 <div class="relations">

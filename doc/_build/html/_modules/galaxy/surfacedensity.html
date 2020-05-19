@@ -33,6 +33,9 @@
   <h1>Source code for galaxy.surfacedensity</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rcParams</span>
+
 <span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
 <span class="kn">import</span> <span class="nn">astropy.constants</span> <span class="k">as</span> <span class="nn">c</span>
 
@@ -47,7 +50,7 @@
 <span class="sd">    Modified from code supplied by Rixin Li.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gal</span><span class="p">,</span> <span class="n">snap</span><span class="p">,</span> <span class="n">radii</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">r_step</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">usesql</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gal</span><span class="p">,</span> <span class="n">snap</span><span class="p">,</span> <span class="n">radii</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">r_step</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">ptype</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">usesql</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; initialization</span>
 <span class="sd">        input:</span>
 <span class="sd">            galaxy (str): </span>
@@ -61,11 +64,14 @@
 <span class="sd">                for defining a list of radii if none is supplied</span>
 <span class="sd">        &quot;&quot;&quot;</span>
     
-        <span class="n">galaxy</span> <span class="o">=</span> <span class="n">Galaxy</span><span class="p">(</span><span class="n">gal</span><span class="p">,</span> <span class="n">snap</span><span class="p">,</span> <span class="n">usesql</span><span class="o">=</span><span class="n">usesql</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">galaxy</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">value</span> <span class="o">/</span> <span class="mi">1000</span> <span class="c1"># elapsed time, Gyr</span>
+        <span class="n">galaxy</span> <span class="o">=</span> <span class="n">Galaxy</span><span class="p">(</span><span class="n">gal</span><span class="p">,</span> <span class="n">snap</span><span class="p">,</span> <span class="n">ptype</span><span class="o">=</span><span class="n">ptype</span><span class="p">,</span> <span class="n">usesql</span><span class="o">=</span><span class="n">usesql</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ptype</span> <span class="o">=</span> <span class="n">galaxy</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
         
         <span class="n">tc</span> <span class="o">=</span> <span class="n">TimeCourse</span><span class="p">()</span>
-        
+        <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">tc</span><span class="o">.</span><span class="n">snap2time</span><span class="p">(</span><span class="n">snap</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">Gyr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gal</span> <span class="o">=</span> <span class="n">gal</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">snap</span> <span class="o">=</span> <span class="n">snap</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">com</span> <span class="o">=</span> <span class="n">CenterOfMass</span><span class="p">(</span><span class="n">galaxy</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">com_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">com_v</span> <span class="o">=</span> <span class="n">tc</span><span class="o">.</span><span class="n">get_one_com</span><span class="p">(</span><span class="n">gal</span><span class="p">,</span> <span class="n">snap</span><span class="p">)</span> 
 
@@ -74,7 +80,7 @@
 
         <span class="c1"># calculate the radial distances and azimuthal angles in cylindrical coordinates</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cyl_r_mag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alg_r</span><span class="p">[:</span><span class="mi">2</span><span class="p">,:]</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cyl_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alg_r</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="bp">self</span><span class="o">.</span><span class="n">alg_r</span><span class="p">[</span><span class="mi">0</span><span class="p">,:])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cyl_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alg_r</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="bp">self</span><span class="o">.</span><span class="n">alg_r</span><span class="p">[</span><span class="mi">0</span><span class="p">,:])</span> <span class="o">*</span> <span class="mi">180</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
 
         <span class="c1"># check if radii is already set</span>
         <span class="k">if</span> <span class="n">radii</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -103,7 +109,61 @@
         <span class="c1"># as the radius of each annulus</span>
         <span class="c1"># this array has the same number of elements as self.Sigma, </span>
         <span class="c1"># can be used for plotting</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">r_annuli</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">r_annuli</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+<div class="viewcode-block" id="SurfaceDensityProfile.plot_xy"><a class="viewcode-back" href="../../surfacedensity.html#galaxy.surfacedensity.SurfaceDensityProfile.plot_xy">[docs]</a>    <span class="k">def</span> <span class="nf">plot_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">),</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">60</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">60</span><span class="p">),</span> 
+                <span class="n">pfc</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">ngout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alg_r</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="bp">self</span><span class="o">.</span><span class="n">alg_r</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="n">ec</span><span class="o">=</span><span class="s2">&quot;None&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="n">fc</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x (kpc)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">22</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;y (kpc)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">22</span><span class="p">)</span>
+        <span class="c1"># ax.set_aspect=1.0</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.gal}</span><span class="s2"> Stellar Disk (t=</span><span class="si">{self.t:.2f}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">22</span><span class="p">)</span>
+
+        <span class="c1">#set axis limits</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ylim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ylim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1">#adjust tick label font size</span>
+        <span class="n">label_size</span> <span class="o">=</span> <span class="mi">22</span>
+        <span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;xtick.labelsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label_size</span> 
+        <span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;ytick.labelsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label_size</span>
+
+        <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+        <span class="c1"># Save file</span>
+        <span class="k">if</span> <span class="n">pngout</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="s1">&#39;figure&#39;</span><span class="p">);</span>   </div>
+
+    <span class="k">def</span> <span class="nf">plot_r_theta_scaled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">),</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">60</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span><span class="mi">180</span><span class="p">),</span> 
+                <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">pngout</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cyl_r_mag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cyl_theta</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s2">&quot;None&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="n">fc</span><span class="p">,</span> 
+                <span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cyl_r_mag</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+        
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;r (kpc)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">22</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\theta$ (deg)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">22</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.gal}</span><span class="s2"> Stellar Disk (t=</span><span class="si">{self.t:.2f}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">22</span><span class="p">)</span>
+
+        <span class="c1">#set axis limits</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ylim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ylim</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1">#adjust tick label font size</span>
+        <span class="n">label_size</span> <span class="o">=</span> <span class="mi">22</span>
+        <span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;xtick.labelsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label_size</span> 
+        <span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;ytick.labelsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label_size</span>
+
+        <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+        <span class="c1"># Save file</span>
+        <span class="k">if</span> <span class="n">pngout</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="s1">&#39;figure&#39;</span><span class="p">);</span>   </div>
 </pre></div>
 
           </div>
@@ -134,6 +194,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../remnant.html">Remnant class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../approaches.html">Approaches class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../surfacedensity.html">SurfaceDensityProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../remvdisp.html">Vdisp class</a></li>
 </ul>
 
 <div class="relations">

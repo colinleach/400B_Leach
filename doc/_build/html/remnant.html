@@ -39,7 +39,7 @@
 <p>Treats the post-merger remnant of MW-M31 as a galaxy.</p>
 <dl class="class">
 <dt id="galaxy.remnant.Remnant">
-<em class="property">class </em><code class="sig-prename descclassname">galaxy.remnant.</code><code class="sig-name descname">Remnant</code><span class="sig-paren">(</span><em class="sig-param">snap=801</em>, <em class="sig-param">datadir=None</em>, <em class="sig-param">usesql=False</em>, <em class="sig-param">stride=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remnant.html#Remnant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remnant.Remnant" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">galaxy.remnant.</code><code class="sig-name descname">Remnant</code><span class="sig-paren">(</span><em class="sig-param">snap=801</em>, <em class="sig-param">datadir=None</em>, <em class="sig-param">usesql=False</em>, <em class="sig-param">stride=1</em>, <em class="sig-param">ptype=(2</em>, <em class="sig-param">3)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remnant.html#Remnant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remnant.Remnant" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class to work with the MW-M31 post-merger remant.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
@@ -55,6 +55,8 @@ text files.</p>
 <dt>stride (int):</dt><dd><p>Optional. For stride=n, get every nth row in the table.
 Only valid with usesql=True.</p>
 </dd>
+<dt>ptype (int or iterable of int):</dt><dd><p>Particle type: 1, 2, 3 or a combination of these</p>
+</dd>
 </dl>
 </dd>
 <dt>Class attributes:</dt><dd><dl class="simple">
@@ -68,6 +70,7 @@ Only valid with usesql=True.</p>
 <code class="sig-name descname">read_db</code><span class="sig-paren">(</span><em class="sig-param">stride</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remnant.html#Remnant.read_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remnant.Remnant.read_db" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get relevant data from a PostgreSQL database and format it to be 
 identical to that read from test files.</p>
+<p>Ex-disk and ex-bulge particles are included, not DM particles.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
 <dt>stride (int):</dt><dd><p>Optional. For stride=n, get every nth row in the table.</p>
@@ -90,6 +93,154 @@ identical to that read from test files.</p>
 <dt id="galaxy.remnant.Remnant.vxyz">
 <code class="sig-name descname">vxyz</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remnant.html#Remnant.vxyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remnant.Remnant.vxyz" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convenience method to get velocities as a np.array of shape (3,N)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.remnant.Remnant.I_tensor">
+<code class="sig-name descname">I_tensor</code><span class="sig-paren">(</span><em class="sig-param">m</em>, <em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remnant.html#Remnant.I_tensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remnant.Remnant.I_tensor" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>m, x, y, z:</dt><dd><p>1-D arrays with mass and coordinates (no units)</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>3x3 array representing the moment of inertia tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.remnant.Remnant.ellipsoid_axes">
+<code class="sig-name descname">ellipsoid_axes</code><span class="sig-paren">(</span><em class="sig-param">m</em>, <em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">z</em>, <em class="sig-param">r_lim=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remnant.html#Remnant.ellipsoid_axes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remnant.Remnant.ellipsoid_axes" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>m, x, y, z:</dt><dd><p>1-D arrays with mass and coordinates (no units)</p>
+</dd>
+<dt>r_lim<span class="classifier">float</span></dt><dd><p>Radius to include in calculation (implicit kpc, no units)</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>Two 3-tuples: relative semimajor axes and principal axis vectors</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.remnant.Remnant.sub_mass_enclosed">
+<code class="sig-name descname">sub_mass_enclosed</code><span class="sig-paren">(</span><em class="sig-param">radii</em>, <em class="sig-param">m</em>, <em class="sig-param">xyz</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remnant.html#Remnant.sub_mass_enclosed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remnant.Remnant.sub_mass_enclosed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the mass within a given radius of the origin.
+Based on code in MassProfile, but this version assumes
+CoM-centric coordinates are supplied.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>radii (array of distances): spheres to integrate over
+m (array of masses): shape (N,)
+xyz (array of Cartesian coordinates): shape (3,N)</p>
+</dd>
+<dt>Returns:</dt><dd><p>array of masses, in units of M_sun</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.remnant.Remnant.hernquist_mass">
+<code class="sig-name descname">hernquist_mass</code><span class="sig-paren">(</span><em class="sig-param">r</em>, <em class="sig-param">a</em>, <em class="sig-param">M_halo</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remnant.html#Remnant.hernquist_mass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remnant.Remnant.hernquist_mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the mass enclosed for a theoretical profile</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>r (Quantity, units of kpc): </dt><dd><p>distance from center</p>
+</dd>
+<dt>a (Quantity, units of kpc): </dt><dd><p>scale radius</p>
+</dd>
+<dt>M_halo (Quantity, units of M_sun): </dt><dd><p>total DM mass</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>Total DM mass enclosed within r (M_sun)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.remnant.Remnant.fit_hernquist_a">
+<code class="sig-name descname">fit_hernquist_a</code><span class="sig-paren">(</span><em class="sig-param">m</em>, <em class="sig-param">xyz</em>, <em class="sig-param">r_inner=1</em>, <em class="sig-param">r_outer=100</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remnant.html#Remnant.fit_hernquist_a"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remnant.Remnant.fit_hernquist_a" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get <cite>scipy.optimize</cite> to do a non-linear least squares fit to find
+the best scale radius <cite>a</cite> for the Hernquist profile.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>r_inner (numeric):</dt><dd><p>Optional. Minimum radius to consider (implicit kpc). 
+Avoid values &lt; 1 as they cause numeric problems.</p>
+</dd>
+<dt>r_outer (numeric):</dt><dd><p>Optional. Maximum radius to consider (implicit kpc).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.remnant.Remnant.sersic">
+<code class="sig-name descname">sersic</code><span class="sig-paren">(</span><em class="sig-param">R</em>, <em class="sig-param">Re</em>, <em class="sig-param">n</em>, <em class="sig-param">Mtot</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remnant.html#Remnant.sersic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remnant.Remnant.sersic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that returns Sersic Profile for an Elliptical System
+(See in-class lab 6)</p>
+<dl class="simple">
+<dt>Input</dt><dd><dl class="simple">
+<dt>R:</dt><dd><p>radius (kpc)</p>
+</dd>
+<dt>Re:</dt><dd><p>half mass radius (kpc)</p>
+</dd>
+<dt>n:</dt><dd><p>sersic index</p>
+</dd>
+<dt>Mtot:</dt><dd><p>total stellar mass</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns</dt><dd><p>Surface Brightness profile in Lsun/kpc^2</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.remnant.Remnant.Re">
+<code class="sig-name descname">Re</code><span class="sig-paren">(</span><em class="sig-param">R</em>, <em class="sig-param">m</em>, <em class="sig-param">xyz</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remnant.html#Remnant.Re"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remnant.Remnant.Re" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the radius enclosing half the mass.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>R (array of Quantity):</dt><dd><p>Radii to consider (kpc)</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>Re (Quantity) :</dt><dd><p>Radius enclosing half light/mass (kpc)</p>
+</dd>
+<dt>bulge_total (numeric):</dt><dd><p>Mass of entire bulge (M_sun, no units)</p>
+</dd>
+<dt>bulgeI (array of Quantity):</dt><dd><p>Surface brightness at radii R (kpc^-2), assuming M/L=1</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.remnant.Remnant.fit_sersic_n">
+<code class="sig-name descname">fit_sersic_n</code><span class="sig-paren">(</span><em class="sig-param">R</em>, <em class="sig-param">sub_Re</em>, <em class="sig-param">sub_total</em>, <em class="sig-param">subI</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remnant.html#Remnant.fit_sersic_n"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remnant.Remnant.fit_sersic_n" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get <cite>scipy.optimize</cite> to do a non-linear least squares fit to find
+the best value of <cite>n</cite> for a Sersic profile.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>R (array of quantity):</dt><dd><p>Radii at which to calculate fit (kpc)</p>
+</dd>
+<dt>Re (Quantity) :</dt><dd><p>Radius enclosing half light/mass (kpc)</p>
+</dd>
+<dt>bulge_total (numeric):</dt><dd><p>Mass of entire bulge (M_sun, no units)</p>
+</dd>
+<dt>bulgeI (array of Quantity):</dt><dd><p>Surface brightness at radii R (kpc^-2)</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>best <cite>n</cite> value and error estimate</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -124,6 +275,8 @@ identical to that read from test files.</p>
 <li class="toctree-l1"><a class="reference internal" href="db.html">DB class</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Remnant class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="approaches.html">Approaches class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="surfacedensity.html">SurfaceDensityProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remvdisp.html">Vdisp class</a></li>
 </ul>
 
 <div class="relations">

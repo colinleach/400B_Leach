@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Vdisp class &#8212; ASTR400B Leach  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="SurfaceDensityProfile class" href="surfacedensity.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-galaxy.remvdisp"></span><div class="section" id="vdisp-class">
+<h1>Vdisp class<a class="headerlink" href="#vdisp-class" title="Permalink to this headline">¶</a></h1>
+<p>To calculate velocity dispersions and rotation curves for the post-merger remnant of MW-M31.</p>
+<dl class="class">
+<dt id="galaxy.remvdisp.Vdisp">
+<em class="property">class </em><code class="sig-prename descclassname">galaxy.remvdisp.</code><code class="sig-name descname">Vdisp</code><span class="sig-paren">(</span><em class="sig-param">snap=801</em>, <em class="sig-param">ptype=(2</em>, <em class="sig-param">3)</em>, <em class="sig-param">r_lim=60</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remvdisp.html#Vdisp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remvdisp.Vdisp" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class to work with rotation and velocity dispersion of the MW-M31 
+post-merger remant.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>snap (int):</dt><dd><p>Snap number, equivalent to time elapsed. 
+Defaults to the last timepoint.</p>
+</dd>
+<dt>usesql (bool):</dt><dd><p>If True, data will be taken from a PostgreSQL database instead of
+text files.</p>
+</dd>
+<dt>ptype (int or iterable of int):</dt><dd><p>Particle type: 1, 2, 3 or a combination of these</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="galaxy.remvdisp.Vdisp.calc_centered">
+<code class="sig-name descname">calc_centered</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remvdisp.html#Vdisp.calc_centered"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remvdisp.Vdisp.calc_centered" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the CoM position and velocity, plus particle coordinates centered on the CoM.</p>
+<p>No args, no return value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.remvdisp.Vdisp.rotate">
+<code class="sig-name descname">rotate</code><span class="sig-paren">(</span><em class="sig-param">r_lim</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remvdisp.html#Vdisp.rotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remvdisp.Vdisp.rotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates transformed coordinates with the angular momentum vector along z.</p>
+<dl class="simple">
+<dt>Arg:</dt><dd><dl class="simple">
+<dt>r_lim (float):</dt><dd><p>Only consider particles within this radius when computing L-hat. 
+Implicit kpc, no units.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.remvdisp.Vdisp.calc_v_sigma">
+<code class="sig-name descname">calc_v_sigma</code><span class="sig-paren">(</span><em class="sig-param">pos_index</em>, <em class="sig-param">v_index</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remvdisp.html#Vdisp.calc_v_sigma"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remvdisp.Vdisp.calc_v_sigma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate mean radial velocities and dispersions for bins along an axis.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>pos_index, v_index (integers in (0,1,2)):</dt><dd><p>Axis numbers for binning and for radial velocity.
+x=0, y=1, z=2</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>Binned v_radial and dispersions, v_max and central dispersion. 
+All implicit km/s, no units.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.remvdisp.Vdisp.set_xbins">
+<code class="sig-name descname">set_xbins</code><span class="sig-paren">(</span><em class="sig-param">xbins</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remvdisp.html#Vdisp.set_xbins"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remvdisp.Vdisp.set_xbins" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets new x-boundaries for binning, invalidates any previous calculations.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>xbins (array of float):</dt><dd><p>Distances from CoM along chosen axis (signed, not just radius)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.remvdisp.Vdisp.set_yx">
+<code class="sig-name descname">set_yx</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remvdisp.html#Vdisp.set_yx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remvdisp.Vdisp.set_yx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience method to call calc_v_sigma() with y-axis and x-velocities</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.remvdisp.Vdisp.set_zx">
+<code class="sig-name descname">set_zx</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remvdisp.html#Vdisp.set_zx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remvdisp.Vdisp.set_zx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convenience method to call calc_v_sigma() with z-axis and x-velocities</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.remvdisp.Vdisp.plot_yx">
+<code class="sig-name descname">plot_yx</code><span class="sig-paren">(</span><em class="sig-param">particles='Stellar'</em>, <em class="sig-param">xlim=(-40</em>, <em class="sig-param">40)</em>, <em class="sig-param">ylim1=(-120</em>, <em class="sig-param">120)</em>, <em class="sig-param">ylim2=(0</em>, <em class="sig-param">200)</em>, <em class="sig-param">xbins=None</em>, <em class="sig-param">pngout=False</em>, <em class="sig-param">fname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remvdisp.html#Vdisp.plot_yx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remvdisp.Vdisp.plot_yx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for Plots.plot_v-sigma()</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.remvdisp.Vdisp.plot_zx">
+<code class="sig-name descname">plot_zx</code><span class="sig-paren">(</span><em class="sig-param">particles='Stellar'</em>, <em class="sig-param">xlim=(-40</em>, <em class="sig-param">40)</em>, <em class="sig-param">ylim1=(-120</em>, <em class="sig-param">120)</em>, <em class="sig-param">ylim2=(0</em>, <em class="sig-param">200)</em>, <em class="sig-param">xbins=None</em>, <em class="sig-param">pngout=False</em>, <em class="sig-param">fname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/remvdisp.html#Vdisp.plot_zx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.remvdisp.Vdisp.plot_zx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for Plots.plot_v-sigma()</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ASTR400B Leach</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="galaxy.html">Galaxy class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="galaxies.html">Galaxies class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="centerofmass.html">CenterOfMass class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="massprofile.html">MassProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="timecourse.html">TimeCourse class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">utilities module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="db.html">DB class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remnant.html">Remnant class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="approaches.html">Approaches class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="surfacedensity.html">SurfaceDensityProfile class</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Vdisp class</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="surfacedensity.html" title="previous chapter">SurfaceDensityProfile class</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Colin Leach.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/remvdisp.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -54,7 +54,7 @@ default list of locations will be searched.</p>
 <dt>usesql (bool):</dt><dd><p>If True, data will be taken from a PostgreSQL database instead of
 text files.</p>
 </dd>
-<dt>ptype (int):</dt><dd><p>Optional. Restrict data to this particle type, for speed. 
+<dt>ptype (int or list):</dt><dd><p>Optional. Restrict data to this particle type, for speed. 
 Only valid with usesql=True.</p>
 </dd>
 <dt>stride (int):</dt><dd><p>Optional. For stride=n, get every nth row in the table.
@@ -203,7 +203,7 @@ The full list, optionally with units, optionally filtered by type.</p>
 <dt id="galaxy.galaxy.Galaxy.all_component_counts">
 <code class="sig-name descname">all_component_counts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.all_component_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.all_component_counts" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
-<dt>Returns: list:</dt><dd><p>The aggregate masses of particles of each type in the galaxy
+<dt>Returns: list:</dt><dd><p>The number of particles of each type in the galaxy
 Ordered as [halo, disk, bulge]</p>
 </dd>
 </dl>
@@ -260,6 +260,12 @@ Ordered as [halo, disk, bulge]</p>
 <dd><p>Returns velocity as a (3,N) array</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="galaxy.galaxy.Galaxy.m">
+<code class="sig-name descname">m</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/galaxy.html#Galaxy.m"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.galaxy.Galaxy.m" title="Permalink to this definition">¶</a></dt>
+<dd><p>Conventience method to return array of masses</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -293,6 +299,7 @@ Ordered as [halo, disk, bulge]</p>
 <li class="toctree-l1"><a class="reference internal" href="remnant.html">Remnant class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="approaches.html">Approaches class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="surfacedensity.html">SurfaceDensityProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remvdisp.html">Vdisp class</a></li>
 </ul>
 
 <div class="relations">

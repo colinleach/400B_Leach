@@ -227,6 +227,76 @@ the best value of <cite>n</cite> for a Sersic profile.</p>
 </dl>
 </dd></dl>
 
+<dl class="method">
+<dt id="galaxy.massprofile.MassProfile.density_profile_shell">
+<code class="sig-name descname">density_profile_shell</code><span class="sig-paren">(</span><em class="sig-param">radii</em>, <em class="sig-param">m</em>, <em class="sig-param">xyz</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/massprofile.html#MassProfile.density_profile_shell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.massprofile.MassProfile.density_profile_shell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates mass density in successive spherical shells</p>
+<dl class="simple">
+<dt>Arg:</dt><dd><dl class="simple">
+<dt>radii (array of float):</dt><dd><p>boundary values beteen shells (implicit kpc, no units)</p>
+</dd>
+<dt>m (shape (N,) array of float):</dt><dd><p>particle masses (implicit Msun, no units)</p>
+</dd>
+<dt>xyz ((3,N) array of float):</dt><dd><p>particle cartesian coordinates</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>r_annuli: geometric mean of boundaries </dt><dd><p>(array is one shorter than input radii)</p>
+</dd>
+<dt>rho: densities (Msun/kpc^3)</dt><dd><p>(same length as r_annuli)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.massprofile.MassProfile.density_profile_sphere">
+<code class="sig-name descname">density_profile_sphere</code><span class="sig-paren">(</span><em class="sig-param">radii</em>, <em class="sig-param">m</em>, <em class="sig-param">xyz</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/massprofile.html#MassProfile.density_profile_sphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.massprofile.MassProfile.density_profile_sphere" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates average mass density within successive spherical radii</p>
+<dl class="simple">
+<dt>Arg:</dt><dd><dl class="simple">
+<dt>radii (array of float):</dt><dd><p>boundary values beteen shells (implicit kpc, no units)</p>
+</dd>
+<dt>m (shape (N,) array of float):</dt><dd><p>particle masses (implicit Msun, no units)</p>
+</dd>
+<dt>xyz ((3,N) array of float):</dt><dd><p>particle cartesian coordinates</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>rho: densities (Msun/kpc^3)</dt><dd><p>(same length as radii)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.massprofile.MassProfile.virial_radius">
+<code class="sig-name descname">virial_radius</code><span class="sig-paren">(</span><em class="sig-param">r_min=20</em>, <em class="sig-param">r_max=1000</em>, <em class="sig-param">rho_c=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/massprofile.html#MassProfile.virial_radius"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.massprofile.MassProfile.virial_radius" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates radius where DM density falls to 200x critical density
+for the universe.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>r_min, r_max (floats)</dt><dd><p>optional, limits for search (implicit kpc, no units)</p>
+</dd>
+<dt>rho_c (float or Quantity)</dt><dd><p>optional, critical density for chosen cosmology</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>r_200 (float): virial radius, implicit kpc</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="galaxy.massprofile.MassProfile.virial_mass">
+<code class="sig-name descname">virial_mass</code><span class="sig-paren">(</span><em class="sig-param">r_200=None</em>, <em class="sig-param">ptype=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/galaxy/massprofile.html#MassProfile.virial_mass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#galaxy.massprofile.MassProfile.virial_mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mass enclosed by the virial radius</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -260,6 +330,7 @@ the best value of <cite>n</cite> for a Sersic profile.</p>
 <li class="toctree-l1"><a class="reference internal" href="remnant.html">Remnant class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="approaches.html">Approaches class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="surfacedensity.html">SurfaceDensityProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="remvdisp.html">Vdisp class</a></li>
 </ul>
 
 <div class="relations">

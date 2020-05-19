@@ -814,8 +814,23 @@
         <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT t from relmotion WHERE snap=</span><span class="si">{snap}</span><span class="s2">&quot;</span>
         <span class="n">db</span> <span class="o">=</span> <span class="n">DB</span><span class="p">()</span>
         <span class="n">time</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div></div>
-       
+        <span class="k">return</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="TimeCourse.time2snap"><a class="viewcode-back" href="../../timecourse.html#galaxy.timecourse.TimeCourse.time2snap">[docs]</a>    <span class="k">def</span> <span class="nf">time2snap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Arg:</span>
+<span class="sd">            time (float): value in Gyr</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            List of closest values, often but not reliably just one.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        SELECT snap, t from relmotion </span>
+<span class="s2">        WHERE t BETWEEN </span><span class="si">{time}</span><span class="s2">-0.005 AND </span><span class="si">{time}</span><span class="s2">+0.005&quot;&quot;&quot;</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">DB</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div></div>
+             
 </pre></div>
 
           </div>
@@ -846,6 +861,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../remnant.html">Remnant class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../approaches.html">Approaches class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../surfacedensity.html">SurfaceDensityProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../remvdisp.html">Vdisp class</a></li>
 </ul>
 
 <div class="relations">

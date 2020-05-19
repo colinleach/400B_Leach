@@ -43,6 +43,7 @@
 
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
+<span class="kn">from</span> <span class="nn">galaxy.utilities</span> <span class="kn">import</span> <span class="n">is_iterable</span>
 
 <div class="viewcode-block" id="Galaxy"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy">[docs]</a><span class="k">class</span> <span class="nc">Galaxy</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -59,7 +60,7 @@
 <span class="sd">        usesql (bool):</span>
 <span class="sd">            If True, data will be taken from a PostgreSQL database instead of</span>
 <span class="sd">            text files.</span>
-<span class="sd">        ptype (int):</span>
+<span class="sd">        ptype (int or list):</span>
 <span class="sd">            Optional. Restrict data to this particle type, for speed. </span>
 <span class="sd">            Only valid with usesql=True.</span>
 <span class="sd">        stride (int):</span>
@@ -80,6 +81,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">snap</span> <span class="o">=</span> <span class="n">snap</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ptype</span> <span class="o">=</span> <span class="n">ptype</span>
 
         <span class="k">if</span> <span class="n">usesql</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">read_db</span><span class="p">(</span><span class="n">ptype</span><span class="p">,</span> <span class="n">stride</span><span class="p">)</span>
@@ -130,7 +132,12 @@
             <span class="n">sql_d</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT </span><span class="si">{colheads}</span><span class="s2"> from simdata&quot;</span>
         <span class="n">sql_d</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  where galname=&#39;</span><span class="si">{self.name}</span><span class="s2">&#39; and snap=</span><span class="si">{self.snap}</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="n">ptype</span><span class="p">:</span>
-            <span class="n">sql_d</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; and type=</span><span class="si">{ptype}</span><span class="s2"> ORDER BY pnum&quot;</span>
+            <span class="c1"># sql_d += f&quot; and type={ptype} ORDER BY pnum&quot;</span>
+            <span class="k">if</span> <span class="n">is_iterable</span><span class="p">(</span><span class="n">ptype</span><span class="p">):</span>
+                <span class="n">sql_d</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; and type in </span><span class="si">{ptype}</span><span class="s2">&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sql_d</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; and type=</span><span class="si">{ptype}</span><span class="s2">&quot;</span>
+        <span class="n">sql_d</span> <span class="o">+=</span> <span class="s2">&quot; ORDER BY pnum&quot;</span>
         <span class="k">if</span> <span class="n">stride</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">sql_d</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT </span><span class="si">{colheads}</span><span class="s2"> from ( </span><span class="si">{sql_d}</span><span class="s2"> ) as t where rn % </span><span class="si">{stride}</span><span class="s2"> = 0&quot;</span> 
 
@@ -365,7 +372,7 @@
 <div class="viewcode-block" id="Galaxy.all_component_counts"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.all_component_counts">[docs]</a>    <span class="k">def</span> <span class="nf">all_component_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns: list:</span>
-<span class="sd">                The aggregate masses of particles of each type in the galaxy</span>
+<span class="sd">                The number of particles of each type in the galaxy</span>
 <span class="sd">                Ordered as [halo, disk, bulge]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -443,7 +450,14 @@
 <span class="sd">        Returns velocity as a (3,N) array</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">vxi</span><span class="p">]</span> <span class="k">for</span> <span class="n">xi</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;vx&#39;</span><span class="p">,</span><span class="s1">&#39;vy&#39;</span><span class="p">,</span><span class="s1">&#39;vz&#39;</span><span class="p">)])</span></div></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">vxi</span><span class="p">]</span> <span class="k">for</span> <span class="n">vxi</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;vx&#39;</span><span class="p">,</span><span class="s1">&#39;vy&#39;</span><span class="p">,</span><span class="s1">&#39;vz&#39;</span><span class="p">)])</span></div>
+
+<div class="viewcode-block" id="Galaxy.m"><a class="viewcode-back" href="../../galaxy.html#galaxy.galaxy.Galaxy.m">[docs]</a>    <span class="k">def</span> <span class="nf">m</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Conventience method to return array of masses</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span></div></div>
         
 </pre></div>
 
@@ -475,6 +489,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../remnant.html">Remnant class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../approaches.html">Approaches class</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../surfacedensity.html">SurfaceDensityProfile class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../remvdisp.html">Vdisp class</a></li>
 </ul>
 
 <div class="relations">
