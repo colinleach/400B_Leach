@@ -870,23 +870,58 @@ Figure \ref{fig:rem_phase} shows phase diagrams in various orientations. There i
 	\label{fig:rem_phase}}
 \end{figure}
 
-Mean radial velocities $\bar{v}$ and velocity dispersions $\sigma$ were calculated by binning along the $y$-axis (Figure \ref{fig:rem_disp_y}) and the $z$-axis (Figure \ref{fig:rem_disp_z}). The variation perpendicular to $\hat{L}$ shows clear rotation with $v_{\text{max}} \approx 68$ km/s, somewhat asymmetric. As expected, along $\hat{L}$ we see smaller and more random velocities with dispersion falling off more slowly from the center.
+Mean radial velocities $\bar{v}$ and velocity dispersions $\sigma$ were calculated by binning along the $y$-axis (Figure \ref{fig:rem_disp_y_801}) and the $z$-axis (Figure \ref{fig:rem_disp_z_801}). For this and all the remaining stellar rotation plots, the angular momentum vector $\hat{L}$ was calculated for all stars within 60 kpc of the CoM and placed along the $z$-axis. The variation perpendicular to $\hat{L}$ shows clear rotation with $v_{\text{max}} \approx 68$ km/s, somewhat asymmetric. As expected, along $\hat{L}$ we see smaller and more random velocities with dispersion falling off more slowly from the center.
 
 \begin{figure}[htb!]
 	\epsscale{0.9}
 	\plotone{remnant_stellar_disp_y_801.pdf}
 	\caption{Velocity (red circles) and dispersion (blue +) by radius, $y$-axis: perpendicular to the angular momentum vector.
-		\label{fig:rem_disp_y}}
+		\label{fig:rem_disp_y_801}}
 \end{figure}
 
 \begin{figure}[htb!]
 	\epsscale{0.9}
 	\plotone{remnant_stellar_disp_z_801.pdf}
 	\caption{Velocity and dispersion by radius, $z$-axis: along the angular momentum vector.
-		\label{fig:rem_disp_z}}
+		\label{fig:rem_disp_z_801}}
 \end{figure}
 
-Central velocity dispersion $\sigma_c$ is about 176 km/s, so the ratio $v_{\text{max}} / \sigma_c$ is 0.39.
+Central velocity dispersion $\sigma_c$ is about 176 km/s, so the ratio $v_{\text{max}} / \sigma_c$ is 0.39. \todo{Comment}
+
+This analysis was repeated for other timepoints starting soon after merger. Representative examples are shown in Figures \ref{fig:rem_disp_y_450} and \ref{fig:rem_disp_y_600}. An animation of the full set is available online\footnote{\url{https://github.com/colinleach/400B_Leach/tree/master/animations}, files remnant\_stellar\_disp\_*.mp4 }.
+
+\begin{figure}[htb!]
+	\epsscale{0.9}
+	\plotone{remnant_stellar_disp_y_450.pdf}
+	\caption{Velocity and dispersion by radius, $y$-axis: along the angular momentum vector.
+		\label{fig:rem_disp_y_450}}
+\end{figure}
+
+\begin{figure}[htb!]
+	\epsscale{0.9}
+	\plotone{remnant_stellar_disp_y_600.pdf}
+	\caption{Velocity and dispersion by radius, $y$-axis: along the angular momentum vector.
+		\label{fig:rem_disp_y_600}}
+\end{figure}
+
+Clearly there are significant changes continuing after the initial merger. The timecourse of radial $v_{\text{max}}$ and central dispersion $\sigma_c$ is shown in Figure \ref{fig:rem_st_vdisp_tc}. Velocity dispersion stabilizes fairly quickly, but radial $v_{\text{max}}$ continues to decline slowly and irregularly. The end of the simulation happens to be a minimum but there is little assurance that it will stay at this value.
+
+\begin{figure}[htb!]
+	\epsscale{0.9}
+	\plotone{rem_st_vdisp_tc.pdf}
+	\caption{Velocity (solid blue line) and dispersion (dotted red line) by time, $y$-axis data.
+		\label{fig:rem_st_vdisp_tc}}
+\end{figure}
+
+The ratio $v_{\text{max}} / \sigma_c$ is shown in Figure \ref{fig:rem_st_vdisp_ratio}. This is a common measure of rotation speed in elliptical galaxies \todo{ref?? discussion?} 
+
+\begin{figure}[htb!]
+	\epsscale{0.9}
+	\plotone{rem_st_vdisp_ratio.pdf}
+	\caption{Velocity/dispersion ratio, $z$-axis data.
+		\label{fig:rem_st_vdisp_ratio}}
+\end{figure}
+
 
 For oblate isotropic rotators with ellipticity $\epsilon$, there is a relation \todo{Binney78 ref}
 \[ (V/\sigma) = \sqrt{\epsilon / (1 - \epsilon)} \]
@@ -947,6 +982,58 @@ The precursor galaxies have, as expected, somewhat lower virial radii: 227 kpc f
 
 
 \subsubsection{Remnant halo kinematics}
+
+As for stellar matter in a previous section, mean radial velocities $\bar{v}$ and velocity dispersions $\sigma$ were calculated by binning along the $y$-axis (Figure \ref{fig:rem_dm_disp_y_801}) and the $z$-axis (Figure \ref{fig:rem_disp_z_801}). For this and all the remaining stellar rotation plots, the angular momentum vector $\hat{L}$ was calculated for all stars within 60 kpc of the CoM and placed along the $z$-axis. The variation perpendicular to $\hat{L}$ shows clear rotation with $v_{\text{max}} \approx 68$ km/s, somewhat asymmetric. As expected, along $\hat{L}$ we see smaller and more random velocities with dispersion falling off more slowly from the center.
+
+\begin{figure}[htb!]
+	\epsscale{0.9}
+	\plotone{remnant_dm_disp_y_801}
+	\caption{Velocity (red circles) and dispersion (blue +) by radius, $y$-axis: perpendicular to the angular momentum vector.
+		\label{fig:rem_dm_disp_y_801}}
+\end{figure}
+
+\begin{figure}[htb!]
+	\epsscale{0.9}
+	\plotone{remnant_dm_disp_z_801}
+	\caption{Velocity and dispersion by radius, $z$-axis: along the angular momentum vector.
+		\label{fig:rem_dm_disp_z_801}}
+\end{figure}
+
+Central velocity dispersion $\sigma_c$ is about ?? km/s, so the ratio $v_{\text{max}} / \sigma_c$ is ??. \todo{Comment}
+
+This analysis was repeated for other timepoints starting soon after merger. Representative examples are shown in Figures \ref{fig:rem_dm_disp_y_450} and \ref{fig:rem_dm_disp_y_600}. An animation of the full set is available online\footnote{\url{https://github.com/colinleach/400B_Leach/tree/master/animations}, files remnant\_dm\_disp\_*.mp4 }.
+
+\begin{figure}[htb!]
+	\epsscale{0.9}
+	\plotone{remnant_dm_disp_y_450}
+	\caption{Velocity and dispersion by radius, $y$-axis: along the angular momentum vector.
+		\label{fig:rem_dm_disp_y_450}}
+\end{figure}
+
+\begin{figure}[htb!]
+	\epsscale{0.9}
+	\plotone{remnant_dm_disp_y_600}
+	\caption{Velocity and dispersion by radius, $y$-axis: along the angular momentum vector.
+		\label{fig:rem_dm_disp_y_600}}
+\end{figure}
+
+The halo appears much more stable than the stars after the initial merger. The timecourse of radial $v_{\text{max}}$ and central dispersion $\sigma_c$ is shown in Figure \ref{fig:rem_dm_vdisp_tc} and the ratio $v_{\text{max}} / \sigma_c$ is shown in Figure \ref{fig:rem_dm_vdisp_ratio}. 
+
+\begin{figure}[htb!]
+	\epsscale{0.9}
+	\plotone{rem_dm_vdisp_tc.pdf}
+	\caption{Velocity (solid blue line) and dispersion (dotted red line) by time, $y$-axis data.
+		\label{fig:rem_dm_vdisp_tc}}
+\end{figure}
+
+
+\begin{figure}[htb!]
+	\epsscale{0.9}
+	\plotone{rem_dm_vdisp_ratio.pdf}
+	\caption{Velocity/dispersion ratio, $z$-axis data.
+		\label{fig:rem_dm_vdisp_ratio}}
+\end{figure}
+
 
 The literature consensus is that halo shapes are supported by anisotropic velocity dispersions, not spin \citep{frenk_dark_2012}. They can acquire angular momentum through tidal torques, as we already saw for each galaxy in Figure \ref{fig:halo_h}. This is often characterized by a dimensionless spin parameter:
 \[ \lambda = \frac{J |E|^{1/2}}{G M^{5/2}} \]
