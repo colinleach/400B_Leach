@@ -955,7 +955,34 @@ The radial dependency of angular momentum for stellar matter was previously show
 
 The coordinate system in Figure \ref{fig:rem_dm_phi_theta} is the same is that used for stellar particles in Figure \ref{fig:rem_phi_theta}. The range of values is strikingly different: in the remnant, the DM halo is \textit{not} co-rotating with the stars.
 	
-\todo{DM density, shape, ellipse fitting}	
+\subsubsection{Halo shape}	
+
+The analysis was carried out essentially as for the stellar remnant in a previous section. DM particles within 150 kpc of the CoM were used in calculating $\hat{L}$ and this was oriented along the $z$-axis. Figure \ref{fig:rem_dm_shape_150} shows the density plots and contours.
+
+\begin{figure}[htb!]
+	\epsscale{1.1}
+	\plotone{remnant_dm_shape_150.pdf}
+	\caption{Halo density of the MW-M31 remnant, three orthogonal views. Contours enclose 50\% (yellow), 75\% (orange) and 90\% (red) of the halo mass analyzed (all that within 150 kpc).
+		\label{fig:rem_dm_shape_150}}
+\end{figure}
+
+Fitting ellipses to the contours was carried out as before (raw data not shown). The results are summarized in Table \ref{tbl:dm_fits}, showing that the halo is somewhat oblate with $z$ as the short axis, especially in the inner regions captured by the 50\% contour.
+
+\begin{deluxetable}{cccc}[htb!]
+	\tablecaption{Ellipticities for the remnant halo, by axes and contour.
+		\label{tbl:dm_fits}}
+	\tablewidth{0pt}
+	\tablehead{
+		\colhead{Axes} & \colhead{50\% contour} & \colhead{75\% contour} & \colhead{90\% contour}
+	}
+	\startdata
+	$x-y$  & 0.13 & 0.11 & 0.08 \\
+	$x-z$ & 0.26 & 0.22 & 0.19 \\
+	$y-z$ & 0.15 & 0.22 & 0.19 \\
+	\enddata
+\end{deluxetable}\vspace{-10mm}
+
+
 
 \subsubsection{Virial radius}
 
@@ -1064,8 +1091,6 @@ The final timepoint of the simulation gives these results:
 Unfortunately, this gives a spin parameter $\lambda \approx 37$, about 2 orders of magnitude higher than expected.
 
 \todo{\textbf{Figure out what went wrong!}}
-
-\todo{\textbf{remnant DM $\sigma$}}
 
 \todo{\textbf{$V_{esc}(r)$}}
 
