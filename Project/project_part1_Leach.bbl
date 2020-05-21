@@ -20,6 +20,10 @@
 Barnes, J.~E., \& Hernquist, L. 1992, Annual Review of Astronomy and
   Astrophysics, 30, 705, \dodoi{10.1146/annurev.aa.30.090192.003421}
 
+\bibitem[{Binney(1978)}]{binney_rotation_1978}
+Binney, J. 1978, Monthly Notices of the Royal Astronomical Society, 183, 501,
+  \dodoi{10.1093/mnras/183.3.501}
+
 \bibitem[{Binney \& Tremaine(2008)}]{binney_galactic_2008}
 Binney, J., \& Tremaine, S. 2008, Galactic Dynamics: Second Edition, by James
   Binney and Scott Tremaine. ISBN 978-0-691-13026-2 (HB). Published by
@@ -140,6 +144,10 @@ Kluyver, T., Ragan-Kelley, B., P{\'e}rez, F., {et~al.} 2016, in Positioning and
   Power in Academic Publishing: Players, Agents and Agendas, ed. F.~Loizides \&
   B.~Schmidt, IOS Press, 87 -- 90
 
+\bibitem[{Lynden-Bell(1967)}]{lynden-bell_statistical_1967}
+Lynden-Bell, D. 1967, Monthly Notices of the Royal Astronomical Society, 136,
+  101, \dodoi{10.1093/mnras/136.1.101}
+
 \bibitem[{Macciò {et~al.}(2007)Macciò, Dutton, van~den Bosch, Moore, Potter,
   \& Stadel}]{maccio_concentration_2007}
 Macciò, A.~V., Dutton, A.~A., van~den Bosch, F.~C., {et~al.} 2007, Monthly
@@ -233,6 +241,11 @@ Sérsic, J.~L. 1963, Boletin de la Asociacion Argentina de Astronomia La Plata
 Toomre, A., \& Toomre, J. 1972, The Astrophysical Journal, 178, 623,
   \dodoi{10.1086/151823}
 
+\bibitem[{Tsatsi {et~al.}(2017)Tsatsi, Lyubenova, Ven, Chang, Aguerri,
+  Falcón-Barroso, \& Macciò}]{tsatsi_califa_2017}
+Tsatsi, A., Lyubenova, M., Ven, G. v.~d., {et~al.} 2017, Astronomy \&
+  Astrophysics, 606, A62, \dodoi{10.1051/0004-6361/201630218}
+
 \bibitem[{van~der Walt {et~al.}(2011)van~der Walt, Colbert, \&
   Varoquaux}]{van_der_walt_numpy_2011}
 van~der Walt, S., Colbert, S.~C., \& Varoquaux, G. 2011, Computing in Science
@@ -247,6 +260,11 @@ van~der Walt, S., Colbert, S.~C., \& Varoquaux, G. 2011, Computing in Science
   {Contributors}}]{2020SciPy-NMeth}
 {Virtanen}, P., {Gommers}, R., {Oliphant}, T.~E., {et~al.} 2020, Nature
   Methods, \dodoi{https://doi.org/10.1038/s41592-019-0686-2}
+
+\bibitem[{Wang {et~al.}(2019)Wang, Mao, Li, Xu, Chen, \&
+  Springel}]{wang_orbit_2019}
+Wang, Y., Mao, S., Li, H., {et~al.} 2019, Monthly Notices of the Royal
+  Astronomical Society, 483, 3048, \dodoi{10.1093/mnras/sty3297}
 
 \bibitem[{Zwicky(1933)}]{zwicky_rotverschiebung_1933}
 Zwicky, F. 1933, Helvetica Physica Acta, 6, 110.
