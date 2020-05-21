@@ -103,6 +103,10 @@ Boylan-Kolchin, M., Ma, C.-P., \& Quataert, E. 2008, Monthly Notices of the
 Brown, A. G.~A., Vallenari, A., Prusti, T., {et~al.} 2018, Astronomy \&
   Astrophysics, 616, A1, \dodoi{10.1051/0004-6361/201833051}
 
+\bibitem[{Carlberg(1986)}]{carlberg_phase_1986}
+Carlberg, R.~G. 1986, The Astrophysical Journal, 310, 593,
+  \dodoi{10.1086/164711}
+
 \bibitem[{Cox {et~al.}(2006)Cox, Dutta, Di~Matteo, Hernquist, Hopkins,
   Robertson, \& Springel}]{cox_kinematic_2006}
 Cox, T.~J., Dutta, S.~N., Di~Matteo, T., {et~al.} 2006, The Astrophysical
@@ -124,6 +128,15 @@ Frenk, C.~S., \& White, S. D.~M. 2012, Annalen der Physik, 524, 507,
 
 \bibitem[{Hernquist(1990)}]{hernquist_analytical_1990}
 Hernquist, L. 1990, The Astrophysical Journal, 356, 359, \dodoi{10.1086/168845}
+
+\bibitem[{Hopkins(2009)}]{hopkins_how_2009}
+Hopkins, P.~F. 2009, 419, 228.
+\newblock \url{http://adsabs.harvard.edu/abs/2009ASPC..419..228H}
+
+\bibitem[{Hopkins {et~al.}(2009)Hopkins, Cox, Younger, \&
+  Hernquist}]{hopkins_how_2009-1}
+Hopkins, P.~F., Cox, T.~J., Younger, J.~D., \& Hernquist, L. 2009, The
+  Astrophysical Journal, 691, 1168, \dodoi{10.1088/0004-637X/691/2/1168}
 
 \bibitem[{Hunter(2007)}]{hunter_matplotlib_2007}
 Hunter, J.~D. 2007, Computing in Science \& Engineering, 9, 90,
@@ -181,6 +194,10 @@ Mo, H., van~den Bosch, F.~C., \& White, S. 2010, Galaxy Formation and
   Cambridge University Press, 2010.
 \newblock \url{http://adsabs.harvard.edu/abs/2010gfe..book.....M}
 
+\bibitem[{Naab \& Burkert(2003)}]{naab_statistical_2003}
+Naab, T., \& Burkert, A. 2003, The Astrophysical Journal, 597, 893,
+  \dodoi{10.1086/378581}
+
 \bibitem[{Napolitano {et~al.}(2002)Napolitano, Arnaboldi, \&
   Capaccioli}]{napolitano_ngc_2002}
 Napolitano, N.~R., Arnaboldi, M., \& Capaccioli, M. 2002, Astronomy \&
@@ -227,6 +244,11 @@ Perez, F., \& Granger, B.~E. 2007, Computing in Science \& Engineering, 9, 21,
   \& Zonca}]{planck_collaboration_planck_2016}
 PlanckCollaboration, Ade, P. A.~R., Aghanim, N., {et~al.} 2016, Astronomy \&
   Astrophysics, 594, A13, \dodoi{10.1051/0004-6361/201525830}
+
+\bibitem[{Querejeta {et~al.}(2015)Querejeta, Eliche-Moral, Tapia, Borlaff,
+  Rodríguez-Pérez, Zamorano, \& Gallego}]{querejeta_formation_2015}
+Querejeta, M., Eliche-Moral, M.~C., Tapia, T., {et~al.} 2015, Astronomy \&
+  Astrophysics, 573, A78, \dodoi{10.1051/0004-6361/201424303}
 
 \bibitem[{Rubin \& Ford(1970)}]{rubin_rotation_1970}
 Rubin, V.~C., \& Ford, Jr., W.~K. 1970, The Astrophysical Journal, 159, 379,

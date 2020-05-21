@@ -4,44 +4,46 @@ The top-level auxiliary file: project_part1_Leach.aux
 The style file: aasjournal.bst
 Database file #1: project_Leach.bib
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
-You've used 35 entries,
+Warning--empty journal in hopkins_how_2009
+You've used 40 entries,
             3168 wiz_defined-function locations,
-            915 strings with 27093 characters,
-and the built_in function-call counts, 25379 in all, are:
-= -- 1324
-> -- 3370
-< -- 16
-+ -- 1127
-- -- 1150
-* -- 2861
-:= -- 5138
-add.period$ -- 41
-call.type$ -- 35
-change.case$ -- 202
-chr.to.int$ -- 34
-cite$ -- 35
-duplicate$ -- 595
-empty$ -- 972
-format.name$ -- 1199
-if$ -- 4652
+            953 strings with 28213 characters,
+and the built_in function-call counts, 27515 in all, are:
+= -- 1511
+> -- 3507
+< -- 19
++ -- 1174
+- -- 1199
+* -- 3042
+:= -- 5529
+add.period$ -- 47
+call.type$ -- 40
+change.case$ -- 232
+chr.to.int$ -- 39
+cite$ -- 41
+duplicate$ -- 676
+empty$ -- 1110
+format.name$ -- 1254
+if$ -- 5086
 int.to.chr$ -- 2
 int.to.str$ -- 0
-missing$ -- 33
-newline$ -- 119
-num.names$ -- 142
-pop$ -- 218
+missing$ -- 38
+newline$ -- 135
+num.names$ -- 162
+pop$ -- 248
 preamble$ -- 1
-purify$ -- 202
+purify$ -- 232
 quote$ -- 0
-skip$ -- 490
+skip$ -- 561
 stack$ -- 0
-substring$ -- 561
+substring$ -- 649
 swap$ -- 18
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 312
-warning$ -- 0
-while$ -- 135
+type$ -- 357
+warning$ -- 1
+while$ -- 155
 width$ -- 0
-write$ -- 395
+write$ -- 450
+(There was 1 warning)

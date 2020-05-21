@@ -205,7 +205,6 @@ Figure \ref{fig:rotcurve0} shows the rotation curves expected from these mass pr
 %	\epsscale{0.8}
 %	\plotone{6cyl_grab}
 %	\caption{Disk particles from MW (top) and M31 (bottom) at three timepoints; cylindrical coordinates.\\
-%		\todo{\textit{make this page-width in final layout}}
 %		\label{fig:6cyl}}
 %\end{figure}
 
@@ -472,8 +471,6 @@ The MW and M31 disks have angular momentum vectors inclined at an angle of $37^\
 
 \subsubsection{Remnant shape}
 
-\todo{boxiness?}
-
 We can expect the remnant to settle over time into a triaxial ellipsoid \todo{ref?}. In observational astronomy it would be usual to determine the shape by fitting ellipses to surface brightness contours. That is also possible for the simulation, but for a highly-determined system for which we know the mass and position of every particle there are other options.
 
 If we combine all the baryonic matter (disk and bulge) from both MW and M31, there are $1.12 \times 10^6$ particles to consider. Some of these have been ejected to large radius where they have an exaggerated effect on the moment of inertia, so only those within 40 kpc of the CoM were used in the calculation. These were about 88\% of the original stellar particles from the two precursor galaxies.
@@ -510,7 +507,6 @@ So by this method the remnant is triaxial (low-symmetry, with $a \ne b \ne c$). 
 
 %The numbers involved are shown in Table 3. 
 %
-%\todo{needs recalc within radius cutoff}
 %
 %\begin{deluxetable}{crrr}[htb!]
 %	\tablecaption{Counts of particles by origin (thousands)
@@ -567,7 +563,7 @@ Coordinates were rotated to place the eigenvector corresponding to the major axi
 \begin{figure}[htb!]
 	\epsscale{1.1}
 	\plotone{remnant_shape_tensor.pdf}
-	\caption{Density plot, oriented with the presumed major axis along $z$..
+	\caption{Density plot, oriented with the presumed major axis along $z$.
 		\label{fig:rem_tensor}}
 \end{figure}
 
@@ -612,7 +608,7 @@ Previous sections have shown that MW and M31 particles remain somewhat distinct 
 \begin{figure}[htb!]
 	\epsscale{0.9}
 	\plotone{remnant_DM_rho.pdf}
-	\caption{Spherically-averaged density profiles of the remnant halo by origin. Note the expanded $x$-axis relative to Figure \ref{fig:rem_lum_rho}
+	\caption{Spherically-averaged density profiles of the remnant halo by origin. Note the expanded $x$-axis relative to Figure \ref{fig:rem_lum_rho}.
 		\label{fig:rem_DM_rho}}
 \end{figure}
 
@@ -720,14 +716,24 @@ Again, we see a substantial variation by radius: the remnant is not rotating as 
 		\label{fig:sph_coord}}
 \end{figure}
 
-This collision and a single merger is not sufficient to randomize stars within the remnant. This is consistent with the understanding that relaxation times are very long in collisionless systems on the scale of elliptical galaxies \citep[Section 1.2]{binney_galactic_2008}. During the conditions of a galactic collision and merger there is an additional mechanism, called violent relaxation, that be significantly faster \citep{lynden-bell_statistical_1967}, \citep[Section 4.10.2]{binney_galactic_2008}. Despite this, \citet{barnes_dynamics_1992} note that structure from the progenitors can survive the merging process. Also, there is observational evidence from rotation curves of elliptical galaxies that the inner and outer regions are sometimes decoupled, e.g. \citep{napolitano_ngc_2002}.
+This collision and a single merger is not sufficient to randomize stars within the remnant. This is consistent with the understanding that relaxation times are very long in collisionless systems on the scale of elliptical galaxies \citep[Section 1.2]{binney_galactic_2008}. During the conditions of a galactic collision and merger there is an additional mechanism, called violent relaxation, that be significantly faster \citep[Section 4.10.2]{lynden-bell_statistical_1967, binney_galactic_2008}. Despite this, \citet{barnes_dynamics_1992} note that structure from the progenitors can survive the merging process. Also, there is observational evidence from rotation curves of elliptical galaxies that the inner and outer regions are sometimes decoupled, e.g. \citep{napolitano_ngc_2002}.
 
 \todo{distinguish by origin}
 
 
-\subsubsection{Remnant stellar kinematics}
+\subsubsection{Effects of gas}
 
-It was shown in \citep{cox_kinematic_2006} that simulated mergers lead to substantially different rotational kinematics if the galaxies are gas-poor (``dry'') and the collision is dissipationless versus gas-rich, dissipational collisions. \todo{expand!}
+It was shown in \citep{cox_kinematic_2006} that simulated mergers lead to substantially different rotational kinematics if the galaxies are gas-poor (``dry'') and the collision is dissipationless versus gas-rich, dissipational collisions.
+
+One way this has been explained uses Lagrangian mechanics, in which the state of each particle is defined by six parameters (typically 3 for position and 3 for either momentum or velocity). The state of an N-body system is then a 6N-dimensional phase space ($\Gamma$-space). Liouville's theorem considers the local density of $\Gamma$-space, and in particular it shows that the time derivative is zero \citep[Section 7.2.2]{binney_galactic_2008}. 
+
+If Liouville's theorem holds in a galactic context, this places some strict constraints on the merger remnant: it should preserve the phase-space density of the precursor galaxies. In simple terms, two wide, rapidly-rotating disks will be unable to produce a remnant with high central density and low velocity dispersion \citep{carlberg_phase_1986}.
+
+This is thought to be at least approximately true for ``dry'' mergers. Gas-rich mergers relax the constraint by having efficient ways to dissipate energy as radiation, for example by shock heating of the colliding gas clouds, star formation and feedback from supernovae. This can lead to the stars in the system becoming dynamically cooler over time and more concentrated in phase space.
+
+Much work has been done on simulating gas-rich mergers, as these offer more ways to produce the wide variety of galactic morphologies seen observationally. In contrast, the MW-M31 merger will probably have little gas in reality and there is none in the simulation, so this is a less-studied type.
+
+\subsubsection{Remnant stellar kinematics}
 
 Initially, the stellar particles (from all origins) were used to calculate an angular momentum vector $\hat{L}$, then the coordinate system was rotated to place this along the $z$-axis. We might have expected the principal axes of the ellipsoid to correspond in some simple way to this projection, but this was found to be far from the case.
 
@@ -776,9 +782,8 @@ There may be a trend for the ellipticity to fall between the 50\% and 75\% conto
 		\label{fig:isophotes_90}}
 \end{figure}
 
+Nowhere in this data was a disk-like component detected. There have been suggestions that disks can survive mergers \citep{hopkins_how_2009, hopkins_how_2009-1} and that mergers can lead to lenticular (S0) galaxies \citep{querejeta_formation_2015}, but this does not appear to be an example.
 
-
-\todo{\textbf{Is it a fast or slow rotator?}}
 
 \todo{\textbf{Does the virial theorem work to return the total baryonic mass?}}
 
@@ -791,7 +796,7 @@ Figure \ref{fig:rem_phase} shows phase diagrams in various orientations. There i
 	\label{fig:rem_phase}}
 \end{figure}
 
-Mean radial velocities $\bar{v}$ and velocity dispersions $\sigma$ were calculated by binning along the $y$-axis (Figure \ref{fig:rem_disp_y_801}) and the $z$-axis (Figure \ref{fig:rem_disp_z_801}). For this and all the remaining stellar rotation plots, the angular momentum vector $\hat{L}$ was calculated for all stars within 60 kpc of the CoM and placed along the $z$-axis. The variation perpendicular to $\hat{L}$ shows clear rotation with $v_{\text{max}} \approx 68$ km/s, somewhat asymmetric. As expected, along $\hat{L}$ we see smaller and more random velocities with dispersion falling off more slowly from the center.
+Mean radial velocities $\bar{v}$ and velocity dispersions $\sigma$ were calculated by binning along the $y$-axis (Figure \ref{fig:rem_disp_y_801}) and the $z$-axis (Figure \ref{fig:rem_disp_z_801}). For this and all the remaining stellar rotation plots, the angular momentum vector $\hat{L}$ was calculated for all stars within 60 kpc of the CoM and placed along the $z$-axis. The variation perpendicular to $\hat{L}$ shows clear rotation with $v_{\text{max}} \approx 68$ km/s, somewhat asymmetric. This is about a third of the circular velocity in the disks of the precursor galaxies, and high by the standards of ellipticals arising from dry 1:1 mergers \citep{naab_statistical_2003}. As expected, along $\hat{L}$ we see smaller and more random velocities with dispersion falling off more slowly from the center.
 
 \begin{figure}[htb!]
 	\epsscale{0.9}
@@ -807,7 +812,7 @@ Mean radial velocities $\bar{v}$ and velocity dispersions $\sigma$ were calculat
 		\label{fig:rem_disp_z_801}}
 \end{figure}
 
-Central velocity dispersion $\sigma_c$ is about 176 km/s, so the ratio $v_{\text{max}} / \sigma_c$ is 0.39. \todo{Comment}
+Central velocity dispersion $\sigma_c$ is about 176 km/s, so the ratio $v_{\text{max}} / \sigma_c$ is 0.39 at the end of the simulation.
 
 This analysis was repeated for other timepoints starting soon after merger. Representative examples are shown in Figures \ref{fig:rem_disp_y_450} and \ref{fig:rem_disp_y_600}. An animation of the full set is available online\footnote{\url{https://github.com/colinleach/400B_Leach/tree/master/animations}, files remnant\_stellar\_disp\_*.mp4 }.
 
@@ -834,7 +839,7 @@ Clearly there are significant changes continuing after the initial merger. The t
 		\label{fig:rem_st_vdisp_tc}}
 \end{figure}
 
-The ratio $v_{\text{max}} / \sigma_c$ is shown in Figure \ref{fig:rem_st_vdisp_ratio}. This is a common measure of rotation speed in elliptical galaxies \todo{ref?? discussion?} 
+The ratio $v_{\text{max}} / \sigma_c$ is shown in Figure \ref{fig:rem_st_vdisp_ratio}. This is a common measure of rotation speed in elliptical galaxies. As discussed below, there are unusual features about this remnant compared with most results in the literature, but a line at $v_{\text{max}} / \sigma_c = 0.6$ has been added as a rough division between fast and slow rotators. For much of its post-merger history, rotation is fast by any standards. Even at minimum the rotation is faster than expected for an elliptical with no sign of rational flattening or disk-like component.
 
 \begin{figure}[htb!]
 	\epsscale{0.9}
@@ -844,7 +849,7 @@ The ratio $v_{\text{max}} / \sigma_c$ is shown in Figure \ref{fig:rem_st_vdisp_r
 \end{figure}
 
 
-For oblate isotropic rotators, there is a widely-cited relationship between $v_{\text{max}} / \sigma_c$ and ellipticity $\epsilon$ \citep{binney_rotation_1978}: $(V/\sigma) = \sqrt{\epsilon / (1 - \epsilon)}$.
+For oblate isotropic rotators, there is a widely-cited relationship between $v_{\text{max}} / \sigma_c$ and ellipticity $\epsilon$ \citep{binney_rotation_1978}: $(V/\sigma) = \sqrt{\epsilon / (1 - \epsilon)}$. However, this generally applies to elliptical galaxies which have been rotationally flattened, which is not seen in the MW-M31 simulation.
 
 There has been less study of prolate ellipticals rotating about their long axis, but \citet{tsatsi_califa_2017} show observational evidence for such galaxies being reasonably common, and data from N-body simulations showing how they could arise from mergers of mutually-inclined spiral precursors. They also mention a ``very elongated, almost bar-like component'' in the remnant, which is a good description of the central regions of Figure \ref{fig:rem_shape_10}.
 
@@ -901,7 +906,7 @@ Fitting ellipses to the contours was carried out as before (raw data not shown).
 	$x-z$ & 0.26 & 0.22 & 0.19 \\
 	$y-z$ & 0.15 & 0.22 & 0.19 \\
 	\enddata
-\end{deluxetable}\vspace{-10mm}
+\end{deluxetable} %\vspace{-10mm}
 
 
 
@@ -917,8 +922,7 @@ Currently \citep{planck_collaboration_planck_2016} we have\footnote{Wendy Freedm
 
 The simulation ends more than 11 Gyr in the future, so we need a different value for $H(t)$. By then the universe will be well into a Dark Energy-dominated epoch with near-exponential expansion. Then $\dot{H}(t) \approx 0$ and $H(t)$ asymptotically approaches its final value of $H_{\infty} \approx 57$ km/s/Mpc.
 
-This gives us a lower bound for $\rho_{c,\infty} \approx 90\ M_\sun/\text{kpc}^3$. Then $r_{200}$ is the radius within which the averaged remnant halo density falls below $1.8 \times 10^4\ M_\sun/\text{kpc}^3$. At the final timepoint, this is 
-\[ r_{200} \approx 266\ \text{kpc} \]
+This gives us a lower bound for $\rho_{c,\infty} \approx 90\ M_\sun/\text{kpc}^3$. Then $r_{200}$ is the radius within which the averaged remnant halo density falls below $1.8 \times 10^4\ M_\sun/\text{kpc}^3$. At the final timepoint, this is $r_{200} \approx 266\ \text{kpc}$.
 
 The total virial mass, enclosed within the virial radius, is $2.4 \times 10^{12}\ M_\Sun$, of which 91\% is Dark Matter. This is only about 53\% of the precursor mass of the two galaxies. We can see from Figure \ref{fig:rem_mp_halo} that halo mass enclosed continues to rise to at least 2 Mpc radius, suggesting that the virial radius is quite a conservative limit.
 
@@ -965,7 +969,7 @@ This analysis was repeated for other timepoints starting soon after merger. Repr
 		\label{fig:rem_dm_disp_y_600}}
 \end{figure}
 
-The halo appears much more stable than the stars after the initial merger. The timecourse of radial $v_{\text{max}}$ and central dispersion $\sigma_c$ is shown in Figure \ref{fig:rem_dm_vdisp_tc} and the ratio $v_{\text{max}} / \sigma_c$ is shown in Figure \ref{fig:rem_dm_vdisp_ratio}. 
+The halo appears much more stable than the stars after the initial merger. The timecourse of radial $v_{\text{max}}$ and central dispersion $\sigma_c$ is shown in Figure \ref{fig:rem_dm_vdisp_tc} and the ratio $v_{\text{max}} / \sigma_c$ is shown in Figure \ref{fig:rem_dm_vdisp_ratio}. There is a gradual rise in $v_{\text{max}}$ over the 8-11 Gyr period, during which the stellar $v_{\text{max}}$ is trending downwards (Figure \ref{fig:rem_st_vdisp_ratio}), perhaps suggesting some angular momentum transfer from the rapidly-rotating stars to the slowly-rotating halo.
 
 \begin{figure}[htb!]
 	\epsscale{0.9}
@@ -1012,9 +1016,6 @@ The final timepoint of the simulation gives these results:
 Unfortunately, this gives a spin parameter $\lambda \approx 37$, about 2 orders of magnitude higher than expected.
 
 \todo{\textbf{Figure out what went wrong!}}
-
-\todo{\textbf{$V_{esc}(r)$}}
-
 
 \section{Discussion and Conclusions}
 
