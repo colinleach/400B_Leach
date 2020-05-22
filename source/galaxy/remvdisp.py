@@ -145,6 +145,6 @@ class Vdisp():
             
         title = f'{particles} ' + r'$\bar{v}$ and $\sigma$, z axis,' + f' t={self.t:.2f} Gyr'
         self.p.plot_v_sigma(self.xbins, self.means_zx, self.sigmas_zx, 
-                       xlim=xlim, ylim1=ylim1, ylim2=ylim2, xlabel='y (kpc)', 
+                       xlim=xlim, ylim1=ylim1, ylim2=ylim2, xlabel='z (kpc)', 
                        title=title, pngout=pngout, fname=fname)
         

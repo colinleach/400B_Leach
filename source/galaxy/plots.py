@@ -378,7 +378,7 @@ class Plots():
                 xlabel=None, title=None, figsize=(8,6), pngout=False, fname=None):
         
         if xlabel is None:
-            clabel = 'y (kpc)'
+            xlabel = 'y (kpc)'
 
         fig, ax1 = plt.subplots(figsize=figsize)
 
