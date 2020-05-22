@@ -3,9 +3,13 @@
 \contentsline {chapter}{\numberline {2}Galaxies class}{7}{chapter.2}% 
 \contentsline {chapter}{\numberline {3}CenterOfMass class}{9}{chapter.3}% 
 \contentsline {chapter}{\numberline {4}MassProfile class}{11}{chapter.4}% 
-\contentsline {chapter}{\numberline {5}TimeCourse class}{13}{chapter.5}% 
-\contentsline {chapter}{\numberline {6}utilities module}{17}{chapter.6}% 
-\contentsline {chapter}{\numberline {7}DB class}{19}{chapter.7}% 
-\contentsline {chapter}{\numberline {8}Indices and tables}{21}{chapter.8}% 
-\contentsline {chapter}{Python Module Index}{23}{section*.71}% 
-\contentsline {chapter}{Index}{25}{section*.72}% 
+\contentsline {chapter}{\numberline {5}TimeCourse class}{15}{chapter.5}% 
+\contentsline {chapter}{\numberline {6}utilities module}{19}{chapter.6}% 
+\contentsline {chapter}{\numberline {7}DB class}{21}{chapter.7}% 
+\contentsline {chapter}{\numberline {8}Remnant class}{23}{chapter.8}% 
+\contentsline {chapter}{\numberline {9}Approaches class}{27}{chapter.9}% 
+\contentsline {chapter}{\numberline {10}SurfaceDensityProfile class}{29}{chapter.10}% 
+\contentsline {chapter}{\numberline {11}Vdisp class}{31}{chapter.11}% 
+\contentsline {chapter}{\numberline {12}Indices and tables}{33}{chapter.12}% 
+\contentsline {chapter}{Python Module Index}{35}{section*.133}% 
+\contentsline {chapter}{Index}{37}{section*.134}% 

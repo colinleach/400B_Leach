@@ -73,7 +73,7 @@
 
 
 \title{ASTR400B Leach}
-\date{Mar 24, 2020}
+\date{May 22, 2020}
 \release{}
 \author{Colin Leach}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -129,7 +129,7 @@ default list of locations will be searched.
 If True, data will be taken from a PostgreSQL database instead of
 text files.
 
-\item[{ptype (int):}] \leavevmode
+\item[{ptype (int or list):}] \leavevmode
 Optional. Restrict data to this particle type, for speed. 
 Only valid with usesql=True.
 
@@ -324,7 +324,7 @@ The number of particles in the galaxy of this type
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.all_component_counts}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{all\_component\_counts}}}{}{}~\begin{description}
 \item[{Returns: list:}] \leavevmode
-The aggregate masses of particles of each type in the galaxy
+The number of particles of each type in the galaxy
 Ordered as {[}halo, disk, bulge{]}
 
 \end{description}
@@ -379,6 +379,30 @@ Returns: data as pandas dataframe
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.get_qtable}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_qtable}}}{}{}
 Returns: data as astropy QTable, with units
+
+\end{fulllineitems}
+
+\index{xyz() (galaxy.galaxy.Galaxy method)@\spxentry{xyz()}\spxextra{galaxy.galaxy.Galaxy method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.xyz}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{xyz}}}{}{}
+Returns position as a (3,N) array
+
+\end{fulllineitems}
+
+\index{vxyz() (galaxy.galaxy.Galaxy method)@\spxentry{vxyz()}\spxextra{galaxy.galaxy.Galaxy method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.vxyz}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{vxyz}}}{}{}
+Returns velocity as a (3,N) array
+
+\end{fulllineitems}
+
+\index{m() (galaxy.galaxy.Galaxy method)@\spxentry{m()}\spxextra{galaxy.galaxy.Galaxy method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{galaxy:galaxy.galaxy.Galaxy.m}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{m}}}{}{}
+Conventience method to return array of masses
 
 \end{fulllineitems}
 
@@ -662,7 +686,7 @@ CoM\sphinxhyphen{}centric position and velocity
 \index{angular\_momentum() (galaxy.centerofmass.CenterOfMass method)@\spxentry{angular\_momentum()}\spxextra{galaxy.centerofmass.CenterOfMass method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{centerofmass:galaxy.centerofmass.CenterOfMass.angular_momentum}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{angular\_momentum}}}{\emph{com\_p=None}, \emph{com\_v=None}}{}~\begin{description}
+\phantomsection\label{\detokenize{centerofmass:galaxy.centerofmass.CenterOfMass.angular_momentum}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{angular\_momentum}}}{\emph{com\_p=None}, \emph{com\_v=None}, \emph{r\_lim=None}}{}~\begin{description}
 \item[{Returns: }] \leavevmode\begin{description}
 \item[{L}] \leavevmode{[}3\sphinxhyphen{}vector as array{]}
 The (x,y,x) components of the angular momentum vector about the CoM,
@@ -670,6 +694,9 @@ summed over all disk particles
 
 \item[{pos, v}] \leavevmode{[}arrays with shape (3, N){]}
 Position and velocity for each particle
+
+\item[{r\_lim}] \leavevmode{[}float{]}
+Radius to include in calculation (implicit kpc, no units)
 
 \end{description}
 
@@ -680,7 +707,7 @@ Position and velocity for each particle
 \index{rotate\_frame() (galaxy.centerofmass.CenterOfMass method)@\spxentry{rotate\_frame()}\spxextra{galaxy.centerofmass.CenterOfMass method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{centerofmass:galaxy.centerofmass.CenterOfMass.rotate_frame}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{rotate\_frame}}}{\emph{to\_axis=None}, \emph{com\_p=None}, \emph{com\_v=None}}{}~\begin{description}
+\phantomsection\label{\detokenize{centerofmass:galaxy.centerofmass.CenterOfMass.rotate_frame}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{rotate\_frame}}}{\emph{to\_axis=None}, \emph{com\_p=None}, \emph{com\_v=None}, \emph{r\_lim=None}}{}~\begin{description}
 \item[{Arg: to\_axis (3\sphinxhyphen{}vector)}] \leavevmode
 Angular momentum vector will be aligned to this (default z\sphinxhyphen{}hat)
 
@@ -691,6 +718,96 @@ New values for every particle. \sphinxtitleref{self.data} remains unchanged.
 
 Based on Rodrigues’ rotation formula
 Ref: \sphinxurl{https://en.wikipedia.org/wiki/Rodrigues\%27\_rotation\_formula}
+
+\end{fulllineitems}
+
+\index{shell\_h() (galaxy.centerofmass.CenterOfMass method)@\spxentry{shell\_h()}\spxextra{galaxy.centerofmass.CenterOfMass method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{centerofmass:galaxy.centerofmass.CenterOfMass.shell_h}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{shell\_h}}}{\emph{radii}, \emph{m}, \emph{xyz}, \emph{vxyz}}{}
+Calculate specific angular momentum of spherical shells.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{radii ((M,0) array of float):}] \leavevmode
+boundaries of shells (implicit kpc from center)
+
+\item[{m ((N,) array of float):}] \leavevmode
+masses (implicit Msun)
+
+\item[{xyz, vxyz ((3,N) arrays of float):}] \leavevmode
+positions and velocities (implicit kpc, km/s)
+
+\end{description}
+
+\item[{Returns:}] \leavevmode\begin{description}
+\item[{rad ((M\sphinxhyphen{}1,) array): }] \leavevmode
+midpoints of shells (implicit kpc)
+
+\item[{L ((M\sphinxhyphen{}1,3) array of float):}] \leavevmode
+total angular momentum
+
+\item[{h ((M\sphinxhyphen{}1,3) array of float):}] \leavevmode
+specific angular momentum, i.e. L/m
+
+\end{description}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{sphere\_h() (galaxy.centerofmass.CenterOfMass method)@\spxentry{sphere\_h()}\spxextra{galaxy.centerofmass.CenterOfMass method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{centerofmass:galaxy.centerofmass.CenterOfMass.sphere_h}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{sphere\_h}}}{\emph{radii}, \emph{m}, \emph{xyz}, \emph{vxyz}}{}
+Calculate specific angular momentum within spheres.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{radii ((M,0) array of float):}] \leavevmode
+boundaries of shells (implicit kpc from center)
+
+\item[{m ((N,) array of float):}] \leavevmode
+masses (implicit Msun)
+
+\item[{xyz, vxyz ((3,N) arrays of float):}] \leavevmode
+positions and velocities (implicit kpc, km/s)
+
+\end{description}
+
+\item[{Returns:}] \leavevmode\begin{description}
+\item[{L ((M,3) array of float):}] \leavevmode
+total angular momentum
+
+\item[{h ((M,3) array of float):}] \leavevmode
+specific angular momentum, i.e. L/m
+
+\end{description}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{disp\_by\_radius() (galaxy.centerofmass.CenterOfMass method)@\spxentry{disp\_by\_radius()}\spxextra{galaxy.centerofmass.CenterOfMass method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{centerofmass:galaxy.centerofmass.CenterOfMass.disp_by_radius}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{disp\_by\_radius}}}{\emph{x}, \emph{vy}, \emph{xbins}, \emph{binwidth=None}}{}
+Calculate mean velocity and dispersion sigma for a set of radius bins
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{x (array of float):}] \leavevmode
+lateral distance from CoM
+
+\item[{vy (array of float):}] \leavevmode
+radial velocity
+
+\item[{xbins (array of float)}] \leavevmode
+midpoints of equally\sphinxhyphen{}spaced bins
+
+\item[{binwidth (float):}] \leavevmode
+optional and probably useless
+
+\end{description}
+
+\end{description}
 
 \end{fulllineitems}
 
@@ -712,6 +829,9 @@ profiles for a given galaxy and simulation snapshot
 \item[{Args:}] \leavevmode\begin{description}
 \item[{gal (Galaxy object):}] \leavevmode
 The desired galaxy/snap to operate on
+
+\item[{com\_p (3\sphinxhyphen{}vector):}] \leavevmode
+Optional. The position of the disk CoM.
 
 \end{description}
 
@@ -765,10 +885,17 @@ Utility function to get a parameter for Hernquist mass
 \phantomsection\label{\detokenize{massprofile:galaxy.massprofile.MassProfile.hernquist_mass}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{hernquist\_mass}}}{\emph{r}, \emph{a}, \emph{M\_halo=None}}{}
 Calculate the mass enclosed for a theoretical profile
 \begin{description}
-\item[{Args:}] \leavevmode
-r (Quantity, units of kpc): distance from center
-a (Quantity, units of kpc): scale radius
-M\_halo (Quantity, units of M\_sun): total DM mass (optional)
+\item[{Args:}] \leavevmode\begin{description}
+\item[{r (Quantity, units of kpc): }] \leavevmode
+distance from center
+
+\item[{a (Quantity, units of kpc): }] \leavevmode
+scale radius
+
+\item[{M\_halo (Quantity, units of M\_sun): }] \leavevmode
+total DM mass (optional)
+
+\end{description}
 
 \item[{Returns:}] \leavevmode
 Total DM mass enclosed within r (M\_sun)
@@ -784,9 +911,14 @@ Total DM mass enclosed within r (M\_sun)
 Calculate orbital velocity at a given radius from the CoM 
 for a given type of particle.
 \begin{description}
-\item[{Args:}] \leavevmode
-radii (array of distances): circular orbit
-ptype (int): particle type from (1,2,3), or None for total
+\item[{Args:}] \leavevmode\begin{description}
+\item[{radii (array of distances): }] \leavevmode
+circular orbit
+
+\item[{ptype (int): }] \leavevmode
+particle type from (1,2,3), or None for total
+
+\end{description}
 
 \item[{Returns:}] \leavevmode
 array of circular speeds, in units of km/s
@@ -803,6 +935,225 @@ Syntactic sugar for circular\_velocity(radii, ptype=None)
 
 \end{fulllineitems}
 
+\index{circular\_velocity\_hernquist() (galaxy.massprofile.MassProfile method)@\spxentry{circular\_velocity\_hernquist()}\spxextra{galaxy.massprofile.MassProfile method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{massprofile:galaxy.massprofile.MassProfile.circular_velocity_hernquist}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{circular\_velocity\_hernquist}}}{\emph{radii}, \emph{a}, \emph{M\_halo=None}}{}
+Theoretical V\_circ assuming halo mass follows a Hernquist profile
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{radii (array of distances): }] \leavevmode
+circular orbit
+
+\item[{a (Quantity, units of kpc): }] \leavevmode
+scale radius
+
+\item[{M\_halo (Quantity, units of M\_sun): }] \leavevmode
+total DM mass (optional)
+
+\end{description}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{fit\_hernquist\_a() (galaxy.massprofile.MassProfile method)@\spxentry{fit\_hernquist\_a()}\spxextra{galaxy.massprofile.MassProfile method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{massprofile:galaxy.massprofile.MassProfile.fit_hernquist_a}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{fit\_hernquist\_a}}}{\emph{r\_inner=1}, \emph{r\_outer=30}, \emph{get\_details=False}}{}
+Get \sphinxtitleref{scipy.optimize} to do a non\sphinxhyphen{}linear least squares fit to find
+the best scale radius \sphinxtitleref{a} for the Hernquist profile.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{r\_inner (numeric):}] \leavevmode
+Optional. Minimum radius to consider (implicit kpc). 
+Avoid values \textless{} 1 as they cause numeric problems.
+
+\item[{r\_outer (numeric):}] \leavevmode
+Optional. Maximum radius to consider (implicit kpc).
+
+\end{description}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{sersic() (galaxy.massprofile.MassProfile method)@\spxentry{sersic()}\spxextra{galaxy.massprofile.MassProfile method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{massprofile:galaxy.massprofile.MassProfile.sersic}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{sersic}}}{\emph{R}, \emph{Re}, \emph{n}, \emph{Mtot}}{}
+Function that returns Sersic Profile for an Elliptical System
+(See in\sphinxhyphen{}class lab 6)
+\begin{description}
+\item[{Input}] \leavevmode\begin{description}
+\item[{R:}] \leavevmode
+radius (kpc)
+
+\item[{Re:}] \leavevmode
+half mass radius (kpc)
+
+\item[{n:}] \leavevmode
+sersic index
+
+\item[{Mtot:}] \leavevmode
+total stellar mass
+
+\end{description}
+
+\item[{Returns}] \leavevmode
+Surface Brightness profile in Lsun/kpc\textasciicircum{}2
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{bulge\_Re() (galaxy.massprofile.MassProfile method)@\spxentry{bulge\_Re()}\spxextra{galaxy.massprofile.MassProfile method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{massprofile:galaxy.massprofile.MassProfile.bulge_Re}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{bulge\_Re}}}{\emph{R}}{}
+Find the radius enclosing half the bulge mass.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{R (array of Quantity):}] \leavevmode
+Radii to consider (kpc)
+
+\end{description}
+
+\item[{Returns:}] \leavevmode\begin{description}
+\item[{Re (Quantity) :}] \leavevmode
+Radius enclosing half light/mass (kpc)
+
+\item[{bulge\_total (numeric):}] \leavevmode
+Mass of entire bulge (M\_sun, no units)
+
+\item[{bulgeI (array of Quantity):}] \leavevmode
+Surface brightness at radii R (kpc\textasciicircum{}\sphinxhyphen{}2), assuming M/L=1
+
+\end{description}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{fit\_sersic\_n() (galaxy.massprofile.MassProfile method)@\spxentry{fit\_sersic\_n()}\spxextra{galaxy.massprofile.MassProfile method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{massprofile:galaxy.massprofile.MassProfile.fit_sersic_n}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{fit\_sersic\_n}}}{\emph{R}, \emph{Re}, \emph{bulge\_total}, \emph{bulgeI}}{}
+Get \sphinxtitleref{scipy.optimize} to do a non\sphinxhyphen{}linear least squares fit to find
+the best value of \sphinxtitleref{n} for a Sersic profile.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{R (array of quantity):}] \leavevmode
+Radii at which to calculate fit (kpc)
+
+\item[{Re (Quantity) :}] \leavevmode
+Radius enclosing half light/mass (kpc)
+
+\item[{bulge\_total (numeric):}] \leavevmode
+Mass of entire bulge (M\_sun, no units)
+
+\item[{bulgeI (array of Quantity):}] \leavevmode
+Surface brightness at radii R (kpc\textasciicircum{}\sphinxhyphen{}2)
+
+\end{description}
+
+\item[{Returns:}] \leavevmode
+best \sphinxtitleref{n} value and error estimate
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{density\_profile\_shell() (galaxy.massprofile.MassProfile method)@\spxentry{density\_profile\_shell()}\spxextra{galaxy.massprofile.MassProfile method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{massprofile:galaxy.massprofile.MassProfile.density_profile_shell}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{density\_profile\_shell}}}{\emph{radii}, \emph{m}, \emph{xyz}}{}
+Calculates mass density in successive spherical shells
+\begin{description}
+\item[{Arg:}] \leavevmode\begin{description}
+\item[{radii (array of float):}] \leavevmode
+boundary values beteen shells (implicit kpc, no units)
+
+\item[{m (shape (N,) array of float):}] \leavevmode
+particle masses (implicit Msun, no units)
+
+\item[{xyz ((3,N) array of float):}] \leavevmode
+particle cartesian coordinates
+
+\end{description}
+
+\item[{Returns:}] \leavevmode\begin{description}
+\item[{r\_annuli: geometric mean of boundaries }] \leavevmode
+(array is one shorter than input radii)
+
+\item[{rho: densities (Msun/kpc\textasciicircum{}3)}] \leavevmode
+(same length as r\_annuli)
+
+\end{description}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{density\_profile\_sphere() (galaxy.massprofile.MassProfile method)@\spxentry{density\_profile\_sphere()}\spxextra{galaxy.massprofile.MassProfile method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{massprofile:galaxy.massprofile.MassProfile.density_profile_sphere}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{density\_profile\_sphere}}}{\emph{radii}, \emph{m}, \emph{xyz}}{}
+Calculates average mass density within successive spherical radii
+\begin{description}
+\item[{Arg:}] \leavevmode\begin{description}
+\item[{radii (array of float):}] \leavevmode
+boundary values beteen shells (implicit kpc, no units)
+
+\item[{m (shape (N,) array of float):}] \leavevmode
+particle masses (implicit Msun, no units)
+
+\item[{xyz ((3,N) array of float):}] \leavevmode
+particle cartesian coordinates
+
+\end{description}
+
+\item[{Returns:}] \leavevmode\begin{description}
+\item[{rho: densities (Msun/kpc\textasciicircum{}3)}] \leavevmode
+(same length as radii)
+
+\end{description}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{virial\_radius() (galaxy.massprofile.MassProfile method)@\spxentry{virial\_radius()}\spxextra{galaxy.massprofile.MassProfile method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{massprofile:galaxy.massprofile.MassProfile.virial_radius}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{virial\_radius}}}{\emph{r\_min=20}, \emph{r\_max=1000}, \emph{rho\_c=None}}{}
+Calculates radius where DM density falls to 200x critical density
+for the universe.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{r\_min, r\_max (floats)}] \leavevmode
+optional, limits for search (implicit kpc, no units)
+
+\item[{rho\_c (float or Quantity)}] \leavevmode
+optional, critical density for chosen cosmology
+
+\end{description}
+
+\item[{Returns:}] \leavevmode
+r\_200 (float): virial radius, implicit kpc
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{virial\_mass() (galaxy.massprofile.MassProfile method)@\spxentry{virial\_mass()}\spxextra{galaxy.massprofile.MassProfile method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{massprofile:galaxy.massprofile.MassProfile.virial_mass}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{virial\_mass}}}{\emph{r\_200=None}, \emph{ptype=None}}{}
+Mass enclosed by the virial radius
+
+\end{fulllineitems}
+
 
 \end{fulllineitems}
 
@@ -814,7 +1165,34 @@ Various methods to work with data across a series of snaps (timepoints).
 \index{TimeCourse (class in galaxy.timecourse)@\spxentry{TimeCourse}\spxextra{class in galaxy.timecourse}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{galaxy.timecourse.}}\sphinxbfcode{\sphinxupquote{TimeCourse}}}{\emph{datadir=\textquotesingle{}.\textquotesingle{}}, \emph{usesql=False}}{}~\index{write\_com\_ang\_mom() (galaxy.timecourse.TimeCourse method)@\spxentry{write\_com\_ang\_mom()}\spxextra{galaxy.timecourse.TimeCourse method}}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{galaxy.timecourse.}}\sphinxbfcode{\sphinxupquote{TimeCourse}}}{\emph{datadir=\textquotesingle{}.\textquotesingle{}}, \emph{usesql=False}}{}
+A commection of methods for generating, reading and writing summary data for 
+parameters that change over the timecourse of the simulation.
+\begin{description}
+\item[{These fall into a few groups:}] \leavevmode\begin{description}
+\item[{\sphinxtitleref{write\_xxx()}}] \leavevmode{[}{]}
+Methods that loop through the raw data, calculate parameters and write 
+the results to file. Can be slow (hours) to run but Only run once. 
+See the \sphinxtitleref{data} folder for the resulting files, one line per snap.
+
+\item[{\sphinxtitleref{read\_xxx\_file(})\textasciigrave{} :}] \leavevmode
+Read in the summary files and return a numpy array. These rely on the
+generic \sphinxtitleref{read\_file()} method.
+
+\item[{\sphinxtitleref{read\_xxx\_db()} :}] \leavevmode
+Get the summary data from postgres instead of a text file. 
+The returned array should be identical to the \sphinxtitleref{read\_xxx\_file()} group.
+
+\item[{\sphinxtitleref{write\_db\_tables()} :}] \leavevmode
+Read a text file, insert the contents to a postgres table.
+
+\item[{\sphinxtitleref{get\_one\_com()} :}] \leavevmode
+Convenience method to return a single CoM position.
+
+\end{description}
+
+\end{description}
+\index{write\_com\_ang\_mom() (galaxy.timecourse.TimeCourse method)@\spxentry{write\_com\_ang\_mom()}\spxextra{galaxy.timecourse.TimeCourse method}}
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.write_com_ang_mom}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{write\_com\_ang\_mom}}}{\emph{galname}, \emph{start=0}, \emph{end=801}, \emph{n=5}, \emph{show\_progress=True}}{}
@@ -930,6 +1308,31 @@ Text file saved to disk.
 
 \end{fulllineitems}
 
+\index{write\_LG\_normal() (galaxy.timecourse.TimeCourse method)@\spxentry{write\_LG\_normal()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.write_LG_normal}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{write\_LG\_normal}}}{\emph{start=0}, \emph{end=801}}{}
+Calculates the normal to a plane containing the three galaxy CoMs.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{start, end (int):}] \leavevmode
+first and last snap numbers to include
+
+\end{description}
+
+\item[{output: }] \leavevmode
+Text file saved to disk.
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{write\_rel\_motion() (galaxy.timecourse.TimeCourse method)@\spxentry{write\_rel\_motion()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.write_rel_motion}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{write\_rel\_motion}}}{\emph{start=0}, \emph{end=801}}{}
+\end{fulllineitems}
+
 \index{read\_file() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_file()}\spxextra{galaxy.timecourse.TimeCourse method}}
 
 \begin{fulllineitems}
@@ -986,13 +1389,48 @@ np.array with 802 rows, one per snap
 \index{read\_total\_com\_file() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_total\_com\_file()}\spxextra{galaxy.timecourse.TimeCourse method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.read_total_com_file}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{read\_total\_com\_file}}}{\emph{galaxy}, \emph{datadir=\textquotesingle{}.\textquotesingle{}}}{}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.read_total_com_file}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{read\_total\_com\_file}}}{\emph{datadir=\textquotesingle{}.\textquotesingle{}}}{}
 Get CoM summary from file.
 \begin{description}
 \item[{Args:}] \leavevmode\begin{description}
-\item[{galaxy (str): }] \leavevmode
-‘MW’, ‘M31’, ‘M33’
+\item[{datadir (str):}] \leavevmode
+path to file
 
+\end{description}
+
+\item[{Returns:}] \leavevmode
+np.array with 802 rows, one per snap
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{read\_normals\_file() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_normals\_file()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.read_normals_file}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{read\_normals\_file}}}{\emph{datadir=\textquotesingle{}.\textquotesingle{}}}{}
+Get normals to plane containing 3 galaxy CoMs from file.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{datadir (str):}] \leavevmode
+path to file
+
+\end{description}
+
+\item[{Returns:}] \leavevmode
+np.array with 802 rows, one per snap
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{read\_relmotion\_file() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_relmotion\_file()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.read_relmotion_file}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{read\_relmotion\_file}}}{\emph{datadir=\textquotesingle{}.\textquotesingle{}}}{}
+Get relative CoM distances/velocities from file.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
 \item[{datadir (str):}] \leavevmode
 path to file
 
@@ -1008,9 +1446,8 @@ np.array with 802 rows, one per snap
 \index{write\_db\_tables() (galaxy.timecourse.TimeCourse method)@\spxentry{write\_db\_tables()}\spxextra{galaxy.timecourse.TimeCourse method}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.write_db_tables}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{write\_db\_tables}}}{\emph{datadir=\textquotesingle{}.\textquotesingle{}}, \emph{do\_com=False}, \emph{do\_angmom=False}, \emph{do\_totalcom=False}, \emph{do\_totalangmom=False}}{}
-Adds data to the \sphinxtitleref{centerofmass}, \sphinxtitleref{angmom} and \sphinxtitleref{totalcom} tables in the 
-\sphinxtitleref{galaxy} database
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.write_db_tables}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{write\_db\_tables}}}{\emph{datadir=\textquotesingle{}.\textquotesingle{}}, \emph{do\_com=False}, \emph{do\_angmom=False}, \emph{do\_totalcom=False}, \emph{do\_totalangmom=False}, \emph{do\_normals=False}, \emph{do\_sigmas=False}, \emph{do\_relmotion=False}}{}
+Adds data to the various tables in the \sphinxtitleref{galaxy} database
 
 \end{fulllineitems}
 
@@ -1022,7 +1459,7 @@ Retrieves CoM positions from postgres for a range of snaps.
 \begin{description}
 \item[{Args:}] \leavevmode\begin{description}
 \item[{galaxy (str):}] \leavevmode
-Optional, defaults to all. Can be ‘MW, ‘M31 , ‘M33
+Optional, defaults to all. Can be ‘MW’, ‘M31’ , ‘M33’
 
 \item[{snaprange (pair of ints):}] \leavevmode
 Optional, defaults to all. First and last snap to include.
@@ -1094,6 +1531,64 @@ The timepoint.
 
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.read_total_angmom_db}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{read\_total\_angmom\_db}}}{\emph{snaprange=(0}, \emph{801)}}{}
+Gets the total angular momentum of the 3\sphinxhyphen{}galaxy system. In practice, 
+this turns out to be near\sphinxhyphen{}zero at all timepoints and can be ignored
+in future work.
+
+\end{fulllineitems}
+
+\index{read\_normals\_db() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_normals\_db()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.read_normals_db}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{read\_normals\_db}}}{\emph{snaprange=(0}, \emph{801)}}{}
+Gets the normals to the 3\sphinxhyphen{}galaxy plane.
+
+\end{fulllineitems}
+
+\index{read\_sigmas\_db() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_sigmas\_db()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.read_sigmas_db}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{read\_sigmas\_db}}}{\emph{galaxy=None}, \emph{snaprange=(0}, \emph{801)}}{}
+Gets the velocity dispersions (km/s) for one galaxy at a range of snaps.
+
+\end{fulllineitems}
+
+\index{read\_relmotion\_db() (galaxy.timecourse.TimeCourse method)@\spxentry{read\_relmotion\_db()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.read_relmotion_db}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{read\_relmotion\_db}}}{\emph{snaprange=(0}, \emph{801)}}{}
+Retrieves relative CoM positions and velocities from postgres 
+for a range of snaps.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{snaprange (pair of ints):}] \leavevmode
+Optional, defaults to all. First and last snap to include.
+This is NOT the {[}first, last+1{]} convention of Python.
+
+\end{description}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{snap2time() (galaxy.timecourse.TimeCourse method)@\spxentry{snap2time()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.snap2time}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{snap2time}}}{\emph{snap}}{}
+\end{fulllineitems}
+
+\index{time2snap() (galaxy.timecourse.TimeCourse method)@\spxentry{time2snap()}\spxextra{galaxy.timecourse.TimeCourse method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{timecourse:galaxy.timecourse.TimeCourse.time2snap}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{time2snap}}}{\emph{time}}{}~\begin{description}
+\item[{Arg:}] \leavevmode
+time (float): value in Gyr
+
+\item[{Returns:}] \leavevmode
+List of closest values, often but not reliably just one.
+
+\end{description}
+
 \end{fulllineitems}
 
 
@@ -1129,7 +1624,10 @@ Returns: estimate of the dynamical mass within the half light radius in Msun
 \index{sersic() (in module galaxy.utilities)@\spxentry{sersic()}\spxextra{in module galaxy.utilities}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{utilities:galaxy.utilities.sersic}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{galaxy.utilities.}}\sphinxbfcode{\sphinxupquote{sersic}}}{\emph{R}, \emph{Re}, \emph{n}, \emph{Mtot}}{}~\begin{description}
+\phantomsection\label{\detokenize{utilities:galaxy.utilities.sersic}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{galaxy.utilities.}}\sphinxbfcode{\sphinxupquote{sersic}}}{\emph{R}, \emph{Re}, \emph{n}, \emph{Mtot}}{}
+Function that returns Sersic Profile for an Elliptical System
+(See in\sphinxhyphen{}class lab 6)
+\begin{description}
 \item[{Input}] \leavevmode\begin{description}
 \item[{R:}] \leavevmode
 radius (kpc)
@@ -1149,6 +1647,135 @@ total stellar mass
 Surface Brightness profile in Lsun/kpc\textasciicircum{}2
 
 \end{description}
+
+\end{fulllineitems}
+
+\index{HernquistM() (in module galaxy.utilities)@\spxentry{HernquistM()}\spxextra{in module galaxy.utilities}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{utilities:galaxy.utilities.HernquistM}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{galaxy.utilities.}}\sphinxbfcode{\sphinxupquote{HernquistM}}}{\emph{r}, \emph{a=\textless{}Quantity 60. kpc\textgreater{}}, \emph{M\_halo=\textless{}Quantity 1.97e+12 solMass\textgreater{}}}{}~\begin{description}
+\item[{Args:}] \leavevmode
+r (Quantity, units of kpc): distance from center
+a (Quantity, units of kpc): scale radius
+M\_halo (Quantity, units of M\_sun): total DM mass
+
+\item[{Returns:}] \leavevmode
+Total DM mass enclosed within r (M\_sun)
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{jacobi\_radius() (in module galaxy.utilities)@\spxentry{jacobi\_radius()}\spxextra{in module galaxy.utilities}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{utilities:galaxy.utilities.jacobi_radius}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{galaxy.utilities.}}\sphinxbfcode{\sphinxupquote{jacobi\_radius}}}{\emph{r}, \emph{M\_host}, \emph{M\_sat}}{}
+The Jacobi Radius for a satellite on a circular orbit about an extended host, 
+where the host is assumed to be well modeled as an isothermal sphere halo:
+
+R\_j = r * (M\_sat / 2 M\_host(\textless{}r))\}\textasciicircum{}(1/3)
+
+For MW/LMC, the Isothermal Sphere approximation is not a bad one within 50 kpc.
+
+In other contexts, can be called the Roche radius, Roche limit or Hill radius.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{r: }] \leavevmode
+distance between stellite and host (kpc)
+
+\item[{M\_host: }] \leavevmode
+host mass enclosed within r (M\_sun)
+
+\item[{M\_sat: }] \leavevmode
+satellite mass (M\_sun)
+
+\end{description}
+
+\item[{returns: }] \leavevmode
+Jacobi radius (kpc)
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{jacobi\_mass() (in module galaxy.utilities)@\spxentry{jacobi\_mass()}\spxextra{in module galaxy.utilities}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{utilities:galaxy.utilities.jacobi_mass}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{galaxy.utilities.}}\sphinxbfcode{\sphinxupquote{jacobi\_mass}}}{\emph{Rj}, \emph{r}, \emph{Mhost}}{}
+Function that returns min mass of a satellite given its observed size + distance 
+from a massive host: Msat = (Rj/r)**3 * 2 * Mhost
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{Rj: }] \leavevmode
+Jacobi radius (approx as observed size) (kpc)
+
+\item[{r: }] \leavevmode
+distance between stellite and host (kpc)
+
+\item[{Mhost: }] \leavevmode
+mass enclosed within r (M\_sun)
+
+\end{description}
+
+\item[{returns: }] \leavevmode
+Minimum mass Msat of a satellite given its current size (M\_sun)
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{rotation\_matrix\_to\_vector() (in module galaxy.utilities)@\spxentry{rotation\_matrix\_to\_vector()}\spxextra{in module galaxy.utilities}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{utilities:galaxy.utilities.rotation_matrix_to_vector}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{galaxy.utilities.}}\sphinxbfcode{\sphinxupquote{rotation\_matrix\_to\_vector}}}{\emph{old\_axis}, \emph{to\_axis=None}}{}~\begin{description}
+\item[{Args: }] \leavevmode\begin{description}
+\item[{old\_axis (3\sphinxhyphen{}vector)}] \leavevmode
+Vector to be brought into alignment with \sphinxtitleref{to\_axis} by rotation about the origin
+
+\item[{to\_axis (3\sphinxhyphen{}vector)}] \leavevmode
+Angular momentum vector will be aligned to this (default z\_hat)
+
+\end{description}
+
+\item[{Returns: }] \leavevmode
+3x3 rotation matrix
+
+\end{description}
+
+Based on Rodrigues’ rotation formula
+Ref: \sphinxurl{https://en.wikipedia.org/wiki/Rodrigues\%27\_rotation\_formula}
+
+Note that orientation in the plane perpendicular to ‘to\_axis’ is arbitrary
+
+\end{fulllineitems}
+
+\index{z\_rotation\_matrix() (in module galaxy.utilities)@\spxentry{z\_rotation\_matrix()}\spxextra{in module galaxy.utilities}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{utilities:galaxy.utilities.z_rotation_matrix}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{galaxy.utilities.}}\sphinxbfcode{\sphinxupquote{z\_rotation\_matrix}}}{\emph{pt1}, \emph{pt2}}{}
+Rotates about z\sphinxhyphen{}axis to line up two given points along the x\sphinxhyphen{}axis
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{pt1, pt2 (2\sphinxhyphen{}component iterables)}] \leavevmode
+define points to be placed on the  x\sphinxhyphen{}axis
+
+\end{description}
+
+\item[{Returns:}] \leavevmode
+3x3 rotation matrix
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{find\_nearest() (in module galaxy.utilities)@\spxentry{find\_nearest()}\spxextra{in module galaxy.utilities}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{utilities:galaxy.utilities.find_nearest}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{galaxy.utilities.}}\sphinxbfcode{\sphinxupquote{find\_nearest}}}{\emph{array}, \emph{value}}{}
+Find the entry in \sphinxtitleref{array} which is closest to \sphinxtitleref{value}
+Modified from \sphinxurl{https://stackoverflow.com/questions/2566412/find-nearest-value-in-numpy-array}
+
+Returns: index and corresponding value
 
 \end{fulllineitems}
 
@@ -1192,6 +1819,512 @@ Returns results in Python list format
 
 \end{fulllineitems}
 
+\index{get\_xyz() (galaxy.db.DB method)@\spxentry{get\_xyz()}\spxextra{galaxy.db.DB method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{db:galaxy.db.DB.get_xyz}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{get\_xyz}}}{\emph{gal}, \emph{snap}}{}
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\phantomsection\label{\detokenize{remnant:module-galaxy.remnant}}\index{galaxy.remnant (module)@\spxentry{galaxy.remnant}\spxextra{module}}
+
+\chapter{Remnant class}
+\label{\detokenize{remnant:remnant-class}}\label{\detokenize{remnant::doc}}
+Treats the post\sphinxhyphen{}merger remnant of MW\sphinxhyphen{}M31 as a galaxy.
+\index{Remnant (class in galaxy.remnant)@\spxentry{Remnant}\spxextra{class in galaxy.remnant}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{remnant:galaxy.remnant.Remnant}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{galaxy.remnant.}}\sphinxbfcode{\sphinxupquote{Remnant}}}{\emph{snap=801}, \emph{datadir=None}, \emph{usesql=False}, \emph{stride=1}, \emph{ptype=(2}, \emph{3)}}{}
+A class to work with the MW\sphinxhyphen{}M31 post\sphinxhyphen{}merger remant.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{snap (int):}] \leavevmode
+Snap number, equivalent to time elapsed. 
+Defaults to the last timepoint.
+
+\item[{datadir (str):}] \leavevmode
+Directory to search first for the required file. Optional, and a
+default list of locations will be searched.
+
+\item[{usesql (bool):}] \leavevmode
+If True, data will be taken from a PostgreSQL database instead of
+text files.
+
+\item[{stride (int):}] \leavevmode
+Optional. For stride=n, get every nth row in the table.
+Only valid with usesql=True.
+
+\item[{ptype (int or iterable of int):}] \leavevmode
+Particle type: 1, 2, 3 or a combination of these
+
+\end{description}
+
+\item[{Class attributes:}] \leavevmode\begin{description}
+\item[{data (np.ndarray):}] \leavevmode
+type, mass, position\_xyz, velocity\_xyz for each particle
+
+\end{description}
+
+\end{description}
+\index{read\_db() (galaxy.remnant.Remnant method)@\spxentry{read\_db()}\spxextra{galaxy.remnant.Remnant method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{remnant:galaxy.remnant.Remnant.read_db}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{read\_db}}}{\emph{stride}}{}
+Get relevant data from a PostgreSQL database and format it to be 
+identical to that read from test files.
+
+Ex\sphinxhyphen{}disk and ex\sphinxhyphen{}bulge particles are included, not DM particles.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{stride (int):}] \leavevmode
+Optional. For stride=n, get every nth row in the table.
+
+\end{description}
+
+\item[{Changes:}] \leavevmode
+\sphinxtitleref{self.time}, \sphinxtitleref{self.particle\_count} and \sphinxtitleref{self.data} are set.
+
+\end{description}
+
+Returns: nothing
+
+\end{fulllineitems}
+
+\index{xyz() (galaxy.remnant.Remnant method)@\spxentry{xyz()}\spxextra{galaxy.remnant.Remnant method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{remnant:galaxy.remnant.Remnant.xyz}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{xyz}}}{}{}
+Convenience method to get positions as a np.array of shape (3,N)
+
+\end{fulllineitems}
+
+\index{vxyz() (galaxy.remnant.Remnant method)@\spxentry{vxyz()}\spxextra{galaxy.remnant.Remnant method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{remnant:galaxy.remnant.Remnant.vxyz}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{vxyz}}}{}{}
+Convenience method to get velocities as a np.array of shape (3,N)
+
+\end{fulllineitems}
+
+\index{I\_tensor() (galaxy.remnant.Remnant method)@\spxentry{I\_tensor()}\spxextra{galaxy.remnant.Remnant method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{remnant:galaxy.remnant.Remnant.I_tensor}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{I\_tensor}}}{\emph{m}, \emph{x}, \emph{y}, \emph{z}}{}~\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{m, x, y, z:}] \leavevmode
+1\sphinxhyphen{}D arrays with mass and coordinates (no units)
+
+\end{description}
+
+\item[{Returns:}] \leavevmode
+3x3 array representing the moment of inertia tensor
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{ellipsoid\_axes() (galaxy.remnant.Remnant method)@\spxentry{ellipsoid\_axes()}\spxextra{galaxy.remnant.Remnant method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{remnant:galaxy.remnant.Remnant.ellipsoid_axes}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{ellipsoid\_axes}}}{\emph{m}, \emph{x}, \emph{y}, \emph{z}, \emph{r\_lim=None}}{}~\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{m, x, y, z:}] \leavevmode
+1\sphinxhyphen{}D arrays with mass and coordinates (no units)
+
+\item[{r\_lim}] \leavevmode{[}float{]}
+Radius to include in calculation (implicit kpc, no units)
+
+\end{description}
+
+\item[{Returns:}] \leavevmode
+Two 3\sphinxhyphen{}tuples: relative semimajor axes and principal axis vectors
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{sub\_mass\_enclosed() (galaxy.remnant.Remnant method)@\spxentry{sub\_mass\_enclosed()}\spxextra{galaxy.remnant.Remnant method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{remnant:galaxy.remnant.Remnant.sub_mass_enclosed}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{sub\_mass\_enclosed}}}{\emph{radii}, \emph{m}, \emph{xyz}}{}
+Calculate the mass within a given radius of the origin.
+Based on code in MassProfile, but this version assumes
+CoM\sphinxhyphen{}centric coordinates are supplied.
+\begin{description}
+\item[{Args:}] \leavevmode
+radii (array of distances): spheres to integrate over
+m (array of masses): shape (N,)
+xyz (array of Cartesian coordinates): shape (3,N)
+
+\item[{Returns:}] \leavevmode
+array of masses, in units of M\_sun
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{hernquist\_mass() (galaxy.remnant.Remnant method)@\spxentry{hernquist\_mass()}\spxextra{galaxy.remnant.Remnant method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{remnant:galaxy.remnant.Remnant.hernquist_mass}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{hernquist\_mass}}}{\emph{r}, \emph{a}, \emph{M\_halo}}{}
+Calculate the mass enclosed for a theoretical profile
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{r (Quantity, units of kpc): }] \leavevmode
+distance from center
+
+\item[{a (Quantity, units of kpc): }] \leavevmode
+scale radius
+
+\item[{M\_halo (Quantity, units of M\_sun): }] \leavevmode
+total DM mass
+
+\end{description}
+
+\item[{Returns:}] \leavevmode
+Total DM mass enclosed within r (M\_sun)
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{fit\_hernquist\_a() (galaxy.remnant.Remnant method)@\spxentry{fit\_hernquist\_a()}\spxextra{galaxy.remnant.Remnant method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{remnant:galaxy.remnant.Remnant.fit_hernquist_a}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{fit\_hernquist\_a}}}{\emph{m}, \emph{xyz}, \emph{r\_inner=1}, \emph{r\_outer=100}}{}
+Get \sphinxtitleref{scipy.optimize} to do a non\sphinxhyphen{}linear least squares fit to find
+the best scale radius \sphinxtitleref{a} for the Hernquist profile.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{r\_inner (numeric):}] \leavevmode
+Optional. Minimum radius to consider (implicit kpc). 
+Avoid values \textless{} 1 as they cause numeric problems.
+
+\item[{r\_outer (numeric):}] \leavevmode
+Optional. Maximum radius to consider (implicit kpc).
+
+\end{description}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{sersic() (galaxy.remnant.Remnant method)@\spxentry{sersic()}\spxextra{galaxy.remnant.Remnant method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{remnant:galaxy.remnant.Remnant.sersic}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{sersic}}}{\emph{R}, \emph{Re}, \emph{n}, \emph{Mtot}}{}
+Function that returns Sersic Profile for an Elliptical System
+(See in\sphinxhyphen{}class lab 6)
+\begin{description}
+\item[{Input}] \leavevmode\begin{description}
+\item[{R:}] \leavevmode
+radius (kpc)
+
+\item[{Re:}] \leavevmode
+half mass radius (kpc)
+
+\item[{n:}] \leavevmode
+sersic index
+
+\item[{Mtot:}] \leavevmode
+total stellar mass
+
+\end{description}
+
+\item[{Returns}] \leavevmode
+Surface Brightness profile in Lsun/kpc\textasciicircum{}2
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{Re() (galaxy.remnant.Remnant method)@\spxentry{Re()}\spxextra{galaxy.remnant.Remnant method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{remnant:galaxy.remnant.Remnant.Re}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{Re}}}{\emph{R}, \emph{m}, \emph{xyz}}{}
+Find the radius enclosing half the mass.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{R (array of Quantity):}] \leavevmode
+Radii to consider (kpc)
+
+\end{description}
+
+\item[{Returns:}] \leavevmode\begin{description}
+\item[{Re (Quantity) :}] \leavevmode
+Radius enclosing half light/mass (kpc)
+
+\item[{bulge\_total (numeric):}] \leavevmode
+Mass of entire bulge (M\_sun, no units)
+
+\item[{bulgeI (array of Quantity):}] \leavevmode
+Surface brightness at radii R (kpc\textasciicircum{}\sphinxhyphen{}2), assuming M/L=1
+
+\end{description}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{fit\_sersic\_n() (galaxy.remnant.Remnant method)@\spxentry{fit\_sersic\_n()}\spxextra{galaxy.remnant.Remnant method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{remnant:galaxy.remnant.Remnant.fit_sersic_n}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{fit\_sersic\_n}}}{\emph{R}, \emph{sub\_Re}, \emph{sub\_total}, \emph{subI}}{}
+Get \sphinxtitleref{scipy.optimize} to do a non\sphinxhyphen{}linear least squares fit to find
+the best value of \sphinxtitleref{n} for a Sersic profile.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{R (array of quantity):}] \leavevmode
+Radii at which to calculate fit (kpc)
+
+\item[{Re (Quantity) :}] \leavevmode
+Radius enclosing half light/mass (kpc)
+
+\item[{bulge\_total (numeric):}] \leavevmode
+Mass of entire bulge (M\_sun, no units)
+
+\item[{bulgeI (array of Quantity):}] \leavevmode
+Surface brightness at radii R (kpc\textasciicircum{}\sphinxhyphen{}2)
+
+\end{description}
+
+\item[{Returns:}] \leavevmode
+best \sphinxtitleref{n} value and error estimate
+
+\end{description}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\phantomsection\label{\detokenize{approaches:module-galaxy.approaches}}\index{galaxy.approaches (module)@\spxentry{galaxy.approaches}\spxextra{module}}
+
+\chapter{Approaches class}
+\label{\detokenize{approaches:approaches-class}}\label{\detokenize{approaches::doc}}
+Convenience class to get concatenated data for all galaxies.
+Mainly used when they are in close proximity and can appear on the same plot.
+\index{Approaches (class in galaxy.approaches)@\spxentry{Approaches}\spxextra{class in galaxy.approaches}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{approaches:galaxy.approaches.Approaches}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{galaxy.approaches.}}\sphinxbfcode{\sphinxupquote{Approaches}}}{\emph{snap=801}, \emph{datadir=None}, \emph{usesql=False}, \emph{stride=1}, \emph{ptype=\textquotesingle{}lum\textquotesingle{}}}{}
+A class to work with all 3 galaxies when in close proximity.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{snap (int):}] \leavevmode
+Snap number, equivalent to time elapsed. 
+Defaults to the last timepoint.
+
+\item[{datadir (str):}] \leavevmode
+Directory to search first for the required file. Optional, and a
+default list of locations will be searched.
+
+\item[{usesql (bool):}] \leavevmode
+If True, data will be taken from a PostgreSQL database instead of
+text files.
+
+\item[{stride (int):}] \leavevmode
+Optional. For stride=n, get every nth row in the table.
+Only valid with usesql=True.
+
+\item[{ptype (str):}] \leavevmode
+can be ‘lum’ for disk+bulge, ‘dm’ for halo
+
+\end{description}
+
+\item[{Class attributes:}] \leavevmode\begin{description}
+\item[{data (np.ndarray):}] \leavevmode
+type, mass, position\_xyz, velocity\_xyz for each particle
+
+\end{description}
+
+\end{description}
+\index{read\_db() (galaxy.approaches.Approaches method)@\spxentry{read\_db()}\spxextra{galaxy.approaches.Approaches method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{approaches:galaxy.approaches.Approaches.read_db}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{read\_db}}}{\emph{stride}}{}
+Get relevant data from a PostgreSQL database and format it to be 
+identical to that read from test files.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{stride (int):}] \leavevmode
+Optional. For stride=n, get every nth row in the table.
+
+\end{description}
+
+\item[{Changes:}] \leavevmode
+\sphinxtitleref{self.time}, \sphinxtitleref{self.particle\_count} and \sphinxtitleref{self.data} are set.
+
+\end{description}
+
+Returns: nothing
+
+\end{fulllineitems}
+
+\index{xyz() (galaxy.approaches.Approaches method)@\spxentry{xyz()}\spxextra{galaxy.approaches.Approaches method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{approaches:galaxy.approaches.Approaches.xyz}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{xyz}}}{}{}
+Convenience method to get positions as a np.array of shape (3,N)
+
+\end{fulllineitems}
+
+\index{vxyz() (galaxy.approaches.Approaches method)@\spxentry{vxyz()}\spxextra{galaxy.approaches.Approaches method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{approaches:galaxy.approaches.Approaches.vxyz}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{vxyz}}}{}{}
+Convenience method to get velocities as a np.array of shape (3,N)
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\phantomsection\label{\detokenize{surfacedensity:module-galaxy.surfacedensity}}\index{galaxy.surfacedensity (module)@\spxentry{galaxy.surfacedensity}\spxextra{module}}
+
+\chapter{SurfaceDensityProfile class}
+\label{\detokenize{surfacedensity:surfacedensityprofile-class}}\label{\detokenize{surfacedensity::doc}}
+Calculate the surface density profile of a galactic disk.
+\index{SurfaceDensityProfile (class in galaxy.surfacedensity)@\spxentry{SurfaceDensityProfile}\spxextra{class in galaxy.surfacedensity}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{surfacedensity:galaxy.surfacedensity.SurfaceDensityProfile}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{galaxy.surfacedensity.}}\sphinxbfcode{\sphinxupquote{SurfaceDensityProfile}}}{\emph{gal}, \emph{snap}, \emph{radii=None}, \emph{r\_step=0.5}, \emph{ptype=2}, \emph{usesql=False}}{}
+Calculate the surface density profile of a galaxy at a snapshot.
+Modified from code supplied by Rixin Li.
+\index{plot\_xy() (galaxy.surfacedensity.SurfaceDensityProfile method)@\spxentry{plot\_xy()}\spxextra{galaxy.surfacedensity.SurfaceDensityProfile method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{surfacedensity:galaxy.surfacedensity.SurfaceDensityProfile.plot_xy}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{plot\_xy}}}{\emph{figsize=(8}, \emph{8)}, \emph{xlim=(0}, \emph{60)}, \emph{ylim=(0}, \emph{60)}, \emph{pfc=\textquotesingle{}b\textquotesingle{}}, \emph{ngout=False}, \emph{fname=None}}{}
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\phantomsection\label{\detokenize{remvdisp:module-galaxy.remvdisp}}\index{galaxy.remvdisp (module)@\spxentry{galaxy.remvdisp}\spxextra{module}}
+
+\chapter{Vdisp class}
+\label{\detokenize{remvdisp:vdisp-class}}\label{\detokenize{remvdisp::doc}}
+To calculate velocity dispersions and rotation curves for the post\sphinxhyphen{}merger remnant of MW\sphinxhyphen{}M31.
+\index{Vdisp (class in galaxy.remvdisp)@\spxentry{Vdisp}\spxextra{class in galaxy.remvdisp}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{remvdisp:galaxy.remvdisp.Vdisp}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{galaxy.remvdisp.}}\sphinxbfcode{\sphinxupquote{Vdisp}}}{\emph{snap=801}, \emph{ptype=(2}, \emph{3)}, \emph{r\_lim=60}}{}
+A class to work with rotation and velocity dispersion of the MW\sphinxhyphen{}M31 
+post\sphinxhyphen{}merger remant.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{snap (int):}] \leavevmode
+Snap number, equivalent to time elapsed. 
+Defaults to the last timepoint.
+
+\item[{usesql (bool):}] \leavevmode
+If True, data will be taken from a PostgreSQL database instead of
+text files.
+
+\item[{ptype (int or iterable of int):}] \leavevmode
+Particle type: 1, 2, 3 or a combination of these
+
+\end{description}
+
+\end{description}
+\index{calc\_centered() (galaxy.remvdisp.Vdisp method)@\spxentry{calc\_centered()}\spxextra{galaxy.remvdisp.Vdisp method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{remvdisp:galaxy.remvdisp.Vdisp.calc_centered}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{calc\_centered}}}{}{}
+Sets the CoM position and velocity, plus particle coordinates centered on the CoM.
+
+No args, no return value.
+
+\end{fulllineitems}
+
+\index{rotate() (galaxy.remvdisp.Vdisp method)@\spxentry{rotate()}\spxextra{galaxy.remvdisp.Vdisp method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{remvdisp:galaxy.remvdisp.Vdisp.rotate}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{rotate}}}{\emph{r\_lim}}{}
+Creates transformed coordinates with the angular momentum vector along z.
+\begin{description}
+\item[{Arg:}] \leavevmode\begin{description}
+\item[{r\_lim (float):}] \leavevmode
+Only consider particles within this radius when computing L\sphinxhyphen{}hat. 
+Implicit kpc, no units.
+
+\end{description}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{calc\_v\_sigma() (galaxy.remvdisp.Vdisp method)@\spxentry{calc\_v\_sigma()}\spxextra{galaxy.remvdisp.Vdisp method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{remvdisp:galaxy.remvdisp.Vdisp.calc_v_sigma}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{calc\_v\_sigma}}}{\emph{pos\_index}, \emph{v\_index}}{}
+Calculate mean radial velocities and dispersions for bins along an axis.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{pos\_index, v\_index (integers in (0,1,2)):}] \leavevmode
+Axis numbers for binning and for radial velocity.
+x=0, y=1, z=2
+
+\end{description}
+
+\item[{Returns:}] \leavevmode
+Binned v\_radial and dispersions, v\_max and central dispersion. 
+All implicit km/s, no units.
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{set\_xbins() (galaxy.remvdisp.Vdisp method)@\spxentry{set\_xbins()}\spxextra{galaxy.remvdisp.Vdisp method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{remvdisp:galaxy.remvdisp.Vdisp.set_xbins}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{set\_xbins}}}{\emph{xbins}}{}
+Sets new x\sphinxhyphen{}boundaries for binning, invalidates any previous calculations.
+\begin{description}
+\item[{Args:}] \leavevmode\begin{description}
+\item[{xbins (array of float):}] \leavevmode
+Distances from CoM along chosen axis (signed, not just radius)
+
+\end{description}
+
+\end{description}
+
+\end{fulllineitems}
+
+\index{set\_yx() (galaxy.remvdisp.Vdisp method)@\spxentry{set\_yx()}\spxextra{galaxy.remvdisp.Vdisp method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{remvdisp:galaxy.remvdisp.Vdisp.set_yx}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{set\_yx}}}{}{}
+Convenience method to call calc\_v\_sigma() with y\sphinxhyphen{}axis and x\sphinxhyphen{}velocities
+
+\end{fulllineitems}
+
+\index{set\_zx() (galaxy.remvdisp.Vdisp method)@\spxentry{set\_zx()}\spxextra{galaxy.remvdisp.Vdisp method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{remvdisp:galaxy.remvdisp.Vdisp.set_zx}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{set\_zx}}}{}{}
+Convenience method to call calc\_v\_sigma() with z\sphinxhyphen{}axis and x\sphinxhyphen{}velocities
+
+\end{fulllineitems}
+
+\index{plot\_yx() (galaxy.remvdisp.Vdisp method)@\spxentry{plot\_yx()}\spxextra{galaxy.remvdisp.Vdisp method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{remvdisp:galaxy.remvdisp.Vdisp.plot_yx}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{plot\_yx}}}{\emph{particles=\textquotesingle{}Stellar\textquotesingle{}}, \emph{xlim=(\sphinxhyphen{}40}, \emph{40)}, \emph{ylim1=(\sphinxhyphen{}120}, \emph{120)}, \emph{ylim2=(0}, \emph{200)}, \emph{xbins=None}, \emph{pngout=False}, \emph{fname=None}}{}
+Wrapper for Plots.plot\_v\sphinxhyphen{}sigma()
+
+\end{fulllineitems}
+
+\index{plot\_zx() (galaxy.remvdisp.Vdisp method)@\spxentry{plot\_zx()}\spxextra{galaxy.remvdisp.Vdisp method}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{remvdisp:galaxy.remvdisp.Vdisp.plot_zx}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{plot\_zx}}}{\emph{particles=\textquotesingle{}Stellar\textquotesingle{}}, \emph{xlim=(\sphinxhyphen{}40}, \emph{40)}, \emph{ylim1=(\sphinxhyphen{}120}, \emph{120)}, \emph{ylim2=(0}, \emph{200)}, \emph{xbins=None}, \emph{pngout=False}, \emph{fname=None}}{}
+Wrapper for Plots.plot\_v\sphinxhyphen{}sigma()
+
+\end{fulllineitems}
+
 
 \end{fulllineitems}
 
@@ -1215,11 +2348,15 @@ Returns results in Python list format
 \begin{sphinxtheindex}
 \let\bigletter\sphinxstyleindexlettergroup
 \bigletter{g}
+\item\relax\sphinxstyleindexentry{galaxy.approaches}\sphinxstyleindexpageref{approaches:\detokenize{module-galaxy.approaches}}
 \item\relax\sphinxstyleindexentry{galaxy.centerofmass}\sphinxstyleindexpageref{centerofmass:\detokenize{module-galaxy.centerofmass}}
 \item\relax\sphinxstyleindexentry{galaxy.db}\sphinxstyleindexpageref{db:\detokenize{module-galaxy.db}}
 \item\relax\sphinxstyleindexentry{galaxy.galaxies}\sphinxstyleindexpageref{galaxies:\detokenize{module-galaxy.galaxies}}
 \item\relax\sphinxstyleindexentry{galaxy.galaxy}\sphinxstyleindexpageref{galaxy:\detokenize{module-galaxy.galaxy}}
 \item\relax\sphinxstyleindexentry{galaxy.massprofile}\sphinxstyleindexpageref{massprofile:\detokenize{module-galaxy.massprofile}}
+\item\relax\sphinxstyleindexentry{galaxy.remnant}\sphinxstyleindexpageref{remnant:\detokenize{module-galaxy.remnant}}
+\item\relax\sphinxstyleindexentry{galaxy.remvdisp}\sphinxstyleindexpageref{remvdisp:\detokenize{module-galaxy.remvdisp}}
+\item\relax\sphinxstyleindexentry{galaxy.surfacedensity}\sphinxstyleindexpageref{surfacedensity:\detokenize{module-galaxy.surfacedensity}}
 \item\relax\sphinxstyleindexentry{galaxy.timecourse}\sphinxstyleindexpageref{timecourse:\detokenize{module-galaxy.timecourse}}
 \item\relax\sphinxstyleindexentry{galaxy.utilities}\sphinxstyleindexpageref{utilities:\detokenize{module-galaxy.utilities}}
 \end{sphinxtheindex}
