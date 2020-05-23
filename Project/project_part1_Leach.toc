@@ -1,0 +1,36 @@
+\tocdepth@munge 
+\tocdepth@restore 
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}% 
+\contentsline {subsection}{\numberline {1.1}Data}{2}{subsection.1.1}% 
+\contentsline {subsection}{\numberline {1.2}Software}{2}{subsection.1.2}% 
+\contentsline {section}{\numberline {2}Results}{2}{section.2}% 
+\contentsline {subsection}{\numberline {2.1}Trajectories}{2}{subsection.2.1}% 
+\contentsline {subsection}{\numberline {2.2}Mass profiles and rotation curves}{4}{subsection.2.2}% 
+\contentsline {subsection}{\numberline {2.3}Stellar disk}{4}{subsection.2.3}% 
+\contentsline {subsubsection}{\numberline {2.3.1}Structure}{4}{subsubsection.2.3.1}% 
+\contentsline {subsubsection}{\numberline {2.3.2}Inclinations}{5}{subsubsection.2.3.2}% 
+\contentsline {subsubsection}{\numberline {2.3.3}Velocity dispersion}{6}{subsubsection.2.3.3}% 
+\contentsline {subsection}{\numberline {2.4}Stellar Bulge}{6}{subsection.2.4}% 
+\contentsline {subsection}{\numberline {2.5}Dark Matter halo}{7}{subsection.2.5}% 
+\contentsline {subsubsection}{\numberline {2.5.1}Halo mass profile}{7}{subsubsection.2.5.1}% 
+\contentsline {subsubsection}{\numberline {2.5.2}Halo rotation}{8}{subsubsection.2.5.2}% 
+\contentsline {subsection}{\numberline {2.6}MW-M31 Close approach}{8}{subsection.2.6}% 
+\contentsline {subsubsection}{\numberline {2.6.1}Inclinations}{8}{subsubsection.2.6.1}% 
+\contentsline {subsubsection}{\numberline {2.6.2}Tidal tails and bridges}{8}{subsubsection.2.6.2}% 
+\contentsline {subsubsection}{\numberline {2.6.3}Mass transfer}{10}{subsubsection.2.6.3}% 
+\contentsline {subsection}{\numberline {2.7}MW-M31 merger}{10}{subsection.2.7}% 
+\contentsline {subsubsection}{\numberline {2.7.1}Inclinations}{10}{subsubsection.2.7.1}% 
+\contentsline {subsection}{\numberline {2.8}Merger stellar remnant}{11}{subsection.2.8}% 
+\contentsline {subsubsection}{\numberline {2.8.1}Remnant shape}{11}{subsubsection.2.8.1}% 
+\contentsline {subsubsection}{\numberline {2.8.2}Baryonic mass distribution}{12}{subsubsection.2.8.2}% 
+\contentsline {subsubsection}{\numberline {2.8.3}Angular momentum}{13}{subsubsection.2.8.3}% 
+\contentsline {subsubsection}{\numberline {2.8.4}Effects of gas}{14}{subsubsection.2.8.4}% 
+\contentsline {subsubsection}{\numberline {2.8.5}Remnant stellar kinematics}{14}{subsubsection.2.8.5}% 
+\contentsline {subsection}{\numberline {2.9}Merger DM halo remnant}{17}{subsection.2.9}% 
+\contentsline {subsubsection}{\numberline {2.9.1}Density profile}{17}{subsubsection.2.9.1}% 
+\contentsline {subsubsection}{\numberline {2.9.2}Angular momentum}{17}{subsubsection.2.9.2}% 
+\contentsline {subsubsection}{\numberline {2.9.3}Halo shape}{18}{subsubsection.2.9.3}% 
+\contentsline {subsubsection}{\numberline {2.9.4}Virial radius}{18}{subsubsection.2.9.4}% 
+\contentsline {subsubsection}{\numberline {2.9.5}Remnant halo kinematics}{19}{subsubsection.2.9.5}% 
+\contentsline {section}{\numberline {3}Discussion and Conclusions}{20}{section.3}% 
+\contentsline {section}{\numberline {4}Acknowledgments}{20}{section.4}% 

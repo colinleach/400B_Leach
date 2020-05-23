@@ -182,6 +182,23 @@ Figure \ref{fig:rotcurve0} shows the rotation curves expected from these mass pr
 
 \subsubsection{Structure}
 
+Figure \ref{fig:MW_density_early} shows the density of MW disk stars at the current epoch and after first pericenter, while Figure \ref{fig:M31_density_early} is the same for M31. It is apparent that the disk develops long tidal tails and some out-of-plane deformation. These image are taken from a series of animations which are available online\footnote{\url{https://github.com/colinleach/400B_Leach/tree/master/animations}, files M*\_disk\_*.mp4. There are several files to accommodate changes in scale: later plots need wider limits.}.
+
+\begin{figure}[ht!]
+	\gridline{\fig{MW_density_early_000}{0.22\textwidth}{}
+		\fig{MW_density_early_300}{0.22\textwidth}{}}\vspace{-7mm}
+	\caption{MW disk particles, face on (upper) and edge on (lower) at two timepoints.
+		\label{fig:MW_density_early}}
+\end{figure}
+
+\begin{figure}[ht!]
+	\gridline{\fig{M31_density_early_000}{0.22\textwidth}{}
+		\fig{M31_density_early_300}{0.22\textwidth}{}}\vspace{-7mm}
+	\caption{M31 disk particles, face on (upper) and edge on (lower) at two timepoints.
+		\label{fig:M31_density_early}}
+\end{figure}
+
+
 \begin{figure}[!bht]
 	\gridline{\fig{cyl_MW_000.png}{0.2\textwidth}{}
 		\fig{cyl_M31_000.png}{0.2\textwidth}{}}\vspace{-7mm}
@@ -915,12 +932,12 @@ As for stellar matter in a previous section, mean radial velocities $\bar{v}$ an
 		\label{fig:rem_dm_disp_y_801}}
 \end{figure}
 
-\begin{figure}[htb!]
-	\epsscale{0.9}
-	\plotone{remnant_dm_disp_z_801}
-	\caption{Velocity and dispersion by radius, $z$-axis: along the angular momentum vector.
-		\label{fig:rem_dm_disp_z_801}}
-\end{figure}
+%\begin{figure}[htb!]
+%	\epsscale{0.9}
+%	\plotone{remnant_dm_disp_z_801}
+%	\caption{Velocity and dispersion by radius, $z$-axis: along the angular momentum vector.
+%		\label{fig:rem_dm_disp_z_801}}
+%\end{figure}
 
 Central velocity dispersion $\sigma_c$ is about 178 km/s, so the ratio $v_{\text{max}} / \sigma_c$ is 0.18. This is substantially lower than at any timepoint for the stellar remnant: the DM halo is rotating slowly.
 
@@ -1039,9 +1056,9 @@ This work relied on a range of open-source software packages, many of them spons
 
  Additionally, mpl-scatter-density\footnote{https://github.com/astrofrog/mpl-scatter-density} and Plotly\footnote{https://plotly.com/python/} were used in preparing the figures.
 
-
 % =====================================
 % Bibliography stuff
+
 \bibliography{project_Leach}{}
 \bibliographystyle{aasjournal}
 

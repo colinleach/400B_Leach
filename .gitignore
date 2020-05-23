@@ -142,7 +142,8 @@ Homeworks/Homework6/VLowRes
 Untitled*.ipynb
 
 # too many files
-png_files/
+animations/png_files/
+animations/new/
 animations/*.png
 Project/notebooks/*.pdf
 
