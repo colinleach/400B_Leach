@@ -26,8 +26,6 @@ Existing data from an N-body simulation of the local group is reanalyzed. Future
 
 The properties of the merger remnant are examined in some detail, showing that stellar material is by no means fully relaxed at the end of the simulation (11.44 Gyr). Stellar material and, especially DM particles, spreads to larger radii than in the precursor galaxies. Stars are not randomized in the remnant: ex-M31 stars are concentrated near the center, ex-MW stars further out.  The central region is approximately prolate, with a highly elongated core and significant rotation about its long axis. At larger radii, baryonic matter appears kinematically distinct from the central region with a different rotation axis. Viewed over time, the stellar material continues to evolve until the end of the simulation at 11.4 Gyr, with a slow and irregular decline in rotation velocity. In contrast, the halo is largely stable by 7 Gyr and continues to rotate slowly, though with a slight increase in velocity.
 
-\todo{Add further concise and intelligent summary of the paper, once I get a clearer idea what it will include (and how to seem intelligent).}
-
 	
 \end{abstract}
 
@@ -72,7 +70,7 @@ Data from one N-body simulation in vdM12 was supplied in text-file format by one
 	\midrule
 	LG  &  525,000 &  1,021,500 &   145,000 &  1,691,500
 	\enddata
-\end{deluxetable} %\vspace{-10mm}
+\end{deluxetable} %\vspace{-5mm}
 
 Particle counts for each time point are shown in Table \ref{tbl:counts} and total masses in Table \ref{tbl:aggmass}. We can see that total mass is the same for MW/M31 but our galaxy has more dark matter (lower baryon fraction) and M31 has more luminous stars (higher baryon fraction). M33 is about 10-fold lighter than either.
 
@@ -90,7 +88,7 @@ Particle counts for each time point are shown in Table \ref{tbl:counts} and tota
 	\midrule
 	LG &   4.082 &      0.204 &       0.029 &  4.316
 	\enddata
-\end{deluxetable} %\vspace{-10mm}
+\end{deluxetable} %\vspace{-5mm}
 
 The coordinate system is approximately centered on the Milky Way at $t=0$. The center of mass (CoM) of all particles in the system is not fixed over time, moving at an average of $\vec{v} = \left< 35.9, -26.7, 27.5 \right>$ km/s with some minor fluctuations due to numerical approximations. In contrast, the total angular momentum of the system is very small at all time points.
 
@@ -112,6 +110,8 @@ To plot motions of the three galactic CoMs it is convenient to transform to a co
 		\label{fig:traj_xy}}
 \end{figure}
 
+In vdM12 this is referred to as the X',Y',Z' coordinate system and their figure 2 shows multiple views of how the galaxies move through time. In this paper, Figures \ref{fig:traj_xy} and  \ref{fig:traj_z} show some alternative views in essentially the same coordinates (up to a sign; the $x$ and $z$ axes are flipped). Figure \ref{fig:traj_xy} reproduces the top left panel of vdM12. Figure \ref{fig:traj_z} shows that MW and M31 remain close to the starting plane while M33 has larger, irregular out-of-plane motions.
+
 \begin{figure}[htb!]
 	\epsscale{0.9}
 	\plotone{traj_z.pdf}
@@ -132,8 +132,6 @@ To plot motions of the three galactic CoMs it is convenient to transform to a co
 	\caption{Relative velocities of galactic CoMs.
 		\label{fig:rel_vel}}
 \end{figure}
-
-In vdM12 this is referred to as the X',Y',Z' coordinate system and their figure 2 shows multiple views of how the galaxies move through time. In this paper, Figures \ref{fig:traj_xy} and  \ref{fig:traj_z} show some alternative views in essentially the same coordinates (up to a sign; the $x$ and $z$ axes are flipped). Figure \ref{fig:traj_xy} reproduces the top left panel of vdM12. Figure \ref{fig:traj_z} shows that MW and M31 remain close to the starting plane while M33 has larger, irregular out-of-plane motions.
 
 Relative motions of the CoMs are shown against time in Figures \ref{fig:rel_sep} and \ref{fig:rel_vel}, equivalent to figures 3 and 4 in vdM12.
 
@@ -184,7 +182,9 @@ Figure \ref{fig:rotcurve0} shows the rotation curves expected from these mass pr
 
 \subsubsection{Structure}
 
-Figure \ref{fig:MW_density_early} shows the density of MW disk stars at the current epoch and after first pericenter, while Figure \ref{fig:M31_density_early} is the same for M31. It is apparent that the disk develops long tidal tails and some out-of-plane deformation. These image are taken from a series of animations which are available online\footnote{\url{https://github.com/colinleach/400B_Leach/tree/master/animations}, files M*\_disk\_*.mp4. There are several files to accommodate changes in scale: later plots need wider limits.}.
+Figure \ref{fig:MW_density_early} shows the density of MW disk stars at the current epoch and after first pericenter, while Figure \ref{fig:M31_density_early} is the same for M31. The disks are thin and roughly circular early in the simulation, though by no means radially symmetric. These image are taken from a series of animations which are available online\footnote{\url{https://github.com/colinleach/400B_Leach/tree/master/animations}, files M*\_disk\_*.mp4. There are several files to accommodate changes in scale: later plots need wider limits.}. The spiral arms and dense central bar are visible in static images but much more obvious in the animations, where we can follow their rotation.
+
+It is apparent that after close approach the disk develops long tidal tails and some out-of-plane deformation. This will be analyzed further in Section \ref{sec:close_approach}.
 
 \begin{figure}[ht!]
 	\gridline{\fig{MW_density_early_000}{0.22\textwidth}{}
@@ -224,7 +224,7 @@ Galactic disks have a well-defined angular momentum vector which is relatively e
 		\label{fig:inclinations_xy}}
 \end{figure}
 
-The mutual angle between galactic disks can have a significant impact on how tidal disruption and merger dynamics play out \todo{ref?}. This can be calculated from the vector dot products:
+The mutual angle between galactic disks and their angle to the orbital plane can both have a significant impact on how tidal disruption and merger dynamics play out \citep{toomre_galactic_1972, barnes_dynamics_1992, privon_dynamical_2013, ji_lifetime_2014}. These can be calculated from the vector dot products:
 
 \[ \theta = \arccos (\hat{L}_1 \cdot \hat{L}_2 ) \]
 
@@ -277,7 +277,7 @@ This formula is intended for analyzing photographic images and is in terms of li
 		\label{fig:sersic_Re}}
 \end{figure}
 
-We can see from Figure \ref{fig:sersic_Re} that for each galaxy the bulge half-mass radius is fairly stable up to the collision and merger of MW and M31. After a period of disturbance, they again become stable at a higher level. The M31 bulge is more diffuse than the MW bulge throughout, and the ex-bulge stars are clearly not randomized in the merger remnant: ex-M31 stars tend towards larger radii than ex-MW stars. A more detailed analysis of the remnant will be presented in a later section \todo{crossref}.
+We can see from Figure \ref{fig:sersic_Re} that for each galaxy the bulge half-mass radius is fairly stable up to the collision and merger of MW and M31. After a period of disturbance, they again become stable at a higher level. The M31 bulge is more diffuse than the MW bulge throughout, and the ex-bulge stars are clearly not randomized in the merger remnant: ex-M31 stars tend towards larger radii than ex-MW stars. A more detailed analysis of the remnant will be presented in Section~\ref{sec:rem_baryon_mass}.
 
 \begin{figure}[bht!]
 	\epsscale{1}
@@ -321,7 +321,7 @@ where $M_h$ is the total mass of halo particles (see Table 2) and $a$ is a scale
 		\label{fig:hernquist_a}}
 \end{figure}
 
-Time evolution of the scale radius $a$ is shown in Figure \ref{fig:hernquist_a}. The MW and M31 remain very similar through first pericenter, then start to diverge with MW particles tending to a larger radius than M31: the opposite of bulge particles. This becomes most pronounced during and after merger. The dissimilar distribution in the merger remnant will be discussed in a later section.  
+Time evolution of the scale radius $a$ is shown in Figure \ref{fig:hernquist_a}. The MW and M31 remain very similar through first pericenter, then start to diverge with MW particles tending to a larger radius than M31: the opposite of bulge particles. This becomes most pronounced during and after merger. The dissimilar distribution in the merger remnant will be discussed in Section \ref{sec:rem_halo_mass}.  
 
 The scale radius for M33 grows inexorably as the original halo is scattered by tidal forces. Figure \ref{fig:hernquist_a} also shows the increasingly wide error bars for M33: halo particles for this galaxy are no longer well fitted by a Hernquist profile.
 
@@ -330,7 +330,7 @@ The scale radius for M33 grows inexorably as the original halo is scattered by t
 The specific angular momentum $\vec{h}$ can be calculated from
 \[ \vec{h} = \frac{\sum_i{\vec{r_i} \times m_i \vec{v}_i}}{\sum_i{m_i}} \]
 
-The halo specific angular momentum for each large galaxy is shown in Figure \ref{fig:halo_h}. It appears that both are barely rotating at the current epoch, but spin up rapidly during first pericenter and again around the time of merger, as tidal forces convert orbit angular momentum into spin angular momentum. Differences in the remnant will be discussed in a later section
+The halo specific angular momentum for each large galaxy is shown in Figure \ref{fig:halo_h}. It appears that both are barely rotating at the current epoch, but spin up rapidly during first pericenter and again around the time of merger, as tidal forces convert orbit angular momentum into spin angular momentum. Differences in the remnant will be discussed in Section \ref{sec:rem_halo_spin}.
 
 \begin{figure}[htb!]
 	%	\epsscale{0.8}
@@ -342,6 +342,7 @@ The halo specific angular momentum for each large galaxy is shown in Figure \ref
 Data for M33 is omitted from Figure \ref{fig:halo_h} for clarity. The spin-up is much more dramatic for this minor galaxy, with peaks approaching 140 kpc$^2$/Myr, making it unsuitable to plot on the same axes.
 
 \subsection{MW-M31 Close approach}
+\label{sec:close_approach}
 
 \subsubsection{Inclinations}
 
@@ -461,8 +462,6 @@ The 3D trajectories are complex, but Figures \ref{fig:MW_M31_traj_time} and \ref
 
 The MW and M31 disks have angular momentum vectors inclined at an angle of $37^\circ$ to each other shortly before final approach and merger. The angles to their mutual orbital angular momentum are $74^\circ$ (MW) and $64^\circ$ (M31): more clearly prograde than at first pericenter.
 
-\todo{discuss implications}
-
 \subsection{Merger stellar remnant}
 
 \subsubsection{Remnant shape}
@@ -563,9 +562,10 @@ Coordinates were rotated to place the eigenvector corresponding to the major axi
 		\label{fig:rem_tensor}}
 \end{figure}
 
-This topic will be revisited after the discussion of angular momentum in a later section.
+This topic will be revisited after the discussion of angular momentum in Section \ref{sec:rem_st_spin}.
 
 \subsubsection{Baryonic mass distribution}
+\label{sec:rem_baryon_mass}
 
 \begin{figure}[htb!]
 	\epsscale{0.8}
@@ -590,25 +590,28 @@ The mass profile for each type of particle and overall is shown in Figure \ref{f
 		\label{fig:rem_mp_halo}}
 \end{figure}
 
-Previous sections have shown that MW and M31 particles remain somewhat distinct after merger. Figure \ref{fig:rem_mp_origin} compares their mass profiles. For baryonic particles, ex-M31 masses are higher than ex-MW at most radii, reflecting the higher baryonic mass fraction in M31. The opposite effect might be expected for the DM halo, whose total mass was significantly higher in the MW (Table \ref{tbl:aggmass}), but this is not seen out to 100 kpc. Figure \ref{fig:rem_mp_halo} suggests we have to go almost 1 Mpc out before MW particles become the largest halo component.
+Previous sections have shown that MW and M31 particles remain somewhat distinct after merger. Figure \ref{fig:rem_mp_origin} compares their mass profiles. For baryonic particles, ex-M31 masses are higher than ex-MW at most radii, reflecting the higher baryonic mass fraction in M31. The opposite effect might be expected for the DM halo, whose total mass was significantly higher in the MW (Table \ref{tbl:aggmass}), but this is not seen out to 100 kpc. Figure \ref{fig:rem_mp_halo} suggests we have to go almost 1 Mpc out before MW particles become the largest halo component. The will be discussed in more detail in Section \ref{sec:rem_halo_mass}
 
 \begin{figure}[htb!]
 	\epsscale{0.9}
 	\plotone{remnant_lum_rho.pdf}
-	\caption{Spherically-averaged density profiles of the remnant luminous matter by origin.
+	\caption{Spherically-averaged density profiles of the remnant luminous matter by origin, t=11.44 Gyr.
 		\label{fig:rem_lum_rho}}
 \end{figure}
+
+Figure \ref{fig:rem_lum_rho} shows a related analysis, looking at density within spherical shells rather than mass enclosed. It will be shown in Section \ref{sec:rem_st_kin} that the inner regions deviate significantly from spherical symmetry. Nevertheless, the trend is clearly for ex-MW star density to track ex-M31 density but at a slightly lower level
 
 \begin{figure}[htb!]
 	\epsscale{0.9}
 	\plotone{remnant_sersic_origins.pdf}
-	\caption{Surface brightness profiles of the remnant by origin.
+	\caption{Surface brightness profiles of the remnant by origin, t=11.44 Gyr.
 		\label{fig:rem_sersic_origin}}
 \end{figure}
 
-Figure \ref{fig:rem_sersic_origin} shows Sérsic fits to the surface brightness profile (assuming $M_\star/L \sim 1$). \todo{comment!}
+Figure \ref{fig:rem_sersic_origin} shows Sérsic fits to the surface brightness profile (assuming $M_\star/L \sim 1$). As previously shown in Figure \ref{fig:sersic_Re}, bulge stars in the remnant have an effective radius $R_e$ around double that in each precursor. We now see that disk stars are well fitted by a Sérsic profile in the remnant, with $R_e$ values around 3-fold higher than the corresponding bulge stars. Again it is clear that the merger remnant is not randomized and still retains a memory of its origins.
 
 \subsubsection{Angular momentum}
+\label{sec:rem_st_spin}
 
 The specific angular momentum $\vec{h}$ was calculated for all the particles in the merger remnant and various subsets, as shown in Table \ref{tbl:remn_h}. Differences tend to be small for stellar particles regardless of origin, larger for the ex-M31 halo and much larger for the ex-MW halo.
 
@@ -694,6 +697,7 @@ This is thought to be at least approximately true for ``dry'' mergers. Gas-rich 
 Much work has been done on simulating gas-rich mergers, as these offer more ways to produce the wide variety of galactic morphologies seen observationally. In contrast, the MW-M31 merger will probably have little gas in reality and there is none in the simulation, so this is a less-studied type.
 
 \subsubsection{Remnant stellar kinematics}
+\label{sec:rem_st_kin}
 
 Initially, the stellar particles (from all origins) were used to calculate an angular momentum vector $\hat{L}$, then the coordinate system was rotated to place this along the $z$-axis. We might have expected the principal axes of the ellipsoid to correspond in some simple way to this projection, but this was found to be far from the case.
 
@@ -815,6 +819,7 @@ Similar results have been obtained from other simulations, e.g. \citep{wang_orbi
 \subsection{Merger DM halo remnant}
 
 \subsubsection{Density profile}
+\label{sec:rem_halo_mass}
 
 \begin{figure}[htb!]
 	\epsscale{0.9}
@@ -848,6 +853,7 @@ The overall time-dependence of Hernquist radii was shown in Figure \ref{fig:hern
 
 
 \subsubsection{Angular momentum}
+\label{sec:rem_halo_spin}
 
 For the aggregate of all DM particles in the remnant at this time, the angular momentum vector has orientation $\hat{h} = \left< 0.64 ,  0.03, -0.76 \right>$, almost identical to the total for all particles (baryonic + DM) in the remnant. The magnitude $|h| = 13.1$ kpc$^2$/Myr is more than two orders of magnitude higher than the values for the individual galaxies about their respective CoM at the current epoch. 
 
@@ -920,8 +926,6 @@ For comparison, if we used the current value $\rho_{c,0}$ throughout, the virial
 
 The precursor galaxies have, as expected, somewhat lower virial radii: 227 kpc for MW and 222 kpc for M31 at the current epoch (based on $\rho_{c,0}$), broadly in line with literature values, e.g. \citep{dehnen_velocity_2006}. Both have virial mass around $1.3 \times 10^{12}\ M_\Sun$, so the remnant ends up at about 88\% of the combined virial mass of the precursors (at constant $\rho_c$).
 
-\todo{Some more discussion would be useful!}
-
 
 \subsubsection{Remnant halo kinematics}
 
@@ -959,7 +963,9 @@ This analysis was repeated for other timepoints starting soon after merger. A re
 		\label{fig:rem_dm_disp_y_600}}
 \end{figure}
 
-The halo appears much more stable than the stars after the initial merger \todo{ref to prediction}. The timecourse of radial $v_{\text{max}}$ and central dispersion $\sigma_c$ is shown in Figure \ref{fig:rem_dm_vdisp_tc} and the ratio $v_{\text{max}} / \sigma_c$ is shown in Figure \ref{fig:rem_dm_vdisp_ratio}. There is a gradual rise in $v_{\text{max}}$ over the 8-11 Gyr period, during which the stellar $v_{\text{max}}$ is trending downwards (Figure \ref{fig:rem_st_vdisp_ratio}), perhaps suggesting some angular momentum transfer from the rapidly-rotating stars to the slowly-rotating halo.
+The halo appears much more stable than the stars after the initial merger. As \citet{barnes_dynamics_1992} suggested, it is intermingling of the DM halos that initially drives the merger and ``[l]uminous material dominates the central regions of merger remnants precisely because the dense luminous parts of infalling galaxies remain largely undisturbed until they finally encounter each other and merge within a now-common envelope of halo material''.
+
+The timecourse of radial $v_{\text{max}}$ and central dispersion $\sigma_c$ is shown in Figure \ref{fig:rem_dm_vdisp_tc} and the ratio $v_{\text{max}} / \sigma_c$ is shown in Figure \ref{fig:rem_dm_vdisp_ratio}. There is a gradual rise in $v_{\text{max}}$ over the 8-11 Gyr period, during which the stellar $v_{\text{max}}$ is trending downwards (Figure \ref{fig:rem_st_vdisp_ratio}), perhaps suggesting some angular momentum transfer from the rapidly-rotating stars to the slowly-rotating halo.
 
 \begin{figure}[htb!]
 	\epsscale{0.9}
@@ -1007,25 +1013,16 @@ Unfortunately, this gives a spin parameter $\lambda \approx 37$, about 2 orders 
 
 \todo{\textbf{Figure out what went wrong!}}
 
+\todo{Calculate for precursor galaxies}
+
+
 \section{Discussion and Conclusions}
 
 \todo{\textbf{\textit{add some!}}}
 
-\todo{identify the bar?}\ 
-
-\todo{more on spiral arms}
-
 \todo{disk rotation curve, $V_{rot}/\sigma$}
 
 \todo{effect of radius on precursor halo L}
-
-\todo{tails: identify, trace history, trace fate}\ 
-
-\todo{Jacobi radius}\ 
-
-\todo{Tail kinematics: $\sigma$, energy}\ 
-
-\todo{Lifetime of tails}\ 
 
 \todo{changes in mass profile during merger}
 
