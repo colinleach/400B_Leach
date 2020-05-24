@@ -22,9 +22,11 @@
 
 \begin{abstract}
 	
-Existing data from an N-body simulation of the local group is reanalyzed. Future trajectories of the Milky Way (MW), M31 and M33 are presented, with emphasis on the structural and kinematic effects of a MW-M31 close approach to 35 kpc just before 4 Gyr, then final approach and merger around 6 Gyr. The properties of the merger remnant are examined in some detail, showing that stellar material is by no means fully relaxed at the end of the simulation (11.44 Gyr). The central region is approximately prolate, with significant rotation about its long axis. At larger radii, baryonic matter appears kinematically distinct from the central region with a different rotation axis. \vspace{5mm}
-	
-\todo{Add further concise and intelligent summary of the paper, once I get a clearer idea what it will include (and how to seem intelligent).}\vspace{5mm}
+Existing data from an N-body simulation of the local group is reanalyzed. Future trajectories of the Milky Way (MW), M31 and M33 are presented, with emphasis on the structural and kinematic effects of a MW-M31 close approach to 35 kpc just before 4 Gyr, then final approach and merger around 6 Gyr. Substantial tidal tails form after (not during) first pericenter, though most stars return to their original galaxy before apocenter. This also leads to the disk angular momentum vectors moving closer to alignment. For the dark matter (DM) halos, there is some increase in scale radius and a large increase in angular momentum during close approach. 
+
+The properties of the merger remnant are examined in some detail, showing that stellar material is by no means fully relaxed at the end of the simulation (11.44 Gyr). Stellar material and, especially DM particles, spreads to larger radii than in the precursor galaxies. Stars are not randomized in the remnant: ex-M31 stars are concentrated near the center, ex-MW stars further out.  The central region is approximately prolate, with a highly elongated core and significant rotation about its long axis. At larger radii, baryonic matter appears kinematically distinct from the central region with a different rotation axis. Viewed over time, the stellar material continues to evolve until the end of the simulation at 11.4 Gyr, with a slow and irregular decline in rotation velocity. In contrast, the halo is largely stable by 7 Gyr and continues to rotate slowly, though with a slight increase in velocity.
+
+\todo{Add further concise and intelligent summary of the paper, once I get a clearer idea what it will include (and how to seem intelligent).}
 
 	
 \end{abstract}
@@ -70,7 +72,7 @@ Data from one N-body simulation in vdM12 was supplied in text-file format by one
 	\midrule
 	LG  &  525,000 &  1,021,500 &   145,000 &  1,691,500
 	\enddata
-\end{deluxetable}\vspace{-10mm}
+\end{deluxetable} %\vspace{-10mm}
 
 Particle counts for each time point are shown in Table \ref{tbl:counts} and total masses in Table \ref{tbl:aggmass}. We can see that total mass is the same for MW/M31 but our galaxy has more dark matter (lower baryon fraction) and M31 has more luminous stars (higher baryon fraction). M33 is about 10-fold lighter than either.
 
@@ -88,7 +90,7 @@ Particle counts for each time point are shown in Table \ref{tbl:counts} and tota
 	\midrule
 	LG &   4.082 &      0.204 &       0.029 &  4.316
 	\enddata
-\end{deluxetable}\vspace{-10mm}
+\end{deluxetable} %\vspace{-10mm}
 
 The coordinate system is approximately centered on the Milky Way at $t=0$. The center of mass (CoM) of all particles in the system is not fixed over time, moving at an average of $\vec{v} = \left< 35.9, -26.7, 27.5 \right>$ km/s with some minor fluctuations due to numerical approximations. In contrast, the total angular momentum of the system is very small at all time points.
 
@@ -141,13 +143,13 @@ There is a MW-M31 close approach with first pericenter at 3.96 Gyr with a minimu
 	\epsscale{0.6}
 	\plotone{collision_a}
 	\caption{\label{fig:3view_first_apo_a}}
-\end{figure}\vspace{-5mm}
+\end{figure} %\vspace{-5mm}
 
 \begin{figure}[hbt!]
 	\epsscale{0.7}
 	\plotone{collision_b}
 	\caption{\label{fig:3view_first_apo_b}}
-\end{figure}\vspace{-5mm}
+\end{figure} %\vspace{-5mm}
 
 \begin{figure}[hbt!]
 	\epsscale{0.8}
@@ -626,7 +628,7 @@ The specific angular momentum $\vec{h}$ was calculated for all the particles in 
 		MW halo &  0.66 &  0.09 & -0.74 &  16.89 \\
 		M31 halo &   0.60 & -0.08 & -0.80 &   9.42 \\
 	\enddata
-\end{deluxetable}\vspace{-8mm}
+\end{deluxetable} %\vspace{-8mm}
 
 A previous section suggested that the remnant is elliptical but it is complex to define a precise shape from the mass distribution. An analysis of the angular momentum vector may provide an alternative approach.
 
@@ -648,7 +650,7 @@ Looking at subgroups of particle by origin, the mutual inclination angles are no
 	MWh &    4.2 &  12.7 &  19.7 &   8.7 &  13.1 &   -- &  11.1 \\
 	M31h &    6.9 &   4.9 &   8.7 &   2.4 &   2.7 &  11.1 &   -- \\
 	\enddata
-\end{deluxetable}\vspace{-8mm}
+\end{deluxetable} %\vspace{-8mm}
 
 \begin{figure}[htb!]
 	\epsscale{0.9}
