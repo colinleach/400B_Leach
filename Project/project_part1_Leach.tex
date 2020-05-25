@@ -993,7 +993,28 @@ Potential energy is more challenging to calculate. In general \citep[section 2.1
 \[ W = \frac{1}{2} \int d^3\, \mathbf{x}\, \rho(\mathbf{x})\, \Phi(\mathbf{x}) \]
 We would need this to calculate the highly-disrupted situation shortly after collision and merger \citep[section 8.2]{binney_galactic_2008}. For simplicity, we concentrate here on the final timepoint about 5 Gyr after merger, and assume that the remnant halo is by then close to virial equilibrium. Then $E \approx -K$ and the calculation is very much easier.
 
-Other than potential energy, relevant values for the remnant halo vary little over time. Figure \ref{fig:rem_data} shows that angular momentum, kinetic energy and virial mass remain within $\pm 20\%$ of their final value.
+\begin{deluxetable}{cccccc}[htb!]
+	\tablecaption{Halo rotation parameters. J is in units of ($M_\Sun kpc^2 / Myr \times 10^{12}$).
+		\label{tbl:lambda}}
+	\tablewidth{0pt}
+	\tablehead{
+		\colhead{Galaxy} & \colhead{time} & \colhead{J} & \colhead{K} & \colhead{M} & \colhead{$\lambda$} \\
+		\colhead{} & \colhead{(Gyr)} & \colhead{} & \colhead{(erg $\times 10^{64}$)} & \colhead{($TM_\Sun$)} & \colhead{} 
+	}
+	\startdata
+	MW   &  0 &  $0.097$ & $7.6$ & $1.23$ & 0.81 \\
+	MW   &  4.29 &  $4.3$ & $18$ & $1.32$ & 47 \\
+	M31   &  0 &  $0.030$ & $7.9$ & $1.18$ & 0.28 \\
+	M31   &  4.29 &  $2.4$ & $18$ & $1.28$ & 28.2 \\
+	remnant   &  11.44 &  $7.7$ & $30$ & $2.03$ & 37 \\
+	\enddata
+\end{deluxetable} %\vspace{-5mm}
+
+The calculation was run for the remnant halo at the end of the simulation and the MW and M31 halos at the start and after first pericenter. Results are in Table \ref{tbl:lambda}. Values for $\lambda$ in the current epoch are higher than literature values. For comparison, \citet{klypin_cdm-based_2002} find $\lambda \approx 0.03-0.05$ for both MW and M31 and $0.02-0.10$ for a wide range of galaxy halo models. Their calculations are considerably more complex than the one used here \citep{vitvitska_origin_2002} and no values for $J$ and $E$ are given for direct comparison.
+
+After close approach, we already saw in Figure \ref{fig:halo_h} that there is a large increase in angular momentum, which is reflected in the $J$ column of  Table \ref{tbl:lambda}. We can reasonably doubt whether kinetic energy $K$ is a good estimate of total energy $E$ so soon after an interaction, but in any case there are only relatively small differences in energy and only the square root of these values is used in calculating $\lambda$. Whatever the absolute values, it seems likely that the halo spin parameter increases greatly during the simulation, driven by angular momentum changes, and remains high in the final remnant relative to the precursor galaxies in the current epoch.
+
+Other than potential energy, relevant values for the remnant halo vary little over time post-merger. Figure \ref{fig:rem_data} shows that angular momentum, kinetic energy and virial mass remain within $\pm 20\%$ of their final value.
 
 \begin{figure}[htb!]
 	\epsscale{1.1}
@@ -1002,18 +1023,8 @@ Other than potential energy, relevant values for the remnant halo vary little ov
 		\label{fig:rem_data}}
 \end{figure}
 
-The final timepoint of the simulation gives these results:
-\begin{align*}
-	J &= 7.7 \times 10^{12}\ M_\Sun kpc^2 / Myr\\
-	K &= 3.0 \times 10^{65}\ \text{erg}\\
-	M &= 2.0 \times 10^{12}\ M_\Sun
-\end{align*}
 
-Unfortunately, this gives a spin parameter $\lambda \approx 37$, about 2 orders of magnitude higher than expected.
 
-\todo{\textbf{Figure out what went wrong!}}
-
-\todo{Calculate for precursor galaxies}
 
 
 \section{Discussion and Conclusions}

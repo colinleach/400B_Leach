@@ -157,6 +157,11 @@ Kluyver, T., Ragan-Kelley, B., P{\'e}rez, F., {et~al.} 2016, in Positioning and
   Power in Academic Publishing: Players, Agents and Agendas, ed. F.~Loizides \&
   B.~Schmidt, IOS Press, 87 -- 90
 
+\bibitem[{Klypin {et~al.}(2002)Klypin, Zhao, \&
+  Somerville}]{klypin_cdm-based_2002}
+Klypin, A., Zhao, H., \& Somerville, R.~S. 2002, The Astrophysical Journal,
+  573, 597, \dodoi{10.1086/340656}
+
 \bibitem[{Lynden-Bell(1967)}]{lynden-bell_statistical_1967}
 Lynden-Bell, D. 1967, Monthly Notices of the Royal Astronomical Society, 136,
   101, \dodoi{10.1093/mnras/136.1.101}
@@ -287,6 +292,11 @@ van~der Walt, S., Colbert, S.~C., \& Varoquaux, G. 2011, Computing in Science
   {Contributors}}]{2020SciPy-NMeth}
 {Virtanen}, P., {Gommers}, R., {Oliphant}, T.~E., {et~al.} 2020, Nature
   Methods, \dodoi{https://doi.org/10.1038/s41592-019-0686-2}
+
+\bibitem[{Vitvitska {et~al.}(2002)Vitvitska, Klypin, Kravtsov, Wechsler,
+  Primack, \& Bullock}]{vitvitska_origin_2002}
+Vitvitska, M., Klypin, A.~A., Kravtsov, A.~V., {et~al.} 2002, The Astrophysical
+  Journal, 581, 799, \dodoi{10.1086/344361}
 
 \bibitem[{Wang {et~al.}(2019)Wang, Mao, Li, Xu, Chen, \&
   Springel}]{wang_orbit_2019}
