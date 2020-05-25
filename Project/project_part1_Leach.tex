@@ -22,7 +22,7 @@
 
 \begin{abstract}
 	
-Existing data from an N-body simulation of the local group is reanalyzed. Future trajectories of the Milky Way (MW), M31 and M33 are presented, with emphasis on the structural and kinematic effects of a MW-M31 close approach to 35 kpc just before 4 Gyr, then final approach and merger around 6 Gyr. Substantial tidal tails form after (not during) first pericenter, though most stars return to their original galaxy before apocenter. This also leads to the disk angular momentum vectors moving closer to alignment. For the dark matter (DM) halos, there is some increase in scale radius and a large increase in angular momentum during close approach. 
+Existing data from an N-body simulation of the local group is reanalyzed, as this remains unusual in having exceptionally well-parameterized starting conditions. Future trajectories of the Milky Way (MW), M31 and M33 are presented, with emphasis on the structural and kinematic effects of a MW-M31 close approach to 35 kpc just before 4 Gyr, then final approach and merger around 6 Gyr. Substantial tidal tails form after (not during) first pericenter, though most stars return to their original galaxy before apocenter. This also leads to the disk angular momentum vectors moving closer to alignment. For the dark matter (DM) halos, there is some increase in scale radius and a large increase in angular momentum during close approach. 
 
 The properties of the merger remnant are examined in some detail, showing that stellar material is by no means fully relaxed at the end of the simulation (11.44 Gyr). Stellar material and, especially DM particles, spreads to larger radii than in the precursor galaxies. Stars are not randomized in the remnant: ex-M31 stars are concentrated near the center, ex-MW stars further out.  The central region is approximately prolate, with a highly elongated core and significant rotation about its long axis. At larger radii, baryonic matter appears kinematically distinct from the central region with a different rotation axis. Viewed over time, the stellar material continues to evolve until the end of the simulation at 11.4 Gyr, with a slow and irregular decline in rotation velocity. In contrast, the halo is largely stable by 7 Gyr and continues to rotate slowly, though with a slight increase in velocity.
 
@@ -466,7 +466,7 @@ The MW and M31 disks have angular momentum vectors inclined at an angle of $37^\
 
 \subsubsection{Remnant shape}
 
-We can expect the remnant to settle over time into a triaxial ellipsoid \todo{ref?}. In observational astronomy it would be usual to determine the shape by fitting ellipses to surface brightness contours. That is also possible for the simulation, but for a highly-determined system for which we know the mass and position of every particle there are other options.
+In general, we can expect the remnant to settle over time into some form of triaxial ellipsoid. In observational astronomy it would be usual to determine the shape by fitting ellipses to surface brightness contours. That is also possible for the simulation, but for a highly-determined system for which we know the mass and position of every particle there may be other options.
 
 If we combine all the baryonic matter (disk and bulge) from both MW and M31, there are $1.12 \times 10^6$ particles to consider. Some of these have been ejected to large radius where they have an exaggerated effect on the moment of inertia, so only those within 40 kpc of the CoM were used in the calculation. These were about 88\% of the original stellar particles from the two precursor galaxies.
 
@@ -929,7 +929,7 @@ The precursor galaxies have, as expected, somewhat lower virial radii: 227 kpc f
 
 \subsubsection{Remnant halo kinematics}
 
-As for stellar matter in a previous section, mean radial velocities $\bar{v}$ and velocity dispersions $\sigma$ were calculated by binning along the $y$-axis (Figure \ref{fig:rem_dm_disp_y_801}) and the $z$-axis (Figure \ref{fig:rem_dm_disp_z_801}). For this and all the remaining stellar rotation plots, the angular momentum vector $\hat{L}$ was calculated for all stars within 150 kpc of the CoM and placed along the $z$-axis. The variation perpendicular to $\hat{L}$ shows clear rotation with $v_{\text{max}} \approx 33$ km/s, about half that of the stellar remnant and somewhat asymmetric. Along $\hat{L}$ we see the expected smaller and more random velocities.
+As for stellar matter in a previous section, mean radial velocities $\bar{v}$ and velocity dispersions $\sigma$ were calculated by binning along the $y$-axis (Figure \ref{fig:rem_dm_disp_y_801}) and the $z$-axis (data not shown). For this and all the remaining stellar rotation plots, the angular momentum vector $\hat{L}$ was calculated for all stars within 150 kpc of the CoM and placed along the $z$-axis. The variation perpendicular to $\hat{L}$ shows clear rotation with $v_{\text{max}} \approx 33$ km/s, about half that of the stellar remnant and somewhat asymmetric. Along $\hat{L}$ the expected smaller and more random velocities were apparent (not shown).
 
 \begin{figure}[htb!]
 	\epsscale{0.9}
@@ -1024,12 +1024,35 @@ Other than potential energy, relevant values for the remnant halo vary little ov
 \end{figure}
 
 
-
-
-
 \section{Discussion and Conclusions}
 
-\todo{\textbf{\textit{add some!}}}
+The simulation used as a starting point in this study contains a wealth of data, and there is still value in reanalyzing it from a variety of perspectives. Data for the early part of the simulation partly reproduces and partly extends the results already published in vdM12. 
+
+The first big change in MW/M31 galaxy properties comes during and after first pericenter at 3.97 Gyr. The relative velocity of the two galaxies spikes and their relative disk inclinations reduce. At this point there are only modest changes to the disks themselves, but over the the subsequent 0.3 Gyr both develop large tidal tails. There is also a fairly sparse bridge which, given the orientation which puts the MW disk edge close to the M31 center, is largely a mix of MW disk stars and M31 bulge stars. These structures are mostly temporary and even a cursory analysis shows that most stars return to their parent galaxy before apocenter. There is much more still to be done in this part of the analysis.
+
+In contrast to the stars, which only experience tidal effects at a distance, the DM halos extensively overlap and intermingle. Given a relative velocity close to 600 km/s at pericenter for the galactic centers, the effect on the outer parts of the halos is inevitably quite dramatic. For both galaxies there is an increase in Hernquist scale radius as the halo expands, and a very substantial increase in halo angular momentum about their respective galactic centers.
+
+These interactions and the associated dynamical friction cause a large drop in relative velocity and a loss of orbital energy, such that the centers only separate to 173 kpc at apocenter. By 5.9 Gyr they are essentially in collision: a complex process which causes major disruption and eventually merger to a (relatively) stable remnant by 6.5 Gyr.
+
+The properties of the remnant were discussed to some extent in vdM12 (section 3.5) but were not a main focus of that paper. Accordingly, the present work tries to investigate it in more detail.
+
+Pinning down the baryonic mass distribution and shape proved somewhat challenging, as various initial approximations were shown to be invalid. In particular, it can be misleading to treat the stellar remnant as having spherical symmetry, nor should significant differences with radius be ignored.
+
+The remnant even long after merger has not lost a memory of its origins and become random. Surface density profiles for the various components are each well fit by Sersic profiles, but the half mass radius is different for each: ex-bulge stars inside ex-disk stars and ex-M32 stars inside ex-MW stars. In aggregate, each has angular momentum but the rotation axes are not well aligned. This may, at least in part, be related to the different radii. Calculations for all stars regardless of origin within various spheres showed that the rotation axis varies with radius and stars more than about 60 kpc from the center do not appear to be co-rotating with stars inside 20 kpc.
+
+This knowledge allowed more accurate orientation of the remnant coordinates and fitting of isophote-like contours to surface density plots. This showed that there is a dense core of stars which are highly prolate (ellipticity $\epsilon$ as high as 0.5) and rotating about their long axis. Such systems are relatively unusual but have been described before, both observationally and in numerical simulations. At larger radii, around $20-30$ kpc, ellipticity is lower and the shape is closer to oblate. However, the short axis is perpendicular to the rotation axis, in contrast to the commonest types of elliptical galaxy. There is thus no indication of rotational flattening. Also, not disk-like structure was detected, ruling out a suggestion that this might be an S0 galaxy.
+
+Radial velocities and velocity dispersions largely supported these results. Perpendicular to the rotation axis, but not parallel to it, there is a clear though slightly distorted velocity curve with $v_{\text{max}} \approx 68$ km/s out to 60 kpc. In either orientation, velocity dispersion has a narrow central peak to $\sigma_c \approx 176$ km/s. Literature suggestions that remnants formed by dry major mergers have little or no rotation are not borne out by this simulation.
+
+Those results were from the end of the simulation at $t=11.44$ Gyr. Repeating the same calculation for all timepoints post-merger showed that velocity dispersion $\sigma_c$ quickly stabilized but rotation velocity $v_{\text{max}}$ remained irregular and in gradual decline throughout. With $v_{\text{max}} > 100$ km/s for much of the time, this is strikingly rapid rotation.
+
+For the remnant DM halo, results are mostly simpler and more regular. Specific angular momentum increases monotonically with radius. Orientation of the rotation axis is radius-dependent inside 50 kpc, but this is only a small fraction of the halo mass and orientation is essentially constant further out. Isophotes are mildly elliptical ($\epsilon \approx 0.2$) and the shape is approximately oblate with rotation about the short axis. This is the type of rotational flattening that might be expected for an elliptical galaxy but which was so clearly absent from the stellar core.
+
+Virial radius ??
+
+Rotation parameter $\lambda$ ??
+
+\subsection{Unfinished business}
 
 \todo{disk rotation curve, $V_{rot}/\sigma$}
 
@@ -1037,13 +1060,10 @@ Other than potential energy, relevant values for the remnant halo vary little ov
 
 \todo{changes in mass profile during merger}
 
-\todo{\textbf{Does stellar density profile agree with predictions for elliptical galaxies?}}
+\todo{Does stellar density profile agree with predictions for elliptical galaxies?}
 
-\todo{\textbf{Does the virial theorem work to return the total baryonic mass?}}
+\todo{Does the virial theorem work to return the total baryonic mass?}
 
-
-
-\vspace{30mm}
 
 
 \section{Acknowledgments}
