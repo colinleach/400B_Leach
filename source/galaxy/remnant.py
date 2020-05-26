@@ -296,13 +296,17 @@ class Remnant(Galaxy):
         Args:
             R (array of Quantity):
                 Radii to consider (kpc)
-
+            m (array of float):
+                masses (no units)
+            xyz (array of float with shape (3,N)):
+                coordinates (implicit kpc)
+ 
         Returns:
-            Re (Quantity) :
+            sub_Re (Quantity) :
                 Radius enclosing half light/mass (kpc)
-            bulge_total (numeric):
-                Mass of entire bulge (M_sun, no units)
-            bulgeI (array of Quantity):
+            sub_total (numeric):
+                Mass of entire system (M_sun, no units)
+            subI (array of Quantity):
                 Surface brightness at radii R (kpc^-2), assuming M/L=1
         """
 
