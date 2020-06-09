@@ -10,7 +10,6 @@ For ASTR 400B, Spring 2020, homeworks and assignments.
 **Testing:** Modules in the `source` folder have a `tests` subdirectory for use by pytest. Run `pytest -v` from the module directory. This is not currently linked to Travis-CI; that will require figuring out how to access large data files.
 
 **Directory structure:**
-- **`Homeworks`**, **`InClassLabs`**, **`Lectures`**: Material directly related to the ASTR 400B course
 - **`Project`**: The research assignment. Top level is the report (LaTeX and PDF), code is in `Project/notebooks`, graphics in `Project/img`.
 - **`animations`**: mp4 movies and shell scripts in the top level, advice sheets in `animations/howto`. Individual PNG files are available but not pushed to GitHub because of size.
 - **`data`:** Tables of derived data, in text file format and as Postgres CREATE files.
